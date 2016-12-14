@@ -20,13 +20,14 @@ import javax.swing.JLabel;
  */
 public class ExportProjectUI extends JFrame {
 
-    private final int WINDOW_WIDTH = 500;
-    private final int WINDOW_HEIGHT = 500;
+    private final int WINDOW_WIDTH = 250;
+    private final int WINDOW_HEIGHT = 150;
     private final String WINDOW_TITLE = "Export data";
 
     public ExportProjectUI() {
         this.setSize(new Dimension(WINDOW_WIDTH, WINDOW_HEIGHT));
         this.setTitle(WINDOW_TITLE);
+        this.setResizable(false);
         createComponents();
         this.setVisible(true);
     }
@@ -47,10 +48,13 @@ public class ExportProjectUI extends JFrame {
         label.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent me) {
-              ExportHTMLUI instance = new ExportHTMLUI();
-              
+                ExportHTMLUI instance = new ExportHTMLUI();
+
             }
         });
+        Dimension d = new Dimension(icon.getIconWidth(), icon.getIconHeight());
+        label.setPreferredSize(d);
+     
         return label;
     }
 
@@ -59,12 +63,14 @@ public class ExportProjectUI extends JFrame {
         label.setText("");
         Icon icon = new ImageIcon("src/main/resources/images/csv.png");
         label.setIcon(icon);
-           label.addMouseListener(new MouseAdapter() {
+        label.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent me) {
-              ExportCSVUI instance = new ExportCSVUI();
+                ExportCSVUI instance = new ExportCSVUI();
             }
         });
+        Dimension d = new Dimension(icon.getIconWidth(), icon.getIconHeight());
+        label.setPreferredSize(d);
         return label;
     }
 }
