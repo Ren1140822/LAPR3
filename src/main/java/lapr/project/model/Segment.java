@@ -19,14 +19,15 @@ public class Segment implements Serializable{
     private String id;
     private Node startNode;
     private Node endNode;
-    private String direction;
+    public enum Direction {bidirectional, direct, reverse};
+    private Direction direction;
     private Wind wind;
     
     /**
      * Default values.
      */
     private final String DEFAULT_ID = "NOID";
-    private final String DEFAULT_DIRECTION = "NODIRECTION";
+    private final Direction DEFAULT_DIRECTION = Direction.bidirectional;
     
     /**
      * Default constructor.
@@ -43,14 +44,14 @@ public class Segment implements Serializable{
      * @param id the id of the segment
      * @param startNode the start node of the segment
      * @param endNode the end node of the segment
-     * @param direction the direction of the segment
+     * @param direction the Direction of the segment
      * @param wind the wind of the segment
      */
     public Segment(String id, Node startNode, Node endNode, String direction, Wind wind){
         this.id = id;
         this.startNode = startNode;
         this.endNode = endNode;
-        this.direction = direction;
+        setDirection(direction);
         this.wind = wind;
     }
     
@@ -115,19 +116,22 @@ public class Segment implements Serializable{
     }
 
     /**
-     * gets the direction of the segment
-     * @return the direction
+     * gets the Direction of the segment
+     * @return the Direction
      */
-    public String getDirection() {
+    public Direction getDirection() {
         return direction;
     }
 
     /**
-     * sets the direction of the segment
-     * @param direction the direction to set
+     * sets the Direction of the segment
+     * @param direction the Direction to set
      */
     public void setDirection(String direction) {
-        this.direction = direction;
+        try{
+            this.direction = Direction.valueOf(direction);
+        }catch (IllegalArgumentException e){
+        }
     }
 
     /**
@@ -176,6 +180,20 @@ public class Segment implements Serializable{
                 this.endNode.equals(otherSegment.endNode) &&
                 this.direction.equals(otherSegment.direction) &&
                 this.wind.equals(otherSegment.wind);
+    }
+    
+    /**
+     * validate latitude and longitude
+     * @return true if validate latitude and longitude, false if not 
+     */
+    public boolean validate(){
+        //latitude  => min: -90 max: 90
+        //longitude => min:-180 max:180
+        return !this.id.isEmpty()
+                && this.direction != null
+                && this.startNode.validate()
+                && this.endNode.validate()
+                && this.wind.validate();
     }
     
 }

@@ -141,7 +141,8 @@ public class Node implements Serializable{
     public boolean validate(){
         //latitude  => min: -90 max: 90
         //longitude => min:-180 max:180
-        return !(latitude < -90 && latitude > 90)
-                && !(longitude < -180 && longitude > 180);
+        return !(latitude < -90 || latitude > 90)
+                && !(longitude < -180 || longitude > 180)
+                && !id.isEmpty();
     }
 }

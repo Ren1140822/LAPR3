@@ -91,8 +91,7 @@ public class Wind implements Serializable{
     @Override
     public String toString()
     {
-        return "Wind Direction: " + windDirection + 
-                "Wind Intensity: " +  windIntensity;
+        return windDirection + " <-> " + windIntensity;
     }
     
     /**
@@ -121,7 +120,7 @@ public class Wind implements Serializable{
     public boolean validate(){
         //direction relative to the North (-180º <-> 180º)
         //intensity > 0
-        return !(windDirection < -180 && windDirection > 180)
-                && !(windIntensity >= 0);
+        return (!((windDirection < -180 || windDirection > 180))
+                && (windIntensity >= 0));
     }
 }
