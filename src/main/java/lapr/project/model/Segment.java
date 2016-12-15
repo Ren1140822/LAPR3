@@ -1,0 +1,181 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package lapr.project.model;
+
+import java.io.Serializable;
+
+/**
+ * Class that represents a Segment
+ * @author Pedro Fernandes
+ */
+public class Segment implements Serializable{
+    
+    /**
+     * Class atributes.
+     */
+    private String id;
+    private Node startNode;
+    private Node endNode;
+    private String direction;
+    private Wind wind;
+    
+    /**
+     * Default values.
+     */
+    private final String DEFAULT_ID = "NOID";
+    private final String DEFAULT_DIRECTION = "NODIRECTION";
+    
+    /**
+     * Default constructor.
+     */
+    public Segment(){
+        this.id = DEFAULT_ID;
+        this.startNode = new Node();
+        this.endNode = new Node();
+        this.direction = DEFAULT_DIRECTION;
+        this.wind = new Wind();
+    }
+    /**
+     * Parameter constructor
+     * @param id the id of the segment
+     * @param startNode the start node of the segment
+     * @param endNode the end node of the segment
+     * @param direction the direction of the segment
+     * @param wind the wind of the segment
+     */
+    public Segment(String id, Node startNode, Node endNode, String direction, Wind wind){
+        this.id = id;
+        this.startNode = startNode;
+        this.endNode = endNode;
+        this.direction = direction;
+        this.wind = wind;
+    }
+    
+    /**
+     * Copy constructor.
+     * @param segment the segment
+     */
+    public Segment(Segment segment){
+        this.id = segment.id;
+        this.startNode = segment.startNode;
+        this.endNode = segment.endNode;
+        this.direction = segment.direction;
+        this.wind = segment.wind;
+    }
+
+    /**
+     * gets the id of the segment
+     * @return the id
+     */
+    public String getId() {
+        return id;
+    }
+
+    /**
+     * sets the id of the segment
+     * @param id the id to set
+     */
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    /**
+     * gets the start node of the segment
+     * @return the startNode
+     */
+    public Node getStartNode() {
+        return startNode;
+    }
+
+    /**
+     * sets the start node of the segment
+     * @param startNode the startNode to set
+     */
+    public void setStartNode(Node startNode) {
+        this.startNode = startNode;
+    }
+
+    /**
+     * gets the end node of the segment
+     * @return the endNode
+     */
+    public Node getEndNode() {
+        return endNode;
+    }
+
+    /**
+     * sets the end node of the segment
+     * @param endNode the endNode to set
+     */
+    public void setEndNode(Node endNode) {
+        this.endNode = endNode;
+    }
+
+    /**
+     * gets the direction of the segment
+     * @return the direction
+     */
+    public String getDirection() {
+        return direction;
+    }
+
+    /**
+     * sets the direction of the segment
+     * @param direction the direction to set
+     */
+    public void setDirection(String direction) {
+        this.direction = direction;
+    }
+
+    /**
+     * gets the wind of the segment
+     * @return the wind
+     */
+    public Wind getWind() {
+        return wind;
+    }
+
+    /**
+     * sets the wind of the segment
+     * @param wind the wind to set
+     */
+    public void setWind(Wind wind) {
+        this.wind = wind;
+    }
+    
+    /**
+     * Returns a string description of this object.
+     * @return the description of this object
+     */
+    @Override
+    public String toString()
+    {
+        return id;
+    }
+    
+    /**
+     * Checks if two object are equal.
+     * @param otherObject the other object
+     * @return true if equal
+     */
+    @Override
+    public boolean equals(Object otherObject){
+        if(otherObject == null || this.getClass() != otherObject.getClass()){
+            return false;
+        }
+        if (this == otherObject)
+        {
+            return true;
+        }
+        Segment otherSegment = (Segment) otherObject;
+        return this.id.equals(otherSegment.id) &&
+                this.startNode.equals(otherSegment.startNode) &&
+                this.endNode.equals(otherSegment.endNode) &&
+                this.direction.equals(otherSegment.direction) &&
+                this.wind.equals(otherSegment.wind);
+    }
+    
+}
