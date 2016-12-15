@@ -16,7 +16,10 @@ import lapr.project.model.lists.ResultsList;
  */
 public class Project {
 
-    public static AircraftList aircraftList;
+    /**
+     * Variables to read from DAL or file.
+     */
+    public static AircraftList aircraftList = new AircraftList();
     public static AirportList airportList;
     public static ResultsList resultsList;
 

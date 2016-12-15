@@ -21,8 +21,8 @@ public class AddAircraftController {
         aircraftList = Project.aircraftList;
     }
 
-    public void createAircraft() {
-        aircraftList.createAircraft();
+    public boolean createAircraft() {
+        return aircraftList.createAircraft();
     }
 
     public boolean setAircraftData(String registration, String company, int nrOfSeatsEcon, int nrOfSeatsCommercial, int NrOfElements) {

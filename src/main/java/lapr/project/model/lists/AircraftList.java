@@ -70,8 +70,9 @@ public class AircraftList {
      *
      * @return
      */
-    public void createAircraft() {
+    public boolean createAircraft() {
         aircraft = new Aircraft();
+        return true;
     }
 
     public boolean setAircraftData(String registration, String company, int nrOfSeatsEcon,int nrOfSeatsCommercial, int NrOfElements) {

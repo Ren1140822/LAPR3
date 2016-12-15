@@ -24,10 +24,10 @@ public class Aircraft implements Serializable {
     /**
      * Default attributes.
      */
-    private final String DEFAULT_REGISTRATION="No Registration ID.";
-    private final String DEFAULT_COMPANY="No Company.";
-    private final CabinConfiguration DEFAULT_CABIN_CONFIG=new CabinConfiguration(0,0);
-    private final int DEFAULT_NR_OF_CREW_ELEMENTS=0;
+    private static final String DEFAULT_REGISTRATION="No Registration ID.";
+    private static  final String DEFAULT_COMPANY="No Company.";
+    private static final CabinConfiguration DEFAULT_CABIN_CONFIG=new CabinConfiguration(0,0);
+    private static final int DEFAULT_NR_OF_CREW_ELEMENTS=0;
 
     /**
      * Default constructor.
