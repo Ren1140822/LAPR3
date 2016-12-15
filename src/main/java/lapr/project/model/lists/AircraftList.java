@@ -7,16 +7,20 @@ package lapr.project.model.lists;
 
 import java.util.LinkedList;
 import lapr.project.model.Aircraft;
+import lapr.project.model.CabinConfiguration;
 
 /**
  *
  * @author Renato Oliveira 1140822@isep.ipp.pt
  */
 public class AircraftList {
-      /**
+
+    /**
      * The list of aircrafts.
      */
-    LinkedList<Aircraft>aircraftList;
+    LinkedList<Aircraft> aircraftList;
+
+    Aircraft aircraft;
 
     /**
      * Constructor.
@@ -24,27 +28,28 @@ public class AircraftList {
     public AircraftList() {
         this.aircraftList = new LinkedList<>();
     }
-    
+
     /**
      * Copy constructor.
+     *
      * @param list the instance of this class
      */
-    public AircraftList(AircraftList list)
-    {
+    public AircraftList(AircraftList list) {
         this.aircraftList = list.aircraftList;
     }
-    
+
     /**
      * Parameter constructor.
+     *
      * @param aircraftList the list of aircrafts
      */
-    public AircraftList(LinkedList<Aircraft>aircraftList)
-    {
+    public AircraftList(LinkedList<Aircraft> aircraftList) {
         this.aircraftList = aircraftList;
     }
 
     /**
      * Gets the aircraft list.
+     *
      * @return the aircraft list
      */
     public LinkedList<Aircraft> getAircraftList() {
@@ -53,11 +58,36 @@ public class AircraftList {
 
     /**
      * Sets the aircraft list.
+     *
      * @param aircraftList the aircraft list to set
      */
     public void setAircrafttList(LinkedList<Aircraft> aircraftList) {
         this.aircraftList = aircraftList;
     }
-    
-    
+
+    /**
+     * Creates a new instance of aircraft.
+     *
+     * @return
+     */
+    public void createAircraft() {
+        aircraft = new Aircraft();
+    }
+
+    public boolean setAircraftData(String registration, String company, int nrOfSeatsEcon,int nrOfSeatsCommercial, int NrOfElements) {
+
+        aircraft.setRegistration(registration);
+        aircraft.setCabinConfig(new CabinConfiguration(nrOfSeatsEcon,nrOfSeatsCommercial));
+        aircraft.setCompany(company);
+        aircraft.setNrOfCrewElements(NrOfElements);
+        if (aircraft.validate() && validate()) {
+            this.aircraftList.add(aircraft);
+            return true;
+        }
+        return false;
+    }
+
+    private boolean validate() {
+        return !this.aircraftList.contains(aircraft);
+    }
 }

@@ -19,9 +19,9 @@ public class Airport implements Serializable{
     private String name;
     private String town;
     private String country;
-    private int IATA;
-    private String latitude;
-    private String longitude;
+    private String IATA;
+    private Double latitude;
+    private Double longitude;
     private int altitude;
 
     /**
@@ -30,9 +30,9 @@ public class Airport implements Serializable{
     private final String DEFAULT_NAME = "No name.";
     private final String DEFAULT_TOWN = "No town.";
     private final String DEFAULT_COUNTRY = "No country.";
-    private final int DEFAULT_IATA = 0;
-    private final String DEFAULT_LAT = "No latitude.";
-    private final String DEFAULT_LONG = "No longitude.";
+    private final String DEFAULT_IATA = "No IATA code.";
+    private final Double DEFAULT_LAT = 0.0;
+    private final Double DEFAULT_LONG = 0.0;
     private final int DEFAULT_ALTITUDE = 0;
 
     /**
@@ -56,7 +56,7 @@ public class Airport implements Serializable{
      * @param longitude the longitude of the airport
      * @param altitude the altitude of the airport
      */
-    public Airport(String name, String town, int IATA, String latitude, String longitude, int altitude) {
+    public Airport(String name, String town, String IATA, Double latitude, Double longitude, int altitude) {
         this.name = name;
         this.town = town;
         this.IATA = IATA;
@@ -130,7 +130,7 @@ public class Airport implements Serializable{
      *Gets the iata code.
      * @return the iata code
      */
-    public int getIATA() {
+    public String getIATA() {
         return IATA;
     }
 
@@ -138,7 +138,7 @@ public class Airport implements Serializable{
      *Sets the iata code.
      * @param IATA the iata code to set
      */
-    public void setIATA(int IATA) {
+    public void setIATA(String IATA) {
         this.IATA = IATA;
     }
 
@@ -146,7 +146,7 @@ public class Airport implements Serializable{
      *Gets the latitude.
      * @return the latitude
      */
-    public String getLatitude() {
+    public Double getLatitude() {
         return latitude;
     }
 
@@ -154,7 +154,7 @@ public class Airport implements Serializable{
      *Sets the latitude.
      * @param latitude
      */
-    public void setLatitude(String latitude) {
+    public void setLatitude(Double latitude) {
         this.latitude = latitude;
     }
 
@@ -162,7 +162,7 @@ public class Airport implements Serializable{
      *Gets the longitude.
      * @return
      */
-    public String getLongitude() {
+    public  Double getLongitude() {
         return longitude;
     }
 
@@ -170,7 +170,7 @@ public class Airport implements Serializable{
      *Sets the longitude.
      * @param longitude the longitude to set
      */
-    public void setLongitude(String longitude) {
+    public void setLongitude(Double longitude) {
         this.longitude = longitude;
     }
 
@@ -211,7 +211,7 @@ public class Airport implements Serializable{
             return true;
         }
         Airport otherAirport = (Airport)otherObject;
-       return this.name.equals(otherAirport.name)&&this.IATA == otherAirport.IATA &&
+       return this.name.equals(otherAirport.name)&&this.IATA .equals(otherAirport.IATA) &&
                 this.altitude == otherAirport.altitude && this.country.equals(otherAirport.country)&&
                 this.town.equals(otherAirport.town)&&this.latitude == otherAirport.latitude &&
                 this.longitude == otherAirport.longitude;

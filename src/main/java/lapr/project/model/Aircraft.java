@@ -16,17 +16,17 @@ public class Aircraft implements Serializable {
     /**
      * Class attributes.
      */
-    private int registration;
+    private String registration;
     private String company;
-    private int cabinConfig;
+    private CabinConfiguration cabinConfig;
     private int nrOfCrewElements;
     
     /**
      * Default attributes.
      */
-    private final int DEFAULT_REGISTRATION=0;
+    private final String DEFAULT_REGISTRATION="No Registration ID.";
     private final String DEFAULT_COMPANY="No Company.";
-    private final int DEFAULT_CABIN_CONFIG=0;
+    private final CabinConfiguration DEFAULT_CABIN_CONFIG=new CabinConfiguration(0,0);
     private final int DEFAULT_NR_OF_CREW_ELEMENTS=0;
 
     /**
@@ -46,7 +46,7 @@ public class Aircraft implements Serializable {
      * @param cabinConfig the cabin configuration
      * @param nrOfCrewElements the nr of crew elements
      */
-    public Aircraft(int registration, String company, int cabinConfig, int nrOfCrewElements) {
+    public Aircraft(String registration, String company, CabinConfiguration cabinConfig, int nrOfCrewElements) {
         this.registration = registration;
         this.company = company;
         this.cabinConfig = cabinConfig;
@@ -71,7 +71,7 @@ public class Aircraft implements Serializable {
      */
     public String toString()
     {
-        return String.valueOf(registration);
+        return registration;
     }
     
       /**
@@ -86,7 +86,78 @@ public class Aircraft implements Serializable {
             return true;
         }
         Aircraft otherAircraft = (Aircraft)otherObject;
-       return this.cabinConfig == otherAircraft.cabinConfig && this.company.equals(otherAircraft.company)&& this.nrOfCrewElements==otherAircraft.nrOfCrewElements && this.registration==otherAircraft.registration;
+       return this.cabinConfig.equals(otherAircraft.cabinConfig) && this.company.equals(otherAircraft.company)&& this.nrOfCrewElements==otherAircraft.nrOfCrewElements && this.registration.equals(otherAircraft.registration);
     }
+
+    /**
+     * Gets the aircraft registration id.
+     * @return  the string
+     */
+    public String getRegistration() {
+        return registration;
+    }
+
+    /**
+     * Sets the aircraft registration.
+     * @param registration the string to set
+     */
+    public void setRegistration(String registration) {
+        this.registration = registration;
+    }
+
+    /**
+     * Gets the aircraft company.
+     * @return  the string
+     */
+    public String getCompany() {
+        return company;
+    }
+
+    /**
+     * Sets the aircraft company.
+     * @param company the string to set
+     */
+    public void setCompany(String company) {
+        this.company = company;
+    }
+
+    /**
+     * Gets the cabin configuration.
+     * @return  the cabin configuration
+     */
+    public CabinConfiguration getCabinConfig() {
+        return cabinConfig;
+    }
+
+    /**
+     * Sets the cabin configuration.
+     * @param cabinConfig  the cabin config to set
+     */
+    public void setCabinConfig(CabinConfiguration cabinConfig) {
+        this.cabinConfig = cabinConfig;
+    }
+
+    /**
+     * Gets nr of elements of the crew.
+     * @return the nr of elements
+     */
+    public int getNrOfCrewElements() {
+        return nrOfCrewElements;
+    }
+
+    /**
+     * Sets the nr of elements of the crew.
+     * @param nrOfCrewElements the nr of elements.
+     */
+    public void setNrOfCrewElements(int nrOfCrewElements) {
+        this.nrOfCrewElements = nrOfCrewElements;
+    }
+    
+    
+    public boolean validate()
+    {
+       return this.nrOfCrewElements>0 && this.company!=null && this.registration !=null && this.cabinConfig!=null;
+    }
+    
     
 }

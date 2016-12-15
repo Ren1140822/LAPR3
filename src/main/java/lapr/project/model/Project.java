@@ -16,9 +16,9 @@ import lapr.project.model.lists.ResultsList;
  */
 public class Project {
 
-    private static AircraftList aircraftList;
-    private static AirportList airportList;
-    private static ResultsList resultsList;
+    public static AircraftList aircraftList;
+    public static AirportList airportList;
+    public static ResultsList resultsList;
 
     /**
      * Gets the list of aircrafts.
