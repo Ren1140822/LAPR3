@@ -47,7 +47,7 @@ public class AircraftList {
      * Gets the aircraft list.
      * @return the aircraft list
      */
-    public LinkedList<Aircraft> getAirportList() {
+    public LinkedList<Aircraft> getAircraftList() {
         return aircraftList;
     }
 
@@ -55,7 +55,7 @@ public class AircraftList {
      * Sets the aircraft list.
      * @param aircraftList the aircraft list to set
      */
-    public void setAirportList(LinkedList<Aircraft> aircraftList) {
+    public void setAircrafttList(LinkedList<Aircraft> aircraftList) {
         this.aircraftList = aircraftList;
     }
     
