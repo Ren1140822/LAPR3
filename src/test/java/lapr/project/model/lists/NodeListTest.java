@@ -128,8 +128,7 @@ public class NodeListTest {
         instance4.saveNode();
         
         instance4.newNode();
-        instance4.setNode("testenode3", 50, 40);
-        instance4.saveNode();
+        instance4.setNode("testenode3", 51, 40);
         boolean expResult4 = true;
         boolean result4 = instance4.saveNode();
         assertEquals(expResult4, result4);

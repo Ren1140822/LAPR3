@@ -143,7 +143,7 @@ public class Node implements Serializable{
     @Override
     public int hashCode() {
         int hash = 7;
-        hash = 71 * hash + Objects.hashCode(this.id);
+        hash = 71 * hash + this.id.hashCode();
         hash = 71 * hash + (int) (Double.doubleToLongBits(this.latitude) ^ (Double.doubleToLongBits(this.latitude) >>> 32));
         hash = 71 * hash + (int) (Double.doubleToLongBits(this.longitude) ^ (Double.doubleToLongBits(this.longitude) >>> 32));
         return hash;
@@ -154,9 +154,9 @@ public class Node implements Serializable{
      */
     public boolean validate(){
         //latitude  => min: -90 max: 90
+        boolean lat = !(latitude < -90 || latitude > 90);
         //longitude => min:-180 max:180
-        return !(latitude < -90 || latitude > 90)
-                && !(longitude < -180 || longitude > 180)
-                && !id.isEmpty();
+        boolean lon = !(longitude < -180 || longitude > 180);
+        return lat && lon && !id.isEmpty();
     }
 }

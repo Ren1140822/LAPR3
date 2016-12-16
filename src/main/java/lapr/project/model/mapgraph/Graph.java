@@ -341,7 +341,14 @@ public class Graph<V,E> implements GraphInterface<V,E> {
         return s ;
     }
 
-    
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 83 * hash + this.numVert;
+        hash = 83 * hash + this.numEdge;
+        return hash;
+      
+    }
     public boolean hasVertex( V vert){
         for(V vertex: vertices()){
             if(vertex.equals(vert))

@@ -5,12 +5,13 @@
  */
 package lapr.project.model.mapgraph;
 
-import lapr.project.model.mapgraph.Graph;
-import lapr.project.model.mapgraph.Edge;
 import java.util.Iterator;
+import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import org.junit.BeforeClass;
 
 /**
  *
@@ -22,10 +23,22 @@ public class GraphTest {
     
     public GraphTest() {
     }
+
+    @BeforeClass
+    public static void setUpClass() throws Exception {
+    }
+
+    @AfterClass
+    public static void tearDownClass() throws Exception {
+    }
     
     @Before
     public void setUp() {
         
+    }
+
+    @After
+    public void tearDown() throws Exception {
     }
     
     /**
@@ -613,6 +626,72 @@ public class GraphTest {
     public void testToString() {
         
         System.out.println(instance);
+    }
+
+    /**
+     * Test of validVertex method, of class Graph.
+     */
+    @Test
+    public void testValidVertex() {
+        System.out.println("validVertex");
+        Graph instance2 = new Graph(true);
+        instance2.insertVertex("A");      
+        boolean expResult = true;
+        boolean result = instance2.validVertex("A");
+        assertEquals(expResult, result);
+    }
+
+    /**
+     * Test of getKey method, of class Graph.
+     */
+    @Test
+    public void testGetKey() {
+        System.out.println("getKey");
+        Graph instance2 = new Graph(true);
+        instance2.insertVertex("B");
+        instance2.insertVertex("A");
+        int expResult = 1;
+        int result = instance2.getKey("A");
+        assertEquals(expResult, result);
+    }
+
+    /**
+     * Test of allkeyVerts method, of class Graph.
+     */
+    @Test
+    public void testAllkeyVerts() {
+        System.out.println("allkeyVerts");
+        Graph instance2 = new Graph(true);
+        instance2.insertVertex("A");
+        Object[] expResult = {"A"};
+        Object[] result = instance2.allkeyVerts();
+        assertArrayEquals(expResult, result);
+    }
+
+    /**
+     * Test of hashCode method, of class Graph.
+     */
+    @Test
+    public void testHashCode() {
+        System.out.println("hashCode");
+        Graph instance2 = new Graph(true);
+        int expResult = 48223;
+        int result = instance2.hashCode();
+        assertEquals(expResult, result);
+
+    }
+
+    /**
+     * Test of hasVertex method, of class Graph.
+     */
+    @Test
+    public void testHasVertex() {
+        System.out.println("hasVertex");
+        Graph instance2 = new Graph(true);
+        instance2.insertVertex("A");
+        boolean expResult = true;
+        boolean result = instance2.hasVertex("A");
+        assertEquals(expResult, result);
     }
     
 }
