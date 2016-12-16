@@ -6,6 +6,7 @@
 package lapr.project.model;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 /**
  *
@@ -236,4 +237,19 @@ public class Airport implements Serializable {
                 && this.town.equals(otherAirport.town) && this.latitude == otherAirport.latitude
                 && this.longitude == otherAirport.longitude;
     }
+
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 29 * hash + Objects.hashCode(this.name);
+        hash = 29 * hash + Objects.hashCode(this.town);
+        hash = 29 * hash + Objects.hashCode(this.country);
+        hash = 29 * hash + Objects.hashCode(this.IATA);
+        hash = 29 * hash + Objects.hashCode(this.latitude);
+        hash = 29 * hash + Objects.hashCode(this.longitude);
+        hash = 29 * hash + this.altitude;
+        return hash;
+    }
+    
+    
 }

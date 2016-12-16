@@ -6,6 +6,7 @@
 package lapr.project.model;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 /**
  *
@@ -92,6 +93,16 @@ public class Aircraft implements Serializable {
         }
         Aircraft otherAircraft = (Aircraft) otherObject;
         return this.cabinConfig.equals(otherAircraft.cabinConfig) && this.company.equals(otherAircraft.company) && this.nrOfCrewElements == otherAircraft.nrOfCrewElements && this.registration.equals(otherAircraft.registration);
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 79 * hash + Objects.hashCode(this.registration);
+        hash = 79 * hash + Objects.hashCode(this.company);
+        hash = 79 * hash + Objects.hashCode(this.cabinConfig);
+        hash = 79 * hash + this.nrOfCrewElements;
+        return hash;
     }
 
     /**
