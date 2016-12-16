@@ -226,5 +226,17 @@ public class SegmentTest {
         boolean result6 = instance6.validate();
         assertEquals(expResult6, result6);
     }
+
+    /**
+     * Test of hashCode method, of class Segment.
+     */
+    @Test
+    public void testHashCode() {
+        System.out.println("hashCode");
+        Segment instance = new Segment();
+        int expResult = 1060616918;
+        int result = instance.hashCode();
+        assertEquals(expResult, result);
+    }
     
 }

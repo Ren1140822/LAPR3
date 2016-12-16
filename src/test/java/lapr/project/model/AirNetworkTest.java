@@ -5,7 +5,7 @@
  */
 package lapr.project.model;
 
-import lapr.project.model.MapGraph.Graph;
+import lapr.project.model.mapgraph.Graph;
 import lapr.project.model.lists.NodeList;
 import lapr.project.model.lists.SegmentList;
 import org.junit.After;

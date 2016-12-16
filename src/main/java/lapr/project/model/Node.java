@@ -6,6 +6,7 @@
 package lapr.project.model;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 /**
  * Classe that represents a Node of the AirNetwork
@@ -133,6 +134,19 @@ public class Node implements Serializable{
         return this.id.equals(otherNode.id) &&
                 this.latitude == otherNode.latitude &&
                 this.longitude == otherNode.longitude;
+    }
+    
+    /**
+     * hascode node
+     * @return hascode node
+     */
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 71 * hash + Objects.hashCode(this.id);
+        hash = 71 * hash + (int) (Double.doubleToLongBits(this.latitude) ^ (Double.doubleToLongBits(this.latitude) >>> 32));
+        hash = 71 * hash + (int) (Double.doubleToLongBits(this.longitude) ^ (Double.doubleToLongBits(this.longitude) >>> 32));
+        return hash;
     }
     /**
      * validate latitude and longitude

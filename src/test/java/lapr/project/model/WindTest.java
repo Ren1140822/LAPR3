@@ -153,5 +153,17 @@ public class WindTest {
         boolean result5 = instance5.validate();
         assertEquals(expResult5, result5);
     }
+
+    /**
+     * Test of hashCode method, of class Wind.
+     */
+    @Test
+    public void testHashCode() {
+        System.out.println("hashCode");
+        Wind instance = new Wind();
+        int expResult = 48223;
+        int result = instance.hashCode();
+        assertEquals(expResult, result);
+    }
     
 }

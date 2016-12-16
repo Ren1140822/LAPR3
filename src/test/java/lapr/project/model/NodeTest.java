@@ -183,5 +183,17 @@ public class NodeTest {
         boolean result6 = instance6.validate();
         assertEquals(expResult6, result6);
     }
+
+    /**
+     * Test of hashCode method, of class Node.
+     */
+    @Test
+    public void testHashCode() {
+        System.out.println("hashCode");
+        Node instance = new Node();
+        int expResult = 1802867498;
+        int result = instance.hashCode();
+        assertEquals(expResult, result);
+    }
     
 }

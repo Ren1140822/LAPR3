@@ -112,6 +112,18 @@ public class Wind implements Serializable{
         return this.windDirection == otherWind.windDirection &&
                 this.windIntensity == otherWind.windIntensity;
     }
+
+    /**
+     * hascode wind
+     * @return hascode wind
+     */
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 83 * hash + this.windIntensity;
+        hash = 83 * hash + this.windDirection;
+        return hash;
+    }
     
     /**
      * validate wind intensity and direction

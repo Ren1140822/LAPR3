@@ -6,6 +6,7 @@
 package lapr.project.model;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 /**
  * Class that represents a Segment
@@ -182,6 +183,21 @@ public class Segment implements Serializable{
                 this.endNode.equals(otherSegment.endNode) &&
                 this.direction.equals(otherSegment.direction) &&
                 this.wind.equals(otherSegment.wind);
+    }
+    
+    /**
+     * hascode segment
+     * @return hascode segment
+     */
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 47 * hash + Objects.hashCode(this.id);
+        hash = 47 * hash + Objects.hashCode(this.startNode);
+        hash = 47 * hash + Objects.hashCode(this.endNode);
+        hash = 47 * hash + Objects.hashCode(this.direction);
+        hash = 47 * hash + Objects.hashCode(this.wind);
+        return hash;
     }
     
     /**
