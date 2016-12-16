@@ -161,7 +161,7 @@ public class WindTest {
     public void testHashCode() {
         System.out.println("hashCode");
         Wind instance = new Wind();
-        int expResult = 48223;
+        int expResult = 6627;
         int result = instance.hashCode();
         assertEquals(expResult, result);
     }
