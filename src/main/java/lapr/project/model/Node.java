@@ -6,7 +6,6 @@
 package lapr.project.model;
 
 import java.io.Serializable;
-import java.util.Objects;
 
 /**
  * Classe that represents a Node of the AirNetwork
@@ -131,9 +130,9 @@ public class Node implements Serializable{
             return true;
         }
         Node otherNode = (Node) otherObject;
-        return this.id.equals(otherNode.id) &&
-                this.latitude == otherNode.latitude &&
-                this.longitude == otherNode.longitude;
+        boolean lat = !(this.latitude < otherNode.latitude) && !(this.latitude > otherNode.latitude);
+        boolean lon = !(this.longitude < otherNode.longitude) && !(this.longitude > otherNode.longitude);
+        return this.id.equals(otherNode.id) && lat && lon;
     }
     
     /**

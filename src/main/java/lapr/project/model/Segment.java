@@ -6,7 +6,6 @@
 package lapr.project.model;
 
 import java.io.Serializable;
-import java.util.Objects;
 
 /**
  * Class that represents a Segment
@@ -132,7 +131,7 @@ public class Segment implements Serializable{
         try{
             this.direction = Direction.valueOf(direction.toUpperCase());
         }catch (IllegalArgumentException e){
-            System.out.println(e);
+            System.err.println(e);
         }
     }
 
