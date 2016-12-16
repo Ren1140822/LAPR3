@@ -28,6 +28,7 @@ public class CabinConfiguration {
         this.numberOfSeatsComercial = numberOfSeatsComercial;
     }
 
+    @Override
     public boolean equals(Object otherObject) {
         if (this == null) {
             return false;

@@ -71,6 +71,7 @@ public class Aircraft implements Serializable {
      *
      * @return the description of this object
      */
+    @Override
     public String toString() {
         return registration;
     }
@@ -81,6 +82,7 @@ public class Aircraft implements Serializable {
      * @param otherObject the other object
      * @return true if equal
      */
+    @Override
     public boolean equals(Object otherObject) {
         if (otherObject == null || this.getClass() != otherObject.getClass()) {
             return false;

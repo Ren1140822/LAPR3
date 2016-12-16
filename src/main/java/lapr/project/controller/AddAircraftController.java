@@ -5,7 +5,6 @@
  */
 package lapr.project.controller;
 
-import lapr.project.model.Aircraft;
 import lapr.project.model.Project;
 import lapr.project.model.lists.AircraftList;
 

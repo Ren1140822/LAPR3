@@ -8,7 +8,6 @@ package lapr.project.controller;
 import java.util.LinkedList;
 import lapr.project.model.Result;
 import lapr.project.utils.CSVExporter;
-import lapr.project.utils.HTMLExporter;
 
 /**
  *

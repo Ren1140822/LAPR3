@@ -63,6 +63,7 @@ public abstract class Flight implements Serializable {
         return this.flightDesignator;
     }
 
+    @Override
     public boolean equals(Object otherObject) {
         if (otherObject == null || this.getClass() != otherObject.getClass()) {
             return false;

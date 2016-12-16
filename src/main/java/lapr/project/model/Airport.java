@@ -211,6 +211,7 @@ public class Airport implements Serializable {
      *
      * @return the description of this object
      */
+    @Override
     public String toString() {
         return name;
     }
@@ -221,6 +222,7 @@ public class Airport implements Serializable {
      * @param otherObject the other object
      * @return true if equal
      */
+    @Override
     public boolean equals(Object otherObject) {
         if (otherObject == null || this.getClass() != otherObject.getClass()) {
             return false;
