@@ -57,8 +57,10 @@ public class ExportHTMLUI extends JFrame {
 
     private void createComponents() {
         FlowLayout fl = new FlowLayout(FlowLayout.LEADING);
+          FlowLayout fl2 = new FlowLayout(FlowLayout.LEADING,50,0);
+          
         JPanel panelLists = new JPanel(fl);
-        JPanel panelLabels = new JPanel(fl);
+        JPanel panelLabels = new JPanel(fl2);
         JLabel labelBest = createJLabels("Best consumption");
         JLabel labelComp = createJLabels("Comparison");
         JLabel labelShort = createJLabels("Shortest Path");
@@ -75,7 +77,7 @@ public class ExportHTMLUI extends JFrame {
         JButton btn = createJButtonUpdate();
         panelUpdateBtn.add(btn, BorderLayout.NORTH);
         add(panelLists, BorderLayout.WEST);
-       
+        add(panelLabels,BorderLayout.NORTH);
         add(panelUpdateBtn, BorderLayout.CENTER);
         JButton btnExport = createExportJButton();
         add(btnExport, BorderLayout.SOUTH);

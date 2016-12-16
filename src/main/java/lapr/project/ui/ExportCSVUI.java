@@ -19,6 +19,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -51,9 +52,18 @@ public class ExportCSVUI extends JFrame {
         this.setVisible(true);
     }
 
-       private void createComponents() {
+        private void createComponents() {
         FlowLayout fl = new FlowLayout(FlowLayout.LEADING);
+          FlowLayout fl2 = new FlowLayout(FlowLayout.LEADING,50,0);
+          
         JPanel panelLists = new JPanel(fl);
+        JPanel panelLabels = new JPanel(fl2);
+        JLabel labelBest = createJLabels("Best consumption");
+        JLabel labelComp = createJLabels("Comparison");
+        JLabel labelShort = createJLabels("Shortest Path");
+        panelLabels.add(labelBest);
+        panelLabels.add(labelComp);
+        panelLabels.add(labelShort);
         JPanel panelUpdateBtn = new JPanel();
         listBest = createJList("Best consumption");
         listComparison = createJList("Comparison");
@@ -64,11 +74,18 @@ public class ExportCSVUI extends JFrame {
         JButton btn = createJButtonUpdate();
         panelUpdateBtn.add(btn, BorderLayout.NORTH);
         add(panelLists, BorderLayout.WEST);
+        add(panelLabels,BorderLayout.NORTH);
         add(panelUpdateBtn, BorderLayout.CENTER);
         JButton btnExport = createExportJButton();
         add(btnExport, BorderLayout.SOUTH);
     }
 
+    private JLabel createJLabels(String text) {
+        JLabel label = new JLabel(text);
+        Border border = BorderFactory.createLineBorder(Color.BLACK);
+        label.setBorder(border);
+        return label;
+    }
     private JList createJList(String keyValue) {
         JList list = new JList();
         Border border = BorderFactory.createLineBorder(Color.BLACK);
