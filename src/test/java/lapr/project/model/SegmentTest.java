@@ -177,14 +177,33 @@ public class SegmentTest {
      */
     @Test
     public void testEquals() {
-        System.out.println("equals");
+        System.out.println("equals1");
         Object otherObject = new Segment();
         Segment instance = new Segment();
         boolean expResult = true;
         boolean result = instance.equals(otherObject);
         assertEquals(expResult, result);
+        
+        System.out.println("equals2");
+        Object otherObject2 = new Segment();
+        Segment instance2 =new Segment("", new Node("id1",-90,90), new Node("id2", -9, 90), "direct", new Wind(15, 40));
+        boolean expResult2 = false;
+        boolean result2 = instance2.equals(otherObject2);
+        assertEquals(expResult2, result2);
     }
 
+    /**
+     * Test of hashCode method, of class Segment.
+     */
+    @Test
+    public void testHashCode() {
+        System.out.println("hashCode");
+        Segment instance = new Segment();
+        int expResult = 1700621001;
+        int result = instance.hashCode();
+        assertEquals(expResult, result);
+    }
+    
     /**
      * Test of validate method, of class Segment.
      */
@@ -225,18 +244,6 @@ public class SegmentTest {
         boolean expResult6 = false;
         boolean result6 = instance6.validate();
         assertEquals(expResult6, result6);
-    }
-
-    /**
-     * Test of hashCode method, of class Segment.
-     */
-    @Test
-    public void testHashCode() {
-        System.out.println("hashCode");
-        Segment instance = new Segment();
-        int expResult = 1060616918;
-        int result = instance.hashCode();
-        assertEquals(expResult, result);
     }
     
 }

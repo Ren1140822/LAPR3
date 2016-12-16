@@ -71,7 +71,7 @@ public class Edge<V,E> implements Comparable {
         if (!this.vOrig.equals(otherEdge.vOrig) || !this.vDest.equals(otherEdge.vDest))
            return false;
       
-        if (this.weight != otherEdge.weight)
+        if (this.weight < otherEdge.weight || this.weight > otherEdge.weight)
             return false;
         
         if (this.element != null && otherEdge.element != null) 

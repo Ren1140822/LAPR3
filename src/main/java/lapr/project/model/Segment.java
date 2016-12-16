@@ -6,7 +6,6 @@
 package lapr.project.model;
 
 import java.io.Serializable;
-import java.util.Objects;
 
 /**
  * Class that represents a Segment
@@ -130,9 +129,9 @@ public class Segment implements Serializable{
      */
     public void setDirection(String direction) {
         try{
-            this.direction = Direction.valueOf(direction);
+            this.direction = Direction.valueOf(direction.toUpperCase());
         }catch (IllegalArgumentException e){
-            throw new RuntimeException(e);
+            System.err.println(e);
         }
     }
 
@@ -197,11 +196,11 @@ public class Segment implements Serializable{
     @Override
     public int hashCode() {
         int hash = 3;
-        hash = 47 * hash + Objects.hashCode(this.id);
-        hash = 47 * hash + Objects.hashCode(this.startNode);
-        hash = 47 * hash + Objects.hashCode(this.endNode);
-        hash = 47 * hash + Objects.hashCode(this.direction);
-        hash = 47 * hash + Objects.hashCode(this.wind);
+        hash = 47 * hash + this.id.hashCode();
+        hash = 47 * hash + this.startNode.hashCode();
+        hash = 47 * hash + this.endNode.hashCode();
+        hash = 47 * hash + this.direction.hashCode();
+        hash = 47 * hash + this.wind.hashCode();
         return hash;
     }
     
