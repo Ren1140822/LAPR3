@@ -14,29 +14,30 @@ import java.util.Formatter;
  * @author Renato Oliveira 1140822@isep.ipp.pt
  */
 public class HTMLExporter {
-    
+
     /**
      * Exports Strings to html
+     *
      * @param title the tab title on browser
      * @param heading1 the first title
      * @param heading2 the second title
      * @param body the body of the document
      * @param filePath the file path
-     * @return  true if exported
+     * @return true if exported
      */
-    public static boolean exportStringsToHTML(String title,String heading1,String heading2,String[]body,String filePath)
-    {
+    public static boolean exportStringsToHTML(String title, String heading1, String heading2, String[] body, String filePath) {
         String page;
-        String data="";
+        String data = "";
         for (int i = 0; i < body.length; i++) {
-            data+="<P>"+body[i];
+            data += "<P>" + body[i];
         }
-        page= "<HTML>\n<HEAD>\n<TITLE>"+title+"</TITLE>\n</HEAD>\n<HR>\n<H1>"+heading1+"</H1>\n<H2>"+heading2+"</H2>\n"+data+"<HR>\n</BODY>\n</HTML>";
+        page = "<HTML>\n<HEAD>\n<TITLE>" + title + "</TITLE>\n</HEAD>\n<HR>\n<H1>" + heading1 + "</H1>\n<H2>" + heading2 + "</H2>\n" + data + "<HR>\n</BODY>\n</HTML>";
         System.out.println(page);
-        Formatter out=null;
+        Formatter out = null;
         try {
             out = new Formatter(new File(filePath));
         } catch (FileNotFoundException ex) {
+            out.close();
             return false;
         }
         out.format("%s", page);

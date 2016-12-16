@@ -15,30 +15,30 @@ import java.util.Formatter;
  * @author Renato Oliveira 1140822@isep.ipp.pt
  */
 public class CSVExporter {
-      /**
+
+    /**
      * Exports Strings to html
+     *
      * @param title the tab title on browser
      * @param heading1 the first title
      * @param heading2 the second title
      * @param body the body of the document
      * @param filePath the file path
-     * @return  true if exported
+     * @return true if exported
      */
-    public static boolean exportStringsToCSV(String title,String heading1,String heading2,String[]body,String filePath)
-    {
+    public static boolean exportStringsToCSV(String title, String heading1, String heading2, String[] body, String filePath) {
         String page;
-       
-       
-        page= title+"\n\n"+heading1+"\n\n"+heading2+"\n\n";
-         for (int i = 0; i < body.length; i++) {
-            page+=body[i]+"\n";
+
+        page = title + "\n\n" + heading1 + "\n\n" + heading2 + "\n\n";
+        for (int i = 0; i < body.length; i++) {
+            page += body[i] + "\n";
         }
         System.out.println(page);
-        Formatter out=null;
+        Formatter out = null;
         try {
             out = new Formatter(new File(filePath));
         } catch (FileNotFoundException ex) {
-       
+            out.close();
             return false;
         }
         out.format("%s", page);
