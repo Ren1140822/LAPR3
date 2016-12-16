@@ -73,7 +73,7 @@ public class Project {
      *
      * @param list the list
      */
-    public void setAircraftList(AircraftList list) {
+    public static void setAircraftList(AircraftList list) {
         aircraftList = list;
     }
 
@@ -82,7 +82,7 @@ public class Project {
      *
      * @param list the list
      */
-    public void setAirportList(AirportList list) {
+    public static void setAirportList(AirportList list) {
         airportList = list;
     }
 

@@ -11,7 +11,7 @@ import java.io.Serializable;
  *
  * @author Renato Oliveira 1140822@isep.ipp.pt
  */
-public class Airport implements Serializable{
+public class Airport implements Serializable {
 
     /**
      * Class atributes.
@@ -49,6 +49,7 @@ public class Airport implements Serializable{
 
     /**
      * Parameter constructor.
+     *
      * @param name the name of the airport
      * @param town the town of the airport
      * @param IATA the iata code of the airport
@@ -67,6 +68,7 @@ public class Airport implements Serializable{
 
     /**
      * Copy constructor.
+     *
      * @param airport the airport
      */
     public Airport(Airport airport) {
@@ -78,16 +80,18 @@ public class Airport implements Serializable{
         this.altitude = airport.altitude;
     }
 
- /**
-  * Gets the name.
-  * @return  the name
-  */
+    /**
+     * Gets the name.
+     *
+     * @return the name
+     */
     public String getName() {
         return name;
     }
 
     /**
-     *Sets the name.
+     * Sets the name.
+     *
      * @param name the name to set
      */
     public void setName(String name) {
@@ -95,7 +99,8 @@ public class Airport implements Serializable{
     }
 
     /**
-     *Gets the town.
+     * Gets the town.
+     *
      * @return the town
      */
     public String getTown() {
@@ -103,7 +108,8 @@ public class Airport implements Serializable{
     }
 
     /**
-     *Sets the town.
+     * Sets the town.
+     *
      * @param town the town to set
      */
     public void setTown(String town) {
@@ -111,7 +117,8 @@ public class Airport implements Serializable{
     }
 
     /**
-     *Gets the country.
+     * Gets the country.
+     *
      * @return the country
      */
     public String getCountry() {
@@ -119,7 +126,8 @@ public class Airport implements Serializable{
     }
 
     /**
-     *Sets the country
+     * Sets the country
+     *
      * @param country the country to set
      */
     public void setCountry(String country) {
@@ -127,7 +135,8 @@ public class Airport implements Serializable{
     }
 
     /**
-     *Gets the iata code.
+     * Gets the iata code.
+     *
      * @return the iata code
      */
     public String getIATA() {
@@ -135,7 +144,8 @@ public class Airport implements Serializable{
     }
 
     /**
-     *Sets the iata code.
+     * Sets the iata code.
+     *
      * @param IATA the iata code to set
      */
     public void setIATA(String IATA) {
@@ -143,7 +153,8 @@ public class Airport implements Serializable{
     }
 
     /**
-     *Gets the latitude.
+     * Gets the latitude.
+     *
      * @return the latitude
      */
     public Double getLatitude() {
@@ -151,7 +162,8 @@ public class Airport implements Serializable{
     }
 
     /**
-     *Sets the latitude.
+     * Sets the latitude.
+     *
      * @param latitude
      */
     public void setLatitude(Double latitude) {
@@ -159,15 +171,17 @@ public class Airport implements Serializable{
     }
 
     /**
-     *Gets the longitude.
+     * Gets the longitude.
+     *
      * @return
      */
-    public  Double getLongitude() {
+    public Double getLongitude() {
         return longitude;
     }
 
     /**
-     *Sets the longitude.
+     * Sets the longitude.
+     *
      * @param longitude the longitude to set
      */
     public void setLongitude(Double longitude) {
@@ -175,7 +189,8 @@ public class Airport implements Serializable{
     }
 
     /**
-     *Gets the altitude.
+     * Gets the altitude.
+     *
      * @return the altitude
      */
     public int getAltitude() {
@@ -183,37 +198,40 @@ public class Airport implements Serializable{
     }
 
     /**
-     *Sets the altitude.
-     * @param altitude the altitude to set 
+     * Sets the altitude.
+     *
+     * @param altitude the altitude to set
      */
     public void setAltitude(int altitude) {
         this.altitude = altitude;
     }
 
-     /**
+    /**
      * Returns a string description of this object.
+     *
      * @return the description of this object
      */
-    public String toString()
-    {
+    public String toString() {
         return name;
     }
-    
+
     /**
      * Checks if two object are equal.
+     *
      * @param otherObject the other object
      * @return true if equal
      */
-    public boolean equals(Object otherObject)
-    {
-        if (this == otherObject)
-        {
+    public boolean equals(Object otherObject) {
+        if (otherObject == null || this.getClass() != otherObject.getClass()) {
+            return false;
+        }
+        if (this == otherObject) {
             return true;
         }
-        Airport otherAirport = (Airport)otherObject;
-       return this.name.equals(otherAirport.name)&&this.IATA .equals(otherAirport.IATA) &&
-                this.altitude == otherAirport.altitude && this.country.equals(otherAirport.country)&&
-                this.town.equals(otherAirport.town)&&this.latitude == otherAirport.latitude &&
-                this.longitude == otherAirport.longitude;
+        Airport otherAirport = (Airport) otherObject;
+        return this.name.equals(otherAirport.name) && this.IATA.equals(otherAirport.IATA)
+                && this.altitude == otherAirport.altitude && this.country.equals(otherAirport.country)
+                && this.town.equals(otherAirport.town) && this.latitude == otherAirport.latitude
+                && this.longitude == otherAirport.longitude;
     }
 }
