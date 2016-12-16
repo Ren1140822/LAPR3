@@ -2,6 +2,7 @@ package lapr.project.model;
 
 import java.io.Serializable;
 import java.sql.Date;
+import java.util.Objects;
 
 /**
  *
@@ -75,6 +76,17 @@ public abstract class Flight implements Serializable {
         return this.flightDesignator.equals(other.flightDesignator);
     }
 
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 53 * hash + Objects.hashCode(this.flightDesignator);
+        hash = 53 * hash + this.minStopTime;
+        hash = 53 * hash + Objects.hashCode(this.scheduledArrival);
+        return hash;
+    }
+
+    
+    
     /**
      * Gets the flight designator
      * @return the flight's designator

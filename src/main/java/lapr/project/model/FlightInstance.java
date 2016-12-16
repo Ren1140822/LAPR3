@@ -2,6 +2,7 @@ package lapr.project.model;
 
 import java.io.Serializable;
 import java.sql.Date;
+import java.util.Objects;
 
 /**
  *
@@ -67,4 +68,14 @@ public class FlightInstance extends Flight implements Serializable {
     public boolean equals(Object otherObject) {
        return super.equals(otherObject);
     }
+
+    @Override
+    public int hashCode() {
+        int hash = 5;
+        hash = 89 * hash + Objects.hashCode(this.departureDay);
+        return hash;
+    }
+    
+    
+    
 }

@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.sql.Date;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  *
@@ -69,4 +70,14 @@ public class RegularFlight extends Flight implements Serializable {
     public boolean equals(Object otherObject) {
         return super.equals(otherObject);
     }
+
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 59 * hash + Objects.hashCode(this.departureDays);
+        return hash;
+    }
+    
+    
+    
 }
