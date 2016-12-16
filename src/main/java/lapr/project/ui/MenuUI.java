@@ -8,6 +8,8 @@ package lapr.project.ui;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -32,8 +34,13 @@ public class MenuUI extends JFrame{
         setResizable(false);
         setSize(500, 500);
         setLocationRelativeTo(null);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                closeWindow();
+            }
+        });
     }
     
     public void createComponents(){
@@ -91,6 +98,21 @@ public class MenuUI extends JFrame{
         
     }
     
+    public void closeWindow(){
+        String[] op = {"Yes", "No"};
+        String question = "Close aplication?";
+        int opcao = JOptionPane.showOptionDialog(framePai, question,
+                "Confirm?", JOptionPane.YES_NO_OPTION,
+                JOptionPane.QUESTION_MESSAGE, null, op, op[0]);
+        if (opcao == JOptionPane.YES_OPTION) {
+            finish();
+        } else {
+            setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+        }
+    }
     
+    private void finish() {
+        dispose();
+    }
     
 }
