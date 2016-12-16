@@ -30,14 +30,23 @@ public class CabinConfiguration {
 
     @Override
     public boolean equals(Object otherObject) {
-        if (this == null) {
+        if (otherObject == null || this.getClass() != otherObject.getClass()) {
             return false;
         }
         if (this == otherObject) {
             return true;
         }
+
         CabinConfiguration otherCabin = (CabinConfiguration) otherObject;
         return this.numberOfSeatsComercial == otherCabin.numberOfSeatsComercial && this.numberOfSeatsEconomic == otherCabin.numberOfSeatsEconomic;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 97 * hash + this.numberOfSeatsEconomic;
+        hash = 97 * hash + this.numberOfSeatsComercial;
+        return hash;
     }
 
 }
