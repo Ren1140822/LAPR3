@@ -5,6 +5,7 @@
  */
 package lapr.project.model;
 
+import java.io.Serializable;
 import lapr.project.model.mapgraph.Graph;
 import lapr.project.model.lists.NodeList;
 import lapr.project.model.lists.SegmentList;
@@ -13,7 +14,7 @@ import lapr.project.model.lists.SegmentList;
  * Class that represents a air network of Segments and Nodes
  * @author Pedro Fernandes
  */
-public class AirNetwork {
+public class AirNetwork implements Serializable{
     
     /**
      * the list of nodes

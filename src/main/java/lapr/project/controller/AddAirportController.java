@@ -1,0 +1,33 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package lapr.project.controller;
+
+import lapr.project.model.Project;
+import lapr.project.model.lists.AirportList;
+
+/**
+ * Controller to add airports
+ * @author Pedro Fernandes
+ */
+public class AddAirportController {
+    
+    AirportList airportsList;
+    
+    public AddAirportController(){
+        airportsList = Project.airportList;
+    }
+    
+    public void setAirportData(String IATA, String name, String town,
+            double latitude, double longitude, int altitude){
+        airportsList.newAirport();
+        airportsList.setAirportData(IATA, name, town, latitude, longitude, altitude);
+    }
+    
+    public boolean saveAirport(){
+        return airportsList.saveAirport();
+    }
+    
+}

@@ -5,6 +5,8 @@
  */
 package lapr.project.controller;
 
+import lapr.project.model.AirNetwork;
+import lapr.project.model.Project;
 import lapr.project.model.lists.NodeList;
 import lapr.project.model.lists.SegmentList;
 
@@ -14,19 +16,27 @@ import lapr.project.model.lists.SegmentList;
  */
 public class ImportNetworkController {
     
-    SegmentList segmentList;
-    NodeList nodeList;
-    //AirNetwork airNetwork;
+    SegmentList segmentsList;
+    NodeList nodesList;
+    AirNetwork network;
     
     public ImportNetworkController(){
-
+        network = Project.getAirNetwork();
+        segmentsList = network.getSegmentList();
+        nodesList = network.getNodeList();
     }
     
-//    public AirNetwork getAirNetwork(){
-//        airNetwork = Project.airNetwork;
-//        segmentList = Project.segmentList;
-//        nodeList = Project.nodeList;
-//    }
+    public AirNetwork getAirNetwork(){
+        return network;
+    }
+    
+    public SegmentList getSegmentList(){
+        return segmentsList;
+    }
+    
+    public NodeList getNodeList(){
+        return nodesList;
+    }
     
     public void importNetwork(String file){
         

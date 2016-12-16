@@ -9,9 +9,7 @@ import java.util.LinkedList;
 import java.util.List;
 import lapr.project.model.lists.AircraftList;
 import lapr.project.model.lists.AirportList;
-import lapr.project.model.lists.NodeList;
 import lapr.project.model.lists.ResultsList;
-import lapr.project.model.lists.SegmentList;
 
 /**
  * Class that represents a simulation of air network fights
@@ -24,7 +22,7 @@ public class Project {
      */
     public static AircraftList aircraftList = new AircraftList();
     public static AirNetwork network = new AirNetwork();    
-    public static AirportList airportList;
+    public static AirportList airportList = new AirportList();
     public static ResultsList resultsList = new ResultsList();
 
     /**
@@ -50,7 +48,7 @@ public class Project {
      *
      * @return the list of airports
      */
-    public static LinkedList<Airport> getAirportList() {
+    public static List<Airport> getAirportList() {
         return airportList.getAirportList();
     }
 

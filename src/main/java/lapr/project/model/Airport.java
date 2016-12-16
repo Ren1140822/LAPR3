@@ -9,8 +9,8 @@ import java.io.Serializable;
 import java.util.Objects;
 
 /**
- *
- * @author Renato Oliveira 1140822@isep.ipp.pt
+ * Class that represents airport
+ * @author Renato Oliveira and Pedro Fernandes
  */
 public class Airport implements Serializable {
 
@@ -21,9 +21,7 @@ public class Airport implements Serializable {
     private String town;
     private String country;
     private String IATA;
-    private Double latitude;
-    private Double longitude;
-    private int altitude;
+    private Location location;
 
     /**
      * Default values.
@@ -32,9 +30,6 @@ public class Airport implements Serializable {
     private final String DEFAULT_TOWN = "No town.";
     private final String DEFAULT_COUNTRY = "No country.";
     private final String DEFAULT_IATA = "No IATA code.";
-    private final Double DEFAULT_LAT = 0.0;
-    private final Double DEFAULT_LONG = 0.0;
-    private final int DEFAULT_ALTITUDE = 0;
 
     /**
      * Default constructor.
@@ -43,28 +38,25 @@ public class Airport implements Serializable {
         this.name = DEFAULT_NAME;
         this.town = DEFAULT_TOWN;
         this.IATA = DEFAULT_IATA;
-        this.latitude = DEFAULT_LAT;
-        this.longitude = DEFAULT_LONG;
-        this.altitude = DEFAULT_ALTITUDE;
+        this.country = DEFAULT_COUNTRY;
+        location = new Location();
     }
 
     /**
      * Parameter constructor.
-     *
+     * 
+     * @param IATA the iata code of the airport
      * @param name the name of the airport
      * @param town the town of the airport
-     * @param IATA the iata code of the airport
-     * @param latitude the latitude of the airport
-     * @param longitude the longitude of the airport
-     * @param altitude the altitude of the airport
+     * @param country the country of the airport
+     * @param localizacao the localizacao of the airport
      */
-    public Airport(String name, String town, String IATA, Double latitude, Double longitude, int altitude) {
+    public Airport(String IATA, String name, String town, String country, Location localizacao) {
         this.name = name;
         this.town = town;
         this.IATA = IATA;
-        this.latitude = latitude;
-        this.longitude = longitude;
-        this.altitude = altitude;
+        this.country = country;
+        this.location = localizacao;
     }
 
     /**
@@ -76,9 +68,8 @@ public class Airport implements Serializable {
         this.name = airport.name;
         this.town = airport.town;
         this.IATA = airport.IATA;
-        this.latitude = airport.latitude;
-        this.longitude = airport.longitude;
-        this.altitude = airport.altitude;
+        this.country = airport.country;
+        this.location = airport.location;
     }
 
     /**
@@ -152,61 +143,28 @@ public class Airport implements Serializable {
     public void setIATA(String IATA) {
         this.IATA = IATA;
     }
-
+    
+    
     /**
-     * Gets the latitude.
-     *
-     * @return the latitude
+     * gets the location of a aiport
+     * @return the location
      */
-    public Double getLatitude() {
-        return latitude;
+    public Location getLocation() {
+        return location;
     }
 
     /**
-     * Sets the latitude.
-     *
-     * @param latitude
+     * sets the location of a aiport
+     * @param latitude latitude
+     * @param longitude longitude
+     * @param altitude altitude
      */
-    public void setLatitude(Double latitude) {
-        this.latitude = latitude;
+    public void setLocation(double latitude, double longitude, int altitude) {
+        location.setAltitude(altitude);
+        location.setLatitude(latitude);
+        location.setLongitude(longitude);
     }
-
-    /**
-     * Gets the longitude.
-     *
-     * @return
-     */
-    public Double getLongitude() {
-        return longitude;
-    }
-
-    /**
-     * Sets the longitude.
-     *
-     * @param longitude the longitude to set
-     */
-    public void setLongitude(Double longitude) {
-        this.longitude = longitude;
-    }
-
-    /**
-     * Gets the altitude.
-     *
-     * @return the altitude
-     */
-    public int getAltitude() {
-        return altitude;
-    }
-
-    /**
-     * Sets the altitude.
-     *
-     * @param altitude the altitude to set
-     */
-    public void setAltitude(int altitude) {
-        this.altitude = altitude;
-    }
-
+    
     /**
      * Returns a string description of this object.
      *
@@ -232,23 +190,34 @@ public class Airport implements Serializable {
             return true;
         }
         Airport otherAirport = (Airport) otherObject;
-        return this.name.equals(otherAirport.name) && this.IATA.equals(otherAirport.IATA)
-                && this.altitude == otherAirport.altitude && this.country.equals(otherAirport.country)
-                && this.town.equals(otherAirport.town) && this.latitude == otherAirport.latitude
-                && this.longitude == otherAirport.longitude;
+        boolean v1 = this.name.equals(otherAirport.name) && this.IATA.equals(otherAirport.IATA)
+                && this.country.equals(otherAirport.country);
+        boolean v2 = this.town.equals(otherAirport.town) && getLocation().equals(otherAirport.getLocation());
+        return v1 && v2;                
     }
 
     @Override
     public int hashCode() {
         int hash = 3;
-        hash = 29 * hash + Objects.hashCode(this.name);
-        hash = 29 * hash + Objects.hashCode(this.town);
-        hash = 29 * hash + Objects.hashCode(this.country);
-        hash = 29 * hash + Objects.hashCode(this.IATA);
-        hash = 29 * hash + Objects.hashCode(this.latitude);
-        hash = 29 * hash + Objects.hashCode(this.longitude);
-        hash = 29 * hash + this.altitude;
+        hash = 29 * hash + this.name.hashCode();
+        hash = 29 * hash + this.town.hashCode();
+        hash = 29 * hash + this.country.hashCode();
+        hash = 29 * hash + this.IATA.hashCode();
         return hash;
+    }
+
+    /**
+     * validate airport
+     * @return true if validate airport, false if not 
+     */
+    public boolean validate(){
+        //to remove major error from sonarqube
+        boolean v1 =!this.IATA.isEmpty()
+                && !this.country.isEmpty()
+                && !this.name.isEmpty();
+        boolean v2 = !this.town.isEmpty()
+                && location.validate();
+        return v1 && v2;                
     }
     
     
