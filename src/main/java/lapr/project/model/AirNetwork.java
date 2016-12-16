@@ -18,11 +18,11 @@ public class AirNetwork {
     /**
      * the list of nodes
      */
-    NodeList nodeList;
+    private NodeList nodeList;
     /**
      * the list of segments
      */
-    SegmentList segmentList;
+    private SegmentList segmentList;
     /**
      * graph
      */
@@ -32,8 +32,8 @@ public class AirNetwork {
      * constructor
      */
     public AirNetwork(){
-//        nodeList = Project.nodeList;
-//        segmentList = Project.segmentList;
+        nodeList = new NodeList();
+        segmentList = new SegmentList();
         airNetworkGraph = new Graph<>(true);
     }
     
@@ -62,6 +62,24 @@ public class AirNetwork {
     }
     
     /**
+     * Sets the nodes list class reference.
+     *
+     * @param list the list
+     */
+    public void setNodeList(NodeList list) {
+        nodeList = list;
+    }
+    
+    /**
+     * Sets the segments list class reference.
+     *
+     * @param list the list
+     */
+    public void setSegmentList(SegmentList list) {
+        segmentList = list;
+    }
+    
+    /**
      * generate the graph with nodes -> vertex and segments -> edges
      * @return true if airnetwork is generated, false if not
      */
@@ -82,13 +100,25 @@ public class AirNetwork {
     
     /**
      * insert segments into graph
-     * @return true if num edges == size of segmentlist, false if not
+     * @return true if num edges >= size of segmentlist
+     * (because bidirectional segments add two edges), 
+     * false if not
      */
     private boolean insertSegments(){
         for(Segment segment : segmentList.getSegmentList()){
-            airNetworkGraph.insertEdge(segment.getStartNode(), segment.getEndNode(), segment, 1);
+            if(segment.getDirection() == Segment.Direction.BIDIRECTIONAL){
+                airNetworkGraph.insertEdge(segment.getStartNode(), segment.getEndNode(), segment, 1);
+                airNetworkGraph.insertEdge(segment.getEndNode(),segment.getStartNode(), segment, 1);
+            }else{
+                if(segment.getDirection() == Segment.Direction.DIRECT){
+                    airNetworkGraph.insertEdge(segment.getStartNode(), segment.getEndNode(), segment, 1);
+                }else{
+                    if(segment.getDirection() == Segment.Direction.REVERSE)
+                        airNetworkGraph.insertEdge(segment.getEndNode(),segment.getStartNode(), segment, 1);
+                }
+            }      
         }
-        return airNetworkGraph.numEdges() == segmentList.getSegmentList().size();
+        return airNetworkGraph.numEdges() >= segmentList.getSegmentList().size();
     }
     
     /**

@@ -6,13 +6,16 @@
 package lapr.project.model;
 
 import java.util.LinkedList;
+import java.util.List;
 import lapr.project.model.lists.AircraftList;
 import lapr.project.model.lists.AirportList;
+import lapr.project.model.lists.NodeList;
 import lapr.project.model.lists.ResultsList;
+import lapr.project.model.lists.SegmentList;
 
 /**
- *
- * @author Renato Oliveira 1140822@isep.ipp.pt
+ * Class that represents a simulation of air network fights
+ * @author Renato Oliveira 1140822@isep.ipp.pt and Pedro Fernandes
  */
 public class Project {
 
@@ -20,6 +23,7 @@ public class Project {
      * Variables to read from DAL or file.
      */
     public static AircraftList aircraftList = new AircraftList();
+    public static AirNetwork network = new AirNetwork();    
     public static AirportList airportList;
     public static ResultsList resultsList = new ResultsList();
 
@@ -30,6 +34,15 @@ public class Project {
      */
     public static LinkedList<Aircraft> getAircraftList() {
         return aircraftList.getAircraftList();
+    }
+    
+    /**
+     * Gets the network.
+     *
+     * @return the network.
+     */
+    public static AirNetwork getAirNetwork() {
+        return network;
     }
 
     /**
@@ -73,17 +86,8 @@ public class Project {
      *
      * @param list the list
      */
-    public static void setAircraftList(AircraftList list) {
+    public static void setAirNetwork(AircraftList list) {
         aircraftList = list;
-    }
-
-    /**
-     * Sets the airports list class reference.
-     *
-     * @param list the list
-     */
-    public static void setAirportList(AirportList list) {
-        airportList = list;
     }
 
     /**

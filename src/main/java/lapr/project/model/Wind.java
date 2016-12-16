@@ -119,9 +119,11 @@ public class Wind implements Serializable{
      */
     @Override
     public int hashCode() {
-        int hash = 7;
-        hash = 83 * hash + this.windIntensity;
-        hash = 83 * hash + this.windDirection;
+        int hash = 3;
+        Integer i1 = this.windIntensity;
+        Integer i2 = this.windDirection;
+        hash = 47 * hash + i1.hashCode();
+        hash = 47 * hash + i2.hashCode();
         return hash;
     }
     
