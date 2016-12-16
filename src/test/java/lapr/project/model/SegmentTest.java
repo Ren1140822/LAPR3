@@ -117,7 +117,7 @@ public class SegmentTest {
         System.out.println("getDirection");
         Segment instance = new Segment();
         instance.setDirection("bidirectional");
-        Segment.Direction expResult = Segment.Direction.bidirectional;
+        Segment.Direction expResult = Segment.Direction.BIDIRECTIONAL;
         Segment.Direction result = instance.getDirection();
         assertEquals(expResult, result);
     }

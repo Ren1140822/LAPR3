@@ -26,7 +26,7 @@ public class AirNetwork {
     /**
      * graph
      */
-    private Graph<Node, Segment> airNetwork;
+    private Graph<Node, Segment> airNetworkGraph;
     
     /**
      * constructor
@@ -34,7 +34,7 @@ public class AirNetwork {
     public AirNetwork(){
 //        nodeList = Project.nodeList;
 //        segmentList = Project.segmentList;
-        airNetwork = new Graph<>(true);
+        airNetworkGraph = new Graph<>(true);
     }
     
     /**
@@ -58,7 +58,7 @@ public class AirNetwork {
      * @return the airnetwork graph
      */
     public Graph<Node, Segment> getAirNetwork(){
-        return airNetwork;
+        return airNetworkGraph;
     }
     
     /**
@@ -66,7 +66,7 @@ public class AirNetwork {
      * @return true if airnetwork is generated, false if not
      */
     public boolean generateGraph(){
-        return (insertNodes() &&  insertSegments()); 
+        return insertNodes() &&  insertSegments(); 
     }
     
     /**
@@ -75,9 +75,9 @@ public class AirNetwork {
      */
     private boolean insertNodes(){
         for(Node node : nodeList.getNodeList()){
-            airNetwork.insertVertex(node);
+            airNetworkGraph.insertVertex(node);
         }
-        return airNetwork.numVertices() == nodeList.getNodeList().size();
+        return airNetworkGraph.numVertices() == nodeList.getNodeList().size();
     }
     
     /**
@@ -86,9 +86,9 @@ public class AirNetwork {
      */
     private boolean insertSegments(){
         for(Segment segment : segmentList.getSegmentList()){
-            airNetwork.insertEdge(segment.getStartNode(), segment.getEndNode(), segment, 1);
+            airNetworkGraph.insertEdge(segment.getStartNode(), segment.getEndNode(), segment, 1);
         }
-        return airNetwork.numEdges() == segmentList.getSegmentList().size();
+        return airNetworkGraph.numEdges() == segmentList.getSegmentList().size();
     }
     
     /**
@@ -97,6 +97,6 @@ public class AirNetwork {
      */
     @Override
     public String toString() {
-        return airNetwork.toString();
+        return airNetworkGraph.toString();
     } 
 }

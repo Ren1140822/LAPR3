@@ -7,6 +7,7 @@ package lapr.project.model.lists;
 
 import java.io.Serializable;
 import java.util.LinkedList;
+import java.util.List;
 import lapr.project.model.Node;
 import lapr.project.model.Segment;
 
@@ -19,18 +20,18 @@ public class SegmentList implements Serializable{
     /**
      * the list of segments
      */
-    private LinkedList<Segment> segmentList;
+    private List<Segment> segmentsList;
     
     /**
      * Segment to be added into list
      */
-    Segment segment;
+    private Segment segment;
     
     /**
      * Constructor
      */
     public SegmentList(){
-        this.segmentList = new LinkedList<>();
+        this.segmentsList = new LinkedList<>();
     }
     
     /**
@@ -38,32 +39,32 @@ public class SegmentList implements Serializable{
      * @param list the instance of this class
      */
     public SegmentList(SegmentList list){
-        this.segmentList = list.segmentList;
+        this.segmentsList = list.segmentsList;
     }
     
     /**
      * Parameter constructor.
      * @param segmentList the lis of segments
      */
-    public SegmentList(LinkedList<Segment> segmentList)
+    public SegmentList(List<Segment> segmentList)
     {
-        this.segmentList = segmentList;
+        this.segmentsList = segmentList;
     }
 
     /**
      * gets the segment list
      * @return the segment List
      */
-    public LinkedList<Segment> getSegmentList() {
-        return segmentList;
+    public List<Segment> getSegmentList() {
+        return segmentsList;
     }
 
     /**
      * sets the segment list
      * @param segmentList the segment List
      */
-    public void setSegmentList(LinkedList<Segment> segmentList) {
-        this.segmentList = segmentList;
+    public void setSegmentList(List<Segment> segmentList) {
+        this.segmentsList = segmentList;
     }
     
     /**
@@ -92,7 +93,7 @@ public class SegmentList implements Serializable{
     }
     
     /**
-     * validate and saves the segment into segmentList
+     * validate and saves the segment into segmentsList
      * @return true if segment is valid and is added, false if not
      */
     public boolean saveSegment(){
@@ -104,7 +105,7 @@ public class SegmentList implements Serializable{
      * @return true if segment is valid and do not exist in the list, false if not
      */
     private boolean validate(){
-        return segment.validate() && !segmentList.contains(segment);
+        return segment.validate() && !segmentsList.contains(segment);
     }
     
     /**
@@ -112,6 +113,6 @@ public class SegmentList implements Serializable{
      * @return true if segment is added, false if not
      */
     private boolean addSegment(){
-        return segmentList.add(segment);
+        return segmentsList.add(segment);
     }
 }

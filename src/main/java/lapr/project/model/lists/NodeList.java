@@ -7,6 +7,7 @@ package lapr.project.model.lists;
 
 import java.io.Serializable;
 import java.util.LinkedList;
+import java.util.List;
 import lapr.project.model.Node;
 
 /**
@@ -18,18 +19,18 @@ public class NodeList implements Serializable{
     /**
      * the list of nodes
      */
-    LinkedList<Node> nodeList;
+    private List<Node> nodesList;
     
     /**
      * Node to be added into list
      */
-    Node node;
+    private Node node;
     
     /**
      * Constructor.
      */
     public NodeList(){
-        this.nodeList = new LinkedList<>();
+        this.nodesList = new LinkedList<>();
     }
     
     /**
@@ -37,32 +38,32 @@ public class NodeList implements Serializable{
      * @param list the instance of this class
      */
     public NodeList(NodeList list){
-        this.nodeList = list.nodeList;
+        this.nodesList = list.nodesList;
     }
     
     /**
      * Parameter constructor.
      * @param nodeList the list of airports
      */
-    public NodeList(LinkedList<Node> nodeList)
+    public NodeList(List<Node> nodeList)
     {
-        this.nodeList = nodeList;
+        this.nodesList = nodeList;
     }
     
     /**
      * gets the node list
      * @return the node list
      */
-    public LinkedList<Node> getNodeList(){
-        return nodeList;
+    public List<Node> getNodeList(){
+        return nodesList;
     }
     
     /**
      * sets the node list
      * @param nodeList the node list
      */
-    public void setNodeList(LinkedList<Node> nodeList){
-        this.nodeList = nodeList;
+    public void setNodeList(List<Node> nodeList){
+        this.nodesList = nodeList;
     }
     
     /**
@@ -85,7 +86,7 @@ public class NodeList implements Serializable{
     }
     
     /**
-     * validate and saves the node into nodeList
+     * validate and saves the node into nodesList
      * @return true if node is valid and is added, false if not
      */
     public boolean saveNode(){
@@ -97,7 +98,7 @@ public class NodeList implements Serializable{
      * @return true if node is valid and do not exist in the list, false if not
      */
     private boolean validate(){
-        return node.validate() && !nodeList.contains(node);
+        return node.validate() && !nodesList.contains(node);
     }
     
     /**
@@ -105,6 +106,6 @@ public class NodeList implements Serializable{
      * @return true if node is added, false if not
      */
     private boolean addNode(){
-        return nodeList.add(node);
+        return nodesList.add(node);
     }
 }

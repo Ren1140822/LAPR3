@@ -6,6 +6,7 @@
 package lapr.project.model.lists;
 
 import java.util.LinkedList;
+import java.util.List;
 import lapr.project.model.Node;
 import lapr.project.model.Segment;
 import org.junit.After;
@@ -47,9 +48,9 @@ public class SegmentListTest {
     public void testGetSegmentList() {
         System.out.println("getSegmentList");
         SegmentList instance = new SegmentList();
-        LinkedList<Segment> expResult = new LinkedList<>();
+        List<Segment> expResult = new LinkedList<>();
         instance.setSegmentList(expResult);
-        LinkedList<Segment> result = instance.getSegmentList();
+        List<Segment> result = instance.getSegmentList();
         assertEquals(expResult, result);
     }
 
@@ -59,7 +60,7 @@ public class SegmentListTest {
     @Test
     public void testSetSegmentList() {
         System.out.println("setSegmentList");
-        LinkedList<Segment> segmentList = new LinkedList<>();
+        List<Segment> segmentList = new LinkedList<>();
         SegmentList instance = new SegmentList();
         instance.setSegmentList(segmentList);
     }

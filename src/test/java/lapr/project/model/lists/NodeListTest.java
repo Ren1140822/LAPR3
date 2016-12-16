@@ -6,6 +6,7 @@
 package lapr.project.model.lists;
 
 import java.util.LinkedList;
+import java.util.List;
 import lapr.project.model.Node;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -46,9 +47,9 @@ public class NodeListTest {
     public void testGetNodeList() {
         System.out.println("getNodeList");
         NodeList instance = new NodeList();
-        LinkedList<Node> expResult = new LinkedList<>();
+        List<Node> expResult = new LinkedList<>();
         instance.setNodeList(expResult);
-        LinkedList<Node> result = instance.getNodeList();
+        List<Node> result = instance.getNodeList();
         assertEquals(expResult, result);
     }
 
@@ -58,7 +59,7 @@ public class NodeListTest {
     @Test
     public void testSetNodeList() {
         System.out.println("setNodeList");
-        LinkedList<Node> nodeList = new LinkedList<>();
+        List<Node> nodeList = new LinkedList<>();
         NodeList instance = new NodeList();
         instance.setNodeList(nodeList);
     }
