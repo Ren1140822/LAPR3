@@ -5,7 +5,10 @@
  */
 package lapr.project.controller;
 
+import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Map;
+import lapr.project.model.Project;
 import lapr.project.model.Result;
 import lapr.project.utils.HTMLExporter;
 
@@ -14,32 +17,35 @@ import lapr.project.utils.HTMLExporter;
  * @author Renato Oliveira 1140822@isep.ipp.pt
  */
 public class ExportHTMLController {
-    
-    
+
     LinkedList<Result> results;
 
     public ExportHTMLController() {
-        
+
     }
-    
+
     /**
      * Gets all available results.
-     * @return  the list of results
+     *
+     * @return the list of results
      */
-    public LinkedList<Result> getAvailableResults()
-    {
-        //Project.getAvailableResults();
-        return new LinkedList<Result>();
+    public Map<String, LinkedList<Result>> getAvailableResults() {
+        Map<String, LinkedList<Result>> results = new HashMap<>();
+        results.put("Best consumption", Project.getBestResults());
+        results.put("Comparison", Project.getComparisonResults());
+        results.put("Shortest Path", Project.getShortestPathResults());
+        return results;
+
     }
-    
+
     /**
      * Exports a result to html.
+     *
      * @param r the result
      * @param filePath the file path
      * @return true if exported
      */
-    public boolean exportResult(Result r,String filePath)
-    {
+    public boolean exportResult(Result r, String filePath) {
         String results[] = new String[10];
         return HTMLExporter.exportStringsToHTML("Results", "", "", results, filePath);
     }

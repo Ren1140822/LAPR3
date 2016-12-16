@@ -21,7 +21,7 @@ public class Project {
      */
     public static AircraftList aircraftList = new AircraftList();
     public static AirportList airportList;
-    public static ResultsList resultsList;
+    public static ResultsList resultsList = new ResultsList();
 
     /**
      * Gets the list of aircrafts.

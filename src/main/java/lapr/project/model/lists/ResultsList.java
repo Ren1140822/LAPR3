@@ -19,7 +19,9 @@ public class ResultsList {
     private LinkedList<Result> comparisonResultsList;
 
     public ResultsList() {
-
+        shortesPathResultsList= new LinkedList();
+        bestResultsList= new LinkedList();
+        comparisonResultsList= new LinkedList();
     }
 
     /**
