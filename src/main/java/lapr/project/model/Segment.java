@@ -144,10 +144,12 @@ public class Segment implements Serializable{
 
     /**
      * sets the wind of the segment
-     * @param wind the wind to set
+     * @param windIntensity the wind Intensity
+     * @param windDirection the wind Direction
      */
-    public void setWind(Wind wind) {
-        this.wind = wind;
+    public void setWind(int windIntensity, int windDirection) {
+        wind.setWindIntensity(windIntensity);
+        wind.setWindDirection(windDirection);
     }
     
     /**
@@ -193,6 +195,7 @@ public class Segment implements Serializable{
                 && this.direction != null
                 && this.startNode.validate()
                 && this.endNode.validate()
+                && !this.startNode.equals(this.endNode)
                 && this.wind.validate();
     }
     

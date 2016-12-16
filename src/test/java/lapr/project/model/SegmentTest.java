@@ -140,8 +140,10 @@ public class SegmentTest {
     public void testGetWind() {
         System.out.println("getWind");
         Segment instance = new Segment();
-        Wind expResult = new Wind(45, 16);
-        instance.setWind(expResult);
+        int windIntensity = 45;
+        int windDirection = 16;
+        Wind expResult = new Wind(windIntensity, windDirection);
+        instance.setWind(windIntensity, windDirection);
         Wind result = instance.getWind();
         assertEquals(expResult, result);
     }
@@ -152,9 +154,10 @@ public class SegmentTest {
     @Test
     public void testSetWind() {
         System.out.println("setWind");
-        Wind wind = new Wind(45, 16);
+        int windIntensity = 45;
+        int windDirection = 16;
         Segment instance = new Segment();
-        instance.setWind(wind);
+        instance.setWind(windIntensity, windDirection);
     }
 
     /**
@@ -216,6 +219,12 @@ public class SegmentTest {
         boolean expResult5 = true;
         boolean result5 = instance5.validate();
         assertEquals(expResult5, result5);
+        
+        System.out.println("validate6");
+        Segment instance6 = new Segment("seg01", new Node("id1",-90,90), new Node("id1", -90, 90), "bidirectional", new Wind(15, 40));
+        boolean expResult6 = false;
+        boolean result6 = instance6.validate();
+        assertEquals(expResult6, result6);
     }
     
 }
