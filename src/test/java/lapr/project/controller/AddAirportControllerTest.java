@@ -45,14 +45,14 @@ public class AddAirportControllerTest {
     public void testSaveAirport() {
         System.out.println("saveAirport1");
         AddAirportController instance = new AddAirportController();
-        instance.setAirportData("OPO", "Sá Carneiro", "Porto", 30.0, 50.0, 10);
+        instance.setAirportData("OPO", "Sá Carneiro", "Porto", "Portugal", 30.0, 50.0, 10);
         boolean expResult = true;
         boolean result = instance.saveAirport();
         assertEquals(expResult, result);
         
         System.out.println("saveAirport2");
         AddAirportController instance2 = new AddAirportController();
-        instance2.setAirportData("OPO", "Sá Carneiro", "Porto", 300.0, 50.0, 10);
+        instance2.setAirportData("OPO", "Sá Carneiro", "Porto", "Portugal", 300.0, 50.0, 10);
         boolean expResult2 = false;
         boolean result2 = instance2.saveAirport();
         assertEquals(expResult2, result2);
@@ -67,11 +67,12 @@ public class AddAirportControllerTest {
         String IATA = "OPO";
         String name = "Sá Carneiro";
         String town = "Porto";
+        String country = "Portugal";
         double latitude = 30.0;
         double longitude = 50.0;
         int altitude = 10;
         AddAirportController instance = new AddAirportController();
-        instance.setAirportData(IATA, name, town, latitude, longitude, altitude);
+        instance.setAirportData(IATA, name, town, country, latitude, longitude, altitude);
     }
     
 }

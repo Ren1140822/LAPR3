@@ -212,7 +212,7 @@ public class Airport implements Serializable {
      */
     public boolean validate(){
         //to remove major error from sonarqube
-        boolean v1 =!this.IATA.isEmpty()
+        boolean v1 = !this.IATA.isEmpty()
                 && !this.country.isEmpty()
                 && !this.name.isEmpty();
         boolean v2 = !this.town.isEmpty()

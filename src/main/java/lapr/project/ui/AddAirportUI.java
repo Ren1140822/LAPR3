@@ -102,8 +102,7 @@ public class AddAirportUI extends JDialog {
             }
         });
         
-        setResizable(true);
-        setMinimumSize(new Dimension(1100, 500));
+        setMinimumSize(new Dimension(800, 500));
         setLocationRelativeTo(framePai);
         pack();
         setVisible(true);
@@ -112,6 +111,7 @@ public class AddAirportUI extends JDialog {
     public JPanel createComponents(){
         panel = new JPanel(new BorderLayout());
                 
+        panel.add(createPanelNorth(), BorderLayout.NORTH);
         panel.add(createPanelData(), BorderLayout.CENTER);
         panel.add(createPanelButons(), BorderLayout.SOUTH);
         
@@ -119,25 +119,25 @@ public class AddAirportUI extends JDialog {
     }
     
     public JPanel createPanelNorth(){
-        ImageIcon background = new ImageIcon("src/main/recources/lightGoExpand.png");
+        ImageIcon background = new ImageIcon("src/main/resources/images/Aeroporto.jpg");
         
         JLabel label = new JLabel();
         label.setIcon(background);
 
-        JPanel panel = new JPanel();
-        panel.setBorder(new EmptyBorder(5, 10, 5, 10));
-        panel.add(label, BorderLayout.CENTER);
+        JPanel p = new JPanel();
+        p.setBorder(new EmptyBorder(5, 10, 5, 10));
+        p.add(label, BorderLayout.CENTER);
 
-        return panel;
+        return p;
     }
     
     public JPanel createPanelData(){
         
         JPanel p = new JPanel();
         
-        p.setBorder(BorderFactory.createTitledBorder("Airport:"));
+        p.setBorder(BorderFactory.createTitledBorder("New Airport:"));
         
-        JPanel pright = new JPanel(new GridLayout(3,1));
+        JPanel pright = new JPanel(new GridLayout(4,1));
         
         txtLatitude = new JTextField(10);
         txtLongitude = new JTextField(10);
@@ -222,12 +222,33 @@ public class AddAirportUI extends JDialog {
         saveBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(
-                                null,
-                                "Implementar este botao!!!!",
-                                "Add Airport",
-                                JOptionPane.ERROR_MESSAGE);
-                finish();
+                try{
+                    String IATA = txtIATA.getText();
+                    String name = txtName.getText();
+                    String town = txtTown.getText();
+                    String country = txtCountry.getText();
+                    double latitude = Double.parseDouble(txtLatitude.getText());
+                    double longitude = Double.parseDouble(txtLongitude.getText());
+                    int altitude = Integer.parseInt(txtAltitude.getText());
+
+                    controller.setAirportData(IATA, name, town, country,latitude,longitude,altitude);
+
+                    if(controller.saveAirport()){
+                        finish();
+                    }else{
+                        JOptionPane.showMessageDialog(
+                                    null,
+                                    "It was not possible to add the airport!",
+                                    "Error",
+                                    JOptionPane.ERROR_MESSAGE); 
+                    }
+                }catch (NumberFormatException ex){
+                    JOptionPane.showMessageDialog(
+                                    null,
+                                    "Check all airport data, please!",
+                                    "Error",
+                                    JOptionPane.ERROR_MESSAGE); 
+                }       
             }
         });
         return saveBtn;
@@ -281,6 +302,11 @@ public class AddAirportUI extends JDialog {
     
     private void finish() {
         //implementar para gravacao na bd
+        JOptionPane.showMessageDialog(
+                                    null,
+                                    "Airport added successfully!",
+                                    "Add Airport",
+                                    JOptionPane.DEFAULT_OPTION);
         dispose();
     }
 }

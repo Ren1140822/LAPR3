@@ -68,11 +68,12 @@ public class AirportList {
         airport = new Airport();
     }
     
-    public void setAirportData(String IATA, String name, String town,
+    public void setAirportData(String IATA, String name, String town, String country,
             double latitude, double longitude, int altitude){
         airport.setIATA(IATA);
         airport.setName(name);
         airport.setTown(town);
+        airport.setCountry(country);
         airport.setLocation(latitude, longitude, altitude);
     }
     

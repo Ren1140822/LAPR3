@@ -20,10 +20,10 @@ public class AddAirportController {
         airportsList = Project.airportList;
     }
     
-    public void setAirportData(String IATA, String name, String town,
+    public void setAirportData(String IATA, String name, String town, String country,
             double latitude, double longitude, int altitude){
         airportsList.newAirport();
-        airportsList.setAirportData(IATA, name, town, latitude, longitude, altitude);
+        airportsList.setAirportData(IATA, name, town, country, latitude, longitude, altitude);
     }
     
     public boolean saveAirport(){
