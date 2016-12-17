@@ -238,7 +238,7 @@ public class AddAirportUI extends JDialog {
                     }else{
                         JOptionPane.showMessageDialog(
                                     null,
-                                    "It was not possible to add the airport!",
+                                    "It was not possible to add the airport!\n",
                                     "Error",
                                     JOptionPane.ERROR_MESSAGE); 
                     }

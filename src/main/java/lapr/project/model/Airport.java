@@ -190,10 +190,7 @@ public class Airport implements Serializable {
             return true;
         }
         Airport otherAirport = (Airport) otherObject;
-        boolean v1 = this.name.equals(otherAirport.name) && this.IATA.equals(otherAirport.IATA)
-                && this.country.equals(otherAirport.country);
-        boolean v2 = this.town.equals(otherAirport.town) && getLocation().equals(otherAirport.getLocation());
-        return v1 && v2;                
+        return this.IATA.equals(otherAirport.IATA) || this.getLocation().equals(otherAirport.getLocation());              
     }
 
     @Override
