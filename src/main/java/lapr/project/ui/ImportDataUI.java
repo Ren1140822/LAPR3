@@ -14,6 +14,8 @@ import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import javax.swing.BorderFactory;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
@@ -49,6 +51,7 @@ public class ImportDataUI extends JDialog{
      * import aircraft button
      */
     private JButton aircraft;
+    
     /**
      * import network button
      */
@@ -68,9 +71,10 @@ public class ImportDataUI extends JDialog{
             }
         });
         
-        setMinimumSize(new Dimension(800, 500));
-        setLocationRelativeTo(framePai);
         pack();
+        setResizable(false);
+        setMinimumSize(new Dimension(1100, 500));
+        setLocationRelativeTo(framePai);        
         setVisible(true);
     }
     
@@ -78,56 +82,70 @@ public class ImportDataUI extends JDialog{
         panel = new JPanel(new BorderLayout());
         
         int aux= 20;
-        JPanel imports = new JPanel(new GridLayout(1,3, aux,aux));
-          
-        imports.setBorder(BorderFactory.createCompoundBorder(new TitledBorder("Import:"), new EmptyBorder(aux, aux, aux, aux)));
-        
+        JPanel imports = new JPanel(new GridLayout(1,3, aux,aux));          
+        imports.setBorder(BorderFactory.createCompoundBorder(new TitledBorder(
+                "Import:"), new EmptyBorder(aux, aux, aux, aux)));        
         imports.add(createButonImportAircraft());
         imports.add(createButonImportAirport());
         imports.add(createButonImportNetwork());
 
-        panel.add(imports, BorderLayout.CENTER);
-        panel.add(createButonBack(), BorderLayout.SOUTH);
+        panel.add(imports, BorderLayout.CENTER);     
+        
+        JPanel pback = new JPanel(new BorderLayout());
+        pback.setBorder(BorderFactory.createCompoundBorder(new TitledBorder(
+                "Options:"), new EmptyBorder(aux, aux, aux, aux)));
+        pback.add(createButonBack(), BorderLayout.CENTER);
+        
+        panel.add(pback, BorderLayout.SOUTH);
         
         return panel;
     }
     
     
     public JButton createButonImportAirport(){
-        back = new JButton("Import Airport");
-        back.setMnemonic(KeyEvent.VK_A);
-        back.setToolTipText("Import Airport");
-        back.addActionListener(new ActionListener() {
+        Icon icone = new ImageIcon( "src/main/resources/images/airport_mini.jpg" );
+        airport = new JButton("Import Airport", icone);
+        airport.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        airport.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);      
+        airport.setMnemonic(KeyEvent.VK_A);
+        airport.setToolTipText("Import Airport");
+        airport.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 //implementar
             }
         });
-        return back;
+        return airport;
     }
     public JButton createButonImportAircraft(){
-        back = new JButton("Import Aircraft");
-        back.setMnemonic(KeyEvent.VK_R);
-        back.setToolTipText("Import Aircraft");
-        back.addActionListener(new ActionListener() {
+        Icon icone = new ImageIcon( "src/main/resources/images/aircraft.jpg" );
+        aircraft = new JButton("Import Aircraft", icone);
+        aircraft.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        aircraft.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);  
+        aircraft.setMnemonic(KeyEvent.VK_R);
+        aircraft.setToolTipText("Import Aircraft");
+        aircraft.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 //implementar
             }
         });
-        return back;
+        return aircraft;
     }
     public JButton createButonImportNetwork(){
-        back = new JButton("Import Network");
-        back.setMnemonic(KeyEvent.VK_N);
-        back.setToolTipText("Import Network");
-        back.addActionListener(new ActionListener() {
+        Icon icone = new ImageIcon( "src/main/resources/images/network.jpg" );
+        network = new JButton("Import Network", icone);
+        network.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        network.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);  
+        network.setMnemonic(KeyEvent.VK_N);
+        network.setToolTipText("Import Network");
+        network.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 //implementar
             }
         });
-        return back;
+        return network;
     }
     public JButton createButonBack(){
         back = new JButton("Back");

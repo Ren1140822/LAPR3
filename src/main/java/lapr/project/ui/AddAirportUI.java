@@ -121,7 +121,7 @@ public class AddAirportUI extends JDialog {
     }
     
     public JPanel createPanelNorth(){
-        ImageIcon background = new ImageIcon("src/main/resources/images/Aeroporto.jpg");
+        ImageIcon background = new ImageIcon("src/main/resources/images/airport.jpg");
         
         JLabel label = new JLabel();
         label.setIcon(background);
