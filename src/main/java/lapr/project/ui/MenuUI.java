@@ -81,6 +81,13 @@ public class MenuUI extends JFrame{
                 ImportDataUI imp = new ImportDataUI(framePai);
             }
         });
+        JButton bt4 = new JButton("Add Aircraft");
+        bt3.addActionListener(new ActionListener() {
+             @Override
+            public void actionPerformed(ActionEvent e) {
+                AddAircraftUI aircraft = new AddAircraftUI();
+            }
+        });
         
         
         getRootPane().setDefaultButton(bt1);
@@ -88,6 +95,7 @@ public class MenuUI extends JFrame{
         p.add(bt1);
         p.add(bt2);
         p.add(bt3);
+        p.add(bt4);
         
         return p;
         
