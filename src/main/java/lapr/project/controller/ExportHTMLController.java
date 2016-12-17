@@ -33,7 +33,7 @@ public class ExportHTMLController {
     public Map<String, LinkedList<Result>> getAvailableResults() {
         Map<String, LinkedList<Result>> results = new HashMap<>();
         results.put("Best consumption", Project.getEcologicPathResults());
-        results.put("Comparison", Project.getComparisonResults());
+        results.put("Comparisozn", Project.getComparisonResults());
         results.put("Shortest Path", Project.getShortestPathResults());
         return results;
 
