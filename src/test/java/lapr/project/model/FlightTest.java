@@ -16,14 +16,15 @@ import static org.junit.Assert.*;
  * @author Flavio Relvas
  */
 public class FlightTest {
-    Flight instance = new FlightInstance();
-    
+
+    Flight instance;
+
     public FlightTest() {
     }
-    
+
     @Before
     public void setUp() {
-        instance.flightDesignator = "F001";
+        instance = new FlightInstance();
     }
 
     /**
@@ -32,7 +33,7 @@ public class FlightTest {
     @Test
     public void testToString() {
         System.out.println("toString");
-        String expResult = "F001";
+        String expResult = "FF0001A";
         String result = instance.toString();
         assertEquals(expResult, result);
     }
@@ -48,13 +49,13 @@ public class FlightTest {
         boolean result = instance.equals(otherObject);
         assertEquals(expResult, result);
         otherObject = new FlightInstance();
-        otherObject.flightDesignator = "F002";
+        otherObject.flightDesignator = "FF0001B";
         result = instance.equals(otherObject);
         assertEquals(expResult, result);
-        otherObject.flightDesignator = "F001";
+        otherObject.flightDesignator = "FF0001A";
         expResult = true;
         result = instance.equals(otherObject);
-        assertEquals("Should return true for flights with the same designator",expResult, result);
+        assertEquals("Should return true for flights with the same designator", expResult, result);
     }
 
     /**
@@ -74,7 +75,7 @@ public class FlightTest {
     @Test
     public void testGetFlightDesignator() {
         System.out.println("getFlightDesignator");
-        String expResult = "F001";
+        String expResult = "FF0001A";
         String result = instance.getFlightDesignator();
         assertEquals(expResult, result);
     }
@@ -85,7 +86,7 @@ public class FlightTest {
     @Test
     public void testSetFlightDesignator() {
         System.out.println("setFlightDesignator");
-        String expResult = "F002";
+        String expResult = "FF0001B";
         instance.setFlightDesignator(expResult);
         String result = instance.getFlightDesignator();
         assertEquals(expResult, result);
@@ -123,6 +124,41 @@ public class FlightTest {
         Date expResult = new Date(System.currentTimeMillis());
         instance.setScheduledArrival(expResult);
         Date result = instance.getScheduledArrival();
+        assertEquals(expResult, result);
+    }
+
+    /**
+     * Test of validate method, of class Flight
+     */
+    @Test
+    public void testValidate() {
+        System.out.println("validate default");
+        boolean expResult = true;
+        boolean result = instance.validate();
+        assertEquals(expResult, result);
+        
+        System.out.println("validate flightDesignator pass");
+        instance.flightDesignator = "FF01A";
+        result = instance.validate();
+        assertEquals(expResult, result);
+        
+        System.out.println("validate flightDesignator fail");
+        instance.flightDesignator = "00AAb2";
+        expResult = false;
+        result = instance.validate();
+        assertEquals(expResult, result);
+        
+        System.out.println("validate minStopTime fail");
+        expResult = false;
+        instance.flightDesignator = "FF0001A";
+        instance.minStopTime = -100;
+        result = instance.validate();
+        assertEquals(expResult, result);
+        
+        System.out.println("validate shceduledArrival fail");
+        expResult = false;
+        instance.scheduledArrival = new Date(System.currentTimeMillis());
+        result = instance.validate();
         assertEquals(expResult, result);
     }
 }

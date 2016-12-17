@@ -14,15 +14,13 @@ public abstract class Flight implements Serializable {
      * Class attributes
      */
     String flightDesignator;
-    //private enum type{Regular, Charter}; //@TODO - create ENUM for this attribute
-    //private String departureData; //@TODO - ask what datatype this should be
     int minStopTime; // time in minutes
-    Date scheduledArrival; //@TODO - should this be so sort of date
+    Date scheduledArrival; 
 
     /**
      * Default attributes
      */
-    private final String DEFAULT_FLIGHT_DESIGNATOR = "No Designator";
+    private final String DEFAULT_FLIGHT_DESIGNATOR = "FF0001A";
     private final int DEFAULT_MIN_STOP_TIME = 0;
     private final Date DEFAULT_SCHEDULED_ARRIVAL = null;
 
@@ -85,10 +83,24 @@ public abstract class Flight implements Serializable {
         return hash;
     }
 
-    
-    
+    public boolean validate() {
+        if (!flightDesignator.matches("([a-zA-Z0-9]{2})([0-9]{1,4})([a-zA-Z]?)")) {
+            return false;
+        }
+        if (minStopTime < 0) {
+            return false;
+        }
+        if (scheduledArrival != null) {
+            if (scheduledArrival.before(new Date(System.currentTimeMillis()))) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     /**
      * Gets the flight designator
+     *
      * @return the flight's designator
      */
     public String getFlightDesignator() {
@@ -97,6 +109,7 @@ public abstract class Flight implements Serializable {
 
     /**
      * Sets the flight designator
+     *
      * @param flightDesignator the new flight designator
      */
     public void setFlightDesignator(String flightDesignator) {
@@ -105,6 +118,7 @@ public abstract class Flight implements Serializable {
 
     /**
      * Gets the minimum stop time of the flight
+     *
      * @return the minimum stop time of the flight
      */
     public int getMinStopTime() {
@@ -113,6 +127,7 @@ public abstract class Flight implements Serializable {
 
     /**
      * Sets the minimum stop time of the flight
+     *
      * @param minStopTime the new minimun stop time for the flight
      */
     public void setMinStopTime(int minStopTime) {
@@ -121,6 +136,7 @@ public abstract class Flight implements Serializable {
 
     /**
      * Gets the date of the scheduled arrival for the flight
+     *
      * @return the date of the scheduled arrival of the flight
      */
     public Date getScheduledArrival() {
@@ -129,11 +145,11 @@ public abstract class Flight implements Serializable {
 
     /**
      * Sets the date of the scheduled arrival of the flight
+     *
      * @param scheduledArrival the new date of the flight's arrival
      */
     public void setScheduledArrival(Date scheduledArrival) {
         this.scheduledArrival = scheduledArrival;
     }
-    
-    
+
 }
