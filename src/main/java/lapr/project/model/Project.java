@@ -13,9 +13,15 @@ import lapr.project.model.lists.ResultsList;
 
 /**
  * Class that represents a simulation of air network fights
- * @author Renato Oliveira 1140822@isep.ipp.pt and Pedro Fernandes
+ * @author Renato Oliveira and Pedro Fernandes
  */
 public class Project {
+    
+    /**
+     * private constructor to hide the implicit public one. 
+     */
+    private Project(){
+    }
 
     /**
      * Variables to read from DAL or file.

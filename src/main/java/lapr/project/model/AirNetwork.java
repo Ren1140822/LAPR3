@@ -27,7 +27,7 @@ public class AirNetwork implements Serializable{
     /**
      * graph
      */
-    private Graph<Node, Segment> airNetworkGraph;
+    private transient Graph<Node, Segment> airNetworkGraph;
     
     /**
      * constructor
@@ -113,9 +113,6 @@ public class AirNetwork implements Serializable{
             }else{
                 if(segment.getDirection() == Segment.Direction.DIRECT){
                     airNetworkGraph.insertEdge(segment.getStartNode(), segment.getEndNode(), segment, 1);
-                }else{
-                    if(segment.getDirection() == Segment.Direction.REVERSE)
-                        airNetworkGraph.insertEdge(segment.getEndNode(),segment.getStartNode(), segment, 1);
                 }
             }      
         }

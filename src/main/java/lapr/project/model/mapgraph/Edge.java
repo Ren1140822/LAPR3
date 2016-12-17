@@ -95,8 +95,8 @@ public class Edge<V,E> implements Comparable {
         
         Edge<V,E> other = (Edge<V,E>) otherObject ;
         if (this.weight < other.weight)  return -1;
-        if (this.weight == other.weight) return 0;
-        return 1;
+        if (this.weight > other.weight) return 1;
+        return 0;
     }
        
     @Override
@@ -120,7 +120,7 @@ public class Edge<V,E> implements Comparable {
         else
             st= "\t "; 
             
-        if (weight != 0)
+        if (weight < 0 || weight > 0)
             st += weight +" - " +vDest.getElement()+ "\n";
         else
             st += vDest.getElement()+ "\n";

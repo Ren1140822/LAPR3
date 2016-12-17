@@ -19,7 +19,7 @@ public class Segment implements Serializable{
     private String id;
     private Node startNode;
     private Node endNode;
-    public enum Direction {BIDIRECTIONAL, DIRECT, REVERSE};
+    public enum Direction {BIDIRECTIONAL, DIRECT};
     private Direction direction;
     private Wind wind;
     
