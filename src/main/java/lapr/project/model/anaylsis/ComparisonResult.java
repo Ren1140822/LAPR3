@@ -6,11 +6,16 @@
 package lapr.project.model.anaylsis;
 
 import java.util.LinkedList;
+import lapr.project.model.Node;
 
 /**
  *
  * @author Diana Silva
  */
-public class ComparisonResult {
+public class ComparisonResult extends Result {
+
+    public ComparisonResult(Node startNode) {
+        super(startNode);
+    }
 
 }

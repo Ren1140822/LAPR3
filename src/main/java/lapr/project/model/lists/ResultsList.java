@@ -24,7 +24,7 @@ public class ResultsList {
     private LinkedList<Result> shortesPathResultsList;
     private LinkedList<Result> ecologicResultsList;
     private LinkedList<Result> fastestResultsList;
-    private LinkedList<ComparisonResult> comparisonResultsList;
+    private LinkedList<Result> comparisonResultsList;
 
     public ResultsList() {
         shortesPathResultsList= new LinkedList();
@@ -94,7 +94,7 @@ public class ResultsList {
      * Gets the results of comparison.
      * @return the list
      */
-    public LinkedList<ComparisonResult> getComparisonResultsList() {
+    public LinkedList<Result> getComparisonResultsList() {
         return comparisonResultsList;
     }
 
@@ -102,7 +102,7 @@ public class ResultsList {
      * Sets the comparison results list.
      * @param comparisonResultsList  the list to set
      */
-    public void setComparisonResultsList(LinkedList<ComparisonResult> comparisonResultsList) {
+    public void setComparisonResultsList(LinkedList<Result> comparisonResultsList) {
         this.comparisonResultsList = comparisonResultsList;
     }
     

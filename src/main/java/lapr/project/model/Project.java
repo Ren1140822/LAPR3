@@ -76,7 +76,7 @@ public class Project {
      *
      * @return the comparison results
      */
-    public static LinkedList<ComparisonResult> getComparisonResults() {
+    public static LinkedList<Result> getComparisonResults() {
         return resultsList.getComparisonResultsList();
     }
 

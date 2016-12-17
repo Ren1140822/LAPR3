@@ -27,7 +27,7 @@ public class ExportCSVController {
     public Map<String, LinkedList<Result>> getAvailableResults() {
         Map<String, LinkedList<Result>> results = new HashMap<>();
         results.put("Best consumption", Project.getEcologicPathResults());
-      //  results.put("Comparison", Project.getComparisonResults());
+         results.put("Comparison", Project.getComparisonResults());
         results.put("Shortest Path", Project.getShortestPathResults());
         return results;
 
@@ -40,7 +40,7 @@ public class ExportCSVController {
      * @param filePath the file path
      * @return true if exported
      */
-    public boolean exportResult(InterfaceResults r, String filePath) {
+    public boolean exportResult(Result r, String filePath) {
         String results[] = new String[10];
         return CSVExporter.exportStringsToCSV("Results", "", "", results, filePath);
     }
