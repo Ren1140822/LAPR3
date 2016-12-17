@@ -50,8 +50,7 @@ public class ImportDataUI extends JDialog{
     /**
      * import aircraft button
      */
-    private JButton aircraft;
-    
+    private JButton aircraft;     
     /**
      * import network button
      */
