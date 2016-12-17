@@ -7,6 +7,8 @@ package lapr.project.model;
 
 import java.util.LinkedList;
 import java.util.List;
+import lapr.project.model.anaylsis.ComparisonResult;
+import lapr.project.model.anaylsis.Result;
 import lapr.project.model.lists.AircraftList;
 import lapr.project.model.lists.AirportList;
 import lapr.project.model.lists.CompareResultsList;
@@ -14,7 +16,7 @@ import lapr.project.model.lists.ResultsList;
 
 /**
  * Class that represents a simulation of air network fights
- * @author Renato Oliveira 1140822@isep.ipp.pt, Pedro Fernandes, Diana Silva
+ * @author Renato Oliveira, Pedro Fernandes, Diana Silva
  */
 public class Project {
 
@@ -59,23 +61,32 @@ public class Project {
     public static List<Airport> getAirportList() {
         return airportList.getAirportList();
     }
+    
+    /**
+     * Gets the analysis results.
+     *
+     * @return the list of analysis results
+     */
+    public static ResultsList getListResults() {
+        return resultsList;
+    }
 
     /**
      * Gets the comparison results.
      *
      * @return the comparison results
      */
-    public static LinkedList<Result> getComparisonResults() {
+    public static LinkedList<ComparisonResult> getComparisonResults() {
         return resultsList.getComparisonResultsList();
     }
 
     /**
-     * Gets the best results.
+     * Gets the ecologic results.
      *
-     * @return the best results
+     * @return the ecologic results
      */
-    public static LinkedList<Result> getBestResults() {
-        return resultsList.getBestResultsList();
+    public static LinkedList<Result> getEcologicPathResults() {
+        return resultsList.getEcologicResultsList();
     }
 
     /**
@@ -86,6 +97,16 @@ public class Project {
     public static LinkedList<Result> getShortestPathResults() {
         return resultsList.getShortesPathResultsList();
     }
+    
+     /**
+     * Gets the fastest path results.
+     *
+     * @return the fastestest path results
+     */
+    public static LinkedList<Result> getFastestPathResults() {
+        return resultsList.getFastestResultsList();
+    }
+    
 
     /**
      * Sets the aircrafts list class reference.

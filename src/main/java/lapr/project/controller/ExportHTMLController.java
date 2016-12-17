@@ -9,8 +9,9 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
 import lapr.project.model.Project;
-import lapr.project.model.Result;
 import lapr.project.utils.HTMLExporter;
+import lapr.project.model.anaylsis.InterfaceResults;
+import lapr.project.model.anaylsis.Result;
 
 /**
  *
@@ -18,7 +19,7 @@ import lapr.project.utils.HTMLExporter;
  */
 public class ExportHTMLController {
 
-    LinkedList<Result> results;
+    LinkedList<InterfaceResults> results;
 
     public ExportHTMLController() {
 
@@ -31,8 +32,8 @@ public class ExportHTMLController {
      */
     public Map<String, LinkedList<Result>> getAvailableResults() {
         Map<String, LinkedList<Result>> results = new HashMap<>();
-        results.put("Best consumption", Project.getBestResults());
-        results.put("Comparison", Project.getComparisonResults());
+        results.put("Best consumption", Project.getEcologicPathResults());
+   //     results.put("Comparison", Project.getComparisonResults());
         results.put("Shortest Path", Project.getShortestPathResults());
         return results;
 
@@ -45,7 +46,7 @@ public class ExportHTMLController {
      * @param filePath the file path
      * @return true if exported
      */
-    public boolean exportResult(Result r, String filePath) {
+    public boolean exportResult(InterfaceResults r, String filePath) {
         String results[] = new String[10];
         return HTMLExporter.exportStringsToHTML("Results", "", "", results, filePath);
     }

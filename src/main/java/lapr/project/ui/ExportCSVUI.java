@@ -25,7 +25,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.Border;
 import lapr.project.controller.ExportCSVController;
-import lapr.project.model.Result;
+import lapr.project.model.anaylsis.InterfaceResults;
+import lapr.project.model.anaylsis.Result;
 
 /**
  *
@@ -134,13 +135,13 @@ public class ExportCSVUI extends JFrame {
                     chooser.showSaveDialog(null);
                     String path = chooser.getCurrentDirectory().getAbsolutePath();
                     if (listBest.getSelectedValue() != null) {
-                        controller.exportResult((Result) listBest.getSelectedValue(), path + "\\best.csv");
+                        controller.exportResult((InterfaceResults) listBest.getSelectedValue(), path + "\\best.csv");
                     }
                     if (listComparison.getSelectedValue() != null) {
-                        controller.exportResult((Result) listComparison.getSelectedValue(), path + "\\comparison.csv");
+                        controller.exportResult((InterfaceResults) listComparison.getSelectedValue(), path + "\\comparison.csv");
                     }
                     if (listShortestPath.getSelectedValue() != null) {
-                        controller.exportResult((Result) listShortestPath.getSelectedValue(), path + "\\shortestpath.csv");
+                        controller.exportResult((InterfaceResults) listShortestPath.getSelectedValue(), path + "\\shortestpath.csv");
                     }
                 }
             }
