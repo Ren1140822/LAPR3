@@ -6,15 +6,27 @@
 package lapr.project.model.anaylsis;
 
 import lapr.project.model.Node;
+import lapr.project.model.Project;
 
 /**
  *
  * @author DianaSilva
  */
-public class FastestPathResult extends Result{
+public class FastestPathResult extends BestPathResult{
     
     public FastestPathResult(Node startNode) {
         super(startNode);
     }
     
+    @Override
+    public double calculateBestPath(){
+        return 0;
+    }
+    
+    @Override
+    public boolean saveBestResult(){      
+        super.setResult(calculateBestPath());
+        return Project.getFastestPathResults().add(this);
+    }
+
 }

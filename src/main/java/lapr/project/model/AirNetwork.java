@@ -127,4 +127,15 @@ public class AirNetwork implements Serializable{
     public String toString() {
         return airNetworkGraph.toString();
     } 
+
+    /**
+     * Gets the possible end destinations relatives to origin of flight
+     * @param startNode origin of flight
+     * @return list of possible destination airports
+     */
+    public NodeList getPossibleEndNodes(Node startNode) {
+        NodeList list = new NodeList();
+        /**implement methods to find possible end airports by the segments in project**/
+        return list;
+    }
 }

@@ -129,7 +129,6 @@ public class ResultsList {
     /**
      * Creates the result of shortest path analysis
      * @param startNode initial airport
-     * @param endNode final airport
      * @return result created
      */
     public ShortestPathResult newShortestResult(Node startNode){
@@ -140,7 +139,6 @@ public class ResultsList {
     /**
      * Creates the result of fastest path analysis
      * @param startNode initial airport
-     * @param endNode final airport
      * @return result created
      */
     public FastestPathResult newFastestResult(Node startNode){
@@ -152,7 +150,6 @@ public class ResultsList {
     /**
      * Creates the result of ecologic path analysis
      * @param startNode initial airport
-     * @param endNode final airport
      * @return result created
      */
     public EcologicPathResult newEcologicResult(Node startNode){

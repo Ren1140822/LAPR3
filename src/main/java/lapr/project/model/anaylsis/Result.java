@@ -5,44 +5,45 @@
  */
 package lapr.project.model.anaylsis;
 
-import java.util.LinkedList;
 import lapr.project.model.Node;
 import lapr.project.model.lists.NodeList;
 
 /**
- *
+ * The class to stores and manage analysis results
  * @author Diana Silva
  */
 public class Result {
     Node startNode;
     Node endNode;
-    LinkedList<Node> resultPath = new LinkedList<>();
+    double resultPath;
     
     
     public Result(Node startNode){
         this.startNode=startNode;
     }
     
+    /**
+     * Set the start airport
+     * @param startNode origin of flight
+     */
     public void setStartNode(Node startNode){
         this.startNode=startNode;
     }
     
+    /**
+     * Set the destination of flight
+     * @param endNode destination of flight
+     */
     public void setEndNode(Node endNode){
         this.endNode=endNode;
     }
     
-    public NodeList getPossibleEndNodes(Node startNode){
-        NodeList list=new NodeList();
-        /**implement methods to find possible end airports by the segments in project**/
-        
-        return list; 
-    }
     
-    public void setResult(LinkedList<Node> result){
+    /**
+     * Sets the analysis final result
+     * @param result analysis result  
+     */
+    public void setResult(double result){
         resultPath=result;
-    }
-    
-    private void setTipo(){
-        
     }
 }
