@@ -74,15 +74,11 @@ public class MenuUI extends JFrame{
             }
         });
         
-        JButton bt3 = new JButton("blbbla");
+        JButton bt3 = new JButton("Import Data");
         bt3.addActionListener(new ActionListener() {
              @Override
             public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(
-                                null,
-                                "In construction! \nSorry.",
-                                "Error",
-                                JOptionPane.ERROR_MESSAGE); 
+                ImportDataUI imp = new ImportDataUI(framePai);
             }
         });
         

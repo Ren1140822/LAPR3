@@ -91,6 +91,8 @@ public class AddAirportUI extends JDialog {
     public AddAirportUI(MenuUI framePai){
         super(framePai, "Add Airport", true);
         
+        this.framePai = framePai;
+        
         controller = new AddAirportController();
         
         add(createComponents()); 
@@ -291,7 +293,7 @@ public class AddAirportUI extends JDialog {
         String[] op = {"Yes", "No"};
         String question = "Close window and discard Add Airport?";
         int opcao = JOptionPane.showOptionDialog(framePai, question,
-                "Confirm?", JOptionPane.YES_NO_OPTION,
+                "Add Airport", JOptionPane.YES_NO_OPTION,
                 JOptionPane.QUESTION_MESSAGE, null, op, op[0]);
         if (opcao == JOptionPane.YES_OPTION) {
             dispose();
