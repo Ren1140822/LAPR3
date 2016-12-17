@@ -12,6 +12,9 @@ import lapr.project.model.RegularFlight;
  */
 public class FlightList {
 
+    /** 
+     * List of existing Flights
+     */
     private List<Flight> flightList;
 
     public FlightList() {
