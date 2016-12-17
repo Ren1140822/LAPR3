@@ -9,19 +9,14 @@ import java.util.LinkedList;
 import java.util.List;
 import lapr.project.model.lists.AircraftList;
 import lapr.project.model.lists.AirportList;
+import lapr.project.model.lists.CompareResultsList;
 import lapr.project.model.lists.ResultsList;
 
 /**
  * Class that represents a simulation of air network fights
- * @author Renato Oliveira and Pedro Fernandes
+ * @author Renato Oliveira 1140822@isep.ipp.pt, Pedro Fernandes, Diana Silva
  */
 public class Project {
-    
-    /**
-     * private constructor to hide the implicit public one. 
-     */
-    private Project(){
-    }
 
     /**
      * Variables to read from DAL or file.
@@ -30,6 +25,13 @@ public class Project {
     public static AirNetwork network = new AirNetwork();    
     public static AirportList airportList = new AirportList();
     public static ResultsList resultsList = new ResultsList();
+    public static CompareResultsList compareList=new CompareResultsList();
+    // public static FlightList flightList=new FlightList();
+    // public static AirtCraftModelList modelList=new AirCraftModelList();
+    
+    public static int idProject;
+    public static String name;
+    public static String description;
 
     /**
      * Gets the list of aircrafts.
@@ -97,10 +99,59 @@ public class Project {
     /**
      * Sets the results list class reference.
      *
-     * @param list the list
+     * @param list the list of analysis results
      */
     public static void setResultsList(ResultsList list) {
         resultsList = list;
     }
-
+    
+    /**
+     * Sets the name of project
+     * @param name name of project
+     */
+    public static void setName(String name){
+        Project.name=name;
+    }
+    
+    /**
+     * Sets the description text about project
+     * @param desc description of project
+     */
+    public static void setDescription(String desc){
+        description=desc;
+    }
+    
+    
+    public static void newProject(String name, String desc){
+       
+        if(validate(name,desc)){
+            setDescription(desc);
+            setName(name);
+            create();
+            idProject=1; /**Corrigir para ID novo na base de dados **/
+        }
+    }
+    
+    /**
+     * Validates the name and description
+     * @param name name of project
+     * @param desc description of project
+     * @return true if validates, false if not 
+     */
+    private static boolean validate(String name, String desc){
+        return name!=null && desc!=null;
+    }
+    
+    /**
+     * Creates main classes of projects
+     */
+    private static void create(){
+         aircraftList = new AircraftList();
+        //flightList=new FlightList();
+         network = new AirNetwork();    
+         airportList = new AirportList();
+         resultsList = new ResultsList();
+         compareList= new CompareResultsList();
+         //modelList=new AirCraftModelList();
+    }
 }
