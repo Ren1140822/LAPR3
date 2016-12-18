@@ -11,8 +11,6 @@ import lapr.project.model.Project;
 import lapr.project.model.anaylsis.FastestPathResult;
 import lapr.project.model.anaylsis.EcologicPathResult;
 import lapr.project.model.lists.NodeList;
-import lapr.project.utils.PhysicsAlgorithms;
-
 /**
  *
  * @author Diana Silva
@@ -37,17 +35,21 @@ public class FindBestPathController {
         return Project.getAirNetwork().getPossibleEndNodes(startNode);
     }
     
-    public void setEndNode(Node endNode){
-        //corrigir
+    public void setEndNodeEcologic(Node endNode){
         ecologicResult.setEndNode(endNode);
+    }
+    
+    
+    public void setEndNodeFastest(Node endNode){
         fastestResult.setEndNode(endNode);
     }
   
-    private boolean saveResult(Node startNode, Node endNode, LinkedList<Node> shortPath){
-        //corrigir
-        double bestPath = PhysicsAlgorithms.calculateBestPathResult(fastestResult);
-//        result.setResult(shortestPath);
-//        return Project.getListResults().getShortesPathResultsList().add(result);
-        return true;
+    private boolean saveEcologicResult(Node startNode, Node endNode, LinkedList<Node> shortPath){
+
+        return Project.getListResults().getShortesPathResultsList().add(ecologicResult);
+    }
+    
+     private boolean saveFastestResult(Node startNode, Node endNode, LinkedList<Node> shortPath){
+        return Project.getListResults().getShortesPathResultsList().add(fastestResult);
     }
 }

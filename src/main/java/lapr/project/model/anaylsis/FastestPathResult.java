@@ -17,15 +17,14 @@ public class FastestPathResult extends BestPathResult{
     public FastestPathResult(Node startNode) {
         super(startNode);
     }
-    
+ 
     @Override
-    public double calculateBestPath(){
-        return 0;
-    }
-    
+     public double calculateBestPath(){
+       return 0;
+    } 
+
     @Override
     public boolean saveBestResult(){      
-        super.setResult(calculateBestPath());
         return Project.getFastestPathResults().add(this);
     }
 

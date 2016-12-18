@@ -24,12 +24,13 @@ public class EcologicPathResult extends BestPathResult{
     
     @Override
     public double calculateBestPath(){
+        super.setResult(calculateBestPath());
         return 0;
     }
     
     @Override
     public boolean saveBestResult(){      
-        super.setResult(calculateBestPath());
+        
         return Project.getEcologicPathResults().add(this);
     }
 
