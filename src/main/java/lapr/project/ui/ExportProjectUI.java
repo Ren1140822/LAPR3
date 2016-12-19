@@ -9,10 +9,14 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import static javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE;
 
 /**
  *
@@ -24,7 +28,14 @@ public class ExportProjectUI extends JFrame {
     private final int WINDOW_HEIGHT = 150;
     private final String WINDOW_TITLE = "Export data";
 
-    public ExportProjectUI() {
+    public ExportProjectUI(JFrame parentFrame) {
+            this.setLocationRelativeTo(parentFrame);
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                closeWindow();
+            }
+        });
         this.setSize(new Dimension(WINDOW_WIDTH, WINDOW_HEIGHT));
         this.setTitle(WINDOW_TITLE);
         this.setResizable(false);
@@ -48,8 +59,8 @@ public class ExportProjectUI extends JFrame {
         label.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent me) {
-                ExportHTMLUI instance = new ExportHTMLUI();
-
+                ExportHTMLUI instance = new ExportHTMLUI(ExportProjectUI.this);
+                ExportProjectUI.this.setVisible(false);
             }
         });
         Dimension d = new Dimension(icon.getIconWidth(), icon.getIconHeight());
@@ -66,11 +77,26 @@ public class ExportProjectUI extends JFrame {
         label.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent me) {
-                ExportCSVUI instance = new ExportCSVUI();
+                ExportCSVUI instance = new ExportCSVUI(ExportProjectUI.this);
+                ExportProjectUI.this.setVisible(false);
             }
         });
         Dimension d = new Dimension(icon.getIconWidth(), icon.getIconHeight());
         label.setPreferredSize(d);
         return label;
     }
+    
+     public void closeWindow() {
+        String[] op = {"Yes", "No"};
+        String question = "Close window?";
+        int opcao = JOptionPane.showOptionDialog(null, question,
+                "Export Project", JOptionPane.YES_NO_OPTION,
+                JOptionPane.QUESTION_MESSAGE, null, op, op[0]);
+        if (opcao == JOptionPane.YES_OPTION) {
+            dispose();
+        } else {
+            setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+        }
+    }
+    
 }
