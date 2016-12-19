@@ -82,7 +82,7 @@ public class MenuUI extends JFrame{
             }
         });
         JButton bt4 = new JButton("Add Aircraft");
-        bt3.addActionListener(new ActionListener() {
+        bt4.addActionListener(new ActionListener() {
              @Override
             public void actionPerformed(ActionEvent e) {
                 AddAircraftUI aircraft = new AddAircraftUI();

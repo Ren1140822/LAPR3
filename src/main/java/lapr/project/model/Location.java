@@ -7,25 +7,38 @@ package lapr.project.model;
 
 import java.io.Serializable;
 import java.util.Objects;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
  * @author Pedro Fernandes
  */
+@XmlRootElement(name="location")
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Location implements Serializable{
     
     /**
      * Class atributes.
      */
+    @XmlElement(name="latitude")
     private double latitude;
+    @XmlElement(name="longitude")
     private double longitude;
+    @XmlTransient
     private int altitude;
     
     /**
      * Default values.
      */
+    @XmlTransient
     private final double DEFAULT_LAT = 0.0;
+    @XmlTransient
     private final double DEFAULT_LONG = 0.0;
+    @XmlTransient
     private final int DEFAULT_ALTITUDE = 0;
     
     /**
@@ -42,7 +55,7 @@ public class Location implements Serializable{
      * 
      * @param latitude the latitude of the airport
      * @param longitude the longitude of the airport
-     * @param altitude the altitude of the airport
+     * @param altitude the alt of the airport
      */
     public Location(double latitude, double longitude, int altitude) {
         this.latitude = latitude;
@@ -78,6 +91,7 @@ public class Location implements Serializable{
     public void setLatitude(double latitude) {
         this.latitude = latitude;
     }
+    
 
     /**
      * Gets the longitude.
@@ -98,21 +112,40 @@ public class Location implements Serializable{
     }
 
     /**
-     * Gets the altitude.
+     * Gets the alt.
      *
-     * @return the altitude
+     * @return the alt
      */
     public int getAltitude() {
         return altitude;
     }
 
     /**
-     * Sets the altitude.
+     * Sets the alt.
      *
-     * @param altitude the altitude to set
+     * @param altitude the alt to set
      */
     public void setAltitude(int altitude) {
         this.altitude = altitude;
+    }
+    
+    /**
+     * altitude for JAXB
+     * @return altitude for JAXB
+     */
+    @XmlElement(name="altitude")
+    private String getAltitude_(){
+        return String.valueOf(altitude);
+    }
+    
+    /**
+     * Sets the alt.
+     *
+     * @param altitude the alt to set
+     */
+    private void setAltitude_(String alt) {        
+        String a = alt.replaceAll(" m", "");
+        this.altitude = Integer.parseInt(a);
     }
     
     /**
@@ -164,7 +197,7 @@ public class Location implements Serializable{
         //longitude => min:-180 max:180
         boolean lon = !(longitude < -180 || longitude > 180);
         //altitude >= 0
-        boolean alt = altitude >= 0;
+        boolean alt = this.altitude >= 0;
         return lat && lon && alt;
     }
 }

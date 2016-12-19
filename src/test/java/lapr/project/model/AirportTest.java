@@ -173,7 +173,7 @@ public class AirportTest {
     public void testToString() {
         System.out.println("toString");
         Airport instance = new Airport();
-        String expResult = "No name.";
+        String expResult = "No IATA code.";
         String result = instance.toString();
         assertEquals(expResult, result);
 
