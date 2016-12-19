@@ -10,7 +10,6 @@ import java.util.LinkedList;
 import java.util.Map;
 import lapr.project.model.Project;
 import lapr.project.utils.CSVExporter;
-import lapr.project.model.anaylsis.InterfaceResults;
 import lapr.project.model.anaylsis.Result;
 
 /**

@@ -11,7 +11,7 @@ import lapr.project.model.Node;
  * The class to stores and manage analysis results
  * @author Diana Silva
  */
-public class Result {
+public abstract class Result {
     Node startNode;
     Node endNode;
     double resultPath;
