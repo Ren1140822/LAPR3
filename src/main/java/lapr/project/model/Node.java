@@ -6,25 +6,37 @@
 package lapr.project.model;
 
 import java.io.Serializable;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  * Classe that represents a Node of the AirNetwork
  * @author Pedro Fernandes
  */
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Node implements Serializable{
     
     /**
      * Class atributes.
      */
+    @XmlAttribute(name="id")
     private String id;
+    @XmlElement
     private double latitude;
+    @XmlElement
     private double longitude;
     
     /**
      * Default values.
      */
+    @XmlTransient
     private final String DEFAULT_ID = "NO_ID";
+    @XmlTransient
     private final double DEFAULT_LATITUDE = 0;
+    @XmlTransient
     private final double DEFAULT_LONGITUDE = 0;
             
     /**

@@ -6,27 +6,41 @@
 package lapr.project.model;
 
 import java.io.Serializable;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  * Class that represents a Segment
  * @author Pedro Fernandes
  */
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Segment implements Serializable{
     
     /**
      * Class atributes.
      */
+    @XmlAttribute(name="id")
     private String id;
-    private Node startNode;
-    private Node endNode;
+    @XmlElement(name="start_node")
+    private String startNode;
+    @XmlElement(name="end_node")
+    private String endNode;
+    @XmlTransient
     public enum Direction {BIDIRECTIONAL, DIRECT};
+    @XmlTransient
     private Direction direction;
+    @XmlElement
     private Wind wind;
     
     /**
      * Default values.
      */
     private static final String DEFAULT_ID = "NOID";
+    private static final String DEFAULT_START_NODE = "STARTNODE";
+    private static final String DEFAULT_END_NODE = "ENDNODE";
     private static final Direction DEFAULT_DIRECTION = Direction.BIDIRECTIONAL;
     
     /**
@@ -34,8 +48,8 @@ public class Segment implements Serializable{
      */
     public Segment(){
         this.id = DEFAULT_ID;
-        this.startNode = new Node();
-        this.endNode = new Node();
+        this.startNode = DEFAULT_START_NODE;
+        this.endNode = DEFAULT_END_NODE;
         this.direction = DEFAULT_DIRECTION;
         this.wind = new Wind();
     }
@@ -47,7 +61,7 @@ public class Segment implements Serializable{
      * @param direction the Direction of the segment
      * @param wind the wind of the segment
      */
-    public Segment(String id, Node startNode, Node endNode, String direction, Wind wind){
+    public Segment(String id, String startNode, String endNode, String direction, Wind wind){
         this.id = id;
         this.startNode = startNode;
         this.endNode = endNode;
@@ -87,7 +101,7 @@ public class Segment implements Serializable{
      * gets the start node of the segment
      * @return the startNode
      */
-    public Node getStartNode() {
+    public String getStartNode() {
         return startNode;
     }
 
@@ -95,7 +109,7 @@ public class Segment implements Serializable{
      * sets the start node of the segment
      * @param startNode the startNode to set
      */
-    public void setStartNode(Node startNode) {
+    public void setStartNode(String startNode) {
         this.startNode = startNode;
     }
 
@@ -103,7 +117,7 @@ public class Segment implements Serializable{
      * gets the end node of the segment
      * @return the endNode
      */
-    public Node getEndNode() {
+    public String getEndNode() {
         return endNode;
     }
 
@@ -111,7 +125,7 @@ public class Segment implements Serializable{
      * sets the end node of the segment
      * @param endNode the endNode to set
      */
-    public void setEndNode(Node endNode) {
+    public void setEndNode(String endNode) {
         this.endNode = endNode;
     }
 
@@ -133,6 +147,24 @@ public class Segment implements Serializable{
         }catch (IllegalArgumentException e){
             System.err.println(e);
         }
+    }
+    
+    /**
+     * altitude for JAXB
+     * @return altitude for JAXB
+     */
+    @XmlElement(name="direction")
+    private String getDirection_(){
+        return String.valueOf(direction);
+    }
+    
+    /**
+     * Sets the intensity for JAXB
+     *
+     * @param altitude the alt to set
+     */
+    private void setDirection_(String dir) {        
+        setDirection(dir);
     }
 
     /**
@@ -212,8 +244,8 @@ public class Segment implements Serializable{
         //to remove major error from sonarqube
         boolean v1 =!this.id.isEmpty()
                 && this.direction != null
-                && this.startNode.validate();
-        boolean v2 = this.endNode.validate()
+                && !this.startNode.isEmpty();
+        boolean v2 = !this.endNode.isEmpty()
                 && !this.startNode.equals(this.endNode)
                 && this.wind.validate();
         return v1 && v2;                

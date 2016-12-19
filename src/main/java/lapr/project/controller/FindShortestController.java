@@ -6,10 +6,10 @@
 package lapr.project.controller;
 
 import java.util.LinkedList;
+import java.util.List;
 import lapr.project.model.Node;
 import lapr.project.model.Project;
 import lapr.project.model.anaylsis.ShortestPathResult;
-import lapr.project.model.lists.NodeList;
 import lapr.project.model.mapgraph.GraphAlgorithms;
 
 /**
@@ -28,7 +28,7 @@ public class FindShortestController {
         return Project.getAirNetwork().getAirNetwork().allkeyVerts();
     }
     
-    public NodeList getPossibleEndNodes(Node startNode){
+    public List<Node> getPossibleEndNodes(Node startNode){
         return Project.getAirNetwork().getPossibleEndNodes(startNode);
     }
     

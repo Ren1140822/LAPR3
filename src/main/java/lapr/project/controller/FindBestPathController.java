@@ -6,11 +6,11 @@
 package lapr.project.controller;
 
 import java.util.LinkedList;
+import java.util.List;
 import lapr.project.model.Node;
 import lapr.project.model.Project;
 import lapr.project.model.anaylsis.FastestPathResult;
 import lapr.project.model.anaylsis.EcologicPathResult;
-import lapr.project.model.lists.NodeList;
 /**
  *
  * @author Diana Silva
@@ -31,7 +31,7 @@ public class FindBestPathController {
         return Project.getAirNetwork().getAirNetwork().allkeyVerts();
     }
     
-    public NodeList getPossibleEndNodes(Node startNode){
+    public List<Node> getPossibleEndNodes(Node startNode){
         return Project.getAirNetwork().getPossibleEndNodes(startNode);
     }
     

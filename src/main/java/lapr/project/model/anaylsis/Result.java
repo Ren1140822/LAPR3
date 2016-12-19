@@ -6,7 +6,6 @@
 package lapr.project.model.anaylsis;
 
 import lapr.project.model.Node;
-import lapr.project.model.lists.NodeList;
 
 /**
  * The class to stores and manage analysis results

@@ -308,7 +308,7 @@ public class AddAirportUI extends JDialog {
                                     null,
                                     "Airport added successfully!",
                                     "Add Airport",
-                                    JOptionPane.DEFAULT_OPTION);
+                                    JOptionPane.INFORMATION_MESSAGE);
         dispose();
     }
 }

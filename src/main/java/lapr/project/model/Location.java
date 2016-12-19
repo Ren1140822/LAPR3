@@ -139,7 +139,7 @@ public class Location implements Serializable{
     }
     
     /**
-     * Sets the alt.
+     * Sets the intensity for JAXB
      *
      * @param altitude the alt to set
      */
