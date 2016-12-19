@@ -5,26 +5,28 @@
  */
 package lapr.project.controller;
 
-import java.util.LinkedList;
+import lapr.project.model.Aircraft;
 import lapr.project.model.Node;
 import lapr.project.model.Project;
-import lapr.project.model.anaylsis.FastestPathResult;
-import lapr.project.model.anaylsis.EcologicPathResult;
+import lapr.project.model.anaylsis.Result;
 import lapr.project.model.lists.NodeList;
 /**
  *
  * @author Diana Silva
  */
 public class FindBestPathController {
-    EcologicPathResult ecologicResult;
-    FastestPathResult fastestResult;
+    Result result;
     
-    public void newEcologicResult(Node startNode){
-       ecologicResult=Project.getListResults().newEcologicResult(startNode);
+    public void newEcologicResult(Node startNode, Aircraft aircraft){
+       result=Project.getListResults().newEcologicResult(startNode, aircraft);
     }
     
-    public void newFastestResult(Node startNode){
-       fastestResult=Project.getListResults().newFastestResult(startNode);
+    public void newFastestResult(Node startNode, Aircraft aircraft){
+      result=Project.getListResults().newFastestResult(startNode, aircraft);
+    }
+    
+    public void newShortestResult(Node startNode){
+        result=Project.getListResults().newShortestResult(startNode);
     }
     
     public Node[] getVertices(){
@@ -35,21 +37,15 @@ public class FindBestPathController {
         return Project.getAirNetwork().getPossibleEndNodes(startNode);
     }
     
-    public void setEndNodeEcologic(Node endNode){
-        ecologicResult.setEndNode(endNode);
+    public void setEndNode(Node endNode){
+        result.setEndNode(endNode);
+    }
+ 
+    public double calculateResult(){
+        return result.calculateBestPath();
     }
     
-    
-    public void setEndNodeFastest(Node endNode){
-        fastestResult.setEndNode(endNode);
-    }
-  
-    private boolean saveEcologicResult(Node startNode, Node endNode, LinkedList<Node> shortPath){
-
-        return Project.getListResults().getShortesPathResultsList().add(ecologicResult);
-    }
-    
-     private boolean saveFastestResult(Node startNode, Node endNode, LinkedList<Node> shortPath){
-        return Project.getListResults().getShortesPathResultsList().add(fastestResult);
+    public boolean saveResult(){
+        return result.saveBestResult();
     }
 }
