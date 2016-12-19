@@ -49,13 +49,11 @@ public class AircraftModel {
     
     private double e;
     
-    public AircraftModel(double id, String maker, enum type, Motorization motorization,
+    public AircraftModel(String maker, Motorization motorization,
             double eWeight, double MTOW, double MZFW, double max_payload, double 
                     fuel_capacity, double VMO, double MMO, double wingArea, double
                             bodyArea, double wingCl, double bodyCl, double Cdrag_0, double e){
-        this.id=id;
         this.maker=maker;
-        this.type=type;
         this.motorization=motorization;
         this.EWeight=eWeight;
         this.MTOW=MTOW;
@@ -68,7 +66,7 @@ public class AircraftModel {
         this.bodyArea=bodyArea;
         this.wingCl=wingCl;
         this.bodyCl=bodyCl;
-        this.Cdrag_0=CDrag_0;
+        this.Cdrag_0=Cdrag_0;
         this.e=e;
     }
     

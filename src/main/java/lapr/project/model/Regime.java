@@ -10,6 +10,14 @@ package lapr.project.model;
  * @author Diana Silva
  */
 public class Regime {
+
+    public Regime() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public boolean validate() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
     /**
      * id of regime motorization
      */
@@ -39,8 +47,7 @@ public class Regime {
      */
     private long altitude;
     
-    public Regime(enum id, double TSFC, double speed, double thrust, double altitude){
-        this.id=id.Cruise;
+    public Regime(double TSFC, double speed, double thrust, long altitude){
         this.TSFC=TSFC;
         this.speed=speed;
         this.thrust=thrust;

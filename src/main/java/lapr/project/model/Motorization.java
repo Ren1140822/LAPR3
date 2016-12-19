@@ -7,6 +7,8 @@ package lapr.project.model;
 
 import lapr.project.model.lists.RegimeList;
 
+
+
 /**
  * Class that represents the motorization of aircraft
  * @author Diana Silva

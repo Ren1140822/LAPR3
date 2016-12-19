@@ -3,7 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package lapr.project.model;
+package lapr.project.model.lists;
+
+import java.util.LinkedList;
+import java.util.List;
+import lapr.project.model.Regime;
 
 /**
  *
@@ -13,7 +17,7 @@ public class RegimeList {
     private List<Regime> regimeList;
 
     public RegimeList(){
-        regimeList=new List<>();
+        regimeList=new LinkedList<>();
     }
         
         /**
@@ -34,6 +38,7 @@ public class RegimeList {
     
     /**
      * create Regime
+     * @return 
      */
     public Regime newRegime(){
         return new Regime();
@@ -41,10 +46,11 @@ public class RegimeList {
     
     /**
      * validate and saves the regime into regimeList
+     * @param regime
      * @return true if regiem is valid and it´s added, false if not
      */
     public boolean saveRegime(Regime regime){
-        return validate(regime) && addRegime();       
+        return validate(regime) && addRegime(regime);       
     }
     
     /**
