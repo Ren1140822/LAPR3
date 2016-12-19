@@ -47,10 +47,10 @@ public class ExportCSVUI extends JFrame {
     JFrame parentFrame;
 
     public ExportCSVUI(JFrame parentFrame) {
-          this.parentFrame = parentFrame;
+        this.parentFrame = parentFrame;
         this.setLocationRelativeTo(this.parentFrame);
         this.setResizable(false);
-      
+
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
@@ -123,8 +123,16 @@ public class ExportCSVUI extends JFrame {
 
             @Override
             public void mouseClicked(MouseEvent me) {
-                dialog = new DialogSelectable(ExportCSVUI.this, controller.getListOfOrigins(), "Select origin node");
-                results = controller.getFlightPathAnalisysResultsGroupedByOriginDestination(dialog.getSelectedItem(), "any");
+                String[] buttons = {"Filter by nodes", "Filter by aircraft type", "Cancel"};
+                int rc = JOptionPane.showOptionDialog(null, "Choose the filter", "Filter", JOptionPane.PLAIN_MESSAGE, 0, null, buttons, buttons[0]);
+                if (rc == 0) {
+                    dialog = new DialogSelectable(ExportCSVUI.this, controller.getListOfOrigins(), "Select origin node");
+                    results = controller.getFlightPathAnalisysResultsGroupedByOriginDestination(dialog.getSelectedItem(), "any");
+                }
+                if (rc ==1) {
+                    dialog = new DialogSelectable(ExportCSVUI.this, controller.getListOfOrigins(), "Select aircraft type");
+                    results = controller.getFlightPathAnalisysResultsGroupedByAircraftType(dialog.getSelectedItem());
+                }
                 listComparison.setListData(results.get("Best consumption").toArray());
                 listComparison.setListData(results.get("Comparison").toArray());
                 listShortestPath.setListData(results.get("Shortest Path").toArray());

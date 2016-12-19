@@ -76,6 +76,30 @@ public class ExportHTMLController {
         return filteredResults;
     }
 
+    
+      public Map<String, LinkedList<Result>> getFlightPathAnalisysResultsGroupedByAircraftType(String aircrafType) {
+           Map<String, LinkedList<Result>> results = new HashMap<>();
+            LinkedList<Result> filteredResults =filterResultsAircaft(Project.getEcologicPathResults(), aircrafType);
+            results.put("Best consumption", filteredResults);
+            filteredResults = filterResultsAircaft(Project.getComparisonResults(),  aircrafType);
+            results.put("Comparison", filteredResults);
+            filteredResults =filterResultsAircaft(Project.getShortestPathResults(), aircrafType);
+            results.put("Shortest Path", filteredResults);
+            return results;
+    }
+    
+     private LinkedList<Result> filterResultsAircaft(LinkedList<Result> list,String aircraftType) {
+       LinkedList<Result> filteredResults = new LinkedList<>();
+        for (Result r : list) {
+           // if (r.getAircraft().getAircraftModel().getType().equals(aircraftType)) {
+
+                    filteredResults.add(r);
+           // }
+        }
+        return filteredResults;
+     }
+    
+    
     /**
      * Gets list of all start nodes.
      * @return  the list of start nodes.

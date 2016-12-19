@@ -33,7 +33,7 @@ public class ExportCSVController {
 
     }
 
-     /**
+    /**
      * Gets results that fit the criteria.
      *
      * @param startNode the origin
@@ -42,20 +42,26 @@ public class ExportCSVController {
      */
     public Map<String, LinkedList<Result>> getFlightPathAnalisysResultsGroupedByOriginDestination(String startNode, String endNode) {
         Map<String, LinkedList<Result>> results = new HashMap<>();
-        if(startNode!=null)
-        {
-        LinkedList<Result> filteredResults = filterResults(Project.getEcologicPathResults(), startNode, endNode);
-        results.put("Best consumption", filteredResults);
-        filteredResults = filterResults(Project.getComparisonResults(), startNode, endNode);
-        results.put("Comparison", filteredResults);
-        filteredResults = filterResults(Project.getShortestPathResults(), startNode, endNode);
-        results.put("Shortest Path", filteredResults);
-        return results;
+        if (startNode != null) {
+            LinkedList<Result> filteredResults = filterResultsNodes(Project.getEcologicPathResults(), startNode, endNode);
+            results.put("Best consumption", filteredResults);
+            filteredResults = filterResultsNodes(Project.getComparisonResults(), startNode, endNode);
+            results.put("Comparison", filteredResults);
+            filteredResults = filterResultsNodes(Project.getShortestPathResults(), startNode, endNode);
+            results.put("Shortest Path", filteredResults);
+            return results;
         }
         return getAvailableResults();
     }
 
-    private LinkedList<Result> filterResults(LinkedList<Result> list, String startNode, String endNode) {
+    /**
+     * Filters results by node.
+     * @param list the list of results
+     * @param startNode start node
+     * @param endNode end node
+     * @return  the list of results
+     */
+    private LinkedList<Result> filterResultsNodes(LinkedList<Result> list, String startNode, String endNode) {
         LinkedList<Result> filteredResults = new LinkedList<>();
         for (Result r : list) {
             if (r.getStartNode().getId().equals(startNode)) {
@@ -70,9 +76,32 @@ public class ExportCSVController {
         return filteredResults;
     }
 
+    public Map<String, LinkedList<Result>> getFlightPathAnalisysResultsGroupedByAircraftType(String aircrafType) {
+           Map<String, LinkedList<Result>> results = new HashMap<>();
+            LinkedList<Result> filteredResults =filterResultsAircaft(Project.getEcologicPathResults(), aircrafType);
+            results.put("Best consumption", filteredResults);
+            filteredResults = filterResultsAircaft(Project.getComparisonResults(),  aircrafType);
+            results.put("Comparison", filteredResults);
+            filteredResults =filterResultsAircaft(Project.getShortestPathResults(), aircrafType);
+            results.put("Shortest Path", filteredResults);
+            return results;
+    }
+    
+     private LinkedList<Result> filterResultsAircaft(LinkedList<Result> list,String aircraftType) {
+       LinkedList<Result> filteredResults = new LinkedList<>();
+        for (Result r : list) {
+           // if (r.getAircraft().getAircraftModel().getType().equals(aircraftType)) {
+
+                    filteredResults.add(r);
+           // }
+        }
+        return filteredResults;
+     }
+
     /**
      * Gets list of all start nodes.
-     * @return  the list of start nodes.
+     *
+     * @return the list of start nodes.
      */
     public LinkedList<String> getListOfOrigins() {
         LinkedList<String> nodes = new LinkedList<>();
@@ -96,6 +125,35 @@ public class ExportCSVController {
         }
         return nodes;
     }
+
+    /**
+     * Gets list of all aircraftType.
+     *
+     * @return the list of all aircraft types
+     */
+    public LinkedList<String> getListOfAircraftTypes() {
+        LinkedList<String> aircraftTypes = new LinkedList<>();
+        LinkedList<Result> results = Project.getEcologicPathResults();
+        for (Result r : results) {
+            if (!aircraftTypes.contains(r.getStartNode().getId())) {
+                aircraftTypes.add(r.getStartNode().getId());
+            }
+        }
+        results = Project.getFastestPathResults();
+        for (Result r : results) {
+            if (!aircraftTypes.contains(r.getStartNode().getId())) {
+                aircraftTypes.add(r.getStartNode().getId());
+            }
+        }
+        results = Project.getComparisonResults();
+        for (Result r : results) {
+            if (!aircraftTypes.contains(r.getStartNode().getId())) {
+                aircraftTypes.add(r.getStartNode().getId());
+            }
+        }
+        return aircraftTypes;
+    }
+
     /**
      * Exports a result to html.
      *

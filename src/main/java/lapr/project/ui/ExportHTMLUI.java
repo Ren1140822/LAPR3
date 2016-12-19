@@ -52,10 +52,10 @@ public class ExportHTMLUI extends JFrame {
     JFrame parentFrame;
 
     public ExportHTMLUI(JFrame parentFrame) {
-       this.parentFrame = parentFrame;
-         this.setLocationRelativeTo(parentFrame);
+        this.parentFrame = parentFrame;
+        this.setLocationRelativeTo(parentFrame);
         this.setResizable(false);
-       addWindowListener(new WindowAdapter() {
+        addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
                 closeWindow();
@@ -128,12 +128,21 @@ public class ExportHTMLUI extends JFrame {
 
             @Override
             public void mouseClicked(MouseEvent me) {
-                dialog = new DialogSelectable(ExportHTMLUI.this, controller.getListOfOrigins(), "Select origin node");
-                results = controller.getFlightPathAnalisysResultsGroupedByOriginDestination(dialog.getSelectedItem(), "any");
+                String[] buttons = {"Filter by nodes", "Filter by aircraft type", "Cancel"};
+                int rc = JOptionPane.showOptionDialog(null, "Choose the filter", "Filter", JOptionPane.PLAIN_MESSAGE, 0, null, buttons, buttons[0]);
+                if (rc == 0) {
+                    dialog = new DialogSelectable(ExportHTMLUI.this, controller.getListOfOrigins(), "Select origin node");
+                    results = controller.getFlightPathAnalisysResultsGroupedByOriginDestination(dialog.getSelectedItem(), "any");
+                }
+                if (rc == 1) {
+                    dialog = new DialogSelectable(ExportHTMLUI.this, controller.getListOfOrigins(), "Select aircraft type");
+                    results = controller.getFlightPathAnalisysResultsGroupedByOriginDestination(dialog.getSelectedItem(), "any");
+                }
                 listComparison.setListData(results.get("Best consumption").toArray());
                 listComparison.setListData(results.get("Comparison").toArray());
                 listShortestPath.setListData(results.get("Shortest Path").toArray());
             }
+
         });
         return btn;
     }
@@ -160,15 +169,15 @@ public class ExportHTMLUI extends JFrame {
                         chooser.showSaveDialog(null);
                         String path = chooser.getCurrentDirectory().getAbsolutePath();
                         for (int i = 0; i < selectedIndexes.length; i++) {
-                            controller.exportResult((Result) listBest.getSelectedValue(), path + "\\best_results" + (i+1) + ".html");
+                            controller.exportResult((Result) listBest.getSelectedValue(), path + "\\best_results" + (i + 1) + ".html");
                         }
                         selectedIndexes = listComparison.getSelectedIndices();
                         for (int i = 0; i < selectedIndexes.length; i++) {
-                            controller.exportResult((Result) listComparison.getSelectedValue(), path + "\\comparison_results"+(i+1)+".html");
+                            controller.exportResult((Result) listComparison.getSelectedValue(), path + "\\comparison_results" + (i + 1) + ".html");
                         }
                         selectedIndexes = listShortestPath.getSelectedIndices();
                         for (int i = 0; i < selectedIndexes.length; i++) {
-                            controller.exportResult((Result) listShortestPath.getSelectedValue(), path + "\\shortestpath"+(i+1)+".html");
+                            controller.exportResult((Result) listShortestPath.getSelectedValue(), path + "\\shortestpath" + (i + 1) + ".html");
                         }
 
                     }
@@ -177,8 +186,8 @@ public class ExportHTMLUI extends JFrame {
         });
         return btn;
     }
-    
-    public void closeWindow(){
+
+    public void closeWindow() {
         String[] op = {"Yes", "No"};
         String question = "Close window?";
         int opcao = JOptionPane.showOptionDialog(this, question,
