@@ -8,8 +8,8 @@ package lapr.project.model.lists;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.LinkedList;
-import lapr.project.model.Aircraft;
 import lapr.project.model.Node;
+import lapr.project.model.anaylsis.ComparisonResult;
 import lapr.project.model.anaylsis.EcologicPathResult;
 import lapr.project.model.anaylsis.FastestPathResult;
 import lapr.project.model.anaylsis.Result;
@@ -139,11 +139,10 @@ public class ResultsList {
     /**
      * Creates the result of fastest path analysis
      * @param startNode initial airport
-     * @param aircraft aircraft of flight
      * @return result created
      */
-    public FastestPathResult newFastestResult(Node startNode, Aircraft aircraft){
-        FastestPathResult result=new FastestPathResult(startNode, aircraft);
+    public FastestPathResult newFastestResult(Node startNode){
+        FastestPathResult result=new FastestPathResult(startNode);
         return result;
     }
     
@@ -151,11 +150,10 @@ public class ResultsList {
     /**
      * Creates the result of ecologic path analysis
      * @param startNode initial airport
-     * @param aircraft aircraft of flight
      * @return result created
      */
-    public EcologicPathResult newEcologicResult(Node startNode, Aircraft aircraft){
-        EcologicPathResult result=new EcologicPathResult(startNode, aircraft);
+    public EcologicPathResult newEcologicResult(Node startNode){
+        EcologicPathResult result=new EcologicPathResult(startNode);
         return result;
     }   
 }

@@ -13,7 +13,7 @@ import lapr.project.model.physics.PhysicsAlgorithms;
  *
  * @author DianaSilva
  */
-public class PhysicsAnalysis{
+public class PhysicsResult {
         
     /**
      *  lift force acting on the aircraft (N)
@@ -35,7 +35,7 @@ public class PhysicsAnalysis{
      */
     private double rangeFlight;
     
-    public PhysicsAnalysis(){
+    public PhysicsResult(){
         liftForce=new LiftForce();
         dragForce=new DragForce();
         tsfc=0;
@@ -59,7 +59,7 @@ public class PhysicsAnalysis{
     }
     
     public void setTSFC(double tsfc){
-        this.tsfc=PhysicsAlgorithms.calculateTSFC();
+        this.tsfc=tsfc;
     }
     
     public void setRange(){

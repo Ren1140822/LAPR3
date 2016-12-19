@@ -12,12 +12,13 @@ import lapr.project.model.Node;
  *
  * @author Diana Silva
  */
-public abstract class BestPathResult extends Result{
+public class BestPathResult extends Result{
     private int passengers, crew;
     private double cargoLoad;
+    private Aircraft aircraft;
     
-    public BestPathResult(Node startNode, Aircraft aircraft){
-        super(startNode, aircraft);
+    public BestPathResult(Node startNode){
+        super(startNode);
         this.passengers=0;
         this.crew=0;
         this.cargoLoad=0;
@@ -69,4 +70,29 @@ public abstract class BestPathResult extends Result{
     public void setCargoLoad(double cargoLoad) {
         this.cargoLoad = cargoLoad;
     }
- }
+
+    /**
+     * Gets the aircraft of flight
+     * @return the aircraft
+     */
+    public Aircraft getAircraft() {
+        return aircraft;
+    }
+
+    /**
+     * Sets the aircraft of flight
+     * @param aircraft the aircraft to set
+     */
+    public void setAircraft(Aircraft aircraft) {
+        this.aircraft = aircraft;
+    }
+ 
+    public double calculateBestPath(){
+        return 0;
+    } 
+ 
+    public boolean saveBestResult(){      
+        return true;
+    }
+
+}

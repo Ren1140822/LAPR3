@@ -11,8 +11,6 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.util.LinkedList;
 import java.util.Map;
 import javax.swing.BorderFactory;
@@ -38,26 +36,15 @@ public class ExportCSVUI extends JFrame {
     private final int WINDOW_WIDTH = 550;
     private final int WINDOW_HEIGHT = 500;
     private final String WINDOW_TITLE = "Export data to CSV";
-    private ExportCSVController controller;
+     private ExportCSVController controller;
     private Map<String, LinkedList<Result>> results;
     private JList listBest;
     private JList listComparison;
     private JList listShortestPath;
-    private DialogSelectable dialog;
-    JFrame parentFrame;
 
-    public ExportCSVUI(JFrame parentFrame) {
-          this.parentFrame = parentFrame;
-        this.setLocationRelativeTo(this.parentFrame);
+    public ExportCSVUI() {
         this.setResizable(false);
-      
-        addWindowListener(new WindowAdapter() {
-            @Override
-            public void windowClosing(WindowEvent e) {
-                closeWindow();
-            }
-        });
-        controller = new ExportCSVController();
+         controller = new ExportCSVController();
         results = controller.getAvailableResults();
         this.setSize(new Dimension(WINDOW_WIDTH, WINDOW_HEIGHT));
         this.setTitle(WINDOW_TITLE);
@@ -65,10 +52,10 @@ public class ExportCSVUI extends JFrame {
         this.setVisible(true);
     }
 
-    private void createComponents() {
+        private void createComponents() {
         FlowLayout fl = new FlowLayout(FlowLayout.LEADING);
-        FlowLayout fl2 = new FlowLayout(FlowLayout.LEADING, 50, 0);
-
+          FlowLayout fl2 = new FlowLayout(FlowLayout.LEADING,50,0);
+          
         JPanel panelLists = new JPanel(fl);
         JPanel panelLabels = new JPanel(fl2);
         JLabel labelBest = createJLabels("Best consumption");
@@ -87,7 +74,7 @@ public class ExportCSVUI extends JFrame {
         JButton btn = createJButtonUpdate();
         panelUpdateBtn.add(btn, BorderLayout.NORTH);
         add(panelLists, BorderLayout.WEST);
-        add(panelLabels, BorderLayout.NORTH);
+        add(panelLabels,BorderLayout.NORTH);
         add(panelUpdateBtn, BorderLayout.CENTER);
         JButton btnExport = createExportJButton();
         add(btnExport, BorderLayout.SOUTH);
@@ -99,7 +86,6 @@ public class ExportCSVUI extends JFrame {
         label.setBorder(border);
         return label;
     }
-
     private JList createJList(String keyValue) {
         JList list = new JList();
         Border border = BorderFactory.createLineBorder(Color.BLACK);
@@ -123,9 +109,7 @@ public class ExportCSVUI extends JFrame {
 
             @Override
             public void mouseClicked(MouseEvent me) {
-                dialog = new DialogSelectable(ExportCSVUI.this, controller.getListOfOrigins(), "Select origin node");
-                results = controller.getFlightPathAnalisysResultsGroupedByOriginDestination(dialog.getSelectedItem(), "any");
-                listComparison.setListData(results.get("Best consumption").toArray());
+                listBest.setListData(results.get("Best consumption").toArray());
                 listComparison.setListData(results.get("Comparison").toArray());
                 listShortestPath.setListData(results.get("Shortest Path").toArray());
             }
@@ -144,45 +128,23 @@ public class ExportCSVUI extends JFrame {
             @Override
             public void mouseClicked(MouseEvent me) {
                 if (listBest.getSelectedValue() == null && listComparison.getSelectedValue() == null && listShortestPath.getSelectedValue() == null) {
-                    JOptionPane.showMessageDialog(rootPane, "Nothing selected to export.", "Error", JOptionPane.ERROR_MESSAGE);
+                          JOptionPane.showMessageDialog(rootPane, "Nothing selected to export.", "Error", JOptionPane.ERROR_MESSAGE);
                 } else {
-                    int nrOfSelectedIndexes = listBest.getSelectedIndices().length + listComparison.getSelectedIndices().length + listShortestPath.getSelectedIndices().length;
-                    if (nrOfSelectedIndexes > 4) {
-                        JOptionPane.showMessageDialog(rootPane, "Select less than four items to export..", "Error", JOptionPane.ERROR_MESSAGE);
-                    } else {
-                        int selectedIndexes[] = listBest.getSelectedIndices();
-                        JFileChooser chooser = new JFileChooser();
-                        chooser.showSaveDialog(null);
-                        String path = chooser.getCurrentDirectory().getAbsolutePath();
-                        for (int i = 0; i < selectedIndexes.length; i++) {
-                            controller.exportResult((Result) listBest.getSelectedValue(), path + "\\best_results" + (i + 1) + ".html");
-                        }
-                        selectedIndexes = listComparison.getSelectedIndices();
-                        for (int i = 0; i < selectedIndexes.length; i++) {
-                            controller.exportResult((Result) listComparison.getSelectedValue(), path + "\\comparison_results" + (i + 1) + ".html");
-                        }
-                        selectedIndexes = listShortestPath.getSelectedIndices();
-                        for (int i = 0; i < selectedIndexes.length; i++) {
-                            controller.exportResult((Result) listShortestPath.getSelectedValue(), path + "\\shortestpath" + (i + 1) + ".html");
-                        }
-
+                    JFileChooser chooser = new JFileChooser();
+                    chooser.showSaveDialog(null);
+                    String path = chooser.getCurrentDirectory().getAbsolutePath();
+                    if (listBest.getSelectedValue() != null) {
+                        controller.exportResult((Result) listBest.getSelectedValue(), path + "\\best.csv");
+                    }
+                    if (listComparison.getSelectedValue() != null) {
+                        controller.exportResult((Result) listComparison.getSelectedValue(), path + "\\comparison.csv");
+                    }
+                    if (listShortestPath.getSelectedValue() != null) {
+                        controller.exportResult((Result) listShortestPath.getSelectedValue(), path + "\\shortestpath.csv");
                     }
                 }
             }
         });
         return btn;
-    }
-
-    public void closeWindow() {
-        String[] op = {"Yes", "No"};
-        String question = "Close window?";
-        int opcao = JOptionPane.showOptionDialog(this, question,
-                "Export CSV", JOptionPane.YES_NO_OPTION,
-                JOptionPane.QUESTION_MESSAGE, null, op, op[0]);
-        if (opcao == JOptionPane.YES_OPTION) {
-            dispose();
-        } else {
-            setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-        }
     }
 }
