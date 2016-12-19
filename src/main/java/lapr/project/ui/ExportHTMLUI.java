@@ -134,7 +134,7 @@ public class ExportHTMLUI extends JFrame {
                 }
                 if (rc == 1) {
                     dialog = new DialogSelectable(ExportHTMLUI.this, controller.getListOfOrigins(), "Select aircraft type");
-                    results = controller.getFlightPathAnalisysResultsGroupedByOriginDestination(dialog.getSelectedItem(), "any");
+                    results = controller.getFlightPathAnalisysResultsGroupedByAircraftType(dialog.getSelectedItem());
                 }
                 listComparison.setListData(results.get("Best consumption").toArray());
                 listComparison.setListData(results.get("Comparison").toArray());
