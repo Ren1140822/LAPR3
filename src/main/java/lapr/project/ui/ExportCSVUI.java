@@ -38,7 +38,7 @@ public class ExportCSVUI extends JFrame {
     private final int WINDOW_WIDTH = 550;
     private final int WINDOW_HEIGHT = 500;
     private final String WINDOW_TITLE = "Export data to CSV";
-    private ExportCSVController controller;
+     private ExportCSVController controller;
     private Map<String, LinkedList<Result>> results;
     private JList listBest;
     private JList listComparison;
@@ -68,10 +68,10 @@ public class ExportCSVUI extends JFrame {
         this.setVisible(true);
     }
 
-    private void createComponents() {
+        private void createComponents() {
         FlowLayout fl = new FlowLayout(FlowLayout.LEADING);
-        FlowLayout fl2 = new FlowLayout(FlowLayout.LEADING, 50, 0);
-
+          FlowLayout fl2 = new FlowLayout(FlowLayout.LEADING,50,0);
+          
         JPanel panelLists = new JPanel(fl);
         JPanel panelLabels = new JPanel(fl2);
         JLabel labelBest = createJLabels("Best consumption");
@@ -90,7 +90,7 @@ public class ExportCSVUI extends JFrame {
         JButton btn = createJButtonUpdate();
         panelUpdateBtn.add(btn, BorderLayout.NORTH);
         add(panelLists, BorderLayout.WEST);
-        add(panelLabels, BorderLayout.NORTH);
+        add(panelLabels,BorderLayout.NORTH);
         add(panelUpdateBtn, BorderLayout.CENTER);
         JButton btnExport = createExportJButton();
         add(btnExport, BorderLayout.SOUTH);
@@ -102,7 +102,6 @@ public class ExportCSVUI extends JFrame {
         label.setBorder(border);
         return label;
     }
-
     private JList createJList(String keyValue) {
         JList list = new JList();
         Border border = BorderFactory.createLineBorder(Color.BLACK);
@@ -158,7 +157,7 @@ public class ExportCSVUI extends JFrame {
             @Override
             public void mouseClicked(MouseEvent me) {
                 if (listBest.getSelectedValue() == null && listComparison.getSelectedValue() == null && listShortestPath.getSelectedValue() == null) {
-                    JOptionPane.showMessageDialog(rootPane, "Nothing selected to export.", "Error", JOptionPane.ERROR_MESSAGE);
+                          JOptionPane.showMessageDialog(rootPane, "Nothing selected to export.", "Error", JOptionPane.ERROR_MESSAGE);
                 } else {
                     JFileChooser chooser = new JFileChooser();
                     chooser.showSaveDialog(null);
