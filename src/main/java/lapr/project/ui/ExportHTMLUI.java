@@ -9,8 +9,11 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.GridLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.LinkedList;
 import java.util.Map;
 import javax.swing.BorderFactory;
@@ -23,6 +26,7 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 import javax.swing.border.Border;
 import lapr.project.controller.ExportHTMLController;
 import lapr.project.model.anaylsis.Result;
@@ -36,7 +40,7 @@ public class ExportHTMLUI extends JFrame {
     /**
      * Instance variables.
      */
-    private final int WINDOW_WIDTH = 550;
+    private final int WINDOW_WIDTH = 650;
     private final int WINDOW_HEIGHT = 500;
     private final String WINDOW_TITLE = "Export data to HTML";
     private ExportHTMLController controller;
@@ -44,9 +48,19 @@ public class ExportHTMLUI extends JFrame {
     private JList listBest;
     private JList listComparison;
     private JList listShortestPath;
+    DialogSelectable dialog;
+    JFrame parentFrame;
 
-    public ExportHTMLUI() {
+    public ExportHTMLUI(JFrame parentFrame) {
+       this.parentFrame = parentFrame;
+         this.setLocationRelativeTo(parentFrame);
         this.setResizable(false);
+       addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                closeWindow();
+            }
+        });
         controller = new ExportHTMLController();
         results = controller.getAvailableResults();
         this.setSize(new Dimension(WINDOW_WIDTH, WINDOW_HEIGHT));
@@ -57,8 +71,8 @@ public class ExportHTMLUI extends JFrame {
 
     private void createComponents() {
         FlowLayout fl = new FlowLayout(FlowLayout.LEADING);
-          FlowLayout fl2 = new FlowLayout(FlowLayout.LEADING,50,0);
-          
+        FlowLayout fl2 = new FlowLayout(FlowLayout.LEADING, 50, 0);
+
         JPanel panelLists = new JPanel(fl);
         JPanel panelLabels = new JPanel(fl2);
         JLabel labelBest = createJLabels("Best consumption");
@@ -77,7 +91,7 @@ public class ExportHTMLUI extends JFrame {
         JButton btn = createJButtonUpdate();
         panelUpdateBtn.add(btn, BorderLayout.NORTH);
         add(panelLists, BorderLayout.WEST);
-        add(panelLabels,BorderLayout.NORTH);
+        add(panelLabels, BorderLayout.NORTH);
         add(panelUpdateBtn, BorderLayout.CENTER);
         JButton btnExport = createExportJButton();
         add(btnExport, BorderLayout.SOUTH);
@@ -114,7 +128,9 @@ public class ExportHTMLUI extends JFrame {
 
             @Override
             public void mouseClicked(MouseEvent me) {
-                listBest.setListData(results.get("Best consumption").toArray());
+                dialog = new DialogSelectable(ExportHTMLUI.this, controller.getListOfOrigins(), "Select origin node");
+                results = controller.getFlightPathAnalisysResultsGroupedByOriginDestination(dialog.getSelectedItem(), "any");
+                listComparison.setListData(results.get("Best consumption").toArray());
                 listComparison.setListData(results.get("Comparison").toArray());
                 listShortestPath.setListData(results.get("Shortest Path").toArray());
             }
@@ -135,22 +151,44 @@ public class ExportHTMLUI extends JFrame {
                 if (listBest.getSelectedValue() == null && listComparison.getSelectedValue() == null && listShortestPath.getSelectedValue() == null) {
                     JOptionPane.showMessageDialog(rootPane, "Nothing selected to export.", "Error", JOptionPane.ERROR_MESSAGE);
                 } else {
-                    JFileChooser chooser = new JFileChooser();
-                    chooser.showSaveDialog(null);
-                    String path = chooser.getCurrentDirectory().getAbsolutePath();
-                    if (listBest.getSelectedValue() != null) {
-                        controller.exportResult((Result) listBest.getSelectedValue(), path + "\\best.html");
-                    }
-                    if (listComparison.getSelectedValue() != null) {
-                        controller.exportResult((Result) listComparison.getSelectedValue(), path + "\\comparison.html");
-                    }
-                    if (listShortestPath.getSelectedValue() != null) {
-                        controller.exportResult((Result) listShortestPath.getSelectedValue(), path + "\\shortestpath.html");
+                    int nrOfSelectedIndexes = listBest.getSelectedIndices().length + listComparison.getSelectedIndices().length + listShortestPath.getSelectedIndices().length;
+                    if (nrOfSelectedIndexes > 4) {
+                        JOptionPane.showMessageDialog(rootPane, "Select less than four items to export..", "Error", JOptionPane.ERROR_MESSAGE);
+                    } else {
+                        int selectedIndexes[] = listBest.getSelectedIndices();
+                        JFileChooser chooser = new JFileChooser();
+                        chooser.showSaveDialog(null);
+                        String path = chooser.getCurrentDirectory().getAbsolutePath();
+                        for (int i = 0; i < selectedIndexes.length; i++) {
+                            controller.exportResult((Result) listBest.getSelectedValue(), path + "\\best_results" + (i+1) + ".html");
+                        }
+                        selectedIndexes = listComparison.getSelectedIndices();
+                        for (int i = 0; i < selectedIndexes.length; i++) {
+                            controller.exportResult((Result) listComparison.getSelectedValue(), path + "\\comparison_results"+(i+1)+".html");
+                        }
+                        selectedIndexes = listShortestPath.getSelectedIndices();
+                        for (int i = 0; i < selectedIndexes.length; i++) {
+                            controller.exportResult((Result) listShortestPath.getSelectedValue(), path + "\\shortestpath"+(i+1)+".html");
+                        }
+
                     }
                 }
             }
         });
         return btn;
+    }
+    
+    public void closeWindow(){
+        String[] op = {"Yes", "No"};
+        String question = "Close window?";
+        int opcao = JOptionPane.showOptionDialog(this, question,
+                "Export HTML", JOptionPane.YES_NO_OPTION,
+                JOptionPane.QUESTION_MESSAGE, null, op, op[0]);
+        if (opcao == JOptionPane.YES_OPTION) {
+            dispose();
+        } else {
+            setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+        }
     }
 
 }

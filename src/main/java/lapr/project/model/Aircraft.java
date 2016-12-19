@@ -21,6 +21,7 @@ public class Aircraft implements Serializable {
     private String company;
     private CabinConfiguration cabinConfig;
     private int nrOfCrewElements;
+    //private AircraftModel aircraftModel;
 
     /**
      * Default attributes.
