@@ -6,29 +6,45 @@
 package lapr.project.model;
 
 import java.io.Serializable;
-import java.util.Objects;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  * Class that represents airport
  * @author Renato Oliveira and Pedro Fernandes
  */
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Airport implements Serializable {
 
     /**
      * Class atributes.
      */
-    private String name;
-    private String town;
-    private String country;
+    @XmlAttribute(name="id")
     private String IATA;
+    @XmlElement
+    private String name;
+    @XmlElement
+    private String town;
+    @XmlElement
+    private String country;    
+    @XmlElement
     private Location location;
 
     /**
      * Default values.
      */
+    @XmlTransient
     private final String DEFAULT_NAME = "No name.";
+    @XmlTransient
     private final String DEFAULT_TOWN = "No town.";
+    @XmlTransient
     private final String DEFAULT_COUNTRY = "No country.";
+    @XmlTransient
     private final String DEFAULT_IATA = "No IATA code.";
 
     /**
@@ -172,7 +188,7 @@ public class Airport implements Serializable {
      */
     @Override
     public String toString() {
-        return name;
+        return IATA;
     }
 
     /**

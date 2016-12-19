@@ -2,22 +2,33 @@ package lapr.project.model.lists;
 
 import java.util.LinkedList;
 import java.util.List;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 import lapr.project.model.Airport;
 
 /**
  * class that represents a list of airports
  * @author Renato Oliveira and Pedro Fernandes
  */
+@XmlRootElement(name="Network")
+@XmlAccessorType(XmlAccessType.FIELD)
 public class AirportList {
  
     /**
      * The list of airports.
      */
+    @XmlElementWrapper(name="airport_list")
+    @XmlElement(name="airport")
     private List<Airport> airportsList;
     
     /**
      * airport to be added into list
      */
+    @XmlTransient
     private Airport airport;
     
     /**

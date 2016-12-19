@@ -10,8 +10,8 @@ import java.util.LinkedList;
 import java.util.Map;
 import lapr.project.model.Project;
 import lapr.project.utils.HTMLExporter;
-import lapr.project.model.anaylsis.InterfaceResults;
 import lapr.project.model.anaylsis.Result;
+import lapr.project.model.lists.ResultsList;
 
 /**
  *
@@ -19,7 +19,7 @@ import lapr.project.model.anaylsis.Result;
  */
 public class ExportHTMLController {
 
-    LinkedList<InterfaceResults> results;
+    LinkedList<ResultsList> results;
 
     public ExportHTMLController() {
 
@@ -36,6 +36,7 @@ public class ExportHTMLController {
         results.put("Comparison", Project.getComparisonResults());
         results.put("Shortest Path", Project.getShortestPathResults());
         return results;
+
 
     }
 
@@ -125,6 +126,7 @@ public class ExportHTMLController {
             }
         }
         return nodes;
+
     }
 
     /**

@@ -9,7 +9,6 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.GridLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
@@ -26,7 +25,6 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
 import javax.swing.border.Border;
 import lapr.project.controller.ExportHTMLController;
 import lapr.project.model.anaylsis.Result;
@@ -40,7 +38,7 @@ public class ExportHTMLUI extends JFrame {
     /**
      * Instance variables.
      */
-    private final int WINDOW_WIDTH = 650;
+    private final int WINDOW_WIDTH = 550;
     private final int WINDOW_HEIGHT = 500;
     private final String WINDOW_TITLE = "Export data to HTML";
     private ExportHTMLController controller;
@@ -48,8 +46,8 @@ public class ExportHTMLUI extends JFrame {
     private JList listBest;
     private JList listComparison;
     private JList listShortestPath;
-    DialogSelectable dialog;
-    JFrame parentFrame;
+    private DialogSelectable dialog;
+    private JFrame parentFrame;
 
     public ExportHTMLUI(JFrame parentFrame) {
         this.parentFrame = parentFrame;
@@ -71,8 +69,8 @@ public class ExportHTMLUI extends JFrame {
 
     private void createComponents() {
         FlowLayout fl = new FlowLayout(FlowLayout.LEADING);
-        FlowLayout fl2 = new FlowLayout(FlowLayout.LEADING, 50, 0);
-
+          FlowLayout fl2 = new FlowLayout(FlowLayout.LEADING,50,0);
+          
         JPanel panelLists = new JPanel(fl);
         JPanel panelLabels = new JPanel(fl2);
         JLabel labelBest = createJLabels("Best consumption");
@@ -91,7 +89,7 @@ public class ExportHTMLUI extends JFrame {
         JButton btn = createJButtonUpdate();
         panelUpdateBtn.add(btn, BorderLayout.NORTH);
         add(panelLists, BorderLayout.WEST);
-        add(panelLabels, BorderLayout.NORTH);
+        add(panelLabels,BorderLayout.NORTH);
         add(panelUpdateBtn, BorderLayout.CENTER);
         JButton btnExport = createExportJButton();
         add(btnExport, BorderLayout.SOUTH);

@@ -23,7 +23,6 @@ import javax.swing.JPanel;
 import static javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
-import lapr.project.controller.AddAirportController;
 
 /**
  * Class that import data into aplication
@@ -34,7 +33,7 @@ public class ImportDataUI extends JDialog{
     /**
      * Guarda a janela anterior
      */
-    private MenuUI framePai;
+    private final MenuUI framePai;
     /**
      * panel
      */
@@ -104,6 +103,8 @@ public class ImportDataUI extends JDialog{
     public JButton createButonImportAirport(){
         Icon icone = new ImageIcon( "src/main/resources/images/airport_mini.jpg" );
         airport = new JButton("Import Airport", icone);
+        airport.setContentAreaFilled(false);
+        airport.setBorderPainted(false);
         airport.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         airport.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);      
         airport.setMnemonic(KeyEvent.VK_A);
@@ -111,7 +112,7 @@ public class ImportDataUI extends JDialog{
         airport.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //implementar
+                ImportAirportUI impairport = new ImportAirportUI();
             }
         });
         return airport;
@@ -119,6 +120,8 @@ public class ImportDataUI extends JDialog{
     public JButton createButonImportAircraft(){
         Icon icone = new ImageIcon( "src/main/resources/images/aircraft.jpg" );
         aircraft = new JButton("Import Aircraft", icone);
+        aircraft.setContentAreaFilled(false);
+        aircraft.setBorderPainted(false);
         aircraft.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         aircraft.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);  
         aircraft.setMnemonic(KeyEvent.VK_R);
@@ -134,6 +137,8 @@ public class ImportDataUI extends JDialog{
     public JButton createButonImportNetwork(){
         Icon icone = new ImageIcon( "src/main/resources/images/network.jpg" );
         network = new JButton("Import Network", icone);
+        network.setContentAreaFilled(false);
+        network.setBorderPainted(false);
         network.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         network.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);  
         network.setMnemonic(KeyEvent.VK_N);

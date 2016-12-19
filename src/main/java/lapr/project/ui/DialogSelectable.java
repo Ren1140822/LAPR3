@@ -26,6 +26,11 @@ import javax.swing.event.ListSelectionListener;
 /**
  * Represents a dialog to choose a selectable.
  *
+ * @author Daniel Gonçalves 1151452
+ * @author Eric Amaral 1141570
+ * @author Ivo Ferro 1151159
+ * @author Renato Oliveira 1140822
+ * @author Ricardo Correia 1151231
  */
 public class DialogSelectable extends JDialog {
 
@@ -40,12 +45,12 @@ public class DialogSelectable extends JDialog {
     private String selectable;
 
     /**
-     * The Strings list.
+     * The Selectables list.
      */
     private final List<String> selectablesList;
 
     /**
-     * The Strings JList.
+     * The Selectables JList.
      */
     private JList<Object> selectablesJList;
 
@@ -150,12 +155,12 @@ public class DialogSelectable extends JDialog {
 
         this.selectablesJList = new JList();
         this.selectablesJList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        this.selectablesJList.setListData(this.selectablesList.toArray());
+       this.selectablesJList.setListData(selectablesList.toArray());
 
         this.selectablesJList.addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent lse) {
-               DialogSelectable.this.selectButton.setEnabled(!DialogSelectable.this.selectablesJList.isSelectionEmpty());
+                DialogSelectable.this.selectButton.setEnabled(!DialogSelectable.this.selectablesJList.isSelectionEmpty());
             }
         });
 
@@ -191,7 +196,7 @@ public class DialogSelectable extends JDialog {
         this.selectButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-              DialogSelectable.this.selectable = (String) DialogSelectable.this.selectablesList
+                DialogSelectable.this.selectable = (String) DialogSelectable.this.selectablesList
                         .get(DialogSelectable.this.selectablesJList.getSelectedIndex());
                 dispose();
             }
@@ -213,7 +218,7 @@ public class DialogSelectable extends JDialog {
         cancelButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-               DialogSelectable.this.selectable = null;
+                DialogSelectable.this.selectable = null;
                 dispose();
             }
         });
@@ -226,7 +231,7 @@ public class DialogSelectable extends JDialog {
      *
      * @return selected item
      */
-    public String getSelectedItem() {
+    public String  getSelectedItem() {
         return this.selectable;
     }
 }

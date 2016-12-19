@@ -10,7 +10,6 @@ import java.util.LinkedList;
 import java.util.Map;
 import lapr.project.model.Project;
 import lapr.project.utils.CSVExporter;
-import lapr.project.model.anaylsis.InterfaceResults;
 import lapr.project.model.anaylsis.Result;
 
 /**
@@ -27,7 +26,7 @@ public class ExportCSVController {
     public Map<String, LinkedList<Result>> getAvailableResults() {
         Map<String, LinkedList<Result>> results = new HashMap<>();
         results.put("Best consumption", Project.getEcologicPathResults());
-        results.put("Comparison", Project.getComparisonResults());
+         results.put("Comparison", Project.getComparisonResults());
         results.put("Shortest Path", Project.getShortestPathResults());
         return results;
 
@@ -107,6 +106,7 @@ public class ExportCSVController {
         LinkedList<String> nodes = new LinkedList<>();
         LinkedList<Result> results = Project.getEcologicPathResults();
         for (Result r : results) {
+            
             if (!nodes.contains(r.getStartNode().getId())) {
                 nodes.add(r.getStartNode().getId());
             }

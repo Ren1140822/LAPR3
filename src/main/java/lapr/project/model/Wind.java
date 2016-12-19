@@ -6,6 +6,8 @@
 package lapr.project.model;
 
 import java.io.Serializable;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  * Class that represents Wind of a Segment
@@ -16,13 +18,18 @@ public class Wind implements Serializable{
     /**
      * Class atributes.
      */
+    @XmlTransient
     private int windIntensity;
+//    @XmlElement(name="wind_direction")
+    @XmlTransient
     private int windDirection;
     
     /**
      * Default values.
      */
+    @XmlTransient
     private final int DEFAULT_WIND_INTENSITY = 0;
+    @XmlTransient
     private final int DEFAULT_WIND_DIRECTION = 0;
     
     /**
@@ -53,8 +60,8 @@ public class Wind implements Serializable{
     }
 
     /**
-     * gets the intensity of the wind
-     * @return the windIntensity
+     * gets the wind intensity of the wind
+     * @return the wind Intensity
      */
     public int getWindIntensity() {
         return windIntensity;
@@ -66,6 +73,24 @@ public class Wind implements Serializable{
      */
     public void setWindIntensity(int windIntensity) {
         this.windIntensity = windIntensity;
+    }
+    
+    /**
+     * gets the wind intensity for JAXB
+     * @return the wind intensity for JAXB
+     */
+    @XmlElement(name="wind_intensity")
+    public String getWindIntensity_() {
+        return String.valueOf(windIntensity);
+    }
+
+    /**
+     * sets the wind intensity for JAXB
+     * @param windInt the wind intensity for JAXB
+     */
+    public void setWindIntensity_(String windInt) {
+        String a = windInt.replaceAll(" knot", "");
+        this.windIntensity = Integer.parseInt(a);
     }
 
     /**

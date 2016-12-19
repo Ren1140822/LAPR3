@@ -5,57 +5,20 @@
  */
 package lapr.project.model.anaylsis;
 
-import lapr.project.model.Aircraft;
 import lapr.project.model.Node;
 
 /**
  * The class to stores and manage analysis results
  * @author Diana Silva
  */
-public class Result {
-    private Node startNode;
-    private Node endNode;
-    Aircraft aircraft;
-    
-    public Result(){      
-    }
-    
-    public Result(Aircraft aircraft){
-        this.aircraft=aircraft;
-    }
-    
-    public Result(Node startNode, Aircraft aircraft){
-        this.startNode=startNode;
-        this.aircraft=aircraft;
-    }
+public abstract class Result {
+    Node startNode;
+    Node endNode;
+    double resultPath;
     
     
     public Result(Node startNode){
         this.startNode=startNode;
-    }
-    
-     /**
-     * Gets the aircraft of flight
-     * @return the aircraft
-     */
-    public Aircraft getAircraft() {
-        return aircraft;
-    }
-    
-     /**
-     * Gets the origin of flight
-     * @return the startNode
-     */
-    public Node getStartNode() {
-        return startNode;
-    }
-
-    /**
-     * Gests the destination of flight
-     * @return the endNode
-     */
-    public Node getEndNode() {
-        return endNode;
     }
     
     /**
@@ -74,20 +37,28 @@ public class Result {
         this.endNode=endNode;
     }
     
-    /**
-     * Sets the aircraft of flight
-     * @param aircraft 
-     */
-    public void setAircraft(Aircraft aircraft){
-        this.aircraft=aircraft;
-    }  
     
-     
-    public double calculateBestPath(){
-        return 0;
-    } 
- 
-    public boolean saveBestResult(){      
-        return true;
+    /**
+     * Sets the analysis final result
+     * @param result analysis result  
+     */
+    public void setResult(double result){
+        resultPath=result;
     }
+
+    public Node getStartNode() {
+        return startNode;
+    }
+
+    public Node getEndNode() {
+        return endNode;
+    }
+
+    public double getResultPath() {
+        return resultPath;
+    }
+    
+    
+    
+    
 }

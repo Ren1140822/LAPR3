@@ -44,11 +44,12 @@ public class ExportCSVUI extends JFrame {
     private JList listComparison;
     private JList listShortestPath;
     private DialogSelectable dialog;
-    JFrame parentFrame;
+    private JFrame parentFrame;
 
     public ExportCSVUI(JFrame parentFrame) {
         this.parentFrame = parentFrame;
         this.setLocationRelativeTo(this.parentFrame);
+
         this.setResizable(false);
 
         addWindowListener(new WindowAdapter() {
@@ -57,7 +58,9 @@ public class ExportCSVUI extends JFrame {
                 closeWindow();
             }
         });
+
         controller = new ExportCSVController();
+
         results = controller.getAvailableResults();
         this.setSize(new Dimension(WINDOW_WIDTH, WINDOW_HEIGHT));
         this.setTitle(WINDOW_TITLE);
@@ -123,17 +126,20 @@ public class ExportCSVUI extends JFrame {
 
             @Override
             public void mouseClicked(MouseEvent me) {
+
                 String[] buttons = {"Filter by nodes", "Filter by aircraft type", "Cancel"};
                 int rc = JOptionPane.showOptionDialog(null, "Choose the filter", "Filter", JOptionPane.PLAIN_MESSAGE, 0, null, buttons, buttons[0]);
                 if (rc == 0) {
                     dialog = new DialogSelectable(ExportCSVUI.this, controller.getListOfOrigins(), "Select origin node");
                     results = controller.getFlightPathAnalisysResultsGroupedByOriginDestination(dialog.getSelectedItem(), "any");
                 }
-                if (rc ==1) {
+                if (rc == 1) {
                     dialog = new DialogSelectable(ExportCSVUI.this, controller.getListOfOrigins(), "Select aircraft type");
                     results = controller.getFlightPathAnalisysResultsGroupedByAircraftType(dialog.getSelectedItem());
                 }
-                listComparison.setListData(results.get("Best consumption").toArray());
+
+                listBest.setListData(results.get("Best consumption").toArray());
+
                 listComparison.setListData(results.get("Comparison").toArray());
                 listShortestPath.setListData(results.get("Shortest Path").toArray());
             }
@@ -154,38 +160,28 @@ public class ExportCSVUI extends JFrame {
                 if (listBest.getSelectedValue() == null && listComparison.getSelectedValue() == null && listShortestPath.getSelectedValue() == null) {
                     JOptionPane.showMessageDialog(rootPane, "Nothing selected to export.", "Error", JOptionPane.ERROR_MESSAGE);
                 } else {
-                    int nrOfSelectedIndexes = listBest.getSelectedIndices().length + listComparison.getSelectedIndices().length + listShortestPath.getSelectedIndices().length;
-                    if (nrOfSelectedIndexes > 4) {
-                        JOptionPane.showMessageDialog(rootPane, "Select less than four items to export..", "Error", JOptionPane.ERROR_MESSAGE);
-                    } else {
-                        int selectedIndexes[] = listBest.getSelectedIndices();
-                        JFileChooser chooser = new JFileChooser();
-                        chooser.showSaveDialog(null);
-                        String path = chooser.getCurrentDirectory().getAbsolutePath();
-                        for (int i = 0; i < selectedIndexes.length; i++) {
-                            controller.exportResult((Result) listBest.getSelectedValue(), path + "\\best_results" + (i + 1) + ".html");
-                        }
-                        selectedIndexes = listComparison.getSelectedIndices();
-                        for (int i = 0; i < selectedIndexes.length; i++) {
-                            controller.exportResult((Result) listComparison.getSelectedValue(), path + "\\comparison_results" + (i + 1) + ".html");
-                        }
-                        selectedIndexes = listShortestPath.getSelectedIndices();
-                        for (int i = 0; i < selectedIndexes.length; i++) {
-                            controller.exportResult((Result) listShortestPath.getSelectedValue(), path + "\\shortestpath" + (i + 1) + ".html");
-                        }
-
+                    JFileChooser chooser = new JFileChooser();
+                    chooser.showSaveDialog(null);
+                    String path = chooser.getCurrentDirectory().getAbsolutePath();
+                    if (listBest.getSelectedValue() != null) {
+                        controller.exportResult((Result) listBest.getSelectedValue(), path + "\\best.csv");
+                    }
+                    if (listComparison.getSelectedValue() != null) {
+                        controller.exportResult((Result) listComparison.getSelectedValue(), path + "\\comparison.csv");
+                    }
+                    if (listShortestPath.getSelectedValue() != null) {
+                        controller.exportResult((Result) listShortestPath.getSelectedValue(), path + "\\shortestpath.csv");
                     }
                 }
             }
         });
         return btn;
     }
-
-    public void closeWindow() {
+     public void closeWindow() {
         String[] op = {"Yes", "No"};
         String question = "Close window?";
         int opcao = JOptionPane.showOptionDialog(this, question,
-                "Export CSV", JOptionPane.YES_NO_OPTION,
+                "Export HTML", JOptionPane.YES_NO_OPTION,
                 JOptionPane.QUESTION_MESSAGE, null, op, op[0]);
         if (opcao == JOptionPane.YES_OPTION) {
             dispose();

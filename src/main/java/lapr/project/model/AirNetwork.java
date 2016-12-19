@@ -6,60 +6,162 @@
 package lapr.project.model;
 
 import java.io.Serializable;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 import lapr.project.model.mapgraph.Graph;
-import lapr.project.model.lists.NodeList;
-import lapr.project.model.lists.SegmentList;
 
 /**
  * Class that represents a air network of Segments and Nodes
  * @author Pedro Fernandes
  */
-public class AirNetwork implements Serializable{
-    
+@XmlRootElement(name="Network")
+@XmlAccessorType(XmlAccessType.FIELD)
+public class AirNetwork implements Serializable{    
+    /**
+     * the id of airnetwork
+     */
+    @XmlAttribute(name="id")
+    private String id;
+    /**
+     * the id of description
+     */
+    @XmlAttribute(name="description")
+    private String description;
     /**
      * the list of nodes
      */
-    private NodeList nodeList;
+    @XmlElementWrapper(name="node_list")
+    @XmlElement(name="node")
+    private Map<String,Node> nodeList;
+    /**
+     * Node to be added into list
+     */
+    @XmlTransient
+    private Node node;
     /**
      * the list of segments
      */
-    private SegmentList segmentList;
+    @XmlElementWrapper(name="segment_list")
+    @XmlElement(name="segment")
+    private List<Segment> segmentList;
+    
+    /**
+     * Segment to be added into list
+     */
+    @XmlTransient
+    private Segment segment;
+    
     /**
      * graph
      */
     private transient Graph<Node, Segment> airNetworkGraph;
-    
+    /**
+     * Default values
+     */
+    @XmlTransient
+    private String DEFAULT_ID = "NoID";
+    @XmlTransient
+    private String DEFAULT_DESCRIPTION = "NoDescription";
     /**
      * constructor
      */
     public AirNetwork(){
-        nodeList = new NodeList();
-        segmentList = new SegmentList();
-        airNetworkGraph = new Graph<>(true);
+        this.id = DEFAULT_ID;
+        this.description=DEFAULT_DESCRIPTION;
+        this.nodeList = new HashMap<>();
+        this.segmentList = new LinkedList<>();
+        this.airNetworkGraph = new Graph<>(true);
+    }
+    
+    /**
+     * gets the id
+     * @return the id
+     */
+    public String getId() {
+        return id;
+    }
+
+    /**
+     * sets the id
+     * @param id the id to set
+     */
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    /**
+     * gets the description
+     * @return the description
+     */
+    public String getDescription() {
+        return description;
+    }
+
+    /**
+     * sets the description
+     * @param description the description to set
+     */
+    public void setDescription(String description) {
+        this.description = description;
+    }
+//****************************** Node List *********************************    
+    /**
+     * sets the node
+     * @param id the id of the node
+     * @param latitude the latitude of the node
+     * @param longitude the longitude of the node
+     */
+    public void setNode(String id, double latitude, double longitude){
+        node = new Node();
+        node.setId(id);
+        node.setLatitude(latitude);
+        node.setLongitude(longitude);
+    }
+    
+    /**
+     * validate and saves the node into nodesList
+     * @return true if node is valid and is added, false if not
+     */
+    public boolean saveNode(){
+        if(validateNode()){
+            addNode();
+            return true;
+        }
+        return false;
+    }
+    
+    /**
+     * validate if node is valid and do not exist in the list
+     * @return true if node is valid and do not exist in the list, false if not
+     */
+    private boolean validateNode(){
+        return node.validate() && !nodeList.containsKey(node.getId());
+    }
+    
+    /**
+     * add the node into the list
+     * @return true if node is added, false if not
+     */
+    private void addNode(){
+        nodeList.put(node.getId(), node);
     }
     
     /**
      * gets the node list
      * @return the node list
      */
-    public NodeList getNodeList(){
+    public Map<String, Node> getNodeList(){
         return nodeList;
-    }
-    
-    /**
-     * gets the segment list
-     * @return the segment list
-     */
-    public SegmentList getSegmentList(){
-        return segmentList;
-    }
-    
-    /**
-     * gets the airnetwork graph
-     * @return the airnetwork graph
-     */
-    public Graph<Node, Segment> getAirNetwork(){
-        return airNetworkGraph;
     }
     
     /**
@@ -67,18 +169,83 @@ public class AirNetwork implements Serializable{
      *
      * @param list the list
      */
-    public void setNodeList(NodeList list) {
+    public void setNodeList(Map<String, Node> list) {
         nodeList = list;
     }
+//*************************** end Node List *******************************
+
+
+//****************************** Segment List *********************************     
+
+    /**
+     * sets the segment
+     * @param id the id of the segment
+     * @param startNode the startNode of the segment
+     * @param endNode the endNode of the segment
+     * @param direction the direction of the segment
+     * @param windIntensity the wind Intensity of the segment
+     * @param windDirection the wind Direction of the segment
+     */
+    public void setSegment(String id, String startNode, String endNode, 
+            String direction, int windIntensity, int windDirection){
+        segment = new Segment();
+        segment.setId(id);
+        segment.setStartNode(startNode);
+        segment.setEndNode(endNode);
+        segment.setDirection(direction);
+        segment.setWind(windIntensity, windDirection);
+    }
     
+    /**
+     * validate and saves the segment into segmentsList
+     * @return true if segment is valid and is added, false if not
+     */
+    public boolean saveSegment(){
+        return validateSegment()&& addSegment();       
+    }
+    
+    /**
+     * validate if segment is valid and do not exist in the list
+     * @return true if segment is valid and do not exist in the list, false if not
+     */
+    private boolean validateSegment(){
+        return segment.validate() && !segmentList.contains(segment);
+    }
+    
+    /**
+     * add the segment into the list
+     * @return true if segment is added, false if not
+     */
+    private boolean addSegment(){
+        return segmentList.add(segment);
+    }
+    
+    /**
+     * gets the segment list
+     * @return the segment list
+     */
+    public List<Segment> getSegmentList(){
+        return segmentList;
+    }
+
     /**
      * Sets the segments list class reference.
      *
      * @param list the list
      */
-    public void setSegmentList(SegmentList list) {
+    public void setSegmentList(List<Segment> list) {
         segmentList = list;
     }
+    
+//*************************** end Segment List *******************************
+    
+    /**
+     * gets the airnetwork graph
+     * @return the airnetwork graph
+     */
+    public Graph<Node, Segment> getAirNetwork(){
+        return airNetworkGraph;
+    }   
     
     /**
      * generate the graph with nodes -> vertex and segments -> edges
@@ -93,10 +260,12 @@ public class AirNetwork implements Serializable{
      * @return true if num vertices == size of nodelist, false if not
      */
     private boolean insertNodes(){
-        for(Node node : nodeList.getNodeList()){
-            airNetworkGraph.insertVertex(node);
+        Set<String> nodes = nodeList.keySet();
+        if(nodes.isEmpty()) return false;
+        for(String nod : nodes){
+            airNetworkGraph.insertVertex(nodeList.get(nod));
         }
-        return airNetworkGraph.numVertices() == nodeList.getNodeList().size();
+        return airNetworkGraph.numVertices() == nodeList.size();
     }
     
     /**
@@ -106,17 +275,20 @@ public class AirNetwork implements Serializable{
      * false if not
      */
     private boolean insertSegments(){
-        for(Segment segment : segmentList.getSegmentList()){
-            if(segment.getDirection() == Segment.Direction.BIDIRECTIONAL){
-                airNetworkGraph.insertEdge(segment.getStartNode(), segment.getEndNode(), segment, 1);
-                airNetworkGraph.insertEdge(segment.getEndNode(),segment.getStartNode(), segment, 1);
+        for(Segment s : segmentList){
+            if(s.getDirection() == Segment.Direction.BIDIRECTIONAL){
+                airNetworkGraph.insertEdge(nodeList.get(s.getStartNode()), 
+                        nodeList.get(s.getEndNode()), s, 1);
+                airNetworkGraph.insertEdge(nodeList.get(s.getEndNode()),
+                        nodeList.get(s.getStartNode()), s, 1);
             }else{
-                if(segment.getDirection() == Segment.Direction.DIRECT){
-                    airNetworkGraph.insertEdge(segment.getStartNode(), segment.getEndNode(), segment, 1);
+                if(s.getDirection() == Segment.Direction.DIRECT){
+                    airNetworkGraph.insertEdge(nodeList.get(s.getStartNode()), 
+                            nodeList.get(s.getEndNode()), s, 1);
                 }
             }      
         }
-        return airNetworkGraph.numEdges() >= segmentList.getSegmentList().size();
+        return airNetworkGraph.numEdges() >= segmentList.size();
     }
     
     /**
@@ -133,8 +305,8 @@ public class AirNetwork implements Serializable{
      * @param startNode origin of flight
      * @return list of possible destination airports
      */
-    public NodeList getPossibleEndNodes(Node startNode) {
-        NodeList list = new NodeList();
+    public List<Node> getPossibleEndNodes(Node startNode) {
+        List<Node> list = new LinkedList<>();
         /**implement methods to find possible end airports by the segments in project**/
         return list;
     }

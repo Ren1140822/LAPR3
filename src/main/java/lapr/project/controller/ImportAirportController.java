@@ -5,6 +5,11 @@
  */
 package lapr.project.controller;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Unmarshaller;
 import lapr.project.model.Project;
 import lapr.project.model.lists.AirportList;
 
@@ -16,14 +21,28 @@ public class ImportAirportController {
     
     AirportList airportsList;
     
+    JAXBContext jaxbContext;
+    
     public ImportAirportController(){
         airportsList = Project.airportList;
     }
     
-    public void ImportAirportList(String file){
-        
-        //implementar
-        
+    /**
+     * airport list imported
+     * @param file
+     * @return airport list imported
+     * @throws FileNotFoundException 
+     */
+    public boolean importXMLAirportList(File file) throws FileNotFoundException {
+        try {
+            jaxbContext = JAXBContext.newInstance(AirportList.class);
+            Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
+            airportsList = (AirportList) jaxbUnmarshaller.unmarshal(file);
+            return true;
+        } catch (JAXBException ex) { 
+            System.err.println(ex);
+            return false;
+        }
     }
     
 }

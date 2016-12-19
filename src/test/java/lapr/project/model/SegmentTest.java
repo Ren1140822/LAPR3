@@ -62,19 +62,6 @@ public class SegmentTest {
     }
 
     /**
-     * Test of getStartNode method, of class Segment.
-     */
-    @Test
-    public void testGetStartNode() {
-        System.out.println("getStartNode");
-        Segment instance = new Segment();        
-        Node expResult = new Node("id1", 2, 48.5);
-        instance.setStartNode(expResult);
-        Node result = instance.getStartNode();
-        assertEquals(expResult, result);
-    }
-
-    /**
      * Test of setStartNode method, of class Segment.
      */
     @Test
@@ -82,20 +69,7 @@ public class SegmentTest {
         System.out.println("setStartNode");
         Node startNode = new Node("id1", 2, 48.5);
         Segment instance = new Segment();
-        instance.setStartNode(startNode);
-    }
-
-    /**
-     * Test of getEndNode method, of class Segment.
-     */
-    @Test
-    public void testGetEndNode() {
-        System.out.println("getEndNode");
-        Segment instance = new Segment();
-        Node expResult = new Node("id1", 2, 48.5);
-        instance.setEndNode(expResult);
-        Node result = instance.getEndNode();
-        assertEquals(expResult, result);
+        instance.setStartNode(startNode.getId());
     }
 
     /**
@@ -106,7 +80,7 @@ public class SegmentTest {
         System.out.println("setEndNode");
         Node endNode = new Node("id1", 2, 48.5);
         Segment instance = new Segment();
-        instance.setEndNode(endNode);
+        instance.setEndNode(endNode.getId());
     }
 
     /**
@@ -186,7 +160,7 @@ public class SegmentTest {
         
         System.out.println("equals2");
         Object otherObject2 = new Segment();
-        Segment instance2 =new Segment("", new Node("id1",-90,90), new Node("id2", -9, 90), "direct", new Wind(15, 40));
+        Segment instance2 =new Segment("", "id1", "id1", "direct", new Wind(15, 40));
         boolean expResult2 = false;
         boolean result2 = instance2.equals(otherObject2);
         assertEquals(expResult2, result2);
@@ -209,41 +183,69 @@ public class SegmentTest {
      */
     @Test
     public void testValidate() {
+        Node n1 = new Node("id1",-91,90);
+        Node n2 = new Node("id2", -9, 90);
+        Node n3 = new Node("id3",-91,90);
+        Node n4 = new Node("id4",-89,90);
+        Node n5 = new Node("id5",-11,90);
+        Node n6 = new Node("id6",-91,90);
+        Node n7 = new Node("id7",-91,90);
+        
         System.out.println("validate1");
-        Segment instance = new Segment("", new Node("id1",-91,90), new Node("id2", -9, 90), "direct", new Wind(15, 40));
+        Segment instance = new Segment("", n1.getId(), n2.getId(), "direct", new Wind(15, 40));
         boolean expResult = false;
         boolean result = instance.validate();
         assertEquals(expResult, result);
         
         System.out.println("validate2");
-        Segment instance2 = new Segment("seg01", new Node("id1",90,90), new Node("id2", -91, 90), "direct", new Wind(15, 40));
+        Segment instance2 = new Segment("seg01", n5.getId(), n5.getId(), "bidirectional", new Wind(15, 40));
         boolean expResult2 = false;
         boolean result2 = instance2.validate();
         assertEquals(expResult2, result2);
         
         System.out.println("validate3");
-        Segment instance3 = new Segment("s1", new Node("id1",-90,90), new Node("id2", -89, 90), "blbla", new Wind(15, 40));
+        Segment instance3 = new Segment("s1",n1.getId(), n4.getId(), "blbla", new Wind(15, 40));
         boolean expResult3 = false;
         boolean result3 = instance3.validate();
         assertEquals(expResult3, result3);
         
         System.out.println("validate4");
-        Segment instance4 = new Segment("s1", new Node("id1",-90,90), new Node("id2", -89, 90), "direct", new Wind(-15, 40));
+        Segment instance4 = new Segment("s1", n5.getId(), n3.getId(), "direct", new Wind(-15, 40));
         boolean expResult4 = false;
         boolean result4 = instance4.validate();
         assertEquals(expResult4, result4);
         
         System.out.println("validate5");
-        Segment instance5 = new Segment("seg01", new Node("id1",-90,90), new Node("id2", 89, 90), "bidirectional", new Wind(15, 40));
+        Segment instance5 = new Segment("seg01", n5.getId(), n3.getId(), "bidirectional", new Wind(15, 40));
         boolean expResult5 = true;
         boolean result5 = instance5.validate();
         assertEquals(expResult5, result5);
         
-        System.out.println("validate6");
-        Segment instance6 = new Segment("seg01", new Node("id1",-90,90), new Node("id1", -90, 90), "bidirectional", new Wind(15, 40));
-        boolean expResult6 = false;
-        boolean result6 = instance6.validate();
-        assertEquals(expResult6, result6);
+       
+    }
+
+    /**
+     * Test of getStartNode method, of class Segment.
+     */
+    @Test
+    public void testGetStartNode() {
+        System.out.println("getStartNode");
+        Segment instance = new Segment();
+        String expResult = "STARTNODE";
+        String result = instance.getStartNode();
+        assertEquals(expResult, result);
+    }
+
+    /**
+     * Test of getEndNode method, of class Segment.
+     */
+    @Test
+    public void testGetEndNode() {
+        System.out.println("getEndNode");
+        Segment instance = new Segment();
+        String expResult = "ENDNODE";
+        String result = instance.getEndNode();
+        assertEquals(expResult, result);
     }
     
 }
