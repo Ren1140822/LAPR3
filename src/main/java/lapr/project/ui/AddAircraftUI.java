@@ -8,9 +8,12 @@ package lapr.project.ui;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -39,8 +42,15 @@ public class AddAircraftUI extends JFrame {
     private JTextField textSeatsEcon;
     private JTextField textSeatsCommercial;
     private JTextField textNrOfCrewElements;
+    DialogSelectable dialog;
 
     public AddAircraftUI() {
+         addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                closeWindow();
+            }
+        });
         addAircraftController = new AddAircraftController();
         this.setSize(new Dimension(WINDOW_WIDTH, WINDOW_HEIGHT));
         this.setTitle(WINDOW_TITLE);
@@ -55,6 +65,7 @@ public class AddAircraftUI extends JFrame {
         JPanel panelText = createTxtFieldPanel();
         add(panelLabels, BorderLayout.WEST);
         add(panelText, BorderLayout.CENTER);
+        JPanel buttons = new JPanel(new FlowLayout());
         JButton btnSubmit = createSubmitButton();
         add(btnSubmit, BorderLayout.SOUTH);
     }
@@ -127,5 +138,30 @@ public class AddAircraftUI extends JFrame {
         });
         return button;
     }
+      public JButton createAddAircraftModelButton() {
+        JButton button = new JButton("Insert aicraft model");
+        button.setPreferredSize(new Dimension(170, 30));
+        button.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent me) {
 
+              
+              // dialog = new DialogSelectable(parentFrame,)
+            }
+        });
+        return button;
+    }
+
+     public void closeWindow() {
+        String[] op = {"Yes", "No"};
+        String question = "Close window?";
+        int opcao = JOptionPane.showOptionDialog(this, question,
+                "Add aircraft", JOptionPane.YES_NO_OPTION,
+                JOptionPane.QUESTION_MESSAGE, null, op, op[0]);
+        if (opcao == JOptionPane.YES_OPTION) {
+            dispose();
+        } else {
+            setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+        }
+    }
 }

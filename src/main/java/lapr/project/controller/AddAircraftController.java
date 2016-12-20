@@ -28,4 +28,10 @@ public class AddAircraftController {
         return aircraftList.setAircraftData(registration, company, nrOfSeatsEcon, nrOfSeatsCommercial, NrOfElements);
     }
 
+    
+//    public AircraftModelList getListOfAircraftModels()
+//    {
+//        //return Project.getAircraftModelList();
+//        return new AircraftModelList();
+//    }
 }
