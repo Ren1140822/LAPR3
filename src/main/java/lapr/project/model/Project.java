@@ -40,7 +40,7 @@ public class Project {
      *
      * @return a linked list with aircrafts
      */
-    public static LinkedList<Aircraft> getAircraftList() {
+    public static List<Aircraft> getAircraftList() {
         return aircraftList.getAircraftList();
     }
     
@@ -76,7 +76,7 @@ public class Project {
      *
      * @return the comparison results
      */
-    public static LinkedList<Result> getComparisonResults() {
+    public static List<Result> getComparisonResults() {
         return resultsList.getComparisonResultsList();
     }
 
@@ -85,7 +85,7 @@ public class Project {
      *
      * @return the ecologic results
      */
-    public static LinkedList<Result> getEcologicPathResults() {
+    public static List<Result> getEcologicPathResults() {
         return resultsList.getEcologicResultsList();
     }
 
@@ -94,7 +94,7 @@ public class Project {
      *
      * @return the shortest path results
      */
-    public static LinkedList<Result> getShortestPathResults() {
+    public static List<Result> getShortestPathResults() {
         return resultsList.getShortesPathResultsList();
     }
     
@@ -103,7 +103,7 @@ public class Project {
      *
      * @return the fastestest path results
      */
-    public static LinkedList<Result> getFastestPathResults() {
+    public static List<Result> getFastestPathResults() {
         return resultsList.getFastestResultsList();
     }
     
@@ -191,6 +191,6 @@ public class Project {
          airportList = new AirportList();
          resultsList = new ResultsList();
          compareList= new CompareResultsList();
-         //modelList=new AirCraftModelList();
+         modelList=new AircraftModelList();
     }
 }
