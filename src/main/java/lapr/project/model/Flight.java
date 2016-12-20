@@ -15,7 +15,7 @@ public abstract class Flight implements Serializable {
      */
     String flightDesignator;
     int minStopTime; // time in minutes
-    Date scheduledArrival; 
+    Date scheduledArrival;
 
     /**
      * Default attributes
@@ -90,12 +90,7 @@ public abstract class Flight implements Serializable {
         if (minStopTime < 0) {
             return false;
         }
-        if (scheduledArrival != null) {
-            if (scheduledArrival.before(new Date(System.currentTimeMillis()))) {
-                return false;
-            }
-        }
-        return true;
+        return !(scheduledArrival != null && scheduledArrival.before(new Date(System.currentTimeMillis())));
     }
 
     /**
