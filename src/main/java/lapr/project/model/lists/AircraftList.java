@@ -5,7 +5,9 @@
  */
 package lapr.project.model.lists;
 
+import java.io.Serializable;
 import java.util.LinkedList;
+import java.util.List;
 import lapr.project.model.Aircraft;
 import lapr.project.model.AircraftModel;
 import lapr.project.model.CabinConfiguration;
@@ -14,12 +16,12 @@ import lapr.project.model.CabinConfiguration;
  *
  * @author Renato Oliveira 1140822@isep.ipp.pt
  */
-public class AircraftList {
+public class AircraftList implements Serializable{
 
     /**
      * The list of aircrafts.
      */
-    LinkedList<Aircraft> aircraftList;
+    List<Aircraft> aircraftList;
 
     Aircraft aircraft;
 
@@ -44,7 +46,7 @@ public class AircraftList {
      *
      * @param aircraftList the list of aircrafts
      */
-    public AircraftList(LinkedList<Aircraft> aircraftList) {
+    public AircraftList(List<Aircraft> aircraftList) {
         this.aircraftList = aircraftList;
     }
 
@@ -53,7 +55,7 @@ public class AircraftList {
      *
      * @return the aircraft list
      */
-    public LinkedList<Aircraft> getAircraftList() {
+    public List<Aircraft> getAircraftList() {
         return aircraftList;
     }
 
@@ -62,7 +64,7 @@ public class AircraftList {
      *
      * @param aircraftList the aircraft list to set
      */
-    public void setAircrafttList(LinkedList<Aircraft> aircraftList) {
+    public void setAircrafttList(List<Aircraft> aircraftList) {
         this.aircraftList = aircraftList;
     }
 

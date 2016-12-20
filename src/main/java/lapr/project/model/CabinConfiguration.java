@@ -5,11 +5,13 @@
  */
 package lapr.project.model;
 
+import java.io.Serializable;
+
 /**
  *
  * @author Renato Oliveira 1140822@isep.ipp.pt
  */
-public class CabinConfiguration {
+public class CabinConfiguration implements Serializable{
 
     /**
      * Instance variables.

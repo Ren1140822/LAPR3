@@ -6,6 +6,7 @@
 package lapr.project.model.lists;
 
 import java.util.LinkedList;
+import java.util.List;
 import lapr.project.model.Aircraft;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -19,7 +20,7 @@ import static org.junit.Assert.*;
  * @author Renato Oliveira 1140822@isep.ipp.pt
  */
 public class AircraftListTest {
-       AircraftList instance = new AircraftList();
+       AircraftList instance2 = new AircraftList();
     public AircraftListTest() {
     }
     
@@ -46,8 +47,9 @@ public class AircraftListTest {
     public void testGetAircraftList() {
         System.out.println("getAircraftList");
      
-        LinkedList<Aircraft> expResult = new LinkedList<Aircraft>();
-        LinkedList<Aircraft> result = instance.getAircraftList();
+        List<Aircraft> expResult = new LinkedList<>();
+        instance2.setAircrafttList(expResult);
+        List<Aircraft> result = instance2.getAircraftList();
         assertEquals(expResult, result);
     
     }
@@ -60,7 +62,7 @@ public class AircraftListTest {
         System.out.println("setAircrafttList");
         LinkedList<Aircraft> aircraftList =  new LinkedList<Aircraft>();
         aircraftList.add(new Aircraft());
-        AircraftList instance =this.instance;
+        AircraftList instance =this.instance2;
         instance.setAircrafttList(aircraftList);
         assertEquals(instance.getAircraftList(), aircraftList);
     }
@@ -87,7 +89,7 @@ public class AircraftListTest {
         int nrOfSeatsEcon = 10;
         int nrOfSeatsCommercial = 10;
         int NrOfElements = 10;
-        AircraftList instance = this.instance;
+        AircraftList instance = this.instance2;
         instance.createAircraft();
         boolean expResult = true;
         boolean result = instance.setAircraftData(registration, company, nrOfSeatsEcon, nrOfSeatsCommercial, NrOfElements);

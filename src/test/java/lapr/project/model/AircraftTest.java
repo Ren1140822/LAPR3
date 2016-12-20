@@ -17,7 +17,7 @@ import static org.junit.Assert.*;
  * @author Renato Oliveira 1140822@isep.ipp.pt
  */
 public class AircraftTest {
-    Aircraft instance = new Aircraft();
+    Aircraft instance2 = new Aircraft();
     public AircraftTest() {
     }
     
@@ -45,7 +45,7 @@ public class AircraftTest {
         System.out.println("toString");
         
         String expResult = "No Registration ID.";
-        String result = instance.toString();
+        String result = instance2.toString();
         assertEquals(expResult, result);
         
     }
@@ -56,8 +56,8 @@ public class AircraftTest {
     @Test
     public void testEquals() {
         System.out.println("equals");
-        Object otherObject = new Aircraft();
-        Aircraft instance = this.instance;
+        Object otherObject = this.instance2;
+        Aircraft instance = this.instance2;
         boolean expResult = true;
         boolean result = instance.equals(otherObject);
         assertEquals(expResult, result);
@@ -70,7 +70,7 @@ public class AircraftTest {
     @Test
     public void testGetRegistration() {
         System.out.println("getRegistration");
-        Aircraft instance =this.instance;
+        Aircraft instance =this.instance2;
         String expResult = "No Registration ID.";
         String result = instance.getRegistration();
         assertEquals(expResult, result);
@@ -84,7 +84,7 @@ public class AircraftTest {
     public void testSetRegistration() {
         System.out.println("setRegistration");
         String registration = "new reg";
-        Aircraft instance =this.instance;
+        Aircraft instance =this.instance2;
         instance.setRegistration(registration);
         String result = instance.getRegistration();
           assertEquals(result,"new reg");
@@ -96,7 +96,7 @@ public class AircraftTest {
     @Test
     public void testGetCompany() {
         System.out.println("getCompany");
-        Aircraft instance = this.instance;
+        Aircraft instance = this.instance2;
         String expResult = "No Company.";
         String result = instance.getCompany();
         assertEquals(expResult, result);
@@ -110,7 +110,7 @@ public class AircraftTest {
     public void testSetCompany() {
         System.out.println("setCompany");
         String company = "new comp";
-        Aircraft instance = this.instance;
+        Aircraft instance = this.instance2;
         instance.setCompany(company);
         assertEquals(instance.getCompany(), "new comp");
     }
@@ -121,7 +121,7 @@ public class AircraftTest {
     @Test
     public void testGetCabinConfig() {
         System.out.println("getCabinConfig");
-        Aircraft instance =this.instance;
+        Aircraft instance =this.instance2;
         CabinConfiguration expResult = new CabinConfiguration(0,0);
         CabinConfiguration result = instance.getCabinConfig();
         assertEquals(expResult, result);
@@ -135,7 +135,7 @@ public class AircraftTest {
     public void testSetCabinConfig() {
         System.out.println("setCabinConfig");
         CabinConfiguration cabinConfig = new CabinConfiguration(1,1);
-        Aircraft instance = this.instance;
+        Aircraft instance = this.instance2;
         instance.setCabinConfig(cabinConfig);
         assertEquals(instance.getCabinConfig(), cabinConfig);
     }
@@ -146,7 +146,7 @@ public class AircraftTest {
     @Test
     public void testGetNrOfCrewElements() {
         System.out.println("getNrOfCrewElements");
-        Aircraft instance = this.instance;
+        Aircraft instance = this.instance2;
         int expResult = 0;
         int result = instance.getNrOfCrewElements();
         assertEquals(expResult, result);
@@ -160,7 +160,7 @@ public class AircraftTest {
     public void testSetNrOfCrewElements() {
         System.out.println("setNrOfCrewElements");
         int nrOfCrewElements = 3;
-        Aircraft instance = this.instance;
+        Aircraft instance = this.instance2;
         instance.setNrOfCrewElements(nrOfCrewElements);
            assertEquals(instance.getNrOfCrewElements(),nrOfCrewElements);
       
@@ -172,7 +172,7 @@ public class AircraftTest {
     @Test
     public void testValidate() {
         System.out.println("validate");
-        Aircraft instance = this.instance;
+        Aircraft instance = this.instance2;
         boolean expResult = true;
         instance.setNrOfCrewElements(1);
       

@@ -5,7 +5,7 @@
  */
 package lapr.project.model;
 
-import java.util.LinkedList;
+import java.io.Serializable;
 import java.util.List;
 import lapr.project.model.anaylsis.Result;
 import lapr.project.model.lists.AircraftList;
@@ -18,7 +18,7 @@ import lapr.project.model.lists.ResultsList;
  * Class that represents a simulation of air network fights
  * @author Renato Oliveira, Pedro Fernandes, Diana Silva
  */
-public class Project {
+public class Project implements Serializable{
 
     /**
      * Variables to read from DAL or file.

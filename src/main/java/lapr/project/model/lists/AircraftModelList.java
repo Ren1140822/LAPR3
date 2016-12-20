@@ -5,12 +5,12 @@
  */
 package lapr.project.model.lists;
 
+import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import lapr.project.model.AircraftModel;
@@ -20,14 +20,13 @@ import lapr.project.model.Regime;
  * class that represents a list of aircraft model
  * @author Renato Oliveira and Pedro Fernandes
  */
-@XmlRootElement
+@XmlRootElement(name="aircraft_list")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class AircraftModelList {
+public class AircraftModelList implements Serializable{
     
     /**
      * Instance variables.
      */
-    @XmlElementWrapper(name="aircraft_list")
     @XmlElement(name="aircraft")
     private List<AircraftModel> aircraftsModelList;
     

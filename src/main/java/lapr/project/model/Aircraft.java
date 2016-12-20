@@ -97,7 +97,8 @@ public class Aircraft implements Serializable {
             return true;
         }
         Aircraft otherAircraft = (Aircraft) otherObject;
-        return this.cabinConfig.equals(otherAircraft.cabinConfig) && this.company.equals(otherAircraft.company) && this.nrOfCrewElements == otherAircraft.nrOfCrewElements && this.registration.equals(otherAircraft.registration) && this.equals(otherAircraft.aircraftModel);
+        return this.cabinConfig.equals(otherAircraft.cabinConfig) && this.company.equals(otherAircraft.company) && 
+                this.nrOfCrewElements == otherAircraft.nrOfCrewElements && this.registration.equals(otherAircraft.registration);
     }
 
     @Override
