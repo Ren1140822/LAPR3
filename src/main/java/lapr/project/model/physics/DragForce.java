@@ -33,7 +33,7 @@ public class DragForce {
     /**
      * velocity of aircraft relative to air (m/s)
      */
-    double velocityAircraft;
+    private double velocityAircraft;
     
     public DragForce(){
         this.dragCoef=-1000;
@@ -58,20 +58,91 @@ public class DragForce {
         this.airDensity=airDensity;
         this.velocityAircraft=velocityAircraft;
     }
-    
-    public double getResult(){
+     
+    private boolean validateOperation(){
+        return getAirDensity()!=-1 && getDragCoef()!=-1000 && getVelocityAircraft()!=-1 && getAreaAircraft()!=-1;
+    }
+
+    /**
+     * @return the dragForce
+     */
+    public double getDragForce() {
         return dragForce;
+    }
+
+    /**
+     * @param dragForce the dragForce to set
+     */
+    public void setDragForce(double dragForce) {
+        this.dragForce = dragForce;
+    }
+
+    /**
+     * @return the dragCoef
+     */
+    public double getDragCoef() {
+        return dragCoef;
+    }
+
+    /**
+     * @param dragCoef the dragCoef to set
+     */
+    public void setDragCoef(double dragCoef) {
+        this.dragCoef = dragCoef;
+    }
+
+    /**
+     * @return the areaAircraft
+     */
+    public double getAreaAircraft() {
+        return areaAircraft;
+    }
+
+    /**
+     * @param areaAircraft the areaAircraft to set
+     */
+    public void setAreaAircraft(double areaAircraft) {
+        this.areaAircraft = areaAircraft;
+    }
+
+    /**
+     * @return the airDensity
+     */
+    public double getAirDensity() {
+        return airDensity;
+    }
+
+    /**
+     * @param airDensity the airDensity to set
+     */
+    public void setAirDensity(double airDensity) {
+        this.airDensity = airDensity;
+    }
+
+    /**
+     * @return the velocityAircraft
+     */
+    public double getVelocityAircraft() {
+        return velocityAircraft;
+    }
+
+    /**
+     * @param velocityAircraft the velocityAircraft to set
+     */
+    public void setVelocityAircraft(double velocityAircraft) {
+        this.velocityAircraft = velocityAircraft;
+    }
+    
+       
+    public double getResult(){
+        return getDragForce();
     }
     
     public boolean calculateDragForce(){
         if(validateOperation()){
-            dragForce= dragCoef* (airDensity*Math.pow(velocityAircraft, 2)/2) * areaAircraft;
+            setDragForce(getDragCoef() * (getAirDensity() * Math.pow(getVelocityAircraft(), 2) / 2) * getAreaAircraft());
             return true;
         }
         return false;
-    }
-    
-    private boolean validateOperation(){
-        return airDensity!=-1 && dragCoef!=-1000 && velocityAircraft!=-1 && areaAircraft!=-1;
     }
 }

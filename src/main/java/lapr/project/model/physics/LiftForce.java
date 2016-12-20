@@ -56,19 +56,89 @@ public class LiftForce {
         this.aircraftVelocity=aircraftVelocity;
     }
     
-    public double getResult(){
+    /**
+     * @return the liftForce
+     */
+    public double getLiftForce() {
         return liftForce;
+    }
+
+    /**
+     * @param liftForce the liftForce to set
+     */
+    public void setLiftForce(double liftForce) {
+        this.liftForce = liftForce;
+    }
+
+    /**
+     * @return the liftCoef
+     */
+    public double getLiftCoef() {
+        return liftCoef;
+    }
+
+    /**
+     * @param liftCoef the liftCoef to set
+     */
+    public void setLiftCoef(double liftCoef) {
+        this.liftCoef = liftCoef;
+    }
+
+    /**
+     * @return the areaWings
+     */
+    public double getAreaWings() {
+        return areaWings;
+    }
+
+    /**
+     * @param areaWings the areaWings to set
+     */
+    public void setAreaWings(double areaWings) {
+        this.areaWings = areaWings;
+    }
+
+    /**
+     * @return the airDensity
+     */
+    public double getAirDensity() {
+        return airDensity;
+    }
+
+    /**
+     * @param airDensity the airDensity to set
+     */
+    public void setAirDensity(double airDensity) {
+        this.airDensity = airDensity;
+    }
+
+    /**
+     * @return the aircraftVelocity
+     */
+    public double getAircraftVelocity() {
+        return aircraftVelocity;
+    }
+
+    /**
+     * @param aircraftVelocity the aircraftVelocity to set
+     */
+    public void setAircraftVelocity(double aircraftVelocity) {
+        this.aircraftVelocity = aircraftVelocity;
+    }
+        
+    public double getResult(){
+        return getLiftForce();
     }
     
     public boolean calculateLiftForce(){
         if(validateOperation()){
-            liftForce= liftCoef* (airDensity*Math.pow(aircraftVelocity, 2)/2) * areaWings;
+            setLiftForce(getLiftCoef() * (getAirDensity() * Math.pow(getAircraftVelocity(), 2) / 2) * getAreaWings());
             return true;
         }
         return false;
     }
     
     private boolean validateOperation(){
-        return airDensity!=-1 && liftCoef!=-1000 && aircraftVelocity!=-1 && areaWings!=-1;
+        return getAirDensity()!=-1 && getLiftCoef()!=-1000 && getAircraftVelocity()!=-1 && getAreaWings()!=-1;
     }
 }

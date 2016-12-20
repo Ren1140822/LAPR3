@@ -5,6 +5,7 @@
  */
 package lapr.project.model.anaylsis;
 
+import lapr.project.model.AircraftModel;
 import lapr.project.model.physics.DragForce;
 import lapr.project.model.physics.LiftForce;
 import lapr.project.model.physics.PhysicsAlgorithms;
@@ -59,11 +60,53 @@ public class PhysicsResult {
     }
     
     public void setTSFC(double tsfc){
-        this.tsfc=tsfc;
+        this.setTsfc(tsfc);
     }
     
-    public void setRange(){
-        rangeFlight=PhysicsAlgorithms.calculateRangeAircraft();
+    public void setRange(AircraftModel aircraftModel){
+        setRangeFlight(PhysicsAlgorithms.calculateRangeAircraft(aircraftModel));
+    }
+
+    /**
+     * @param liftForce the liftForce to set
+     */
+    public void setLiftForce(LiftForce liftForce) {
+        this.liftForce = liftForce;
+    }
+
+    /**
+     * @param dragForce the dragForce to set
+     */
+    public void setDragForce(DragForce dragForce) {
+        this.dragForce = dragForce;
+    }
+
+    /**
+     * @return the tsfc
+     */
+    public double getTsfc() {
+        return tsfc;
+    }
+
+    /**
+     * @param tsfc the tsfc to set
+     */
+    public void setTsfc(double tsfc) {
+        this.tsfc = tsfc;
+    }
+
+    /**
+     * @return the rangeFlight
+     */
+    public double getRangeFlight() {
+        return rangeFlight;
+    }
+
+    /**
+     * @param rangeFlight the rangeFlight to set
+     */
+    public void setRangeFlight(double rangeFlight) {
+        this.rangeFlight = rangeFlight;
     }
     
 }

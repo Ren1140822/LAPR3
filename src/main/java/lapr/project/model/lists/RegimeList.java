@@ -55,9 +55,10 @@ public class RegimeList {
     
     /**
      * validate if regime is valid and do not exist in the list
+     * @param regime regime
      * @return true if regime is valid and do not exist in the list, false if not
      */
-    private boolean validate(Regime regime){
+    public boolean validate(Regime regime){
         return regime.validate() && !regimeList.contains(regime);
     }
     

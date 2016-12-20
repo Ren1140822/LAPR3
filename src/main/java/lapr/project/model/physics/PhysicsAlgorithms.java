@@ -5,6 +5,8 @@
  */
 package lapr.project.model.physics;
 
+import lapr.project.model.AircraftModel;
+
 /**
  * 
  * @author Diana Silva
@@ -47,32 +49,56 @@ public class PhysicsAlgorithms {
    
      /**
      * Calculates the drag coefficient of aircraft
+     * @param cDrag0 drag coefficient
+     * @param liftCoef lift coefficient
+     * @param area area
      * @return lift coefficient
      */
-    public static double calculateDragCoefficient(double liftCoef, double areaAircraft,double naoSei){
-       //falta fazer
-       //R=287.06J/KgK
-        return 0;
+    public static double calculateDragCoefficient(double cDrag0, double liftCoef, double area){
+       //R=287.06J/KgK  
+        return cDrag0 + (Math.pow(liftCoef,2)/ Math.PI*area*Math.E);
     }
     
     /**
      * Calculates the estimative thrust specific fuel consumption (TSFC) - fuel 
      * efficienty of an engine design, i.e. fuel consumption (g/s) per unit of
      * thrust (kN)
+     * @param p
+     * @param density density
+     * @param airVolume air volume
      * @return fuel consumption per unit of thrust ((g/s)/kN)
      */
-    public static double calculateTSFC(){
+    public static double calculateTSFC(double p, double density, double airVolume){
         //T^3= P2/ 4p (densidade)*A (volumeAr)
-        return 0;
+        return Math.pow(p, 2)/ (4*p*density*airVolume);
     }
     
     /**
      * Calculates the range of an aircraft in cruise flight
+     * @param tas true air speed
+     * @param tsfc thrust specific fuel consumption
+     * @param wi initial weight
+     * @param wf final weight
+     * @param liftForce ligt 
+     * @param dragForce drag
      * @return estimative fuelConsumption range of aircraft in cruise flight
      */
-    public static double calculateRangeAircraft(){
+    public static double calculateRangeAircraft(double tas, double tsfc, double wi, double wf, double liftForce, double dragForce){
+        //TrueAirSpeed (TAS), TSFC, Wi=initial weight, Wf=final weight
+        //R= (TAS/TSFC)*(L/D)*ln(Wi/Wf)
+        return (tas/tsfc)*(liftForce/dragForce)*-Math.log(wi/wf);
+    }
+    
+     /**
+     * Calculates the range of an aircraftModel in cruise flight
+     * @param aircraftModel aircraft model
+     * @return estimative fuelConsumption range of aircraftModel in cruise flight
+     */
+    public static double calculateRangeAircraft(AircraftModel aircraftModel){
         //TrueAirSpeed (TAS), TSFC, Wi=initial weight, Wf=final weight
         //R= (TAS/TSFC)*(L/D)*ln(Wi/Wf)
         return 0;
+                //(aircraftModel/tsfc)*(liftForce/dragForce)*-Math.log(wi/wf);
     }
+    
 }
