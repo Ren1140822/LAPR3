@@ -17,28 +17,56 @@ import lapr.project.model.lists.AircraftList;
  */
 public class AddAircraftController {
 
+    /**
+     * Instance variables.
+     */
     AircraftList aircraftList;
     AircraftModel model;
 
+    /**
+     * Default constructor.
+     */
     public AddAircraftController() {
         aircraftList = Project.aircraftList;
     }
 
+    /**
+     * Creates a new aircraft.
+     * @return true if created.
+     */
     public boolean createAircraft() {
         return aircraftList.createAircraft();
     }
 
+    /**
+     * Sets aircraft data.
+     * @param registration the registration id
+     * @param company the company
+     * @param nrOfSeatsEcon nr of seats economic
+     * @param nrOfSeatsCommercial nr of seats commercial
+     * @param NrOfElements nr of crew elements
+     * @return  true if data is set, false otherwise
+     */
     public boolean setAircraftData(String registration, String company, int nrOfSeatsEcon, int nrOfSeatsCommercial, int NrOfElements) {
         return aircraftList.setAircraftData(registration, company, nrOfSeatsEcon, nrOfSeatsCommercial, NrOfElements);
     }
 
+    /**
+     * Checks if model is set.
+     * @return true if set, null pointer exception otherwise.
+     */
     public boolean hasModel() {
         if (this.model == null) {
-            throw new NullPointerException();
+            throw new NullPointerException("Model not set.");
         }
         return true;
     }
 
+    /**
+     * Sets the aircrfat model.
+     * @param aircraftModelID the id of the aircraft model
+     * @return true if all OK
+     */
     public boolean setAircraftModel(String aircraftModelID) {
         getModelByID(aircraftModelID);
         if (model != null) {
@@ -47,9 +75,12 @@ public class AddAircraftController {
         return false;
     }
 
+    /**
+     * Gets the list of aircraft models in string form.
+     * @return the list of strings
+     */
     public List<String> getListOfAircraftModels() {
-        AircraftModel model2= new AircraftModel();
-        Project.getModelList().getModelList().add(model2);
+       
         List<AircraftModel> list = Project.getModelList().getModelList();
         LinkedList<String> modelListInString = new LinkedList<>();
         for (AircraftModel model : list) {
@@ -59,6 +90,10 @@ public class AddAircraftController {
         return modelListInString;
     }
 
+    /**
+     * Gets a model by his ID
+     * @param id  the string ID
+     */
     private void getModelByID(String id) {
         List<AircraftModel> list = Project.getModelList().getModelList();
         for (AircraftModel model : list) {
