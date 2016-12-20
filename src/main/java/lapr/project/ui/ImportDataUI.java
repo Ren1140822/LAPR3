@@ -146,7 +146,7 @@ public class ImportDataUI extends JDialog{
         network.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //implementar
+                ImportNetworkUI impnetwork = new ImportNetworkUI();
             }
         });
         return network;

@@ -38,7 +38,7 @@ public class ImportNetworkController {
             jaxbContext = JAXBContext.newInstance(AirNetwork.class);
             Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
             network = (AirNetwork) jaxbUnmarshaller.unmarshal(file);
-            return true;
+            return !network.getNodeList().isEmpty() && !network.getSegmentList().isEmpty();
         } catch (JAXBException ex) { 
             System.err.println(ex);
             return false;

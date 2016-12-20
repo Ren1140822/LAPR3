@@ -6,11 +6,8 @@
 package lapr.project.model;
 
 import java.io.Serializable;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
@@ -42,7 +39,7 @@ public class AirNetwork implements Serializable{
      */
     @XmlElementWrapper(name="node_list")
     @XmlElement(name="node")
-    private Map<String,Node> nodeList;
+    private List<Node>  nodeList;
     /**
      * Node to be added into list
      */
@@ -78,7 +75,7 @@ public class AirNetwork implements Serializable{
     public AirNetwork(){
         this.id = DEFAULT_ID;
         this.description=DEFAULT_DESCRIPTION;
-        this.nodeList = new HashMap<>();
+        this.nodeList = new LinkedList<>();
         this.segmentList = new LinkedList<>();
         this.airNetworkGraph = new Graph<>(true);
     }
@@ -145,7 +142,7 @@ public class AirNetwork implements Serializable{
      * @return true if node is valid and do not exist in the list, false if not
      */
     private boolean validateNode(){
-        return node.validate() && !nodeList.containsKey(node.getId());
+        return node.validate() && !nodeList.contains(node);
     }
     
     /**
@@ -153,14 +150,14 @@ public class AirNetwork implements Serializable{
      * @return true if node is added, false if not
      */
     private void addNode(){
-        nodeList.put(node.getId(), node);
+        nodeList.add(node);
     }
     
     /**
      * gets the node list
      * @return the node list
      */
-    public Map<String, Node> getNodeList(){
+    public List<Node> getNodeList(){
         return nodeList;
     }
     
@@ -169,8 +166,23 @@ public class AirNetwork implements Serializable{
      *
      * @param list the list
      */
-    public void setNodeList(Map<String, Node> list) {
+    public void setNodeList(List<Node> list) {
         nodeList = list;
+    }
+    
+    /**
+     * get node by id
+     * @param id the id of the node
+     * @return node by id
+     */
+    public Node getNodeByString(String id){
+        Node n= null;
+        for (Node nod : nodeList){
+            if(nod.getId().equalsIgnoreCase(id)){
+                return nod;
+            }
+        }
+        return n;
     }
 //*************************** end Node List *******************************
 
@@ -259,13 +271,11 @@ public class AirNetwork implements Serializable{
      * insert nodes into graph
      * @return true if num vertices == size of nodelist, false if not
      */
-    private boolean insertNodes(){
-        Set<String> nodes = nodeList.keySet();
-        if(nodes.isEmpty()) return false;
-        for(String nod : nodes){
-            airNetworkGraph.insertVertex(nodeList.get(nod));
+    private boolean insertNodes(){        
+        for(Node node : nodeList){
+           airNetworkGraph.insertVertex(node);
         }
-        return airNetworkGraph.numVertices() == nodeList.size();
+        return airNetworkGraph.numVertices() == nodeList.size() && airNetworkGraph.numVertices() > 0;
     }
     
     /**
@@ -275,20 +285,11 @@ public class AirNetwork implements Serializable{
      * false if not
      */
     private boolean insertSegments(){
-        for(Segment s : segmentList){
-            if(s.getDirection() == Segment.Direction.BIDIRECTIONAL){
-                airNetworkGraph.insertEdge(nodeList.get(s.getStartNode()), 
-                        nodeList.get(s.getEndNode()), s, 1);
-                airNetworkGraph.insertEdge(nodeList.get(s.getEndNode()),
-                        nodeList.get(s.getStartNode()), s, 1);
-            }else{
-                if(s.getDirection() == Segment.Direction.DIRECT){
-                    airNetworkGraph.insertEdge(nodeList.get(s.getStartNode()), 
-                            nodeList.get(s.getEndNode()), s, 1);
-                }
-            }      
+        for(Segment seg : segmentList){
+            airNetworkGraph.insertEdge(getNodeByString(seg.getStartNode()), 
+                    getNodeByString(seg.getEndNode()), seg, 1);
         }
-        return airNetworkGraph.numEdges() >= segmentList.size();
+        return airNetworkGraph.numEdges() == segmentList.size() && airNetworkGraph.numEdges() > 0;
     }
     
     /**
