@@ -21,6 +21,7 @@ public class Aircraft implements Serializable {
     private String company;
     private CabinConfiguration cabinConfig;
     private int nrOfCrewElements;
+    private AircraftModel aircraftModel;
 
     /**
      * Default attributes.
@@ -29,6 +30,7 @@ public class Aircraft implements Serializable {
     private static final String DEFAULT_COMPANY = "No Company.";
     private static final CabinConfiguration DEFAULT_CABIN_CONFIG = new CabinConfiguration(0, 0);
     private static final int DEFAULT_NR_OF_CREW_ELEMENTS = 0;
+    private static final AircraftModel DEFAULT_MODEL = new AircraftModel();
 
     /**
      * Default constructor.
@@ -38,6 +40,7 @@ public class Aircraft implements Serializable {
         this.company = DEFAULT_COMPANY;
         this.cabinConfig = DEFAULT_CABIN_CONFIG;
         this.nrOfCrewElements = DEFAULT_NR_OF_CREW_ELEMENTS;
+        this.aircraftModel = DEFAULT_MODEL;
     }
 
     /**
@@ -48,11 +51,12 @@ public class Aircraft implements Serializable {
      * @param cabinConfig the cabin configuration
      * @param nrOfCrewElements the nr of crew elements
      */
-    public Aircraft(String registration, String company, CabinConfiguration cabinConfig, int nrOfCrewElements) {
+    public Aircraft(String registration, String company, CabinConfiguration cabinConfig, int nrOfCrewElements, AircraftModel aircraftModel) {
         this.registration = registration;
         this.company = company;
         this.cabinConfig = cabinConfig;
         this.nrOfCrewElements = nrOfCrewElements;
+        this.aircraftModel = aircraftModel;
     }
 
     /**
@@ -65,6 +69,7 @@ public class Aircraft implements Serializable {
         this.company = aircraft.company;
         this.cabinConfig = aircraft.cabinConfig;
         this.nrOfCrewElements = aircraft.nrOfCrewElements;
+        this.aircraftModel = aircraft.aircraftModel;
     }
 
     /**
@@ -92,7 +97,7 @@ public class Aircraft implements Serializable {
             return true;
         }
         Aircraft otherAircraft = (Aircraft) otherObject;
-        return this.cabinConfig.equals(otherAircraft.cabinConfig) && this.company.equals(otherAircraft.company) && this.nrOfCrewElements == otherAircraft.nrOfCrewElements && this.registration.equals(otherAircraft.registration);
+        return this.cabinConfig.equals(otherAircraft.cabinConfig) && this.company.equals(otherAircraft.company) && this.nrOfCrewElements == otherAircraft.nrOfCrewElements && this.registration.equals(otherAircraft.registration) && this.equals(otherAircraft.aircraftModel);
     }
 
     @Override
@@ -102,6 +107,7 @@ public class Aircraft implements Serializable {
         hash = 79 * hash + Objects.hashCode(this.company);
         hash = 79 * hash + Objects.hashCode(this.cabinConfig);
         hash = 79 * hash + this.nrOfCrewElements;
+        hash = 79 * hash + Objects.hashCode(this.aircraftModel);
         return hash;
     }
 
@@ -175,6 +181,14 @@ public class Aircraft implements Serializable {
      */
     public void setNrOfCrewElements(int nrOfCrewElements) {
         this.nrOfCrewElements = nrOfCrewElements;
+    }
+
+    public AircraftModel getAircraftModel() {
+        return aircraftModel;
+    }
+
+    public void setAircraftModel(AircraftModel aircraftModel) {
+        this.aircraftModel = aircraftModel;
     }
 
     public boolean validate() {

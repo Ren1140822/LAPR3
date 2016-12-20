@@ -10,6 +10,8 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
@@ -68,6 +70,7 @@ public class AddAircraftUI extends JFrame {
         add(panelText, BorderLayout.CENTER);
         JPanel buttons = new JPanel(new FlowLayout());
         btnSubmit = createSubmitButton();
+      
         JButton btnModel = createAddAircraftModelButton();
         buttons.add(btnModel);
         buttons.add(btnSubmit);
@@ -126,18 +129,17 @@ public class AddAircraftUI extends JFrame {
     public JButton createSubmitButton() {
         JButton button = new JButton("Create aircraft");
         button.setPreferredSize(new Dimension(170, 30));
-        button.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent me) {
+        button.addActionListener(new ActionListener()  {
+            public void actionPerformed(ActionEvent e) {
 
-                addAircraftController.createAircraft();
+               
                 try {
-                    if (addAircraftController.setAircraftData(textRegistration.getText(), textCompany.getText(), Integer.parseInt(textSeatsEcon.getText()), Integer.parseInt(textSeatsCommercial.getText()), Integer.parseInt(textNrOfCrewElements.getText()))) {
+                    if (addAircraftController.setAircraftData(textRegistration.getText(), textCompany.getText(), Integer.parseInt(textSeatsEcon.getText()), Integer.parseInt(textSeatsCommercial.getText()), Integer.parseInt(textNrOfCrewElements.getText())) && addAircraftController.hasModel()) {
                         JOptionPane.showMessageDialog(rootPane, "Aircraft added sucessfully.", "Sucess", JOptionPane.INFORMATION_MESSAGE);
                         btnSubmit.setEnabled(false);
                     }
-                } catch (NumberFormatException ex) {
-                    JOptionPane.showMessageDialog(rootPane, "Invalid values submitted.", "Error", JOptionPane.ERROR_MESSAGE);
+                } catch (NumberFormatException|NullPointerException ex) {
+                    JOptionPane.showMessageDialog(rootPane, "Invalid values submitted or no valid model set for this aircraft.", "Error", JOptionPane.ERROR_MESSAGE);
                 }
             }
 
@@ -152,8 +154,8 @@ public class AddAircraftUI extends JFrame {
         button.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent me) {
-
-                dialog = new DialogSelectable(AddAircraftUI.this, addAircraftController.getListOfAircraftModels());
+                 addAircraftController.createAircraft();
+                dialog = new DialogSelectable(AddAircraftUI.this, addAircraftController.getListOfAircraftModels(),"Select aircraft model");
                 if (addAircraftController.setAircraftModel(dialog.getSelectedItem())) {
                     JOptionPane.showMessageDialog(rootPane, "Model set sucessfully.", "Sucess", JOptionPane.INFORMATION_MESSAGE);
                     btnSubmit.setEnabled(true);

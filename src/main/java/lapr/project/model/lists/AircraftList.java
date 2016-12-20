@@ -7,6 +7,7 @@ package lapr.project.model.lists;
 
 import java.util.LinkedList;
 import lapr.project.model.Aircraft;
+import lapr.project.model.AircraftModel;
 import lapr.project.model.CabinConfiguration;
 
 /**
@@ -75,10 +76,10 @@ public class AircraftList {
         return true;
     }
 
-    public boolean setAircraftData(String registration, String company, int nrOfSeatsEcon,int nrOfSeatsCommercial, int NrOfElements) {
+    public boolean setAircraftData(String registration, String company, int nrOfSeatsEcon, int nrOfSeatsCommercial, int NrOfElements) {
 
         aircraft.setRegistration(registration);
-        aircraft.setCabinConfig(new CabinConfiguration(nrOfSeatsEcon,nrOfSeatsCommercial));
+        aircraft.setCabinConfig(new CabinConfiguration(nrOfSeatsEcon, nrOfSeatsCommercial));
         aircraft.setCompany(company);
         aircraft.setNrOfCrewElements(NrOfElements);
         if (aircraft.validate() && validate()) {
@@ -86,6 +87,11 @@ public class AircraftList {
             return true;
         }
         return false;
+    }
+
+    public boolean setAircraftModel(AircraftModel model) {
+        aircraft.setAircraftModel(model);
+        return true;
     }
 
     private boolean validate() {
