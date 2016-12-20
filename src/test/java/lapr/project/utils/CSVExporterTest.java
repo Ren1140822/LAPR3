@@ -64,5 +64,37 @@ public class CSVExporterTest {
          }
          Assert.assertTrue(result);
     }
+
+    /**
+     * Test of exportMultipleStringsToCSV method, of class CSVExporter.
+     */
+    @Test
+    public void testExportMultipleStringsToCSV() throws FileNotFoundException {
+        System.out.println("exportMultipleStringsToCSV");
+      String title = "title";
+        String heading1 = "h1";
+        String heading2 = "h2";
+      String[][] body = new String[4][2];
+        body[0][0] = "body00";
+        body[0][1] = "body01";
+        body[1][0] = "body10";
+        body[1][1] = "body11";
+        body[2][0] = "body20";
+        body[2][1] = "body21";
+        body[3][0] = "body30";
+        body[3][1] = "body31";
+        String filePath = "src/main/resources/exportfilesfortest/testcsv2.csv";
+        
+         CSVExporter.exportMultipleStringsToCSV(title, heading1, heading2, body, filePath);
+         Scanner scan = new Scanner (new File("src/main/resources/exportfilesfortest/testcsv2.csv"));
+         boolean result=false;
+         while(scan.hasNext())
+         {
+           String test= scan.next();
+            result = test.contains(title) || test.contains(heading1) || test.contains(heading2) || test.contains(body[0][0]) || test.contains(body[1][1]) ||test.contains(body[1][0]) ||test.contains(body[2][1]) || test.contains(body[3][0]) ||test.contains(body[3][0]) ||test.contains("\n");
+         }
+         Assert.assertTrue(result);
+      
+    }
     
 }

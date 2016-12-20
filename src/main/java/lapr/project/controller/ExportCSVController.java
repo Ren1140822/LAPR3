@@ -166,4 +166,16 @@ public class ExportCSVController {
         String results[] = new String[10];
         return CSVExporter.exportStringsToCSV("Results", "", "", results, filePath);
     }
+    
+    /**
+     * Exports  results  to csv.
+     *
+     * @param r the result
+     * @param filePath the file path
+     * @return true if exported
+     */
+    public boolean exportResults(Result r[], String filePath) {
+        String results[][] = new String[10][10];
+        return CSVExporter.exportMultipleStringsToCSV(filePath, filePath, filePath, results, filePath);
+    }
 }

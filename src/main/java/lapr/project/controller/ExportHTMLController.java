@@ -141,4 +141,16 @@ public class ExportHTMLController {
         String results[] = new String[10];
         return HTMLExporter.exportStringsToHTML("Results", "", "", results, filePath);
     }
+    
+    /**
+     * Exports a set of results to html.
+     *
+     * @param r the result
+     * @param filePath the file path
+     * @return true if exported
+     */
+    public boolean exportResults(Result r[], String filePath) {
+        String results[][] = new String[10][10];
+        return HTMLExporter.exportMultipleStringsToHTML("Results", "", "", results, filePath);
+    }
 }

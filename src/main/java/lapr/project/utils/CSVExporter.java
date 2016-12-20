@@ -45,4 +45,48 @@ public class CSVExporter {
         out.close();
         return true;
     }
+    
+    
+    /**
+     * Exports Strings to  csv
+     *
+     * @param title the tab title on browser
+     * @param heading1 the first title
+     * @param heading2 the second title
+     * @param body the body of the document
+     * @param filePath the file path
+     * @return true if exported
+     */
+    public static boolean exportMultipleStringsToCSV(String title, String heading1, String heading2, String[][] body, String filePath) {
+        String page;
+        String data[] = new String[body[0].length];
+        for (int i = 0; i < data.length; i++) {
+            data[i]="";
+        }
+        for (int i = 0; i < body[0].length; i++) {     
+            for (int j = 0; j < body.length; j++) {
+                
+                   data[i] +=  body[j][i]+"---";
+                   
+            }
+            data[i]+="\n" ;
+        }
+         page = title + "\n\n" + heading1 + "\n\n" + heading2 + "\n\n";
+       
+        for (int i = 0; i < data.length; i++) {
+            page +=  data[i]+"";
+        }
+       
+        System.out.println(page);
+        Formatter out = null;
+        try {
+            out = new Formatter(new File(filePath));
+        } catch (FileNotFoundException ex) {
+            out.close();
+            return false;
+        }
+        out.format("%s", page);
+        out.close();
+        return true;
+    }
 }

@@ -52,7 +52,7 @@ public class AddAircraftController {
         List<AircraftModel> list =  Project.getModelList().getModelList();
         for(AircraftModel model : list)
         {
-            
+           
         }
     }
 }
