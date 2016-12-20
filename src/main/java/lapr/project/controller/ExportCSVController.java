@@ -7,6 +7,7 @@ package lapr.project.controller;
 
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import lapr.project.model.Project;
 import lapr.project.utils.CSVExporter;
@@ -23,8 +24,8 @@ public class ExportCSVController {
      *
      * @return the list of results
      */
-    public Map<String, LinkedList<Result>> getAvailableResults() {
-        Map<String, LinkedList<Result>> results = new HashMap<>();
+    public Map<String, List<Result>> getAvailableResults() {
+        Map<String, List<Result>> results = new HashMap<>();
         results.put("Best consumption", Project.getEcologicPathResults());
          results.put("Comparison", Project.getComparisonResults());
         results.put("Shortest Path", Project.getShortestPathResults());
@@ -39,10 +40,10 @@ public class ExportCSVController {
      * @param endNode the destination
      * @return the map containing the results
      */
-    public Map<String, LinkedList<Result>> getFlightPathAnalisysResultsGroupedByOriginDestination(String startNode, String endNode) {
-        Map<String, LinkedList<Result>> results = new HashMap<>();
+    public Map<String, List<Result>> getFlightPathAnalisysResultsGroupedByOriginDestination(String startNode, String endNode) {
+        Map<String, List<Result>> results = new HashMap<>();
         if (startNode != null) {
-            LinkedList<Result> filteredResults = filterResultsNodes(Project.getEcologicPathResults(), startNode, endNode);
+            List<Result> filteredResults = filterResultsNodes(Project.getEcologicPathResults(), startNode, endNode);
             results.put("Best consumption", filteredResults);
             filteredResults = filterResultsNodes(Project.getComparisonResults(), startNode, endNode);
             results.put("Comparison", filteredResults);
@@ -60,8 +61,8 @@ public class ExportCSVController {
      * @param endNode end node
      * @return  the list of results
      */
-    private LinkedList<Result> filterResultsNodes(LinkedList<Result> list, String startNode, String endNode) {
-        LinkedList<Result> filteredResults = new LinkedList<>();
+    private List<Result> filterResultsNodes(List<Result> list, String startNode, String endNode) {
+        List<Result> filteredResults = new LinkedList<>();
         for (Result r : list) {
             if (r.getStartNode().getId().equals(startNode)) {
                 if (r.getEndNode().equals("any")) {
@@ -75,9 +76,9 @@ public class ExportCSVController {
         return filteredResults;
     }
 
-    public Map<String, LinkedList<Result>> getFlightPathAnalisysResultsGroupedByAircraftType(String aircrafType) {
-           Map<String, LinkedList<Result>> results = new HashMap<>();
-            LinkedList<Result> filteredResults =filterResultsAircaft(Project.getEcologicPathResults(), aircrafType);
+    public Map<String, List<Result>> getFlightPathAnalisysResultsGroupedByAircraftType(String aircrafType) {
+           Map<String, List<Result>> results = new HashMap<>();
+            List<Result> filteredResults =filterResultsAircaft(Project.getEcologicPathResults(), aircrafType);
             results.put("Best consumption", filteredResults);
             filteredResults = filterResultsAircaft(Project.getComparisonResults(),  aircrafType);
             results.put("Comparison", filteredResults);
@@ -86,8 +87,8 @@ public class ExportCSVController {
             return results;
     }
     
-     private LinkedList<Result> filterResultsAircaft(LinkedList<Result> list,String aircraftType) {
-       LinkedList<Result> filteredResults = new LinkedList<>();
+     private List<Result> filterResultsAircaft(List<Result> list,String aircraftType) {
+       List<Result> filteredResults = new LinkedList<>();
         for (Result r : list) {
            // if (r.getAircraft().getAircraftModel().getType().equals(aircraftType)) {
 
@@ -102,9 +103,9 @@ public class ExportCSVController {
      *
      * @return the list of start nodes.
      */
-    public LinkedList<String> getListOfOrigins() {
-        LinkedList<String> nodes = new LinkedList<>();
-        LinkedList<Result> results = Project.getEcologicPathResults();
+    public List<String> getListOfOrigins() {
+        List<String> nodes = new LinkedList<>();
+        List<Result> results = Project.getEcologicPathResults();
         for (Result r : results) {
             
             if (!nodes.contains(r.getStartNode().getId())) {
@@ -131,9 +132,9 @@ public class ExportCSVController {
      *
      * @return the list of all aircraft types
      */
-    public LinkedList<String> getListOfAircraftTypes() {
-        LinkedList<String> aircraftTypes = new LinkedList<>();
-        LinkedList<Result> results = Project.getEcologicPathResults();
+    public List<String> getListOfAircraftTypes() {
+        List<String> aircraftTypes = new LinkedList<>();
+        List<Result> results = Project.getEcologicPathResults();
         for (Result r : results) {
             if (!aircraftTypes.contains(r.getStartNode().getId())) {
                 aircraftTypes.add(r.getStartNode().getId());

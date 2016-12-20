@@ -6,6 +6,7 @@
 package lapr.project.controller;
 
 import java.util.LinkedList;
+import java.util.List;
 import lapr.project.model.AircraftModel;
 import lapr.project.model.Project;
 import lapr.project.model.lists.AircraftList;
@@ -35,9 +36,9 @@ public class AddAircraftController {
     {
         return true;
     }
-    public LinkedList<String> getListOfAircraftModels()
+    public List<String> getListOfAircraftModels()
     {
-           LinkedList<AircraftModel> list =  Project.getModelList().getModelList();
+           List<AircraftModel> list =  Project.getModelList().getModelList();
            LinkedList<String> modelListInString = new LinkedList<>();
            for(AircraftModel model:list)
            {
@@ -48,7 +49,7 @@ public class AddAircraftController {
     
     private void getModelByID(String id)
     {
-        LinkedList<AircraftModel> list =  Project.getModelList().getModelList();
+        List<AircraftModel> list =  Project.getModelList().getModelList();
         for(AircraftModel model : list)
         {
             

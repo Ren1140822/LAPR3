@@ -7,6 +7,7 @@ package lapr.project.controller;
 
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import lapr.project.model.Project;
 import lapr.project.utils.HTMLExporter;
@@ -19,7 +20,7 @@ import lapr.project.model.lists.ResultsList;
  */
 public class ExportHTMLController {
 
-    LinkedList<ResultsList> results;
+    List<ResultsList> results;
 
     public ExportHTMLController() {
 
@@ -30,8 +31,8 @@ public class ExportHTMLController {
      *
      * @return the list of results
      */
-    public Map<String, LinkedList<Result>> getAvailableResults() {
-        Map<String, LinkedList<Result>> results = new HashMap<>();
+    public Map<String,List<Result>> getAvailableResults() {
+        Map<String, List<Result>> results = new HashMap<>();
         results.put("Best consumption", Project.getEcologicPathResults());
         results.put("Comparison", Project.getComparisonResults());
         results.put("Shortest Path", Project.getShortestPathResults());
@@ -47,11 +48,11 @@ public class ExportHTMLController {
      * @param endNode the destination
      * @return the map containing the results
      */
-    public Map<String, LinkedList<Result>> getFlightPathAnalisysResultsGroupedByOriginDestination(String startNode, String endNode) {
-        Map<String, LinkedList<Result>> results = new HashMap<>();
+    public Map<String, List<Result>> getFlightPathAnalisysResultsGroupedByOriginDestination(String startNode, String endNode) {
+        Map<String, List<Result>> results = new HashMap<>();
         if(startNode!=null)
         {
-        LinkedList<Result> filteredResults = filterResults(Project.getEcologicPathResults(), startNode, endNode);
+        List<Result> filteredResults = filterResults(Project.getEcologicPathResults(), startNode, endNode);
         results.put("Best consumption", filteredResults);
         filteredResults = filterResults(Project.getComparisonResults(), startNode, endNode);
         results.put("Comparison", filteredResults);
@@ -62,8 +63,8 @@ public class ExportHTMLController {
         return getAvailableResults();
     }
 
-    private LinkedList<Result> filterResults(LinkedList<Result> list, String startNode, String endNode) {
-        LinkedList<Result> filteredResults = new LinkedList<>();
+    private List<Result> filterResults(List<Result> list, String startNode, String endNode) {
+        List<Result> filteredResults = new LinkedList<>();
         for (Result r : list) {
             if (r.getStartNode().getId().equals(startNode)) {
                 if (r.getEndNode().equals("any")) {
@@ -78,9 +79,9 @@ public class ExportHTMLController {
     }
 
     
-      public Map<String, LinkedList<Result>> getFlightPathAnalisysResultsGroupedByAircraftType(String aircrafType) {
-           Map<String, LinkedList<Result>> results = new HashMap<>();
-            LinkedList<Result> filteredResults =filterResultsAircaft(Project.getEcologicPathResults(), aircrafType);
+      public Map<String, List<Result>> getFlightPathAnalisysResultsGroupedByAircraftType(String aircrafType) {
+           Map<String, List<Result>> results = new HashMap<>();
+            List<Result> filteredResults =filterResultsAircaft(Project.getEcologicPathResults(), aircrafType);
             results.put("Best consumption", filteredResults);
             filteredResults = filterResultsAircaft(Project.getComparisonResults(),  aircrafType);
             results.put("Comparison", filteredResults);
@@ -89,8 +90,8 @@ public class ExportHTMLController {
             return results;
     }
     
-     private LinkedList<Result> filterResultsAircaft(LinkedList<Result> list,String aircraftType) {
-       LinkedList<Result> filteredResults = new LinkedList<>();
+     private List<Result> filterResultsAircaft(List<Result> list,String aircraftType) {
+       List<Result> filteredResults = new LinkedList<>();
         for (Result r : list) {
            // if (r.getAircraft().getAircraftModel().getType().equals(aircraftType)) {
 
@@ -105,9 +106,9 @@ public class ExportHTMLController {
      * Gets list of all start nodes.
      * @return  the list of start nodes.
      */
-    public LinkedList<String> getListOfOrigins() {
-        LinkedList<String> nodes = new LinkedList<>();
-        LinkedList<Result> results = Project.getEcologicPathResults();
+    public List<String> getListOfOrigins() {
+        List<String> nodes = new LinkedList<>();
+        List<Result> results = Project.getEcologicPathResults();
         for (Result r : results) {
             if (!nodes.contains(r.getStartNode().getId())) {
                 nodes.add(r.getStartNode().getId());

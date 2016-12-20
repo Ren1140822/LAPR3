@@ -14,6 +14,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import javax.swing.BorderFactory;
 import javax.swing.Icon;
@@ -39,7 +40,7 @@ public class ExportCSVUI extends JFrame {
     private final int WINDOW_HEIGHT = 500;
     private final String WINDOW_TITLE = "Export data to CSV";
     private ExportCSVController controller;
-    private Map<String, LinkedList<Result>> results;
+    private Map<String, List<Result>> results;
     private JList listBest;
     private JList listComparison;
     private JList listShortestPath;

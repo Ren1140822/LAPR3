@@ -6,6 +6,7 @@
 package lapr.project.model.lists;
 
 import java.util.LinkedList;
+import java.util.List;
 import lapr.project.model.AircraftModel;
 
 /**
@@ -17,13 +18,13 @@ public class AircraftModelList {
     /**
      * Instance variables.
      */
-    private LinkedList<AircraftModel> modelList;
+    private List<AircraftModel> modelList;
 
     /**
      * Parameter constructor.
      * @param modelList  the list of aircraft models
      */
-    public AircraftModelList(LinkedList<AircraftModel> modelList) {
+    public AircraftModelList(List<AircraftModel> modelList) {
         this.modelList = modelList;
     }
     
@@ -38,7 +39,7 @@ public class AircraftModelList {
       * Linked list containing the aircraft.
       * @return the model list
       */
-    public LinkedList<AircraftModel> getModelList() {
+    public List<AircraftModel> getModelList() {
         return modelList;
     }
 
@@ -46,7 +47,7 @@ public class AircraftModelList {
      * Sets the model list.
      * @param modelList the model list
      */
-    public void setModelList(LinkedList<AircraftModel> modelList) {
+    public void setModelList(List<AircraftModel> modelList) {
         this.modelList = modelList;
     }
      
