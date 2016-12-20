@@ -134,12 +134,13 @@ public class AddAircraftUI extends JFrame {
                 try {
                     if (addAircraftController.setAircraftData(textRegistration.getText(), textCompany.getText(), Integer.parseInt(textSeatsEcon.getText()), Integer.parseInt(textSeatsCommercial.getText()), Integer.parseInt(textNrOfCrewElements.getText()))) {
                         JOptionPane.showMessageDialog(rootPane, "Aircraft added sucessfully.", "Sucess", JOptionPane.INFORMATION_MESSAGE);
+                        btnSubmit.setEnabled(false);
                     }
                 } catch (NumberFormatException ex) {
                     JOptionPane.showMessageDialog(rootPane, "Invalid values submitted.", "Error", JOptionPane.ERROR_MESSAGE);
                 }
             }
-            
+
         });
         button.setEnabled(false);
         return button;
@@ -153,7 +154,10 @@ public class AddAircraftUI extends JFrame {
             public void mouseClicked(MouseEvent me) {
 
                 dialog = new DialogSelectable(AddAircraftUI.this, addAircraftController.getListOfAircraftModels());
-                btnSubmit.setEnabled(true);
+                if (addAircraftController.setAircraftModel(dialog.getSelectedItem())) {
+                    JOptionPane.showMessageDialog(rootPane, "Model set sucessfully.", "Sucess", JOptionPane.INFORMATION_MESSAGE);
+                    btnSubmit.setEnabled(true);
+                }
             }
         });
         return button;
