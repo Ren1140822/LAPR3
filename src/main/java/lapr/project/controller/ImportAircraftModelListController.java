@@ -14,7 +14,7 @@ import lapr.project.model.Project;
 import lapr.project.model.lists.AircraftModelList;
 
 /**
- *
+ * Controller to import aircraft model list
  * @author Pedro Fernandes
  */
 public class ImportAircraftModelListController {
