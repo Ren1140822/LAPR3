@@ -5,6 +5,7 @@
  */
 package lapr.project.model;
 
+import java.io.Serializable;
 import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -18,7 +19,7 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author Diana Silva
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-public class AircraftModel {
+public class AircraftModel implements Serializable{
 
     private enum Type {
 

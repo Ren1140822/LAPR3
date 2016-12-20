@@ -5,6 +5,7 @@
  */
 package lapr.project.model.lists;
 
+import java.io.Serializable;
 import java.util.LinkedList;
 import lapr.project.model.Aircraft;
 import lapr.project.model.AircraftModel;
@@ -14,7 +15,7 @@ import lapr.project.model.CabinConfiguration;
  *
  * @author Renato Oliveira 1140822@isep.ipp.pt
  */
-public class AircraftList {
+public class AircraftList implements Serializable{
 
     /**
      * The list of aircrafts.

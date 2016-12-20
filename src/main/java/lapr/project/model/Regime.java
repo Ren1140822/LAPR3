@@ -1,5 +1,6 @@
 package lapr.project.model;
 
+import java.io.Serializable;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
@@ -12,7 +13,7 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author Diana Silva
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-public class Regime {
+public class Regime implements Serializable{
 
     /**
      * id of regime motorization

@@ -1,5 +1,6 @@
 package lapr.project.model.lists;
 
+import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
 import lapr.project.model.Flight;
@@ -10,7 +11,7 @@ import lapr.project.model.RegularFlight;
  *
  * @author Flavio Relvas
  */
-public class FlightList {
+public class FlightList implements Serializable{
 
     /** 
      * List of existing Flights

@@ -1,5 +1,6 @@
 package lapr.project.model.lists;
 
+import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
@@ -16,7 +17,7 @@ import lapr.project.model.Airport;
  */
 @XmlRootElement(name="Network")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class AirportList {
+public class AirportList implements Serializable{
  
     /**
      * The list of airports.

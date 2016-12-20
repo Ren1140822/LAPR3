@@ -1,5 +1,6 @@
 package lapr.project.model;
 
+import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
@@ -16,7 +17,7 @@ import javax.xml.bind.annotation.XmlTransient;
  */
 @XmlRootElement(name = "motorization")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class Motorization {
+public class Motorization implements Serializable{
 
     /**
      * Class attributes
