@@ -21,43 +21,44 @@ import javax.xml.bind.annotation.XmlTransient;
 public class AircraftModel {
 
     private enum Type {
+
         PASSENGER, CARGO, MIXED
     };
 
     /**
      * Class attributes
      */
-    @XmlAttribute(name="model_ID")
+    @XmlAttribute(name = "model_ID")
     private String id;
-    @XmlAttribute(name="description")
+    @XmlAttribute(name = "description")
     private String description;
-    @XmlElement(name="maker")
+    @XmlElement(name = "maker")
     private String maker;
-    @XmlElement(name="type")
+    @XmlElement(name = "type")
     private Type type;
-    @XmlElement(name="motorization")
+    @XmlElement(name = "motorization")
     private Motorization motorization;
-    @XmlElement(name="EWeight")
+    @XmlElement(name = "EWeight")
     private double eWeight;
-    @XmlElement(name="MTOW")
+    @XmlElement(name = "MTOW")
     private double MTOW;
-    @XmlElement(name="MZFW")
+    @XmlElement(name = "MZFW")
     private double MZFW;
-    @XmlElement(name="max_payload")
+    @XmlElement(name = "max_payload")
     private double maxPayload;
-    @XmlElement(name="fuel_capacity")
+    @XmlElement(name = "fuel_capacity")
     private double fuelCapacity;
-    @XmlElement(name="VMO")
+    @XmlElement(name = "VMO")
     private double VMO;
-    @XmlElement(name="MMO")
+    @XmlElement(name = "MMO")
     private double MMO;
-    @XmlElement(name="wing_area")
+    @XmlElement(name = "wing_area")
     private double wingArea;
-    @XmlElement(name="wing_span")
+    @XmlElement(name = "wing_span")
     private double wingSpan;
-    @XmlElement(name="Cdrag_0")
+    @XmlElement(name = "Cdrag_0")
     private double cDrag;
-    @XmlElement(name="e")
+    @XmlElement(name = "e")
     private double e;
 
     /**
@@ -143,8 +144,8 @@ public class AircraftModel {
      * @param e
      */
     public AircraftModel(String id, String description, String maker, String type,
-            Motorization motorization, double eWeight, double MTOW, double MZFW, 
-            double maxPayload,double fuelCapacity, double VMO, double MMO, double wingArea, 
+            Motorization motorization, double eWeight, double MTOW, double MZFW,
+            double maxPayload, double fuelCapacity, double VMO, double MMO, double wingArea,
             double wingSpan, double wingCl, double bodyCl, double cDrag, double e) {
         this.id = id;
         this.description = description;
@@ -207,7 +208,7 @@ public class AircraftModel {
 
     public boolean validate() {
         boolean v1 = !id.isEmpty() && !description.isEmpty() && !maker.isEmpty();
-        //v1 = v1 && motorization.validate() && !(eWeight > 0) && !(MTOW > 0);
+        v1 = v1 && motorization.validate() && !(eWeight > 0) && !(MTOW > 0);
         v1 = v1 && !(MZFW > 0) && !(maxPayload > 0) && !(fuelCapacity > 0);
         v1 = v1 && !(VMO > 0) && !(MMO > 0) && !(wingArea > 0);
         v1 = v1 && !(wingSpan > 0) && !(cDrag > 0) && !(e > 0);
@@ -240,14 +241,14 @@ public class AircraftModel {
         this.maker = maker;
     }
 
-    public Type getType() {
-        return type;
+    public String getType() {
+        return type.toString();
     }
 
     public void setType(String type) {
-        try{
+        try {
             this.type = Type.valueOf(type.toUpperCase());
-        }catch (IllegalArgumentException e){
+        } catch (IllegalArgumentException e) {
             System.err.println(e);
         }
     }
@@ -256,13 +257,13 @@ public class AircraftModel {
         return motorization;
     }
 
-    public void setMotorization(int number_motors, String motor, String motor_type, 
+    public void setMotorization(int number_motors, String motor, String motor_type,
             List<Regime> regimeList) {
         motorization.setNumber_motors(number_motors);
         motorization.setMotor(motor);
         motorization.setMotor_type(motor_type);
         motorization.setRegimeList(regimeList);
-        
+
     }
 
     public double geteWeight() {

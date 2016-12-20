@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package lapr.project.model;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -13,6 +8,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  * Represents the regime of motorization
+ *
  * @author Diana Silva
  */
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -21,29 +17,28 @@ public class Regime {
     /**
      * id of regime motorization
      */
-    @XmlAttribute(name="id")
+    @XmlAttribute(name = "id")
     private String id;
-    
+
     /**
-     * thrust specific fuel consumption (fuel efficienty) - 
-     * fuel consumption (grams/second) per unit of thrust (kN) (SI units).
+     * thrust specific fuel consumption (fuel efficienty) - fuel consumption
+     * (grams/second) per unit of thrust (kN) (SI units).
      */
     @XmlElement
     private double TSFC;
-    
-   
+
     /**
      * speed of aircraft (m/s)
      */
     @XmlElement
     private double speed;
-    
+
     /**
      * thrust (kN)
      */
     @XmlElement
     private double thrust;
-    
+
     /**
      * altitude
      */
@@ -52,25 +47,38 @@ public class Regime {
     @XmlTransient
     private static final String DEFAULT_ID = "NOID";
     @XmlTransient
-    private static final double DEFAULT_TSFC = 0;
+    private static final double DEFAULT_TSFC = 1;
     @XmlTransient
-    private static final double DEFAULT_SPEED = 0;
+    private static final double DEFAULT_SPEED = 1;
     @XmlTransient
-    private static final double DEFAULT_THRUST = 0;
+    private static final double DEFAULT_THRUST = 1;
     @XmlTransient
-    private static final long DEFAULT_ALTITUDE = 0;
-    
+    private static final long DEFAULT_ALTITUDE = 1;
+
     public Regime() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        id = DEFAULT_ID;
+        TSFC = DEFAULT_TSFC;
+        speed = DEFAULT_SPEED;
+        thrust = DEFAULT_THRUST;
+        altitude = DEFAULT_ALTITUDE;
     }
-    
-    public Regime(double TSFC, double speed, double thrust, long altitude){
-        this.TSFC=TSFC;
-        this.speed=speed;
-        this.thrust=thrust;
-        this.altitude=altitude;
+
+    public Regime(String id, double TSFC, double speed, double thrust, long altitude) {
+        this.id = id;
+        this.TSFC = TSFC;
+        this.speed = speed;
+        this.thrust = thrust;
+        this.altitude = altitude;
     }
-    
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
     /**
      * @return the TSFC
      */
@@ -126,8 +134,9 @@ public class Regime {
     public void setAltitude(long altitude) {
         this.altitude = altitude;
     }
-    
-     public boolean validate() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+
+    public boolean validate() {
+        boolean v1 = !id.isEmpty() && !(TSFC > 0) && !(speed > 0);
+        return v1 && !(thrust > 0) && !(altitude > 0);
     }
 }
