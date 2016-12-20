@@ -85,7 +85,7 @@ public class MenuUI extends JFrame{
         bt4.addActionListener(new ActionListener() {
              @Override
             public void actionPerformed(ActionEvent e) {
-                AddAircraftUI aircraft = new AddAircraftUI();
+                AddAircraftUI aircraft = new AddAircraftUI(framePai);
             }
         });
         
