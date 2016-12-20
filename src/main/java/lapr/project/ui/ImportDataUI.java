@@ -129,7 +129,7 @@ public class ImportDataUI extends JDialog{
         aircraft.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //implementar
+                ImportAircraftModelListUI impaircraftmodel = new ImportAircraftModelListUI();
             }
         });
         return aircraft;
