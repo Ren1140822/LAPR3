@@ -177,30 +177,6 @@ public class AirNetworkTest {
     }
 
     /**
-     * Test of getNodeList method, of class AirNetwork.
-     */
-    @Test
-    public void testGetNodeList() {
-        System.out.println("getNodeList");
-        AirNetwork instance = new AirNetwork();
-        Map<String,Node> expResult = new HashMap<>();
-        instance.setNodeList(expResult);
-        Map<String,Node> result = instance.getNodeList();
-        assertEquals(expResult, result);
-    }
-
-    /**
-     * Test of setNodeList method, of class AirNetwork.
-     */
-    @Test
-    public void testSetNodeList() {
-        System.out.println("setNodeList");
-        Map<String,Node> list = new HashMap<>();
-        AirNetwork instance = new AirNetwork();
-        instance.setNodeList(list);
-    }
-
-    /**
      * Test of setSegment method, of class AirNetwork.
      */
     @Test
@@ -258,7 +234,53 @@ public class AirNetworkTest {
         AirNetwork instance = new AirNetwork();
         instance.setSegmentList(list);
     }
-//
+
+    /**
+     * Test of getNodeList method, of class AirNetwork.
+     */
+    @Test
+    public void testGetNodeList() {
+        System.out.println("getNodeList");
+        AirNetwork instance = new AirNetwork();
+        List<Node> expResult = new LinkedList<>();
+        instance.setNodeList(expResult);
+        List<Node> result = instance.getNodeList();
+        assertEquals(expResult, result);
+    }
+
+    /**
+     * Test of setNodeList method, of class AirNetwork.
+     */
+    @Test
+    public void testSetNodeList() {
+        System.out.println("setNodeList");
+        List<Node> list = new LinkedList<>();
+        AirNetwork instance = new AirNetwork();
+        instance.setNodeList(list);
+    }
+
+    /**
+     * Test of getNodeByString method, of class AirNetwork.
+     */
+    @Test
+    public void testGetNodeByString() {
+        System.out.println("getNodeByString1");
+        String id = "";
+        AirNetwork instance = new AirNetwork();
+        Node expResult = new Node("id1",45,12);
+        instance.getNodeList().add(expResult);
+        Node result = instance.getNodeByString(id);
+        assertNotEquals(expResult, result);
+        
+        System.out.println("getNodeByString2");
+        String id2 = "id1";
+        AirNetwork instance2 = new AirNetwork();
+        Node expResult2 = new Node("id1",45,12);
+        instance2.getNodeList().add(expResult);
+        Node result2 = instance2.getNodeByString(id2);
+        assertEquals(expResult2, result2);
+    }
+
 //    /**
 //     * Test of getPossibleEndNodes method, of class AirNetwork.
 //     */

@@ -38,7 +38,7 @@ public class ImportAirportController {
             jaxbContext = JAXBContext.newInstance(AirportList.class);
             Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
             airportsList = (AirportList) jaxbUnmarshaller.unmarshal(file);
-            return true;
+            return !airportsList.getAirportList().isEmpty();
         } catch (JAXBException ex) { 
             System.err.println(ex);
             return false;
