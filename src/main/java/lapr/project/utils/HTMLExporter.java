@@ -34,12 +34,12 @@ public class HTMLExporter {
         for (int i = 0; i < body[0].length; i++) {     
             for (int j = 0; j < body.length; j++) {
                 
-                   data[i] +=  body[j][i]+"---";
+                    data[i] +=  "| "+body[j][i]+" |";
                    
             }
             data[i]+="<P>" ;
         }
-          page = "<HTML>\n<HEAD>\n<TITLE>" + title + "</TITLE>\n</HEAD>\n<HR>\n<H1>" + heading1 + "</H1>\n<H2>" + heading2 + "</H2>\n";
+        page = "<HTML>\n<HEAD>\n<TITLE>" + title + "</TITLE>\n</HEAD>\n<HR>\n<H1>" + heading1 + "</H1>\n<H2>" + heading2 + "</H2>\n";
         for (int i = 0; i < data.length; i++) {
             page +=  data[i]+"  ";
         }

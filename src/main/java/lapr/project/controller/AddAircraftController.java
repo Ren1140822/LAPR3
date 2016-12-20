@@ -32,27 +32,39 @@ public class AddAircraftController {
         return aircraftList.setAircraftData(registration, company, nrOfSeatsEcon, nrOfSeatsCommercial, NrOfElements);
     }
 
-    public boolean setAircraftModel(String aircraftModelID)
-    {
+    public boolean hasModel() {
+        if (this.model == null) {
+            throw new NullPointerException();
+        }
         return true;
     }
-    public List<String> getListOfAircraftModels()
-    {
-           List<AircraftModel> list =  Project.getModelList().getModelList();
-           LinkedList<String> modelListInString = new LinkedList<>();
-           for(AircraftModel model:list)
-           {
-               modelListInString.add("");
-           }
-           return modelListInString;
+
+    public boolean setAircraftModel(String aircraftModelID) {
+        getModelByID(aircraftModelID);
+        if (model != null) {
+            return aircraftList.setAircraftModel(this.model);
+        }
+        return false;
     }
-    
-    private void getModelByID(String id)
-    {
-        List<AircraftModel> list =  Project.getModelList().getModelList();
-        for(AircraftModel model : list)
-        {
-           
+
+    public List<String> getListOfAircraftModels() {
+        AircraftModel model2= new AircraftModel();
+        Project.getModelList().getModelList().add(model2);
+        List<AircraftModel> list = Project.getModelList().getModelList();
+        LinkedList<String> modelListInString = new LinkedList<>();
+        for (AircraftModel model : list) {
+            modelListInString.add(model.getId());
+        }
+
+        return modelListInString;
+    }
+
+    private void getModelByID(String id) {
+        List<AircraftModel> list = Project.getModelList().getModelList();
+        for (AircraftModel model : list) {
+            if (model.getId().equals(id)) {
+                this.model = model;
+            }
         }
     }
 }
