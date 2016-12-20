@@ -8,7 +8,7 @@ package lapr.project.controller;
 import java.io.File;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
-import lapr.project.model.lists.AirportList;
+import lapr.project.model.lists.AircraftModelList;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -20,9 +20,9 @@ import static org.junit.Assert.*;
  *
  * @author Pedro Fernandes
  */
-public class ImportAirportControllerTest {
+public class ImportAircraftModelListControllerTest {
     
-    public ImportAirportControllerTest() {
+    public ImportAircraftModelListControllerTest() {
     }
     
     @BeforeClass
@@ -42,28 +42,28 @@ public class ImportAirportControllerTest {
     }
 
     /**
-     * Test of importXMLAirportList method, of class ImportAirportController.
+     * Test of importXMLAircraftModelList method, of class ImportAircraftModelListController.
      */
     @Test
-    public void testImportXMLAirportList() throws Exception {
-        System.out.println("importXMLAirportList1");
-        File file = new File("src/main/resources/TestSet01a_Airports.xml");
-        ImportAirportController instance = new ImportAirportController();        
+    public void testImportXMLAircraftModelList() throws Exception {
+        System.out.println("importXMLAircraftModelList1");
+        File file = new File("src/main/resources/TestSet01_Aircraft.xml");
+        ImportAircraftModelListController instance = new ImportAircraftModelListController();
         boolean expResult = true;
-        boolean result = instance.importXMLAirportList(file);
+        boolean result = instance.importXMLAircraftModelList(file);
         //show in the screen imported file
-        JAXBContext context = JAXBContext.newInstance(AirportList.class);
+        JAXBContext context = JAXBContext.newInstance(AircraftModelList.class);
         Marshaller marshaller = context.createMarshaller();
         marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-        marshaller.marshal(instance.airportsList, System.out);
+        marshaller.marshal(instance.aircraftsModelList, System.out);
         //end
         assertEquals(expResult, result);
         
         System.out.println("importXMLAirportList2");
         File file2 = new File("src/main/resources/Test.xml");
-        ImportAirportController instance2 = new ImportAirportController();        
+        ImportAircraftModelListController instance2 = new ImportAircraftModelListController();        
         boolean expResult2 = false;
-        boolean result2 = instance2.importXMLAirportList(file2);
+        boolean result2 = instance2.importXMLAircraftModelList(file2);
         assertEquals(expResult2, result2);
     }
     

@@ -5,47 +5,64 @@
  */
 package lapr.project.model;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlTransient;
+
 /**
  * Represents the regime of motorization
  * @author Diana Silva
  */
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Regime {
 
-    public Regime() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    public boolean validate() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
     /**
      * id of regime motorization
      */
-    private enum id{
-        Cruise
-    }
+    @XmlAttribute(name="id")
+    private String id;
     
     /**
      * thrust specific fuel consumption (fuel efficienty) - 
      * fuel consumption (grams/second) per unit of thrust (kN) (SI units).
      */
+    @XmlElement
     private double TSFC;
     
    
     /**
      * speed of aircraft (m/s)
      */
+    @XmlElement
     private double speed;
     
     /**
      * thrust (kN)
      */
+    @XmlElement
     private double thrust;
     
     /**
      * altitude
      */
+    @XmlElement
     private long altitude;
+    @XmlTransient
+    private static final String DEFAULT_ID = "NOID";
+    @XmlTransient
+    private static final double DEFAULT_TSFC = 0;
+    @XmlTransient
+    private static final double DEFAULT_SPEED = 0;
+    @XmlTransient
+    private static final double DEFAULT_THRUST = 0;
+    @XmlTransient
+    private static final long DEFAULT_ALTITUDE = 0;
+    
+    public Regime() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
     
     public Regime(double TSFC, double speed, double thrust, long altitude){
         this.TSFC=TSFC;
@@ -108,5 +125,9 @@ public class Regime {
      */
     public void setAltitude(long altitude) {
         this.altitude = altitude;
+    }
+    
+     public boolean validate() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

@@ -79,6 +79,16 @@ public class AirportList {
         airport = new Airport();
     }
     
+    /**
+     * sets data of the airport
+     * @param IATA
+     * @param name
+     * @param town
+     * @param country
+     * @param latitude
+     * @param longitude
+     * @param altitude 
+     */
     public void setAirportData(String IATA, String name, String town, String country,
             double latitude, double longitude, int altitude){
         airport.setIATA(IATA);

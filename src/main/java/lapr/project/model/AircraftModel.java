@@ -5,56 +5,95 @@
  */
 package lapr.project.model;
 
+import java.util.List;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlTransient;
+
 /**
  * Class that represents motorized commercial aircraft
  *
  * @author Diana Silva
  */
+@XmlAccessorType(XmlAccessType.FIELD)
 public class AircraftModel {
 
     private enum Type {
-
         PASSENGER, CARGO, MIXED
     };
 
     /**
      * Class attributes
      */
+    @XmlAttribute(name="model_ID")
     private String id;
+    @XmlAttribute(name="description")
     private String description;
+    @XmlElement(name="maker")
     private String maker;
+    @XmlElement(name="type")
     private Type type;
+    @XmlElement(name="motorization")
     private Motorization motorization;
+    @XmlElement(name="EWeight")
     private double eWeight;
+    @XmlElement(name="MTOW")
     private double MTOW;
+    @XmlElement(name="MZFW")
     private double MZFW;
+    @XmlElement(name="max_payload")
     private double maxPayload;
+    @XmlElement(name="fuel_capacity")
     private double fuelCapacity;
+    @XmlElement(name="VMO")
     private double VMO;
+    @XmlElement(name="MMO")
     private double MMO;
+    @XmlElement(name="wing_area")
     private double wingArea;
+    @XmlElement(name="wing_span")
     private double wingSpan;
+    @XmlElement(name="Cdrag_0")
     private double cDrag;
+    @XmlElement(name="e")
     private double e;
 
     /**
      * Default attributes
      */
+    @XmlTransient
     private final String DEFAULT_ID = "Dummy 01";
+    @XmlTransient
     private final String DEFAULT_DESCRIPTION = "Dummy aircraft 01";
+    @XmlTransient
     private final String DEFAULT_MAKER = "Boeing";
+    @XmlTransient
     private final Type DEFAULT_TYPE = Type.PASSENGER;
+    @XmlTransient
     private final Motorization DEFAULT_MOTORIZATION = new Motorization();
+    @XmlTransient
     private final double DEFAULT_EWEIGHT = 1;
+    @XmlTransient
     private final double DEFAULT_MTOW = 1;
+    @XmlTransient
     private final double DEFAULT_MZFW = 1;
+    @XmlTransient
     private final double DEFAULT_MAXPAYLOAD = 1;
+    @XmlTransient
     private final double DEFAULT_FUELCAPACITY = 1;
+    @XmlTransient
     private final double DEFAULT_VMO = 1;
+    @XmlTransient
     private final double DEFAULT_MMO = 1;
+    @XmlTransient
     private final double DEFAULT_WINGAREA = 1;
+    @XmlTransient
     private final double DEFAULT_WINGSPAN = 1;
+    @XmlTransient
     private final double DEFAULT_CDRAG = 1;
+    @XmlTransient
     private final double DEFAULT_E = 1;
 
     /**
@@ -87,6 +126,7 @@ public class AircraftModel {
      * @param id
      * @param description
      * @param maker
+     * @param type
      * @param motorization
      * @param eWeight
      * @param MTOW
@@ -102,11 +142,14 @@ public class AircraftModel {
      * @param cDrag
      * @param e
      */
-    public AircraftModel(String id, String description, String maker, Motorization motorization,
-            double eWeight, double MTOW, double MZFW, double maxPayload, double fuelCapacity, double VMO, double MMO, double wingArea, double wingSpan, double wingCl, double bodyCl, double cDrag, double e) {
+    public AircraftModel(String id, String description, String maker, String type,
+            Motorization motorization, double eWeight, double MTOW, double MZFW, 
+            double maxPayload,double fuelCapacity, double VMO, double MMO, double wingArea, 
+            double wingSpan, double wingCl, double bodyCl, double cDrag, double e) {
         this.id = id;
         this.description = description;
         this.maker = maker;
+        setType(type);
         this.motorization = motorization;
         this.eWeight = eWeight;
         this.MTOW = MTOW;
@@ -201,16 +244,25 @@ public class AircraftModel {
         return type;
     }
 
-    public void setType(Type type) {
-        this.type = type;
+    public void setType(String type) {
+        try{
+            this.type = Type.valueOf(type.toUpperCase());
+        }catch (IllegalArgumentException e){
+            System.err.println(e);
+        }
     }
 
     public Motorization getMotorization() {
         return motorization;
     }
 
-    public void setMotorization(Motorization motorization) {
-        this.motorization = motorization;
+    public void setMotorization(int number_motors, String motor, String motor_type, 
+            List<Regime> regimeList) {
+        motorization.setNumber_motors(number_motors);
+        motorization.setMotor(motor);
+        motorization.setMotor_type(motor_type);
+        motorization.setRegimeList(regimeList);
+        
     }
 
     public double geteWeight() {
