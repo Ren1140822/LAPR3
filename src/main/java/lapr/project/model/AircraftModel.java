@@ -138,15 +138,13 @@ public class AircraftModel {
      * @param MMO
      * @param wingArea
      * @param wingSpan
-     * @param wingCl
-     * @param bodyCl
      * @param cDrag
      * @param e
      */
     public AircraftModel(String id, String description, String maker, String type,
             Motorization motorization, double eWeight, double MTOW, double MZFW,
             double maxPayload, double fuelCapacity, double VMO, double MMO, double wingArea,
-            double wingSpan, double wingCl, double bodyCl, double cDrag, double e) {
+            double wingSpan, double cDrag, double e) {
         this.id = id;
         this.description = description;
         this.maker = maker;
