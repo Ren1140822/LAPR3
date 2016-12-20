@@ -18,33 +18,34 @@ public class Regime implements Serializable{
     /**
      * id of regime motorization
      */
-    @XmlAttribute(name = "id")
+    @XmlAttribute(name = "ID")
     private String id;
 
     /**
      * thrust specific fuel consumption (fuel efficienty) - fuel consumption
      * (grams/second) per unit of thrust (kN) (SI units).
-     */
-    @XmlElement
+     */    
+    @XmlTransient
     private double TSFC;
 
     /**
      * speed of aircraft (m/s)
-     */
-    @XmlElement
+     */    
+    @XmlTransient
     private double speed;
 
     /**
      * thrust (kN)
-     */
-    @XmlElement
+     */    
+    @XmlTransient
     private double thrust;
 
     /**
      * altitude
      */
-    @XmlElement
-    private long altitude;
+    @XmlTransient
+    private double altitude;
+    
     @XmlTransient
     private static final String DEFAULT_ID = "NOID";
     @XmlTransient
@@ -54,17 +55,17 @@ public class Regime implements Serializable{
     @XmlTransient
     private static final double DEFAULT_THRUST = 1;
     @XmlTransient
-    private static final long DEFAULT_ALTITUDE = 1;
+    private static final double DEFAULT_ALTITUDE = 1;
 
     public Regime() {
-        id = DEFAULT_ID;
-        TSFC = DEFAULT_TSFC;
-        speed = DEFAULT_SPEED;
-        thrust = DEFAULT_THRUST;
-        altitude = DEFAULT_ALTITUDE;
+        this.id = DEFAULT_ID;
+        this.TSFC = DEFAULT_TSFC;
+        this.speed = DEFAULT_SPEED;
+        this.thrust = DEFAULT_THRUST;
+        this.altitude = DEFAULT_ALTITUDE;
     }
 
-    public Regime(String id, double TSFC, double speed, double thrust, long altitude) {
+    public Regime(String id, double TSFC, double speed, double thrust, double altitude) {
         this.id = id;
         this.TSFC = TSFC;
         this.speed = speed;
@@ -93,6 +94,22 @@ public class Regime implements Serializable{
     public void setTSFC(double TSFC) {
         this.TSFC = TSFC;
     }
+    
+    /**
+     * @return the TSFC for JAXB
+     */
+    @XmlElement(name="TSFC")
+    public String getTSFC_() {
+        return String.valueOf(TSFC);
+    }
+
+    /**
+     * @param tsfc the TSFC to set for JAXB
+     */
+    public void setTSFC_(String tsfc) {
+        String a = tsfc.replaceAll(" US", "");
+        this.TSFC = Double.parseDouble(a);
+    }
 
     /**
      * @return the speed
@@ -109,7 +126,23 @@ public class Regime implements Serializable{
     }
 
     /**
-     * @return the thrust
+     * @return the speed for JAXB
+     */
+    @XmlElement(name = "speed")
+    public String getSpeed_() {
+        return String.valueOf(speed);
+    }
+
+    /**
+     * @param sp the speed to set for JAXB
+     */
+    public void setSpeed_(String sp) {
+        String a = sp.replaceAll(" M", "");
+        this.speed = Double.parseDouble(a);
+    }
+
+    /**
+     * @return the thrust 
      */
     public double getThrust() {
         return thrust;
@@ -121,23 +154,55 @@ public class Regime implements Serializable{
     public void setThrust(double thrust) {
         this.thrust = thrust;
     }
+    
+    /**
+     * @return the thrust for JAXB
+     */
+    @XmlElement(name = "thrust")
+    public String getThrust_() {
+        return String.valueOf(thrust);
+    }
+
+    /**
+     * @param th the thrust to set for JAXB
+     */
+    public void setThrust_(String th) {
+        String a = th.replaceAll(" US", "");
+        this.thrust = Double.parseDouble(a);
+    }
 
     /**
      * @return the altitude
      */
-    public long getAltitude() {
+    public double getAltitude() {
         return altitude;
     }
 
     /**
      * @param altitude the altitude to set
      */
-    public void setAltitude(long altitude) {
+    public void setAltitude(double altitude) {
         this.altitude = altitude;
+    }
+    
+    /**
+     * @return the altitude for JAXB
+     */
+    @XmlElement(name = "altitude")
+    public String getAltitude_() {
+        return String.valueOf(altitude);
+    }
+
+    /**
+     * @param alt the alt to set for JAXB
+     */
+    public void setAltitude_(String alt) {
+        String a = alt.replaceAll(" US", "");
+        this.altitude = Double.parseDouble(a);
     }
 
     public boolean validate() {
-        boolean v1 = !id.isEmpty() && !(TSFC > 0) && !(speed > 0);
-        return v1 && !(thrust > 0) && !(altitude > 0);
+        boolean v1 = !id.isEmpty() && TSFC > 0 && speed > 0;
+        return v1 && thrust > 0 && altitude > 0;
     }
 }

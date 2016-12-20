@@ -65,7 +65,7 @@ public class Motorization implements Serializable{
         this.number_motors = number_motors;
         this.motor = motor;
         this.motor_type = motor_type;
-        this.regimeList = new LinkedList<>();
+        this.regimeList = regimeList;
     }
 
     /**
@@ -169,10 +169,10 @@ public class Motorization implements Serializable{
      * @return
      */
     public boolean validate() {
-        boolean v1 = !this.motor.isEmpty()
+        boolean v1 = this.number_motors > 0
                 && !this.motor_type.isEmpty()
-                && this.number_motors != 0
-                && !this.regimeList.isEmpty();
+                && !this.motor.isEmpty()
+                && this.regimeList.size() > 0;
         return v1;
     }
 }
