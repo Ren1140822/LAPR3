@@ -7,9 +7,9 @@ package lapr.project.model;
 
 import java.util.LinkedList;
 import java.util.List;
-import lapr.project.model.anaylsis.ComparisonResult;
 import lapr.project.model.anaylsis.Result;
 import lapr.project.model.lists.AircraftList;
+import lapr.project.model.lists.AircraftModelList;
 import lapr.project.model.lists.AirportList;
 import lapr.project.model.lists.CompareResultsList;
 import lapr.project.model.lists.ResultsList;
@@ -29,7 +29,7 @@ public class Project {
     public static ResultsList resultsList = new ResultsList();
     public static CompareResultsList compareList=new CompareResultsList();
     // public static FlightList flightList=new FlightList();
-    // public static AirtCraftModelList modelList=new AirCraftModelList();
+    public static AircraftModelList modelList=new AircraftModelList();
     
     public static int idProject;
     public static String name;
@@ -40,7 +40,7 @@ public class Project {
      *
      * @return a linked list with aircrafts
      */
-    public static LinkedList<Aircraft> getAircraftList() {
+    public static List<Aircraft> getAircraftList() {
         return aircraftList.getAircraftList();
     }
     
@@ -76,7 +76,7 @@ public class Project {
      *
      * @return the comparison results
      */
-    public static LinkedList<Result> getComparisonResults() {
+    public static List<Result> getComparisonResults() {
         return resultsList.getComparisonResultsList();
     }
 
@@ -85,7 +85,7 @@ public class Project {
      *
      * @return the ecologic results
      */
-    public static LinkedList<Result> getEcologicPathResults() {
+    public static List<Result> getEcologicPathResults() {
         return resultsList.getEcologicResultsList();
     }
 
@@ -94,7 +94,7 @@ public class Project {
      *
      * @return the shortest path results
      */
-    public static LinkedList<Result> getShortestPathResults() {
+    public static List<Result> getShortestPathResults() {
         return resultsList.getShortesPathResultsList();
     }
     
@@ -103,7 +103,7 @@ public class Project {
      *
      * @return the fastestest path results
      */
-    public static LinkedList<Result> getFastestPathResults() {
+    public static List<Result> getFastestPathResults() {
         return resultsList.getFastestResultsList();
     }
     
@@ -125,6 +125,24 @@ public class Project {
     public static void setResultsList(ResultsList list) {
         resultsList = list;
     }
+
+    /**
+     * Gets the aircraft model list.
+     * @return the list
+     */
+    public static AircraftModelList getModelList() {
+        return modelList;
+    }
+
+    /**
+     * Sets the aircraft model list.
+     * @param modelList  the model list to set
+     */
+    public static void setModelList(AircraftModelList modelList) {
+        Project.modelList = modelList;
+    }
+    
+    
     
     /**
      * Sets the name of project
@@ -173,6 +191,6 @@ public class Project {
          airportList = new AirportList();
          resultsList = new ResultsList();
          compareList= new CompareResultsList();
-         //modelList=new AirCraftModelList();
+         modelList=new AircraftModelList();
     }
 }

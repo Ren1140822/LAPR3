@@ -119,17 +119,17 @@ public class ImportDataUI extends JDialog{
     }
     public JButton createButonImportAircraft(){
         Icon icone = new ImageIcon( "src/main/resources/images/aircraft.jpg" );
-        aircraft = new JButton("Import Aircraft", icone);
+        aircraft = new JButton("Import Aircraft Model", icone);
         aircraft.setContentAreaFilled(false);
         aircraft.setBorderPainted(false);
         aircraft.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         aircraft.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);  
         aircraft.setMnemonic(KeyEvent.VK_R);
-        aircraft.setToolTipText("Import Aircraft");
+        aircraft.setToolTipText("Import Aircraft Model");
         aircraft.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //implementar
+                ImportAircraftModelListUI impaircraftmodel = new ImportAircraftModelListUI();
             }
         });
         return aircraft;
