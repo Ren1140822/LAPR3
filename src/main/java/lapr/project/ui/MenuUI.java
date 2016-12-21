@@ -135,6 +135,7 @@ public class MenuUI extends JFrame{
                             ex.getMessage(),
                             "Style " + menuItem.getActionCommand(),
                             JOptionPane.ERROR_MESSAGE);
+                    throw new RuntimeException(ex);
                 }
             }
         });

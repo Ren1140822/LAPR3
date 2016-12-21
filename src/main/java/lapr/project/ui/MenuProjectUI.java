@@ -29,6 +29,7 @@ import javax.swing.KeyStroke;
 import static javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
+import lapr.project.model.Project;
 
 /**
  * Menu of the active project
@@ -44,7 +45,7 @@ public class MenuProjectUI extends JDialog{
 
     public MenuProjectUI(JFrame frame){
         
-        super(frame, "AirNetwork Projects Simulator", true);        
+        super(frame, "Project: " + Project.getName(), true);        
         
         createComponents();        
         
