@@ -36,18 +36,18 @@ public class CSVExporter {
         Formatter out = null;
         try {
             out = new Formatter(new File(filePath));
-        } catch (FileNotFoundException  |NullPointerException ex) {
-            out.close();
+        } catch (FileNotFoundException | NullPointerException ex) {
             return false;
+            
+
         }
         out.format("%s", page);
         out.close();
         return true;
     }
-    
-    
+
     /**
-     * Exports Strings to  csv
+     * Exports Strings to csv
      *
      * @param title the tab title on browser
      * @param heading1 the first title
@@ -60,28 +60,28 @@ public class CSVExporter {
         String page;
         String data[] = new String[body[0].length];
         for (int i = 0; i < data.length; i++) {
-            data[i]="";
+            data[i] = "";
         }
-        for (int i = 0; i < body[0].length; i++) {     
+        for (int i = 0; i < body[0].length; i++) {
             for (int j = 0; j < body.length; j++) {
-                
-                   data[i] +=  body[j][i]+"---";
-                   
+
+                data[i] += body[j][i] + "---";
+
             }
-            data[i]+="\n" ;
+            data[i] += "\n";
         }
-         page = title + "\n\n" + heading1 + "\n\n" + heading2 + "\n\n";
-       
+        page = title + "\n\n" + heading1 + "\n\n" + heading2 + "\n\n";
+
         for (int i = 0; i < data.length; i++) {
-            page +=  data[i]+"";
+            page += data[i] + "";
         }
-       
+
         System.out.println(page);
         Formatter out = null;
         try {
             out = new Formatter(new File(filePath));
-        } catch (FileNotFoundException  |NullPointerException ex) {
-            out.close();
+        } catch (FileNotFoundException | NullPointerException ex) {
+           
             return false;
         }
         out.format("%s", page);

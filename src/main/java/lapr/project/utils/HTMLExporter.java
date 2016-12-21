@@ -49,7 +49,7 @@ public class HTMLExporter {
         try {
             out = new Formatter(new File(filePath));
         } catch (FileNotFoundException  |NullPointerException ex) {
-            out.close();
+         
             return false;
         }
         out.format("%s", page);
@@ -79,7 +79,7 @@ public class HTMLExporter {
         try {
             out = new Formatter(new File(filePath));
         } catch (FileNotFoundException |NullPointerException ex) {
-            out.close();
+           
          
             return false;
         }
