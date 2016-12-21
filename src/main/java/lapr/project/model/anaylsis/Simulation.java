@@ -16,28 +16,60 @@ import lapr.project.model.Node;
  */
 public class Simulation{
     private int passengers, crew;
-    //195 libras per person
     private double cargoLoad;
     private double totalWeight;
     private Aircraft aircraft;
-    private List<SegmentResult> list;
+    private List<SegmentResult> segmentsList;
     private ResultPath bestResultPath;
     
-    private static final double TOTAL_WEIGHT=0;
-    Node startAirport, endAirport;
+    private static final double DEFAULT_VALUE=0;
     
-    public Simulation(Node startNode, Node endNode, int passengers, int crew, double cargoLoad){
+    /**
+     * constructor
+     */
+    public Simulation(){
+        this.passengers=(int) DEFAULT_VALUE;
+        this.crew=(int) DEFAULT_VALUE;
+        this.cargoLoad=DEFAULT_VALUE;
+        this.totalWeight=DEFAULT_VALUE;
+        this.aircraft=new Aircraft();
+        this.segmentsList=new ArrayList<>();
+        this.bestResultPath=new ResultPath();
+    }
+    
+    public Simulation(Node startNode, Node endNode, Aircraft aircraft, int passengers, int crew, double cargoLoad){
         this.passengers=passengers;
         this.crew=crew;
         this.cargoLoad=cargoLoad;
-        this.startAirport=startNode;
-        this.endAirport=endNode;
-        this.totalWeight=TOTAL_WEIGHT;
-        this.list=new ArrayList<>();
+        this.aircraft=aircraft;
+        this.totalWeight=calculateTotalWeight();
+        this.segmentsList=new ArrayList<>();
+        this.bestResultPath=new ResultPath(startNode, endNode);
     } 
     
-    public List<SegmentResult> getList(){
-        return list;
+    public Simulation(Node startNode, Node endNode, Aircraft aircraft){
+        this.passengers=(int) DEFAULT_VALUE;
+        this.crew=(int) DEFAULT_VALUE;
+        this.cargoLoad=DEFAULT_VALUE;
+        this.totalWeight=DEFAULT_VALUE;
+        this.aircraft=aircraft;
+        this.segmentsList=new ArrayList<>();
+        this.bestResultPath=new ResultPath(startNode,endNode);
+    }
+    
+    /**
+     * Return the segments of simulation
+     * @return segments of result
+     */
+    public List<SegmentResult> getSegmentsList(){
+        return segmentsList;
+    }
+    
+     /**
+     * @param list the segmentsList to set
+     */
+    public void setSegmentsList(List<SegmentResult> list) {
+        this.segmentsList = list;
     }
 
     /** Gets the number of passengers
@@ -119,7 +151,34 @@ public class Simulation{
     
     
     public boolean addSegmentResult(){
-        return list.add(new SegmentResult());
+        return getSegmentsList().add(new SegmentResult());
     }
-   
+
+    public boolean validate() {
+        boolean v1=this.passengers!=0 && this.crew!=0 &&
+                this.cargoLoad!=0 && this.totalWeight!=0 &&
+                this.aircraft!=null && this.getSegmentsList().isEmpty() && getBestResultPath()!=null;
+        boolean v2= aircraft.validate() && getBestResultPath().validate();
+        
+        return v1 && v2;
+    }
+
+    private double calculateTotalWeight(){
+        //195 libras per person
+        return passengers*195+crew*195+cargoLoad; /**(falta combustivel)**/
+    }
+
+    /**
+     * @return the bestResultPath
+     */
+    public ResultPath getBestResultPath() {
+        return bestResultPath;
+    }
+
+    /**
+     * @param bestResultPath the bestResultPath to set
+     */
+    public void setBestResultPath(ResultPath bestResultPath) {
+        this.bestResultPath = bestResultPath;
+    }
 }

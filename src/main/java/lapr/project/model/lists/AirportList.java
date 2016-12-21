@@ -45,7 +45,7 @@ public class AirportList implements Serializable{
      */
     public AirportList(AirportList list)
     {
-        this.airportsList = list.airportsList;
+        this.airportsList = list.getAirportList();
     }
     
     /**
