@@ -12,7 +12,7 @@ import lapr.project.model.Project;
  *
  * @author DianaSilva
  */
-public class EcologicPathResult extends BestPathResult{
+public class EcologicPathResult extends ResultPath{
     
     public EcologicPathResult(Node startNode) {
         super(startNode);
@@ -24,7 +24,7 @@ public class EcologicPathResult extends BestPathResult{
     
     @Override
     public double calculateBestPath(){
-        super.setResult(calculateBestPath());
+        super.setResult(0/**calculateBestPath()*/);
         return 0;
     }
     

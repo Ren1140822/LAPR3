@@ -11,7 +11,7 @@ import lapr.project.model.Node;
  *
  * @author Diana Silva
  */
-public class ComparisonResult extends Result {
+public class ComparisonResult extends ResultPath {
 
     public ComparisonResult(Node startNode) {
         super(startNode);

@@ -7,7 +7,8 @@ package lapr.project.model;
 
 import java.io.Serializable;
 import java.util.List;
-import lapr.project.model.anaylsis.Result;
+import lapr.project.model.anaylsis.ComparisonResult;
+import lapr.project.model.anaylsis.ResultPath;
 import lapr.project.model.lists.AircraftList;
 import lapr.project.model.lists.AircraftModelList;
 import lapr.project.model.lists.AirportList;
@@ -46,7 +47,7 @@ public class Project implements Serializable{
      *
      * @return a linked list with aircrafts
      */
-    public List<Aircraft> getAircraftList() {
+    public static List<Aircraft> getAircraftList() {
         return aircraftList.getAircraftList();
     }
     
@@ -82,7 +83,7 @@ public class Project implements Serializable{
      *
      * @return the comparison results
      */
-    public static List<Result> getComparisonResults() {
+    public static List<ResultPath> getComparisonResults() {
         return resultsList.getComparisonResultsList();
     }
 
@@ -91,7 +92,7 @@ public class Project implements Serializable{
      *
      * @return the ecologic results
      */
-    public static List<Result> getEcologicPathResults() {
+    public static List<ResultPath> getEcologicPathResults() {
         return resultsList.getEcologicResultsList();
     }
 
@@ -100,7 +101,7 @@ public class Project implements Serializable{
      *
      * @return the shortest path results
      */
-    public static List<Result> getShortestPathResults() {
+    public static List<ResultPath> getShortestPathResults() {
         return resultsList.getShortesPathResultsList();
     }
     
@@ -109,7 +110,7 @@ public class Project implements Serializable{
      *
      * @return the fastestest path results
      */
-    public static List<Result> getFastestPathResults() {
+    public static List<ResultPath> getFastestPathResults() {
         return resultsList.getFastestResultsList();
     }
     

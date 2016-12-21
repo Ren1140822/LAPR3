@@ -5,15 +5,13 @@
  */
 package lapr.project.model.lists;
 
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Set;
 import lapr.project.model.Node;
 import lapr.project.model.anaylsis.EcologicPathResult;
 import lapr.project.model.anaylsis.FastestPathResult;
-import lapr.project.model.anaylsis.Result;
 import lapr.project.model.anaylsis.ShortestPathResult;
+import lapr.project.model.anaylsis.ResultPath;
 
 /**
  *
@@ -21,16 +19,16 @@ import lapr.project.model.anaylsis.ShortestPathResult;
  */
 public class ResultsList {
 
-    private List<Result> shortesPathResultsList;
-    private List<Result> ecologicResultsList;
-    private List<Result> fastestResultsList;
-    private List<Result> comparisonResultsList;
+    private List<ResultPath> shortesPathResultsList;
+    private List<ResultPath> ecologicResultsList;
+    private List<ResultPath> fastestResultsList;
+    private List<ResultPath> comparisonResultsList;
 
     public ResultsList() {
-        shortesPathResultsList= new LinkedList();
-        ecologicResultsList= new LinkedList();
+        shortesPathResultsList= new LinkedList<>();
+        ecologicResultsList= new LinkedList<>();
         fastestResultsList= new LinkedList<>();
-        comparisonResultsList= new LinkedList();
+        comparisonResultsList= new LinkedList<>();
     }
     
     public enum Option{
@@ -45,7 +43,7 @@ public class ResultsList {
      * Gets all the results of usage of shortest path algorithm.
      * @return the list
      */
-    public List<Result> getShortesPathResultsList() {
+    public List<ResultPath> getShortesPathResultsList() {
         return shortesPathResultsList;
     }
 
@@ -53,7 +51,7 @@ public class ResultsList {
      * Sets the shortest path results list.
      * @param shortesPathResultsList the list to set
      */
-    public void setShortesPathResultsList(List<Result> shortesPathResultsList) {
+    public void setShortesPathResultsList(List<ResultPath> shortesPathResultsList) {
         this.shortesPathResultsList = shortesPathResultsList;
     }
 
@@ -61,7 +59,7 @@ public class ResultsList {
      * Gets the best results list.
      * @return the list
      */
-    public List<Result> getEcologicResultsList() {
+    public List<ResultPath> getEcologicResultsList() {
         return ecologicResultsList;
     }
 
@@ -69,7 +67,7 @@ public class ResultsList {
      * Sets the list of best results
      * @param ecologicResultsList the list to set
      */
-    public void setEcologicResultsList(List<Result> ecologicResultsList) {
+    public void setEcologicResultsList(List<ResultPath> ecologicResultsList) {
         this.ecologicResultsList = ecologicResultsList;
     }
     
@@ -77,7 +75,7 @@ public class ResultsList {
      * Gets the fastest results list.
      * @return the list
      */
-    public List<Result> getFastestResultsList() {
+    public List<ResultPath> getFastestResultsList() {
         return fastestResultsList;
     }
 
@@ -85,7 +83,7 @@ public class ResultsList {
      * Sets the list of best results
      * @param fastestResultsList the list to set
      */
-    public void setFastestResultsList(List<Result> fastestResultsList) {
+    public void setFastestResultsList(List<ResultPath> fastestResultsList) {
         this.fastestResultsList = fastestResultsList;
     }
     
@@ -94,7 +92,7 @@ public class ResultsList {
      * Gets the results of comparison.
      * @return the list
      */
-    public List<Result> getComparisonResultsList() {
+    public List<ResultPath> getComparisonResultsList() {
         return comparisonResultsList;
     }
 
@@ -102,7 +100,7 @@ public class ResultsList {
      * Sets the comparison results list.
      * @param comparisonResultsList  the list to set
      */
-    public void setComparisonResultsList(List<Result> comparisonResultsList) {
+    public void setComparisonResultsList(List<ResultPath> comparisonResultsList) {
         this.comparisonResultsList = comparisonResultsList;
     }
     
@@ -110,20 +108,16 @@ public class ResultsList {
      * Gests the List of analysis options 
      * @return analysis options
      */
-    public Set<Option> getResultOptions(){
-        Set<Option> optionsList=null;
-        optionsList.addAll(Arrays.asList(Option.values()));
-        return optionsList;
+    public Option[] getResultOptions(){
+        return Option.values();
     }
     
    /**
      * Gests the List of comparison options 
      * @return analysis options
      */
-    public Set<OptionCompare> getComparisonOptions(){
-        Set<OptionCompare> optionsList=null;
-        optionsList.addAll(Arrays.asList(OptionCompare.values()));
-        return optionsList;
+    public OptionCompare[] getComparisonOptions(){
+        return OptionCompare.values();
     }
     
     /**

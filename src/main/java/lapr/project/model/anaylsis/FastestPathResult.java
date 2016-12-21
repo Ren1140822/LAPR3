@@ -12,7 +12,7 @@ import lapr.project.model.Project;
  *
  * @author DianaSilva
  */
-public class FastestPathResult extends BestPathResult{
+public class FastestPathResult extends ResultPath{
     
     public FastestPathResult(Node startNode) {
         super(startNode);

@@ -8,16 +8,16 @@ package lapr.project.model.anaylsis;
 import lapr.project.model.Node;
 
 /**
- * The class to stores and manage analysis results
+ * The class to stores and manage analysis results of simulation
  * @author Diana Silva
  */
-public abstract class Result {
+public class ResultPath {
     Node startNode;
     Node endNode;
     double resultPath;
     
     
-    public Result(Node startNode){
+    public ResultPath(Node startNode){
         this.startNode=startNode;
     }
     
@@ -58,7 +58,13 @@ public abstract class Result {
         return resultPath;
     }
     
-    
+       public double calculateBestPath(){
+        return 0;
+    } 
+ 
+    public boolean saveBestResult(){      
+        return true;
+    }
     
     
 }

@@ -5,6 +5,8 @@
  */
 package lapr.project.model.anaylsis;
 
+import java.util.ArrayList;
+import java.util.List;
 import lapr.project.model.Aircraft;
 import lapr.project.model.Node;
 
@@ -12,16 +14,30 @@ import lapr.project.model.Node;
  *
  * @author Diana Silva
  */
-public class BestPathResult extends Result{
+public class Simulation{
     private int passengers, crew;
+    //195 libras per person
     private double cargoLoad;
+    private double totalWeight;
     private Aircraft aircraft;
+    private List<SegmentResult> list;
+    private ResultPath bestResultPath;
     
-    public BestPathResult(Node startNode){
-        super(startNode);
-        this.passengers=0;
-        this.crew=0;
-        this.cargoLoad=0;
+    private static final double TOTAL_WEIGHT=0;
+    Node startAirport, endAirport;
+    
+    public Simulation(Node startNode, Node endNode, int passengers, int crew, double cargoLoad){
+        this.passengers=passengers;
+        this.crew=crew;
+        this.cargoLoad=cargoLoad;
+        this.startAirport=startNode;
+        this.endAirport=endNode;
+        this.totalWeight=TOTAL_WEIGHT;
+        this.list=new ArrayList<>();
+    } 
+    
+    public List<SegmentResult> getList(){
+        return list;
     }
 
     /** Gets the number of passengers
@@ -86,13 +102,24 @@ public class BestPathResult extends Result{
     public void setAircraft(Aircraft aircraft) {
         this.aircraft = aircraft;
     }
- 
-    public double calculateBestPath(){
-        return 0;
-    } 
- 
-    public boolean saveBestResult(){      
-        return true;
+
+    /**
+     * @return the totalWeight
+     */
+    public double getTotalWeight() {
+        return totalWeight;
     }
 
+    /**
+     * @param totalWeight the totalWeight to set
+     */
+    public void setTotalWeight(double totalWeight) {
+        this.totalWeight = totalWeight;
+    }
+    
+    
+    public boolean addSegmentResult(){
+        return list.add(new SegmentResult());
+    }
+   
 }

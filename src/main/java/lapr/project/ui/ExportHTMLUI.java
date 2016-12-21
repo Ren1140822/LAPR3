@@ -27,7 +27,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.Border;
 import lapr.project.controller.ExportHTMLController;
-import lapr.project.model.anaylsis.Result;
+import lapr.project.model.anaylsis.ResultPath;
 
 /**
  *
@@ -42,7 +42,7 @@ public class ExportHTMLUI extends JFrame {
     private final int WINDOW_HEIGHT = 500;
     private final String WINDOW_TITLE = "Export data to HTML";
     private ExportHTMLController controller;
-    private Map<String, List<Result>> results;
+    private Map<String, List<ResultPath>> results;
     private JList listBest;
     private JList listComparison;
     private JList listShortestPath;
@@ -167,15 +167,15 @@ public class ExportHTMLUI extends JFrame {
                         chooser.showSaveDialog(null);
                         String path = chooser.getCurrentDirectory().getAbsolutePath();
                         for (int i = 0; i < selectedIndexes.length; i++) {
-                            controller.exportResult((Result) listBest.getSelectedValue(), path + "\\best_results" + (i + 1) + ".html");
+                            controller.exportResult((ResultPath) listBest.getSelectedValue(), path + "\\best_results" + (i + 1) + ".html");
                         }
                         selectedIndexes = listComparison.getSelectedIndices();
                         for (int i = 0; i < selectedIndexes.length; i++) {
-                            controller.exportResult((Result) listComparison.getSelectedValue(), path + "\\comparison_results" + (i + 1) + ".html");
+                            controller.exportResult((ResultPath) listComparison.getSelectedValue(), path + "\\comparison_results" + (i + 1) + ".html");
                         }
                         selectedIndexes = listShortestPath.getSelectedIndices();
                         for (int i = 0; i < selectedIndexes.length; i++) {
-                            controller.exportResult((Result) listShortestPath.getSelectedValue(), path + "\\shortestpath" + (i + 1) + ".html");
+                            controller.exportResult((ResultPath) listShortestPath.getSelectedValue(), path + "\\shortestpath" + (i + 1) + ".html");
                         }
 
                     }

@@ -14,7 +14,7 @@ import lapr.project.model.physics.PhysicsAlgorithms;
  *
  * @author DianaSilva
  */
-public class PhysicsResult {
+public class SegmentResult {
         
     /**
      *  lift force acting on the aircraft (N)
@@ -36,7 +36,7 @@ public class PhysicsResult {
      */
     private double rangeFlight;
     
-    public PhysicsResult(){
+    public SegmentResult(){
         liftForce=new LiftForce();
         dragForce=new DragForce();
         tsfc=0;

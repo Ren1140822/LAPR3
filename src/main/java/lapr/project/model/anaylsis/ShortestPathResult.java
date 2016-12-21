@@ -11,7 +11,7 @@ import lapr.project.model.Node;
  * The class to store and manage result data of shortest path analysis
  * @author DianaSilva
  */
-public class ShortestPathResult extends Result {
+public class ShortestPathResult extends ResultPath {
     
     public ShortestPathResult(Node startNode){
         super(startNode);
