@@ -8,7 +8,8 @@ package lapr.project.controller;
 import java.util.LinkedList;
 import java.util.List;
 import lapr.project.model.Node;
-import lapr.project.model.Project;
+import lapr.project.model.Projects.Project;
+
 import lapr.project.model.anaylsis.ShortestPathResult;
 import lapr.project.model.mapgraph.GraphAlgorithms;
 

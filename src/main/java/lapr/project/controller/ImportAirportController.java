@@ -10,7 +10,8 @@ import java.io.FileNotFoundException;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
-import lapr.project.model.Project;
+
+import lapr.project.model.Projects.Project;
 import lapr.project.model.lists.AirportList;
 
 /**

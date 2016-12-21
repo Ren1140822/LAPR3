@@ -5,15 +5,13 @@
  */
 package lapr.project.model.mapgraph;
 
-import lapr.project.model.mapgraph.GraphAlgorithms;
-import lapr.project.model.mapgraph.Graph;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 import org.junit.AfterClass;
+import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
-import static org.junit.Assert.*;
 
 /**
  *

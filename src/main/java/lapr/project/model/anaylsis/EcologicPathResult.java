@@ -6,7 +6,8 @@
 package lapr.project.model.anaylsis;
 
 import lapr.project.model.Node;
-import lapr.project.model.Project;
+
+import lapr.project.model.Projects.Project;
 
 /**
  *

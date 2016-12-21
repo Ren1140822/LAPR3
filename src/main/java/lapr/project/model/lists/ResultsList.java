@@ -10,8 +10,8 @@ import java.util.List;
 import lapr.project.model.Node;
 import lapr.project.model.anaylsis.EcologicPathResult;
 import lapr.project.model.anaylsis.FastestPathResult;
-import lapr.project.model.anaylsis.ShortestPathResult;
 import lapr.project.model.anaylsis.ResultPath;
+import lapr.project.model.anaylsis.ShortestPathResult;
 
 /**
  *

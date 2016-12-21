@@ -11,7 +11,8 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 import lapr.project.model.AirNetwork;
-import lapr.project.model.Project;
+
+import lapr.project.model.Projects.Project;
 
 /**
  * Controller to import network from file
