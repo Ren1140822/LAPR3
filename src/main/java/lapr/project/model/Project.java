@@ -19,7 +19,7 @@ import lapr.project.model.lists.ResultsList;
  * @author Renato Oliveira, Pedro Fernandes, Diana Silva
  */
 public class Project implements Serializable{
-
+    
     /**
      * Variables to read from DAL or file.
      */
@@ -34,13 +34,19 @@ public class Project implements Serializable{
     public static int idProject;
     public static String name;
     public static String description;
+    
+    /**
+     * private constructor to hide the implicit public one
+     */
+    private Project(){
+    }
 
     /**
      * Gets the list of aircrafts.
      *
      * @return a linked list with aircrafts
      */
-    public static List<Aircraft> getAircraftList() {
+    public List<Aircraft> getAircraftList() {
         return aircraftList.getAircraftList();
     }
     
@@ -193,4 +199,5 @@ public class Project implements Serializable{
          compareList= new CompareResultsList();
          modelList=new AircraftModelList();
     }
+    
 }

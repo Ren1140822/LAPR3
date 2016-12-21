@@ -21,7 +21,7 @@ public class AircraftList implements Serializable{
     /**
      * The list of aircrafts.
      */
-    List<Aircraft> aircraftList;
+    private List<Aircraft> aircraftList;
 
     Aircraft aircraft;
 
