@@ -37,6 +37,10 @@ public class CSVExporter {
         try {
             out = new Formatter(new File(filePath));
         } catch (FileNotFoundException | NullPointerException ex) {
+              if(out!=null)
+            {
+                out.close();
+            }
             return false;
             
 
@@ -81,7 +85,10 @@ public class CSVExporter {
         try {
             out = new Formatter(new File(filePath));
         } catch (FileNotFoundException | NullPointerException ex) {
-           
+             if(out!=null)
+            {
+                out.close();
+            }
             return false;
         }
         out.format("%s", page);
