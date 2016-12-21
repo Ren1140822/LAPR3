@@ -24,9 +24,9 @@ public class ImportNetworkUI extends JFileChooser{
     /**
      * controller
      */
-    private ImportNetworkController controller;
+    private transient ImportNetworkController controller;
     
-    public ImportNetworkUI(){
+    public ImportNetworkUI() throws FileNotFoundException{
         controller = new ImportNetworkController();        
         try{
                     fileChooser = new JFileChooser();
@@ -50,6 +50,7 @@ public class ImportNetworkUI extends JFileChooser{
                 }catch (FileNotFoundException ex){
                     JOptionPane.showMessageDialog(ImportNetworkUI.this, 
                             ex.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
+                    throw ex;
                 }        
     }
     

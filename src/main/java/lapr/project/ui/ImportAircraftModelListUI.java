@@ -24,9 +24,9 @@ public class ImportAircraftModelListUI extends JFileChooser{
     /**
      * controller
      */
-    private ImportAircraftModelListController controller;
+    private transient ImportAircraftModelListController controller;
     
-    public ImportAircraftModelListUI(){
+    public ImportAircraftModelListUI() throws FileNotFoundException{
         controller = new ImportAircraftModelListController();
         try{
                     fileChooser = new JFileChooser();
@@ -50,6 +50,7 @@ public class ImportAircraftModelListUI extends JFileChooser{
                 }catch (FileNotFoundException ex){
                     JOptionPane.showMessageDialog(ImportAircraftModelListUI.this, 
                             ex.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
+                    throw ex;
                 }        
     }
     

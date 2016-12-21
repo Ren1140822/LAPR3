@@ -24,9 +24,9 @@ public class ImportAirportUI extends JFileChooser{
     /**
      * controller
      */
-    private ImportAirportController controller;
+    private transient ImportAirportController controller;
     
-    public ImportAirportUI(){
+    public ImportAirportUI() throws FileNotFoundException{
         controller = new ImportAirportController();        
         try{
                     fileChooser = new JFileChooser();
@@ -50,6 +50,7 @@ public class ImportAirportUI extends JFileChooser{
                 }catch (FileNotFoundException ex){
                     JOptionPane.showMessageDialog(ImportAirportUI.this, 
                             ex.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
+                    throw ex;
                 }        
     }
     
