@@ -36,7 +36,7 @@ public class ImportDataUI extends JDialog{
     /**
      * Guarda a janela anterior
      */
-    private final MenuUI framePai;
+    private final MenuProjectUI frame;
     /**
      * panel
      */
@@ -58,10 +58,10 @@ public class ImportDataUI extends JDialog{
      */
     private JButton network;
     
-    public ImportDataUI(MenuUI framePai){
-        super(framePai, "Import Data", true);
+    public ImportDataUI(MenuProjectUI frame){
+        super(frame, "Import Data", true);
         
-        this.framePai = framePai;
+        this.frame = frame;
         
         add(createImportPanel()); 
         
@@ -75,7 +75,7 @@ public class ImportDataUI extends JDialog{
         pack();
         setResizable(false);
         setMinimumSize(new Dimension(1100, 500));
-        setLocationRelativeTo(framePai);        
+        setLocationRelativeTo(frame);        
         setVisible(true);
     }
     
@@ -182,7 +182,7 @@ public class ImportDataUI extends JDialog{
     public void closeImport(){
         String[] op = {"Yes", "No"};
         String question = "Close window?";
-        int opcao = JOptionPane.showOptionDialog(framePai, question,
+        int opcao = JOptionPane.showOptionDialog(frame, question,
                 "Import Data", JOptionPane.YES_NO_OPTION,
                 JOptionPane.QUESTION_MESSAGE, null, op, op[0]);
         if (opcao == JOptionPane.YES_OPTION) {
