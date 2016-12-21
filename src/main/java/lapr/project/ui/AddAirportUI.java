@@ -33,7 +33,7 @@ public class AddAirportUI extends JDialog {
     /**
      * Guarda a janela anterior
      */
-    private MenuUI framePai;   
+    private MenuProjectUI frame;   
     /**
      * dimension of default label
      */
@@ -88,10 +88,10 @@ public class AddAirportUI extends JDialog {
      */
     private transient AddAirportController controller;
     
-    public AddAirportUI(MenuUI framePai){
-        super(framePai, "Add Airport", true);
+    public AddAirportUI(MenuProjectUI frame){
+        super(frame, "Add Airport", true);
         
-        this.framePai = framePai;
+        this.frame = frame;
         
         controller = new AddAirportController();
         
@@ -105,7 +105,7 @@ public class AddAirportUI extends JDialog {
         });
         
         setMinimumSize(new Dimension(800, 500));
-        setLocationRelativeTo(framePai);
+        setLocationRelativeTo(frame);
         pack();
         setVisible(true);
     }
@@ -292,7 +292,7 @@ public class AddAirportUI extends JDialog {
     public void closeWindow(){
         String[] op = {"Yes", "No"};
         String question = "Close window and discard Add Airport?";
-        int opcao = JOptionPane.showOptionDialog(framePai, question,
+        int opcao = JOptionPane.showOptionDialog(frame, question,
                 "Add Airport", JOptionPane.YES_NO_OPTION,
                 JOptionPane.QUESTION_MESSAGE, null, op, op[0]);
         if (opcao == JOptionPane.YES_OPTION) {

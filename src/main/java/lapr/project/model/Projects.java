@@ -21,6 +21,9 @@ import lapr.project.model.lists.ResultsList;
  */
 public class Projects implements Serializable {
 
+    public Projects() {
+    }
+
     public static class Project {
 
         /**
@@ -31,7 +34,7 @@ public class Projects implements Serializable {
         private static AirportList airportList = new AirportList();
         private static ResultsList resultsList = new ResultsList();
         private static CompareResultsList compareList = new CompareResultsList();
-        // public static FlightList flightList=new FlightList();
+//         public static FlightList flightList=new FlightList();
         private static AircraftModelList modelList = new AircraftModelList();
 
         private static int idProject;
@@ -150,6 +153,14 @@ public class Projects implements Serializable {
          */
         public static void setModelList(AircraftModelList modelList) {
             Project.modelList = modelList;
+        }
+        
+        /**
+         * gets tha name of project
+         * @return 
+         */
+        public static String getName(){
+            return Project.name;
         }
 
         /**
