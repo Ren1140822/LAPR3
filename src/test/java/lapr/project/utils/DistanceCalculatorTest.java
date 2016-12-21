@@ -34,7 +34,7 @@ public class DistanceCalculatorTest {
         double lon2 = -8.6813898;
         double expResult = 51.91e3;
         double result = DistanceCalculator.calculateDistance(lat1, lon1, lat2, lon2);
-        assertEquals(expResult, result, 1.0);
+        assertEquals(expResult, result, 10.0);
         
     }
 
