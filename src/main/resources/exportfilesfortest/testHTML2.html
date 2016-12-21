@@ -1,10 +1,38 @@
-<HTML>
-<HEAD>
-<TITLE>title</TITLE>
-</HEAD>
-<HR>
-<H1>h1</H1>
-<H2>h2</H2>
-| body00 || body10 || body20 || body30 |<P>  | body01 || body11 || body21 || body31 |<P>  <HR>
-</BODY>
-</HTML>
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+th, td {
+    text-align: left;
+    padding: 8px;
+}
+
+tr:nth-child(even){background-color: #f2f2f2}
+</style>
+</head>
+<body><h2><font face="verdana" color="green">h1</font></h2>
+<p><font size="2" face="verdana" color="red">Below there is a table with the exported results.</font></p>
+
+<div style="overflow-x:auto;">
+  <table>
+    <tr>
+      <th><font face="verdana" color="black">body00</font></th>
+      <th><font face="verdana" color="black">body10</font></th>
+      <th><font face="verdana" color="black">body20</font></th>
+      <th><font face="verdana" color="black">body30</font></th>
+    </tr>
+   <tr>
+      <th><font size="2" face="verdana" color="red">body01</font></th>
+      <th><font size="2" face="verdana" color="red">body11</font></th>
+      <th><font size="2" face="verdana" color="red">body21</font></th>
+      <th><font size="2" face="verdana" color="red">body31</font></th>
+  </table>
+</div>
+
+</body>
+</html>
