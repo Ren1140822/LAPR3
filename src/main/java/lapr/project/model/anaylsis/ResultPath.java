@@ -5,6 +5,7 @@
  */
 package lapr.project.model.anaylsis;
 
+import java.util.LinkedList;
 import lapr.project.model.Node;
 
 /**
@@ -12,58 +13,119 @@ import lapr.project.model.Node;
  * @author Diana Silva
  */
 public class ResultPath {
-    Node startNode;
-    Node endNode;
-    double resultPath;
+    /**
+     * Start airport
+     */
+    private Node startNode;
+    /**
+     * End airport
+     */
+    private Node endNode;
+    /**
+     * Value of result path
+     */
+    double result;  
+    
+    /**
+     * Path result
+     */
+    LinkedList<Node> resultPath=new LinkedList<>();
+    
+    /**
+     * Constructor
+     */
+    public ResultPath(){
+        this.startNode=new Node();
+        this.endNode=new Node();
+    }
     
     
+    /**
+     * Constructor
+     * @param startNode start airport
+     */
     public ResultPath(Node startNode){
         this.startNode=startNode;
     }
     
     /**
-     * Set the start airport
-     * @param startNode origin of flight
+     * COnstructor
+     * @param startNode start airport
+     * @param endNode destination airport
      */
-    public void setStartNode(Node startNode){
+     public ResultPath(Node startNode, Node endNode){
         this.startNode=startNode;
-    }
-    
-    /**
-     * Set the destination of flight
-     * @param endNode destination of flight
-     */
-    public void setEndNode(Node endNode){
         this.endNode=endNode;
-    }
-    
-    
+    } 
+     
+     
+     
+      
     /**
      * Sets the analysis final result
      * @param result analysis result  
      */
     public void setResult(double result){
-        resultPath=result;
+        this.result=result;
+    }
+    
+    /**
+     * Sets the analysis final result
+     * @param resultPath result path  
+     */
+    public void setResultPath(LinkedList<Node> resultPath){
+        this.resultPath=resultPath;
     }
 
-    public Node getStartNode() {
-        return startNode;
+    public double getResult() {
+        return result;
     }
-
-    public Node getEndNode() {
-        return endNode;
-    }
-
-    public double getResultPath() {
+    
+    public LinkedList<Node> getResultPath(){
         return resultPath;
     }
     
-       public double calculateBestPath(){
-        return 0;
+    public void calculateBestPath(){
     } 
  
     public boolean saveBestResult(){      
         return true;
+    }
+
+    boolean validate() {
+        return result!=0 && resultPath.isEmpty();
+    }
+
+    /**
+     * Gets the origin of flight
+     * @return the startNode
+     */
+    public Node getStartNode() {
+        return startNode;
+    }
+
+    /**
+     * Sets the origin of flight
+     * @param startNode the startNode to set
+     */
+    public void setStartNode(Node startNode) {
+        this.startNode = startNode;
+    }
+
+    /**
+     * Gets the destination of flight
+     * @return the endNode
+     */
+    public Node getEndNode() {
+        return endNode;
+    }
+
+    /**
+     * Sets the destination of flight
+     * @param endNode the endNode to set
+     */
+    public void setEndNode(Node endNode) {
+        this.endNode = endNode;
     }
     
     
