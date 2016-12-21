@@ -7,8 +7,8 @@ package lapr.project.model.anaylsis;
 
 import java.util.LinkedList;
 import lapr.project.model.Node;
+import lapr.project.model.Project;
 
-import lapr.project.model.Projects.Project;
 import lapr.project.model.mapgraph.GraphAlgorithms;
 
 /**

@@ -20,12 +20,9 @@ import lapr.project.model.lists.SimulationsList;
  *
  * @author Renato Oliveira, Pedro Fernandes, Diana Silva
  */
-public class Projects implements Serializable {
+public class Project implements Serializable {
 
-    public Projects() {
-    }
-
-    public static class Project {
+   
 
         /**
          * Variables to read from DAL or file.
@@ -237,4 +234,4 @@ public class Projects implements Serializable {
         }
     }
 
-}
+

@@ -7,8 +7,6 @@ package lapr.project.ui;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
@@ -30,7 +28,6 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
-import lapr.project.model.Projects;
 
 /**
  * Start Menu of the aplication
@@ -46,7 +43,7 @@ public class MenuUI extends JFrame{
     public MenuUI(){
         super("AirNetwork Projects Simulator");
         
-        Projects p = new Projects();
+       
         
         frame = MenuUI.this;
         

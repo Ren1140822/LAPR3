@@ -5,7 +5,7 @@
  */
 package lapr.project.controller;
 
-import lapr.project.model.Projects.Project;
+import lapr.project.model.Project;
 import lapr.project.model.lists.AirportList;
 
 /**

@@ -9,7 +9,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import lapr.project.model.Projects.Project;
+import lapr.project.model.Project;
 
 import lapr.project.model.anaylsis.ResultPath;
 import lapr.project.model.anaylsis.Simulation;

@@ -7,7 +7,7 @@ package lapr.project.model;
 
 import java.util.LinkedList;
 import java.util.List;
-import lapr.project.model.Projects.Project;
+
 import lapr.project.model.mapgraph.Graph;
 import org.junit.After;
 import org.junit.AfterClass;
