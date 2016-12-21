@@ -54,6 +54,15 @@ public class ExportHTMLController {
     public List<String> getSimulationsList() {
         List<String> simString = new LinkedList<>();
         List<Simulation> list = Project.getSimulationsListReference().getSimulationsList();
+        Simulation sim = new Simulation();
+        list.add(sim);
+        sim = new Simulation();
+        list.add(sim);
+        sim = new Simulation();
+        list.add(sim);
+        sim = new Simulation();
+        list.add(sim);
+
         for (Simulation simulation : list) {
             simString.add(simulation.toString());
         }
@@ -170,8 +179,23 @@ public class ExportHTMLController {
      * @param filePath the file path
      * @return true if exported
      */
-    public boolean exportResults(Simulation[] s, String filePath) {
-        String results[][] = new String[10][10];
+    public boolean exportResults(String[] s, String filePath, String whatToExport) {
+        String results[][] = new String[s.length][6];
+        if (whatToExport.equals("short")) {
+
+            int i = 0;
+            for (int j = 0; j < results.length; j++) {
+                Simulation sim = getSimulationByString(s[i]);
+                results[j][0] = sim.toString();
+                results[j][1] = "Best path result: " + String.valueOf(sim.getBestResultPath().getResult());
+                results[j][2] = "Origin node latitude: " + sim.getBestResultPath().getStartNode().getLatitude();
+                results[j][3] = "Origin node longitude: " + sim.getBestResultPath().getStartNode().getLongitude();
+                results[j][4] = "Destination node latitude: " + sim.getBestResultPath().getEndNode().getLatitude();
+                results[j][5] = "Destination node longitude: " + sim.getBestResultPath().getEndNode().getLongitude();
+                i++;
+            }
+        }
+
         return HTMLExporter.exportMultipleStringsToHTML("Results", "", "", results, filePath);
     }
 }

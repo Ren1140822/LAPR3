@@ -61,7 +61,7 @@ public class HTMLExporter {
      */
     public static boolean exportMultipleStringsToHTML(String title, String heading1, String heading2, String[][] body, String filePath) {
 
-        String data[] = new String[body.length];
+        String data[] = new String[body[0].length];
         for (int i = 0; i < data.length; i++) {
             data[i] = "";
         }

@@ -38,6 +38,8 @@ public class Simulation{
         this.aircraft=new Aircraft();
         this.segmentsList=new ArrayList<>();
         this.ecologicResultPath=new ResultPath();
+        this.startNode = new Node();
+        this.endNode = new Node();
 //         this.fastestResultPath = new FastestPathResult();
 //        this.shortestResultPath = new ShortestPathResult();
     }

@@ -46,7 +46,7 @@ public class ExportHTMLUI extends JFrame {
     private JList listComparison;
     private JList listShortestPath;
     private DialogSelectable dialog;
-   private DialogSelectable dialogSimulation;
+    private DialogSelectable dialogSimulation;
     private JFrame parentFrame;
 
     public ExportHTMLUI(JFrame parentFrame) {
@@ -60,7 +60,7 @@ public class ExportHTMLUI extends JFrame {
             }
         });
         controller = new ExportHTMLController();
-        dialogSimulation= new DialogSelectable(this, controller.getSimulationsList());
+        //dialogSimulation= new DialogSelectable(this, controller.getSimulationsList());
         results = controller.getSimulationsList();
         this.setSize(new Dimension(WINDOW_WIDTH, WINDOW_HEIGHT));
         this.setTitle(WINDOW_TITLE);
@@ -70,8 +70,8 @@ public class ExportHTMLUI extends JFrame {
 
     private void createComponents() {
         FlowLayout fl = new FlowLayout(FlowLayout.LEADING);
-          FlowLayout fl2 = new FlowLayout(FlowLayout.LEADING,50,0);
-          
+        FlowLayout fl2 = new FlowLayout(FlowLayout.LEADING, 50, 0);
+
         JPanel panelLists = new JPanel(fl);
         JPanel panelLabels = new JPanel(fl2);
         JLabel labelBest = createJLabels("Best consumption");
@@ -81,16 +81,14 @@ public class ExportHTMLUI extends JFrame {
         panelLabels.add(labelComp);
         panelLabels.add(labelShort);
         JPanel panelUpdateBtn = new JPanel();
-        listSimulations = createJList("Best consumption");
-        listComparison = createJList("Comparison");
-        listShortestPath = createJList("Shortest Path");
+        listSimulations = createJList("List of simulations");
+
         panelLists.add(listSimulations);
-        panelLists.add(listComparison);
-        panelLists.add(listShortestPath);
+
         JButton btn = createJButtonUpdate();
         panelUpdateBtn.add(btn, BorderLayout.NORTH);
         add(panelLists, BorderLayout.WEST);
-        add(panelLabels,BorderLayout.NORTH);
+        add(panelLabels, BorderLayout.NORTH);
         add(panelUpdateBtn, BorderLayout.CENTER);
         JButton btnExport = createExportJButton();
         add(btnExport, BorderLayout.SOUTH);
@@ -109,7 +107,7 @@ public class ExportHTMLUI extends JFrame {
         Border border = BorderFactory.createLineBorder(Color.BLACK);
         list.setBorder(border);
         list.setPreferredSize(new Dimension(150, 300));
-         list.setListData(results.toArray());
+        list.setListData(results.toArray());
         return list;
     }
 
@@ -128,20 +126,22 @@ public class ExportHTMLUI extends JFrame {
             @Override
             public void mouseClicked(MouseEvent me) {
                 String[] buttons = {"Filter by nodes", "Filter by aircraft type", "Cancel"};
-                int rc = JOptionPane.showOptionDialog(null, "Choose the filter", "Filter", JOptionPane.PLAIN_MESSAGE, 0, null, buttons, buttons[0]);
+                int rc = JOptionPane.showOptionDialog(null, "Choose the filter", "Filter", JOptionPane.PLAIN_MESSAGE, JOptionPane.PLAIN_MESSAGE, null, buttons, buttons[0]);
                 if (rc == 0) {
                     dialog = new DialogSelectable(ExportHTMLUI.this, controller.getListOfNodes(), "Select origin node");
-                    results = controller.getFlightPathAnalisysResultsGroupedByOriginDestination(dialog.getSelectedItem(), "any");
-                     listSimulations.setListData(results.toArray());
+                    String originNode = dialog.getSelectedItem();
+                    dialog = new DialogSelectable(ExportHTMLUI.this, controller.getListOfNodes(), "Select destination node");
+                    results = controller.getFlightPathAnalisysResultsGroupedByOriginDestination(originNode, dialog.getSelectedItem());
+                    listSimulations.setListData(results.toArray());
                     //dialogSimulation = new DialogSelectable(ExportHTMLUI.this, results);
                 }
                 if (rc == 1) {
                     dialog = new DialogSelectable(ExportHTMLUI.this, controller.getListOfAircraftTypes(), "Select aircraft type");
                     results = controller.getFlightPathAnalisysResultsGroupedByAircraftType(dialog.getSelectedItem());
-                      listSimulations.setListData(results.toArray());
-                      dialogSimulation = new DialogSelectable(ExportHTMLUI.this, results);
+                    listSimulations.setListData(results.toArray());
+
                 }
-              
+
             }
 
         });
@@ -161,22 +161,26 @@ public class ExportHTMLUI extends JFrame {
                 if (listSimulations.getSelectedValue() == null) {
                     JOptionPane.showMessageDialog(rootPane, "Nothing selected to export.", "Error", JOptionPane.ERROR_MESSAGE);
                 } else {
-                    int nrOfSelectedIndexes = listSimulations.getSelectedIndices().length ;
+                    int nrOfSelectedIndexes = listSimulations.getSelectedIndices().length;
                     if (nrOfSelectedIndexes > 4) {
                         JOptionPane.showMessageDialog(rootPane, "Select less than four items to export..", "Error", JOptionPane.ERROR_MESSAGE);
                     } else {
-                        int selectedIndexes[] = listSimulations.getSelectedIndices();
-                        JFileChooser chooser = new JFileChooser();
-                        chooser.showSaveDialog(null);
-                        String path = chooser.getCurrentDirectory().getAbsolutePath();
-                        
-                            
-                            Simulation allSims []=  (Simulation[]) listSimulations.getSelectedValuesList().toArray();
-                           
-                           controller.exportResults(allSims, path + "\\simulation_results.html");
-                       
-                       
+                        String[] buttons = {"Export shortest path calculations", "Export most ecologic path calculations", "Cancel"};
+                        int rc = JOptionPane.showOptionDialog(null, "What to export?", "Export HTML", JOptionPane.PLAIN_MESSAGE, JOptionPane.QUESTION_MESSAGE, null, buttons, buttons[0]);
+                        if (rc != 2) {
+                            int selectedIndexes[] = listSimulations.getSelectedIndices();
+                            JFileChooser chooser = new JFileChooser();
+                            chooser.showSaveDialog(null);
+                            String path = chooser.getCurrentDirectory().getAbsolutePath();
 
+                            String allSims[] = (String[]) listSimulations.getSelectedValuesList().toArray(new String[selectedIndexes.length]);
+                            if (rc == 0) {
+                                controller.exportResults(allSims, path + "\\simulation_results.html", "short");
+                            }
+                            if (rc == 1) {
+                                controller.exportResults(allSims, path + "\\simulation_results.html", "eco");
+                            }
+                        }
                     }
                 }
             }
