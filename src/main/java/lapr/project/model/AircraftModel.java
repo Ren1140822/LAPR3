@@ -12,6 +12,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlTransient;
+import lapr.project.utils.StringToSIUnitConverter;
 
 /**
  * Class that represents motorized commercial aircraft
@@ -19,21 +20,25 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author Diana Silva
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-public class AircraftModel implements Serializable{
+public class AircraftModel implements Serializable {
 
     /**
      * Class attributes
      */
     @XmlAttribute(name = "model_ID")
     private String id;
+
     @XmlTransient
-    private enum Type {PASSENGER, CARGO, MIXED};
+    private enum Type {
+
+        PASSENGER, CARGO, MIXED
+    };
     @XmlTransient
     private Type type;
     @XmlAttribute(name = "description")
     private String description;
     @XmlElement(name = "maker")
-    private String maker;    
+    private String maker;
     @XmlElement(name = "motorization")
     private Motorization motorization;
     @XmlTransient
@@ -205,7 +210,7 @@ public class AircraftModel implements Serializable{
     public void setMaker(String maker) {
         this.maker = maker;
     }
-    
+
     public String getType() {
         return type.toString();
     }
@@ -217,7 +222,7 @@ public class AircraftModel implements Serializable{
             System.err.println(e);
         }
     }
-    
+
     @XmlElement(name = "type")
     public String getType_() {
         return String.valueOf(type);
@@ -230,11 +235,11 @@ public class AircraftModel implements Serializable{
     public Motorization getMotorization() {
         return motorization;
     }
-    
-    public void setMotorization(Motorization motorization){
-        this.motorization=motorization;
+
+    public void setMotorization(Motorization motorization) {
+        this.motorization = motorization;
     }
-    
+
     public void setMotorization(int number_motors, String motor, String motor_type,
             List<Regime> regimeList) {
         motorization.setNumber_motors(number_motors);
@@ -251,14 +256,14 @@ public class AircraftModel implements Serializable{
     public void seteWeight(double eWeight) {
         this.eWeight = eWeight;
     }
+
     @XmlElement(name = "EWeight")
     public String geteWeight_() {
         return String.valueOf(eWeight);
     }
 
     public void seteWeight_(String eWeight) {
-        String a = eWeight.replaceAll(" US", "");
-        this.eWeight = Double.parseDouble(a);
+        this.eWeight = StringToSIUnitConverter.weight(eWeight);
     }
 
     public double getMTOW() {
@@ -268,15 +273,14 @@ public class AircraftModel implements Serializable{
     public void setMTOW(double MTOW) {
         this.MTOW = MTOW;
     }
-    
+
     @XmlElement(name = "MTOW")
     public String getMTOW_() {
         return String.valueOf(MTOW);
     }
 
     public void setMTOW_(String MTOW) {
-        String a = MTOW.replaceAll(" US", "");
-        this.MTOW = Double.parseDouble(a);
+        this.MTOW = StringToSIUnitConverter.weight(MTOW);
     }
 
     public double getMZFW() {
@@ -286,15 +290,14 @@ public class AircraftModel implements Serializable{
     public void setMZFW(double MZFW) {
         this.MZFW = MZFW;
     }
-    
+
     @XmlElement(name = "MZFW")
     public String getMZFW_() {
         return String.valueOf(MZFW);
     }
 
     public void setMZFW_(String MZFW) {
-        String a = MZFW.replaceAll(" US", "");
-        this.MZFW = Double.parseDouble(a);
+        this.MZFW = StringToSIUnitConverter.weight(MZFW);
     }
 
     public double getMaxPayload() {
@@ -304,14 +307,14 @@ public class AircraftModel implements Serializable{
     public void setMaxPayload(double maxPayload) {
         this.maxPayload = maxPayload;
     }
+
     @XmlElement(name = "max_payload")
     public String getMaxPayload_() {
         return String.valueOf(maxPayload);
     }
 
     public void setMaxPayload_(String maxPayload) {
-        String a = maxPayload.replaceAll(" US", "");
-        this.maxPayload = Double.parseDouble(a);
+        this.maxPayload = StringToSIUnitConverter.weight(maxPayload);;
     }
 
     public double getFuelCapacity() {
@@ -321,14 +324,14 @@ public class AircraftModel implements Serializable{
     public void setFuelCapacity(double fuelCapacity) {
         this.fuelCapacity = fuelCapacity;
     }
+
     @XmlElement(name = "fuel_capacity")
     public String getFuelCapacity_() {
         return String.valueOf(fuelCapacity);
     }
 
     public void setFuelCapacity_(String fuelCapacity) {
-        String a = fuelCapacity.replaceAll(" US", "");
-        this.fuelCapacity = Double.parseDouble(a);
+        this.fuelCapacity = StringToSIUnitConverter.volume(fuelCapacity);
     }
 
     public double getVMO() {
@@ -338,6 +341,7 @@ public class AircraftModel implements Serializable{
     public void setVMO(double VMO) {
         this.VMO = VMO;
     }
+
     @XmlElement(name = "VMO")
     public String getVMO_() {
         return String.valueOf(VMO);
@@ -355,6 +359,7 @@ public class AircraftModel implements Serializable{
     public void setMMO(double MMO) {
         this.MMO = MMO;
     }
+
     @XmlElement(name = "MMO")
     public String getMMO_() {
         return String.valueOf(MMO);
@@ -372,14 +377,14 @@ public class AircraftModel implements Serializable{
     public void setWingArea(double wingArea) {
         this.wingArea = wingArea;
     }
+
     @XmlElement(name = "wing_area")
     public String getWingArea_() {
         return String.valueOf(wingArea);
     }
 
     public void setWingArea_(String wingArea) {
-        String a = wingArea.replaceAll(" SI", "");
-        this.wingArea = Double.parseDouble(a);
+        this.wingArea = StringToSIUnitConverter.area(wingArea);
     }
 
     public double getWingSpan() {
@@ -389,14 +394,14 @@ public class AircraftModel implements Serializable{
     public void setWingSpan(double wingSpan) {
         this.wingSpan = wingSpan;
     }
+
     @XmlElement(name = "wing_span")
     public String getWingSpan_() {
         return String.valueOf(wingSpan);
     }
 
     public void setWingSpan_(String wingSpan) {
-        String a = wingSpan.replaceAll(" SI", "");
-        this.wingSpan = Double.parseDouble(a);
+        this.wingSpan = StringToSIUnitConverter.length(wingSpan);
     }
 
     public double getcDrag() {
@@ -414,7 +419,7 @@ public class AircraftModel implements Serializable{
     public void setE(double e) {
         this.e = e;
     }
-    
+
     @Override
     public String toString() {
         return id;

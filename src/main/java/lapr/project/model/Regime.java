@@ -6,6 +6,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlTransient;
+import lapr.project.utils.StringToSIUnitConverter;
 
 /**
  * Represents the regime of motorization
@@ -13,7 +14,7 @@ import javax.xml.bind.annotation.XmlTransient;
  * @author Diana Silva
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-public class Regime implements Serializable{
+public class Regime implements Serializable {
 
     /**
      * id of regime motorization
@@ -56,7 +57,7 @@ public class Regime implements Serializable{
     private static final double DEFAULT_THRUST = 1;
     @XmlTransient
     private static final double DEFAULT_ALTITUDE = 1;
-
+    
     public Regime() {
         this.id = DEFAULT_ID;
         this.TSFC = DEFAULT_TSFC;
@@ -64,7 +65,7 @@ public class Regime implements Serializable{
         this.thrust = DEFAULT_THRUST;
         this.altitude = DEFAULT_ALTITUDE;
     }
-
+    
     public Regime(String id, double TSFC, double speed, double thrust, double altitude) {
         this.id = id;
         this.TSFC = TSFC;
@@ -72,11 +73,11 @@ public class Regime implements Serializable{
         this.thrust = thrust;
         this.altitude = altitude;
     }
-
+    
     public String getId() {
         return id;
     }
-
+    
     public void setId(String id) {
         this.id = id;
     }
@@ -94,11 +95,11 @@ public class Regime implements Serializable{
     public void setTSFC(double TSFC) {
         this.TSFC = TSFC;
     }
-    
+
     /**
      * @return the TSFC for JAXB
      */
-    @XmlElement(name="TSFC")
+    @XmlElement(name = "TSFC")
     public String getTSFC_() {
         return String.valueOf(TSFC);
     }
@@ -107,8 +108,7 @@ public class Regime implements Serializable{
      * @param tsfc the TSFC to set for JAXB
      */
     public void setTSFC_(String tsfc) {
-        String a = tsfc.replaceAll(" US", "");
-        this.TSFC = Double.parseDouble(a);
+        this.TSFC = StringToSIUnitConverter.TSFC(tsfc);
     }
 
     /**
@@ -137,12 +137,11 @@ public class Regime implements Serializable{
      * @param sp the speed to set for JAXB
      */
     public void setSpeed_(String sp) {
-        String a = sp.replaceAll(" M", "");
-        this.speed = Double.parseDouble(a);
+        this.speed = StringToSIUnitConverter.speed(sp);
     }
 
     /**
-     * @return the thrust 
+     * @return the thrust
      */
     public double getThrust() {
         return thrust;
@@ -154,7 +153,7 @@ public class Regime implements Serializable{
     public void setThrust(double thrust) {
         this.thrust = thrust;
     }
-    
+
     /**
      * @return the thrust for JAXB
      */
@@ -167,8 +166,7 @@ public class Regime implements Serializable{
      * @param th the thrust to set for JAXB
      */
     public void setThrust_(String th) {
-        String a = th.replaceAll(" US", "");
-        this.thrust = Double.parseDouble(a);
+        this.thrust = StringToSIUnitConverter.force(th);
     }
 
     /**
@@ -184,7 +182,7 @@ public class Regime implements Serializable{
     public void setAltitude(double altitude) {
         this.altitude = altitude;
     }
-    
+
     /**
      * @return the altitude for JAXB
      */
@@ -197,10 +195,9 @@ public class Regime implements Serializable{
      * @param alt the alt to set for JAXB
      */
     public void setAltitude_(String alt) {
-        String a = alt.replaceAll(" US", "");
-        this.altitude = Double.parseDouble(a);
+        this.altitude = StringToSIUnitConverter.length(alt);
     }
-
+    
     public boolean validate() {
         boolean v1 = !id.isEmpty() && TSFC > 0 && speed > 0;
         return v1 && thrust > 0 && altitude > 0;

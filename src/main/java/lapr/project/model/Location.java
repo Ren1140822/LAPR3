@@ -12,6 +12,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
+import lapr.project.utils.StringToSIUnitConverter;
 
 /**
  *
@@ -143,9 +144,8 @@ public class Location implements Serializable{
      *
      * @param altitude the alt to set
      */
-    private void setAltitude_(String alt) {        
-        String a = alt.replaceAll(" m", "");
-        this.altitude = Integer.parseInt(a);
+    private void setAltitude_(String alt) {
+        this.altitude = (int) StringToSIUnitConverter.length(alt);
     }
     
     /**
