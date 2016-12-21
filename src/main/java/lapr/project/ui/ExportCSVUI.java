@@ -13,7 +13,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import javax.swing.BorderFactory;

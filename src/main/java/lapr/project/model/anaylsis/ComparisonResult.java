@@ -5,7 +5,6 @@
  */
 package lapr.project.model.anaylsis;
 
-import java.util.LinkedList;
 import lapr.project.model.Node;
 
 /**

@@ -48,7 +48,7 @@ public class HTMLExporter {
         Formatter out = null;
         try {
             out = new Formatter(new File(filePath));
-        } catch (FileNotFoundException ex) {
+        } catch (FileNotFoundException  |NullPointerException ex) {
             out.close();
             return false;
         }
@@ -78,8 +78,9 @@ public class HTMLExporter {
         Formatter out = null;
         try {
             out = new Formatter(new File(filePath));
-        } catch (FileNotFoundException ex) {
+        } catch (FileNotFoundException |NullPointerException ex) {
             out.close();
+         
             return false;
         }
         out.format("%s", page);

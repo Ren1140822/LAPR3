@@ -5,10 +5,8 @@
  */
 package lapr.project.model;
 
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import lapr.project.model.mapgraph.Graph;
 import org.junit.After;
 import org.junit.AfterClass;

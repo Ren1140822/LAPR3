@@ -5,7 +5,6 @@
  */
 package lapr.project.utils;
 
-import com.sun.media.jfxmedia.logging.Logger;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Formatter;
@@ -37,7 +36,7 @@ public class CSVExporter {
         Formatter out = null;
         try {
             out = new Formatter(new File(filePath));
-        } catch (FileNotFoundException ex) {
+        } catch (FileNotFoundException  |NullPointerException ex) {
             out.close();
             return false;
         }
@@ -81,7 +80,7 @@ public class CSVExporter {
         Formatter out = null;
         try {
             out = new Formatter(new File(filePath));
-        } catch (FileNotFoundException ex) {
+        } catch (FileNotFoundException  |NullPointerException ex) {
             out.close();
             return false;
         }

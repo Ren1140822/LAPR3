@@ -6,12 +6,10 @@
 package lapr.project.model.lists;
 
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import lapr.project.model.Node;
-import lapr.project.model.anaylsis.ComparisonResult;
 import lapr.project.model.anaylsis.EcologicPathResult;
 import lapr.project.model.anaylsis.FastestPathResult;
 import lapr.project.model.anaylsis.Result;
