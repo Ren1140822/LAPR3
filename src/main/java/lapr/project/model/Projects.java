@@ -13,6 +13,7 @@ import lapr.project.model.lists.AircraftModelList;
 import lapr.project.model.lists.AirportList;
 import lapr.project.model.lists.CompareResultsList;
 import lapr.project.model.lists.ResultsList;
+import lapr.project.model.lists.SimulationsList;
 
 /**
  * Class that represents a simulation of air network fights
@@ -33,6 +34,7 @@ public class Projects implements Serializable {
         private static CompareResultsList compareList = new CompareResultsList();
         // public static FlightList flightList=new FlightList();
         private static AircraftModelList modelList = new AircraftModelList();
+        private static SimulationsList simulationsList = new SimulationsList();
 
         private static int idProject;
         private static String name;
@@ -206,20 +208,21 @@ public class Projects implements Serializable {
             compareList = new CompareResultsList();
             modelList = new AircraftModelList();
         }
-        
-        public static  AircraftList getAircraftListReference()
-        {
+
+        public static AircraftList getAircraftListReference() {
             return aircraftList;
         }
-        
-          public static  AirportList getAirportListReference()
-        {
-            return  airportList;
+
+        public static AirportList getAirportListReference() {
+            return airportList;
         }
-          
-             public static  AircraftModelList getAircraftModelListReference()
-        {
-            return  modelList;
+
+        public static AircraftModelList getAircraftModelListReference() {
+            return modelList;
+        }
+
+        public static SimulationsList getSimulationsListReference() {
+            return simulationsList;
         }
     }
 

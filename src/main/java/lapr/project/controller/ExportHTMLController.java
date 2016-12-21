@@ -12,6 +12,7 @@ import java.util.Map;
 import lapr.project.model.Projects.Project;
 
 import lapr.project.model.anaylsis.ResultPath;
+import lapr.project.model.anaylsis.Simulation;
 import lapr.project.model.lists.ResultsList;
 import lapr.project.utils.HTMLExporter;
 
@@ -22,6 +23,7 @@ import lapr.project.utils.HTMLExporter;
 public class ExportHTMLController {
 
     List<ResultsList> results;
+    String currentSim;
 
     public ExportHTMLController() {
 
@@ -32,14 +34,40 @@ public class ExportHTMLController {
      *
      * @return the list of results
      */
-    public Map<String,List<ResultPath>> getAvailableResults() {
-        Map<String, List<ResultPath>> results = new HashMap<>();
-        results.put("Best consumption", Project.getEcologicPathResults());
-        results.put("Comparison", Project.getComparisonResults());
-        results.put("Shortest Path", Project.getShortestPathResults());
+    public Map<String, ResultPath> getAvailableResults(String sim) {
+        currentSim = sim;
+        Map<String, ResultPath> results = new HashMap<>();
+        List<Simulation> list = Project.getSimulationsListReference().getSimulationsList();
+        Simulation aux = getSimulationByString(sim);
+        for (Simulation simulation : list) {
+            if (aux.equals(simulation)) {
+                results.put("Best consumption", aux.getBestResultPath());
+                //results.put("Comparison",sim.getComparison());
+                //  results.put("Shortest Path", Project.getShortestPathResults());
+            }
+        }
+
         return results;
 
+    }
 
+    public List<String> getSimulationsList() {
+        List<String> simString = new LinkedList<>();
+        List<Simulation> list = Project.getSimulationsListReference().getSimulationsList();
+        for (Simulation simulation : list) {
+            simString.add(simulation.toString());
+        }
+        return simString;
+    }
+
+    private Simulation getSimulationByString(String id) {
+        List<Simulation> list = Project.getSimulationsListReference().getSimulationsList();
+        for (Simulation simulation : list) {
+            if (simulation.toString().equals(id)) {
+                return simulation;
+            }
+        }
+        return null;
     }
 
     /**
@@ -49,86 +77,78 @@ public class ExportHTMLController {
      * @param endNode the destination
      * @return the map containing the results
      */
-    public Map<String, List<ResultPath>> getFlightPathAnalisysResultsGroupedByOriginDestination(String startNode, String endNode) {
-        Map<String, List<ResultPath>> results = new HashMap<>();
-        if(startNode!=null)
-        {
-        List<ResultPath> filteredResults = filterResults(Project.getEcologicPathResults(), startNode, endNode);
-        results.put("Best consumption", filteredResults);
-        filteredResults = filterResults(Project.getComparisonResults(), startNode, endNode);
-        results.put("Comparison", filteredResults);
-        filteredResults = filterResults(Project.getShortestPathResults(), startNode, endNode);
-        results.put("Shortest Path", filteredResults);
-        return results;
-        }
-        return getAvailableResults();
-    }
-
-    private List<ResultPath> filterResults(List<ResultPath> list, String startNode, String endNode) {
-        List<ResultPath> filteredResults = new LinkedList<>();
-        for (ResultPath r : list) {
-            if (r.getStartNode().getId().equals(startNode)) {
-                if (r.getEndNode().getId().equals("any")) {
-                    filteredResults.add(r);
-                }
-                if (r.getEndNode().getId().equals(endNode)) {
-                    filteredResults.add(r);
+    public List<String> getFlightPathAnalisysResultsGroupedByOriginDestination(String startNode, String endNode) {
+        List<String> results = new LinkedList<>();
+        if (startNode != null) {
+            List<Simulation> list = Project.getSimulationsListReference().getSimulationsList();
+            for (Simulation simulation : list) {
+                if (simulation.getStartNode().getId().equals(startNode) && simulation.getEndNode().getId().equals(endNode)) {
+                    results.add(simulation.toString());
+                    //results.put("Comparison",sim.getComparison());
+                    //  results.put("Shortest Path", Project.getShortestPathResults());
                 }
             }
-        }
-        return filteredResults;
-    }
-
-    
-      public Map<String, List<ResultPath>> getFlightPathAnalisysResultsGroupedByAircraftType(String aircrafType) {
-           Map<String, List<ResultPath>> results = new HashMap<>();
-            List<ResultPath> filteredResults =filterResultsAircaft(Project.getEcologicPathResults(), aircrafType);
-            results.put("Best consumption", filteredResults);
-            filteredResults = filterResultsAircaft(Project.getComparisonResults(),  aircrafType);
-            results.put("Comparison", filteredResults);
-            filteredResults =filterResultsAircaft(Project.getShortestPathResults(), aircrafType);
-            results.put("Shortest Path", filteredResults);
+//        List<ResultPath> filteredResults = filterResults(Project.getEcologicPathResults(), startNode, endNode);
+//        results.put("Best consumption", filteredResults);
+//        filteredResults = filterResults(Project.getComparisonResults(), startNode, endNode);
+//        results.put("Comparison", filteredResults);
+//        filteredResults = filterResults(Project.getShortestPathResults(), startNode, endNode);
+//        results.put("Shortest Path", filteredResults);
             return results;
-    }
-    
-     private List<ResultPath> filterResultsAircaft(List<ResultPath> list,String aircraftType) {
-       List<ResultPath> filteredResults = new LinkedList<>();
-        for (ResultPath r : list) {
-           // if (r.getAircraft().getAircraftModel().getType().equals(aircraftType)) {
-
-                    filteredResults.add(r);
-           // }
         }
-        return filteredResults;
-     }
-    
-    
+        return results;
+    }
+
+    public List<String> getFlightPathAnalisysResultsGroupedByAircraftType(String aircrafType) {
+        List<String> results = new LinkedList<>();
+        List<Simulation> sims = Project.getSimulationsListReference().getSimulationsList();
+        for (Simulation s : sims) {
+
+            if (s.getAircraft().getAircraftModel().getType().equals(aircrafType)) {
+                results.add(s.toString());
+                //results.put("Comparison",sim.getComparison());
+                //  results.put("Shortest Path", Project.getShortestPathResults());
+            }
+
+        }
+        return results;
+
+    }
+
+    /**
+     * Gets list of all aircraft types.
+     *
+     * @return the list of all aircraft types.
+     */
+    public List<String> getListOfAircraftTypes() {
+        List<String> results = new LinkedList<>();
+        List<Simulation> sims = Project.getSimulationsListReference().getSimulationsList();
+        for (Simulation s : sims) {
+
+            results.add(s.getAircraft().getAircraftModel().getType());
+
+        }
+        return results;
+    }
+
     /**
      * Gets list of all start nodes.
-     * @return  the list of start nodes.
+     *
+     * @return the list of start nodes.
      */
-    public List<String> getListOfOrigins() {
-        List<String> nodes = new LinkedList<>();
-        List<ResultPath> results = Project.getEcologicPathResults();
-        for (ResultPath r : results) {
-            if (!nodes.contains(r.getStartNode().getId())) {
-                nodes.add(r.getStartNode().getId());
+    public List<String> getListOfNodes() {
+        List<String> results = new LinkedList<>();
+        List<Simulation> sims = Project.getSimulationsListReference().getSimulationsList();
+        for (Simulation s : sims) {
+            if (!results.contains(s.getStartNode().getId())) {
+                results.add(s.getStartNode().getId());
             }
-        }
-        results = Project.getFastestPathResults();
-        for (ResultPath r : results) {
-            if (!nodes.contains(r.getStartNode().getId())) {
-                nodes.add(r.getStartNode().getId());
+            if (!results.contains(s.getEndNode().getId())) {
+                results.add(s.getEndNode().getId());
             }
-        }
-        results = Project.getComparisonResults();
-        for (ResultPath r : results) {
-            if (!nodes.contains(r.getStartNode().getId())) {
-                nodes.add(r.getStartNode().getId());
-            }
-        }
-        return nodes;
 
+        }
+        return results;
     }
 
     /**
@@ -138,11 +158,11 @@ public class ExportHTMLController {
      * @param filePath the file path
      * @return true if exported
      */
-    public boolean exportResult(ResultPath r, String filePath) {
+    public boolean exportResult(Simulation s, String filePath) {
         String results[] = new String[10];
         return HTMLExporter.exportStringsToHTML("Results", "", "", results, filePath);
     }
-    
+
     /**
      * Exports a set of results to html.
      *
@@ -150,7 +170,7 @@ public class ExportHTMLController {
      * @param filePath the file path
      * @return true if exported
      */
-    public boolean exportResults(ResultPath r[], String filePath) {
+    public boolean exportResults(Simulation[] s, String filePath) {
         String results[][] = new String[10][10];
         return HTMLExporter.exportMultipleStringsToHTML("Results", "", "", results, filePath);
     }

@@ -14,7 +14,6 @@ import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.List;
-import java.util.Map;
 import javax.swing.BorderFactory;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -27,7 +26,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.Border;
 import lapr.project.controller.ExportHTMLController;
-import lapr.project.model.anaylsis.ResultPath;
+import lapr.project.model.anaylsis.Simulation;
 
 /**
  *
@@ -42,11 +41,12 @@ public class ExportHTMLUI extends JFrame {
     private final int WINDOW_HEIGHT = 500;
     private final String WINDOW_TITLE = "Export data to HTML";
     private transient ExportHTMLController controller;
-    private transient Map<String, List<ResultPath>> results;
-    private JList listBest;
+    private transient List<String> results;
+    private JList listSimulations;
     private JList listComparison;
     private JList listShortestPath;
     private DialogSelectable dialog;
+   private DialogSelectable dialogSimulation;
     private JFrame parentFrame;
 
     public ExportHTMLUI(JFrame parentFrame) {
@@ -60,7 +60,8 @@ public class ExportHTMLUI extends JFrame {
             }
         });
         controller = new ExportHTMLController();
-        results = controller.getAvailableResults();
+        dialogSimulation= new DialogSelectable(this, controller.getSimulationsList());
+        results = controller.getSimulationsList();
         this.setSize(new Dimension(WINDOW_WIDTH, WINDOW_HEIGHT));
         this.setTitle(WINDOW_TITLE);
         createComponents();
@@ -80,10 +81,10 @@ public class ExportHTMLUI extends JFrame {
         panelLabels.add(labelComp);
         panelLabels.add(labelShort);
         JPanel panelUpdateBtn = new JPanel();
-        listBest = createJList("Best consumption");
+        listSimulations = createJList("Best consumption");
         listComparison = createJList("Comparison");
         listShortestPath = createJList("Shortest Path");
-        panelLists.add(listBest);
+        panelLists.add(listSimulations);
         panelLists.add(listComparison);
         panelLists.add(listShortestPath);
         JButton btn = createJButtonUpdate();
@@ -108,7 +109,7 @@ public class ExportHTMLUI extends JFrame {
         Border border = BorderFactory.createLineBorder(Color.BLACK);
         list.setBorder(border);
         list.setPreferredSize(new Dimension(150, 300));
-        list.setListData(results.get(keyValue).toArray());
+         list.setListData(results.toArray());
         return list;
     }
 
@@ -129,16 +130,18 @@ public class ExportHTMLUI extends JFrame {
                 String[] buttons = {"Filter by nodes", "Filter by aircraft type", "Cancel"};
                 int rc = JOptionPane.showOptionDialog(null, "Choose the filter", "Filter", JOptionPane.PLAIN_MESSAGE, 0, null, buttons, buttons[0]);
                 if (rc == 0) {
-                    dialog = new DialogSelectable(ExportHTMLUI.this, controller.getListOfOrigins(), "Select origin node");
+                    dialog = new DialogSelectable(ExportHTMLUI.this, controller.getListOfNodes(), "Select origin node");
                     results = controller.getFlightPathAnalisysResultsGroupedByOriginDestination(dialog.getSelectedItem(), "any");
+                     listSimulations.setListData(results.toArray());
+                    //dialogSimulation = new DialogSelectable(ExportHTMLUI.this, results);
                 }
                 if (rc == 1) {
-                    dialog = new DialogSelectable(ExportHTMLUI.this, controller.getListOfOrigins(), "Select aircraft type");
+                    dialog = new DialogSelectable(ExportHTMLUI.this, controller.getListOfAircraftTypes(), "Select aircraft type");
                     results = controller.getFlightPathAnalisysResultsGroupedByAircraftType(dialog.getSelectedItem());
+                      listSimulations.setListData(results.toArray());
+                      dialogSimulation = new DialogSelectable(ExportHTMLUI.this, results);
                 }
-                listComparison.setListData(results.get("Best consumption").toArray());
-                listComparison.setListData(results.get("Comparison").toArray());
-                listShortestPath.setListData(results.get("Shortest Path").toArray());
+              
             }
 
         });
@@ -155,28 +158,24 @@ public class ExportHTMLUI extends JFrame {
 
             @Override
             public void mouseClicked(MouseEvent me) {
-                if (listBest.getSelectedValue() == null && listComparison.getSelectedValue() == null && listShortestPath.getSelectedValue() == null) {
+                if (listSimulations.getSelectedValue() == null) {
                     JOptionPane.showMessageDialog(rootPane, "Nothing selected to export.", "Error", JOptionPane.ERROR_MESSAGE);
                 } else {
-                    int nrOfSelectedIndexes = listBest.getSelectedIndices().length + listComparison.getSelectedIndices().length + listShortestPath.getSelectedIndices().length;
+                    int nrOfSelectedIndexes = listSimulations.getSelectedIndices().length ;
                     if (nrOfSelectedIndexes > 4) {
                         JOptionPane.showMessageDialog(rootPane, "Select less than four items to export..", "Error", JOptionPane.ERROR_MESSAGE);
                     } else {
-                        int selectedIndexes[] = listBest.getSelectedIndices();
+                        int selectedIndexes[] = listSimulations.getSelectedIndices();
                         JFileChooser chooser = new JFileChooser();
                         chooser.showSaveDialog(null);
                         String path = chooser.getCurrentDirectory().getAbsolutePath();
-                        for (int i = 0; i < selectedIndexes.length; i++) {
-                            controller.exportResult((ResultPath) listBest.getSelectedValue(), path + "\\best_results" + (i + 1) + ".html");
-                        }
-                        selectedIndexes = listComparison.getSelectedIndices();
-                        for (int i = 0; i < selectedIndexes.length; i++) {
-                            controller.exportResult((ResultPath) listComparison.getSelectedValue(), path + "\\comparison_results" + (i + 1) + ".html");
-                        }
-                        selectedIndexes = listShortestPath.getSelectedIndices();
-                        for (int i = 0; i < selectedIndexes.length; i++) {
-                            controller.exportResult((ResultPath) listShortestPath.getSelectedValue(), path + "\\shortestpath" + (i + 1) + ".html");
-                        }
+                        
+                            
+                            Simulation allSims []=  (Simulation[]) listSimulations.getSelectedValuesList().toArray();
+                           
+                           controller.exportResults(allSims, path + "\\simulation_results.html");
+                       
+                       
 
                     }
                 }

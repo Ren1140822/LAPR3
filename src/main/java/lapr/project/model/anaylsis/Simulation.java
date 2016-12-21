@@ -20,9 +20,12 @@ public class Simulation{
     private double totalWeight;
     private Aircraft aircraft;
     private List<SegmentResult> segmentsList;
-    private ResultPath bestResultPath;
-    
+    private ResultPath ecologicResultPath;
+    private FastestPathResult fastestResultPath;
+    private ShortestPathResult shortestResultPath;
     private static final double DEFAULT_VALUE=0;
+    private Node startNode;
+    private Node endNode;
     
     /**
      * constructor
@@ -34,7 +37,9 @@ public class Simulation{
         this.totalWeight=DEFAULT_VALUE;
         this.aircraft=new Aircraft();
         this.segmentsList=new ArrayList<>();
-        this.bestResultPath=new ResultPath();
+        this.ecologicResultPath=new ResultPath();
+//         this.fastestResultPath = new FastestPathResult();
+//        this.shortestResultPath = new ShortestPathResult();
     }
     
     public Simulation(Node startNode, Node endNode, Aircraft aircraft, int passengers, int crew, double cargoLoad){
@@ -44,7 +49,11 @@ public class Simulation{
         this.aircraft=aircraft;
         this.totalWeight=calculateTotalWeight();
         this.segmentsList=new ArrayList<>();
-        this.bestResultPath=new ResultPath(startNode, endNode);
+        this.ecologicResultPath=new ResultPath(startNode);
+        this.fastestResultPath = new FastestPathResult(startNode);
+        this.shortestResultPath = new ShortestPathResult(startNode);
+        this.startNode = startNode;
+        this.endNode = endNode;
     } 
     
     public Simulation(Node startNode, Node endNode, Aircraft aircraft){
@@ -54,7 +63,11 @@ public class Simulation{
         this.totalWeight=DEFAULT_VALUE;
         this.aircraft=aircraft;
         this.segmentsList=new ArrayList<>();
-        this.bestResultPath=new ResultPath(startNode,endNode);
+        this.ecologicResultPath=new ResultPath(startNode);
+        this.fastestResultPath = new FastestPathResult(startNode);
+        this.shortestResultPath = new ShortestPathResult(startNode);
+           this.startNode = startNode;
+        this.endNode = endNode;
     }
     
     /**
@@ -154,6 +167,22 @@ public class Simulation{
         return getSegmentsList().add(new SegmentResult());
     }
 
+    public Node getStartNode() {
+        return startNode;
+    }
+
+    public void setStartNode(Node startNode) {
+        this.startNode = startNode;
+    }
+
+    public Node getEndNode() {
+        return endNode;
+    }
+
+    public void setEndNode(Node endNode) {
+        this.endNode = endNode;
+    }
+
     public boolean validate() {
         boolean v1=this.passengers!=0 && this.crew!=0 &&
                 this.cargoLoad!=0 && this.totalWeight!=0 &&
@@ -169,16 +198,16 @@ public class Simulation{
     }
 
     /**
-     * @return the bestResultPath
+     * @return the ecologicResultPath
      */
     public ResultPath getBestResultPath() {
-        return bestResultPath;
+        return ecologicResultPath;
     }
 
     /**
-     * @param bestResultPath the bestResultPath to set
+     * @param bestResultPath the ecologicResultPath to set
      */
     public void setBestResultPath(ResultPath bestResultPath) {
-        this.bestResultPath = bestResultPath;
+        this.ecologicResultPath = bestResultPath;
     }
 }
