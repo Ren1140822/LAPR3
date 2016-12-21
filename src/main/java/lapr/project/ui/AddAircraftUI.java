@@ -140,6 +140,7 @@ public class AddAircraftUI extends JFrame {
                         btnSubmit.setEnabled(false);
                     }
                 } catch (NumberFormatException|NullPointerException ex) {
+                    System.err.print(ex);
                     JOptionPane.showMessageDialog(rootPane, "Invalid values submitted or no valid model set for this aircraft.", "Error", JOptionPane.ERROR_MESSAGE);
                 }
             }

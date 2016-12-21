@@ -39,7 +39,7 @@ public class ExportCSVUI extends JFrame {
     private final int WINDOW_HEIGHT = 500;
     private final String WINDOW_TITLE = "Export data to CSV";
     private transient ExportCSVController controller;
-    private Map<String, List<ResultPath>> results;
+    private transient Map<String, List<ResultPath>> results;
     private JList listBest;
     private JList listComparison;
     private JList listShortestPath;
