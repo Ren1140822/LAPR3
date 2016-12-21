@@ -41,7 +41,7 @@ public class ExportHTMLUI extends JFrame {
     private final int WINDOW_WIDTH = 550;
     private final int WINDOW_HEIGHT = 500;
     private final String WINDOW_TITLE = "Export data to HTML";
-    private ExportHTMLController controller;
+    private transient ExportHTMLController controller;
     private Map<String, List<ResultPath>> results;
     private JList listBest;
     private JList listComparison;

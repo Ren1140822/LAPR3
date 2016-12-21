@@ -41,6 +41,7 @@ public class CSVExporter {
             {
                 out.close();
             }
+             System.err.print(ex);
             return false;
             
 
@@ -89,6 +90,7 @@ public class CSVExporter {
             {
                 out.close();
             }
+                System.err.print(ex);
             return false;
         }
         out.format("%s", page);

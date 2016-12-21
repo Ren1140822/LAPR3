@@ -38,7 +38,7 @@ public class AddAircraftUI extends JFrame {
     private final int WINDOW_WIDTH = 500;
     private final int WINDOW_HEIGHT = 500;
     private final String WINDOW_TITLE = "Add aircraft";
-    private AddAircraftController addAircraftController;
+    private transient AddAircraftController addAircraftController;
     private JTextField textRegistration;
     private JTextField textCompany;
     private JTextField textSeatsEcon;

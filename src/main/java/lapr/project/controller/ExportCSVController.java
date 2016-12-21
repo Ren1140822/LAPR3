@@ -66,10 +66,10 @@ public class ExportCSVController {
         List<ResultPath> filteredResults = new LinkedList<>();
         for (ResultPath r : list) {
             if (r.getStartNode().getId().equals(startNode)) {
-                if (r.getEndNode().equals("any")) {
+                if (r.getEndNode().getId().equals("any")) {
                     filteredResults.add(r);
                 }
-                if (r.getEndNode().equals(endNode)) {
+                if (r.getEndNode().getId().equals(endNode)) {
                     filteredResults.add(r);
                 }
             }
