@@ -13,6 +13,9 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.FileNotFoundException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.BorderFactory;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -112,7 +115,11 @@ public class ImportDataUI extends JDialog{
         airport.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                ImportAirportUI impairport = new ImportAirportUI();
+                try {
+                    ImportAirportUI impairport = new ImportAirportUI();
+                } catch (FileNotFoundException ex) {
+                    Logger.getLogger(ImportDataUI.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
         return airport;
@@ -129,7 +136,11 @@ public class ImportDataUI extends JDialog{
         aircraft.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                ImportAircraftModelListUI impaircraftmodel = new ImportAircraftModelListUI();
+                try {
+                    ImportAircraftModelListUI impaircraftmodel = new ImportAircraftModelListUI();
+                } catch (FileNotFoundException ex) {
+                    Logger.getLogger(ImportDataUI.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
         return aircraft;
@@ -146,7 +157,11 @@ public class ImportDataUI extends JDialog{
         network.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                ImportNetworkUI impnetwork = new ImportNetworkUI();
+                try {
+                    ImportNetworkUI impnetwork = new ImportNetworkUI();
+                } catch (FileNotFoundException ex) {
+                    Logger.getLogger(ImportDataUI.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
         return network;
