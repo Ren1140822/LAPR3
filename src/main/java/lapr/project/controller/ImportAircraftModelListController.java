@@ -25,7 +25,7 @@ public class ImportAircraftModelListController {
     JAXBContext jaxbContext;
     
     public ImportAircraftModelListController(){
-        aircraftsModelList = Project.modelList;
+        aircraftsModelList = Project.getAircraftModelListReference();
     }
     
     /**

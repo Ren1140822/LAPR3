@@ -17,7 +17,7 @@ public class AddAirportController {
     AirportList airportsList;
     
     public AddAirportController(){
-        airportsList = Project.airportList;
+        airportsList = Project.getAirportListReference();
     }
     
     public void setAirportData(String IATA, String name, String town, String country,

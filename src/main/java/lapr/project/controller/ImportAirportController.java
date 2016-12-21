@@ -25,7 +25,7 @@ public class ImportAirportController {
     JAXBContext jaxbContext;
     
     public ImportAirportController(){
-        airportsList = Project.airportList;
+        airportsList = Project.getAirportListReference();
     }
     
     /**

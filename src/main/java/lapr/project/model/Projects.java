@@ -26,17 +26,17 @@ public class Projects implements Serializable {
         /**
          * Variables to read from DAL or file.
          */
-        public static AircraftList aircraftList = new AircraftList();
-        public static AirNetwork network = new AirNetwork();
-        public static AirportList airportList = new AirportList();
-        public static ResultsList resultsList = new ResultsList();
-        public static CompareResultsList compareList = new CompareResultsList();
+        private static AircraftList aircraftList = new AircraftList();
+        private static AirNetwork network = new AirNetwork();
+        private static AirportList airportList = new AirportList();
+        private static ResultsList resultsList = new ResultsList();
+        private static CompareResultsList compareList = new CompareResultsList();
         // public static FlightList flightList=new FlightList();
-        public static AircraftModelList modelList = new AircraftModelList();
+        private static AircraftModelList modelList = new AircraftModelList();
 
-        public static int idProject;
-        public static String name;
-        public static String description;
+        private static int idProject;
+        private static String name;
+        private static String description;
 
         /**
          * private constructor to hide the implicit public one
@@ -206,5 +206,21 @@ public class Projects implements Serializable {
             compareList = new CompareResultsList();
             modelList = new AircraftModelList();
         }
+        
+        public static  AircraftList getAircraftListReference()
+        {
+            return aircraftList;
+        }
+        
+          public static  AirportList getAirportListReference()
+        {
+            return  airportList;
+        }
+          
+             public static  AircraftModelList getAircraftModelListReference()
+        {
+            return  modelList;
+        }
     }
+
 }

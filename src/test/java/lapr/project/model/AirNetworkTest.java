@@ -47,7 +47,7 @@ public class AirNetworkTest {
     @Test
     public void testGetAirNetwork() {
         System.out.println("getAirNetwork");
-        AirNetwork instance = Project.network;
+        AirNetwork instance = Project.getAirNetwork();
         Graph<Node, Segment> expResult = instance.getAirNetwork();        
         Graph<Node, Segment> result = instance.getAirNetwork();
         assertEquals(expResult, result);
@@ -59,7 +59,7 @@ public class AirNetworkTest {
     @Test
     public void testGenerateGraph() {
         System.out.println("generateGraph");
-        AirNetwork instance = Project.network;
+        AirNetwork instance = Project.getAirNetwork();
         boolean expResult = false;
         boolean result = instance.generateGraph();
         assertEquals(expResult, result);
@@ -96,7 +96,7 @@ public class AirNetworkTest {
     @Test
     public void testToString() {
         System.out.println("toString");
-        AirNetwork instance = Project.network;
+        AirNetwork instance = Project.getAirNetwork();
         Graph<Node, Segment> airNetwork = new Graph<>(true);
         String expResult = airNetwork.toString();
         String result = instance.toString();

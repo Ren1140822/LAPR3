@@ -27,7 +27,7 @@ public class AddAircraftController {
      * Default constructor.
      */
     public AddAircraftController() {
-        aircraftList = Project.aircraftList;
+        aircraftList = Project.getAircraftListReference();
     }
 
     /**
