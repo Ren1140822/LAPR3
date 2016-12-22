@@ -55,13 +55,16 @@ public class CSVExporterTest {
         String filePath = "src/main/resources/exportfilesfortest/testcsv.csv";
         
          CSVExporter.exportStringsToCSV(title, heading1, heading2, body, filePath);
-         Scanner scan = new Scanner (new File("src/main/resources/exportfilesfortest/testcsv.csv"));
+         File file = new File("src/main/resources/exportfilesfortest/testcsv.csv");
+         file.deleteOnExit();
+         Scanner scan = new Scanner (file);
          boolean result=false;
          while(scan.hasNext())
          {
            String test= scan.next();
              result= test.contains(title) ||   test.contains(heading1) ||  test.contains(heading2) || test.contains(body[0]) ||  test.contains(body[1]) ||  test.contains("\n");
          }
+         scan.close();
          Assert.assertTrue(result);
     }
 
@@ -86,13 +89,17 @@ public class CSVExporterTest {
         String filePath = "src/main/resources/exportfilesfortest/testcsv2.csv";
         
          CSVExporter.exportMultipleStringsToCSV(title, heading1, heading2, body, filePath);
-         Scanner scan = new Scanner (new File("src/main/resources/exportfilesfortest/testcsv2.csv"));
+         File file = new File("src/main/resources/exportfilesfortest/testcsv2.csv");
+          file.deleteOnExit();
+         Scanner scan = new Scanner (file);
+         
          boolean result=false;
          while(scan.hasNext())
          {
            String test= scan.next();
-            result = test.contains(title) || test.contains(heading1) || test.contains(heading2) || test.contains(body[0][0]) || test.contains(body[1][1]) ||test.contains(body[1][0]) ||test.contains(body[2][1]) || test.contains(body[3][0]) ||test.contains(body[3][0]) ||test.contains("\n");
+            result = test.contains(title) || test.contains(heading1) || test.contains(heading2) || test.contains(body[0][0]) || test.contains(body[1][1]) ||test.contains(body[1][0]) ||test.contains(body[2][1]) || test.contains(body[2][0]) ||test.contains(body[3][0]) ||test.contains("\n") ||test.contains(body[0][1]) ||test.contains(body[3][1]);
          }
+        scan.close();
          Assert.assertTrue(result);
       
     }

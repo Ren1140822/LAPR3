@@ -55,12 +55,15 @@ public class HTMLExporterTest {
         String filePath = "src/main/resources/exportfilesfortest/testHTML.html";
 
         HTMLExporter.exportStringsToHTML(title, heading1, heading2, body, filePath);
-        Scanner scan = new Scanner(new File("src/main/resources/exportfilesfortest/testHTML.html"));
+          File file = new File("src/main/resources/exportfilesfortest/testHTML.html");
+          file.deleteOnExit();
+        Scanner scan = new Scanner(file);
         boolean result = false;
         while (scan.hasNext()) {
             String test = scan.next();
             result = test.contains(title) || test.contains(heading1) || test.contains(heading2) || test.contains(body[0]) || test.contains(body[1]) || test.contains("\n") || test.contains("<");
         }
+        scan.close();
         Assert.assertTrue(result);
     }
 
@@ -87,12 +90,15 @@ public class HTMLExporterTest {
         String filePath = "src/main/resources/exportfilesfortest/testHTML2.html";
         boolean expResult = true;
         HTMLExporter.exportMultipleStringsToHTML(title, heading1, heading2, body, filePath);
-        Scanner scan = new Scanner(new File("src/main/resources/exportfilesfortest/testHTML2.html"));
+        File file = new File("src/main/resources/exportfilesfortest/testHTML2.html");
+        file.deleteOnExit();
+        Scanner scan = new Scanner(file);
         boolean result = false;
         while (scan.hasNext()) {
             String test = scan.next();
             result = test.contains(title) || test.contains(heading1) || test.contains(heading2) || test.contains(body[0][0]) || test.contains(body[1][1]) ||test.contains(body[1][0]) ||test.contains(body[2][1]) || test.contains(body[3][0]) ||test.contains(body[3][0]) ||test.contains("\n") || test.contains("<");
         }
+       scan.close();;
         Assert.assertTrue(result);
     }
 
