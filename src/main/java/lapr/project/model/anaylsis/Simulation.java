@@ -7,6 +7,7 @@ package lapr.project.model.anaylsis;
 
 import lapr.project.model.Aircraft;
 import lapr.project.model.Node;
+import lapr.project.model.Project;
 
 /**
  *

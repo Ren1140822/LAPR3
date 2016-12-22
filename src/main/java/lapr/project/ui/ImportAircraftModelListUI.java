@@ -11,12 +11,14 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileFilter;
 import lapr.project.controller.ImportAircraftModelListController;
+import lapr.project.model.Project;
 
 /**
  *
  * @author Pedro Fernandes
  */
 public class ImportAircraftModelListUI extends JFileChooser{
+    Project project;
     /**
      * file chooser
      */
@@ -26,8 +28,9 @@ public class ImportAircraftModelListUI extends JFileChooser{
      */
     private transient ImportAircraftModelListController controller;
     
-    public ImportAircraftModelListUI() throws FileNotFoundException{
-        controller = new ImportAircraftModelListController();
+    public ImportAircraftModelListUI(Project project) throws FileNotFoundException{
+        this.project = project;
+        controller = new ImportAircraftModelListController(project);
         try{
                     fileChooser = new JFileChooser();
                     defineFilterExtXML(fileChooser);

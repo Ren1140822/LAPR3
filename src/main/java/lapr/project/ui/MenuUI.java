@@ -31,6 +31,7 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
+import lapr.project.model.Project;
 
 /**
  * Start Menu of the aplication
@@ -38,14 +39,16 @@ import javax.swing.border.TitledBorder;
  */
 public class MenuUI extends JFrame{
     
+    private Project project;
     private MenuUI frame;
     private JButton open;
     private JButton create;
     private JButton exit;
     
-    public MenuUI(){
+    public MenuUI(Project project){
         super("AirNetwork Projects Simulator");
-
+        
+        this.project = project;
         frame = MenuUI.this;
         
         createComponents();        
@@ -279,7 +282,7 @@ public class MenuUI extends JFrame{
     }
     
     private void open(){
-        MenuProjectUI menuproj = new MenuProjectUI(frame);
+        MenuProjectUI menuproj = new MenuProjectUI(project,frame);
     }
     
     private void create(){

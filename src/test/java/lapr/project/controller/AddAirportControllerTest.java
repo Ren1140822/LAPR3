@@ -5,6 +5,7 @@
  */
 package lapr.project.controller;
 
+import lapr.project.model.Project;
 import org.junit.After;
 import org.junit.AfterClass;
 import static org.junit.Assert.*;
@@ -44,14 +45,15 @@ public class AddAirportControllerTest {
     @Test
     public void testSaveAirport() {
         System.out.println("saveAirport1");
-        AddAirportController instance = new AddAirportController();
+        Project p = new Project();
+        AddAirportController instance = new AddAirportController(p);
         instance.setAirportData("OPO", "Sá Carneiro", "Porto", "Portugal", 30.0, 50.0, 10);
         boolean expResult = true;
         boolean result = instance.saveAirport();
         assertEquals(expResult, result);
         
         System.out.println("saveAirport2");
-        AddAirportController instance2 = new AddAirportController();
+        AddAirportController instance2 = new AddAirportController(p);
         instance2.setAirportData("OPO", "Sá Carneiro", "Porto", "Portugal", 300.0, 50.0, 10);
         boolean expResult2 = false;
         boolean result2 = instance2.saveAirport();
@@ -64,6 +66,7 @@ public class AddAirportControllerTest {
     @Test
     public void testSetAirportData() {
         System.out.println("setAirportData");
+        Project p = new Project();
         String IATA = "OPO";
         String name = "Sá Carneiro";
         String town = "Porto";
@@ -71,7 +74,7 @@ public class AddAirportControllerTest {
         double latitude = 30.0;
         double longitude = 50.0;
         int altitude = 10;
-        AddAirportController instance = new AddAirportController();
+        AddAirportController instance = new AddAirportController(p);
         instance.setAirportData(IATA, name, town, country, latitude, longitude, altitude);
     }
     

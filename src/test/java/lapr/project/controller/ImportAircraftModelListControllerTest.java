@@ -8,6 +8,7 @@ package lapr.project.controller;
 import java.io.File;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
+import lapr.project.model.Project;
 import lapr.project.model.lists.AircraftModelList;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -46,9 +47,10 @@ public class ImportAircraftModelListControllerTest {
      */
     @Test
     public void testImportXMLAircraftModelList() throws Exception {
+        Project p = new Project();
         System.out.println("importXMLAircraftModelList1");
         File file = new File("src/main/resources/TestSet01_Aircraft.xml");
-        ImportAircraftModelListController instance = new ImportAircraftModelListController();
+        ImportAircraftModelListController instance = new ImportAircraftModelListController(p);
         boolean expResult = true;
         boolean result = instance.importXMLAircraftModelList(file);
         //show in the screen imported file
@@ -61,7 +63,7 @@ public class ImportAircraftModelListControllerTest {
         
         System.out.println("importXMLAirportList2");
         File file2 = new File("src/main/resources/Test.xml");
-        ImportAircraftModelListController instance2 = new ImportAircraftModelListController();        
+        ImportAircraftModelListController instance2 = new ImportAircraftModelListController(p);        
         boolean expResult2 = false;
         boolean result2 = instance2.importXMLAircraftModelList(file2);
         assertEquals(expResult2, result2);

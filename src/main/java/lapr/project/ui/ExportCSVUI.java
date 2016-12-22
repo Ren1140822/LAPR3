@@ -27,6 +27,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.Border;
 import lapr.project.controller.ExportCSVController;
+import lapr.project.model.Project;
 import lapr.project.model.anaylsis.ResultPath;
 
 /**
@@ -49,8 +50,11 @@ public class ExportCSVUI extends JFrame {
     private DialogSelectable dialog;
     private DialogSelectable dialogSimulation;
     private JFrame parentFrame;
+    
+    Project project;
 
-    public ExportCSVUI(JFrame parentFrame) {
+    public ExportCSVUI(Project project, JFrame parentFrame) {
+        this.project = project;
            this.parentFrame = parentFrame;
         this.setLocationRelativeTo(parentFrame);
         this.setResizable(false);
@@ -60,7 +64,7 @@ public class ExportCSVUI extends JFrame {
                 closeWindow();
             }
         });
-        controller = new ExportCSVController();
+        controller = new ExportCSVController(project);
         //dialogSimulation= new DialogSelectable(this, controller.getSimulationsList());
         results = controller.getSimulationsList();
         this.setSize(new Dimension(WINDOW_WIDTH, WINDOW_HEIGHT));

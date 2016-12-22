@@ -25,13 +25,15 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.Border;
 import lapr.project.controller.AddAircraftController;
+import lapr.project.model.Project;
 
 /**
  *
  * @author Renato Oliveira 1140822@isep.ipp.pt
  */
 public class AddAircraftUI extends JFrame {
-
+    
+    Project project;
     /**
      * Instance variables
      */
@@ -47,14 +49,15 @@ public class AddAircraftUI extends JFrame {
     private DialogSelectable dialog;
     private JButton btnSubmit;
 
-    public AddAircraftUI(JFrame parentFrame) {
+    public AddAircraftUI(Project project, JFrame parentFrame) {
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
                 closeWindow();
             }
         });
-        addAircraftController = new AddAircraftController();
+        this.project = project;
+        addAircraftController = new AddAircraftController(project);
         this.setSize(new Dimension(WINDOW_WIDTH, WINDOW_HEIGHT));
         this.setTitle(WINDOW_TITLE);
 

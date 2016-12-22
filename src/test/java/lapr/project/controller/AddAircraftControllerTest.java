@@ -5,6 +5,7 @@
  */
 package lapr.project.controller;
 
+import lapr.project.model.Project;
 import org.junit.After;
 import org.junit.AfterClass;
 import static org.junit.Assert.*;
@@ -17,8 +18,9 @@ import org.junit.Test;
  * @author Renato Oliveira 1140822@isep.ipp.pt
  */
 public class AddAircraftControllerTest {
+    Project p = new Project();
 
-    AddAircraftController instance = new AddAircraftController();
+    AddAircraftController instance = new AddAircraftController(p);
 
     public AddAircraftControllerTest() {
     }

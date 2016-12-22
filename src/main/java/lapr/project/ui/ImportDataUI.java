@@ -24,6 +24,7 @@ import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
+import lapr.project.model.Project;
 
 /**
  * Class that import data into aplication
@@ -31,6 +32,7 @@ import javax.swing.border.TitledBorder;
  */
 public class ImportDataUI extends JDialog{
     
+    Project project;
     /**
      * Guarda a janela anterior
      */
@@ -56,9 +58,10 @@ public class ImportDataUI extends JDialog{
      */
     private JButton network;
     
-    public ImportDataUI(MenuProjectUI frame){
+    public ImportDataUI(Project project, MenuProjectUI frame){
         super(frame, "Import Data", true);
         
+        this.project = project;
         this.frame = frame;
         
         add(createImportPanel()); 
@@ -114,7 +117,7 @@ public class ImportDataUI extends JDialog{
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    ImportAirportUI impairport = new ImportAirportUI();
+                    ImportAirportUI impairport = new ImportAirportUI(project);
                 } catch (FileNotFoundException ex) {
                     Logger.getLogger(ImportDataUI.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -135,7 +138,7 @@ public class ImportDataUI extends JDialog{
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    ImportAircraftModelListUI impaircraftmodel = new ImportAircraftModelListUI();
+                    ImportAircraftModelListUI impaircraftmodel = new ImportAircraftModelListUI(project);
                 } catch (FileNotFoundException ex) {
                     Logger.getLogger(ImportDataUI.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -156,7 +159,7 @@ public class ImportDataUI extends JDialog{
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    ImportNetworkUI impnetwork = new ImportNetworkUI();
+                    ImportNetworkUI impnetwork = new ImportNetworkUI(project);
                 } catch (FileNotFoundException ex) {
                     Logger.getLogger(ImportDataUI.class.getName()).log(Level.SEVERE, null, ex);
                 }

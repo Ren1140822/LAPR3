@@ -14,10 +14,12 @@ import lapr.project.model.lists.AirportList;
  */
 public class AddAirportController {
     
+    private Project project;
     AirportList airportsList;
     
-    public AddAirportController(){
-        airportsList = Project.getAirportListReference();
+    public AddAirportController(Project project){
+        this.project = project;
+        airportsList = project.getAirportList();
     }
     
     public void setAirportData(String IATA, String name, String town, String country,

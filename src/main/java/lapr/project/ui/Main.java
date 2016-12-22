@@ -1,16 +1,11 @@
 package lapr.project.ui;
 
-//import java.util.logging.Logger;
+import lapr.project.model.Project;
 
 /**
  * @author Nuno Bettencourt <nmb@isep.ipp.pt> on 24/05/16.
  */
 class Main {
-
-//    /**
-//     * Logger class.
-//     */
-//    private static final Logger LOGGER = Logger.getLogger("MainLog");
 
     /**
      * Private constructor to hide implicit public one.
@@ -25,6 +20,7 @@ class Main {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        MenuUI ui = new MenuUI();
+        Project p = new Project();
+        MenuUI ui = new MenuUI(p);
     }
 }
