@@ -52,10 +52,10 @@ public class HTMLExporterTest {
         String[] body = new String[2];
         body[0] = "body0";
         body[1] = "body1";
-        String filePath = "src/main/resources/exportfilesfortest/testHTML.html";
+        String filePath = "src/main/resources/testHTML.html";
 
         HTMLExporter.exportStringsToHTML(title, heading1, heading2, body, filePath);
-          File file = new File("src/main/resources/exportfilesfortest/testHTML.html");
+          File file = new File("src/main/resources/testHTML.html");
           file.deleteOnExit();
         Scanner scan = new Scanner(file);
         boolean result = false;
@@ -87,10 +87,10 @@ public class HTMLExporterTest {
         body[3][0] = "body30";
         body[3][1] = "body31";
 
-        String filePath = "src/main/resources/exportfilesfortest/testHTML2.html";
+        String filePath = "src/main/resources/testHTML2.html";
         boolean expResult = true;
         HTMLExporter.exportMultipleStringsToHTML(title, heading1, heading2, body, filePath);
-        File file = new File("src/main/resources/exportfilesfortest/testHTML2.html");
+        File file = new File("src/main/resources/testHTML2.html");
         file.deleteOnExit();
         Scanner scan = new Scanner(file);
         boolean result = false;

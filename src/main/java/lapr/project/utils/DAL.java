@@ -1,7 +1,8 @@
 package lapr.project.utils;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 
 /**
  *
@@ -24,6 +25,7 @@ public class DAL {
     
     public static void getListOfAirports(int projectID)
     {
-        
+         PreparedStatement st;
+         ResultSet rs;
     }
 }

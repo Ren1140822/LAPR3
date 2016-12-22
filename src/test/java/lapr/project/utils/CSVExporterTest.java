@@ -52,10 +52,10 @@ public class CSVExporterTest {
         String[] body = new String[2];
         body[0]="body0";
         body[1]= "body1";
-        String filePath = "src/main/resources/exportfilesfortest/testcsv.csv";
+        String filePath = "src/main/resources/testcsv.csv";
         
          CSVExporter.exportStringsToCSV(title, heading1, heading2, body, filePath);
-         File file = new File("src/main/resources/exportfilesfortest/testcsv.csv");
+         File file = new File("src/main/resources/testcsv.csv");
          file.deleteOnExit();
          Scanner scan = new Scanner (file);
          boolean result=false;
@@ -86,10 +86,10 @@ public class CSVExporterTest {
         body[2][1] = "body21";
         body[3][0] = "body30";
         body[3][1] = "body31";
-        String filePath = "src/main/resources/exportfilesfortest/testcsv2.csv";
+        String filePath = "src/main/resources/testcsv2.csv";
         
          CSVExporter.exportMultipleStringsToCSV(title, heading1, heading2, body, filePath);
-         File file = new File("src/main/resources/exportfilesfortest/testcsv2.csv");
+         File file = new File("src/main/resources/testcsv2.csv");
           file.deleteOnExit();
          Scanner scan = new Scanner (file);
          
