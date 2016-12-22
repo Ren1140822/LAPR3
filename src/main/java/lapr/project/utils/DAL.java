@@ -21,4 +21,9 @@ public class DAL {
      System.err.printf(e);
      }*/
     
+    
+    public static void getListOfAirports(int projectID)
+    {
+        
+    }
 }
