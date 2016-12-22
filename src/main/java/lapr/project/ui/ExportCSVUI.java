@@ -19,6 +19,7 @@ import javax.swing.BorderFactory;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -34,7 +35,7 @@ import lapr.project.model.anaylsis.ResultPath;
  *
  * @author Renato Oliveira 1140822@isep.ipp.pt
  */
-public class ExportCSVUI extends JFrame {
+public class ExportCSVUI extends JDialog {
 
    /**
      * Instance variables.
@@ -49,13 +50,14 @@ public class ExportCSVUI extends JFrame {
     private JList listShortestPath;
     private DialogSelectable dialog;
     private DialogSelectable dialogSimulation;
-    private JFrame parentFrame;
+    private JDialog parentFrame;
     
     Project project;
 
-    public ExportCSVUI(Project project, JFrame parentFrame) {
+    public ExportCSVUI(Project project, JDialog parentFrame) {
+        super(parentFrame, "Export CSV", true);
         this.project = project;
-           this.parentFrame = parentFrame;
+        this.parentFrame = parentFrame;
         this.setLocationRelativeTo(parentFrame);
         this.setResizable(false);
         addWindowListener(new WindowAdapter() {
@@ -71,6 +73,7 @@ public class ExportCSVUI extends JFrame {
         this.setTitle(WINDOW_TITLE);
         createComponents();
         this.setVisible(true);
+        pack();
     }
         
 

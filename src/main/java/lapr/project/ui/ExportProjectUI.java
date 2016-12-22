@@ -11,7 +11,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
-import javax.swing.JFrame;
+import javax.swing.JDialog;
 import javax.swing.JLabel;
 import lapr.project.model.Project;
 
@@ -19,7 +19,9 @@ import lapr.project.model.Project;
  *
  * @author Renato Oliveira 1140822@isep.ipp.pt
  */
-public class ExportProjectUI extends JFrame {
+public class ExportProjectUI extends JDialog {
+    
+    private JDialog frame;
     
     Project project;
 
@@ -27,10 +29,13 @@ public class ExportProjectUI extends JFrame {
     private final int WINDOW_HEIGHT = 150;
     private final String WINDOW_TITLE = "Export data";
 
-    public ExportProjectUI(Project project) {
+    public ExportProjectUI(Project project, JDialog frame) {
+        super(frame, "Export Project", true);
         this.project = project;
+        this.frame = frame;
         this.setSize(new Dimension(WINDOW_WIDTH, WINDOW_HEIGHT));
         this.setTitle(WINDOW_TITLE);
+        setLocationRelativeTo(frame);
         this.setResizable(false);
         createComponents();
         this.setVisible(true);

@@ -36,7 +36,7 @@ public class ImportDataUI extends JDialog{
     /**
      * Guarda a janela anterior
      */
-    private final MenuProjectUI frame;
+    private MenuProjectUI frame;
     /**
      * panel
      */

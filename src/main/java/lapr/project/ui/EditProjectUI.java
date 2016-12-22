@@ -27,10 +27,10 @@ public class EditProjectUI extends JDialog{
     /**
      * Guarda a janela anterior
      */
-    private final MenuProjectUI frame;
+    private JDialog frame;
     
-    public EditProjectUI(Project project, MenuProjectUI frame){
-        super(frame, "Edit Project", true);
+    public EditProjectUI(Project project, JDialog frame){
+        super(frame, "Edit Project: " + project.getName(), true);
         
         this.project = project;
         this.frame = frame;
@@ -65,7 +65,7 @@ public class EditProjectUI extends JDialog{
         bt1.addActionListener(new ActionListener() {
              @Override
             public void actionPerformed(ActionEvent e) {
-                AddAirportUI addairport = new AddAirportUI(project,frame);
+                AddAirportUI addairport = new AddAirportUI(project,EditProjectUI.this);
             }
         });
         
@@ -73,7 +73,7 @@ public class EditProjectUI extends JDialog{
         bt2.addActionListener(new ActionListener() {
              @Override
             public void actionPerformed(ActionEvent e) {
-                  AddAircraftUI aircraft = new AddAircraftUI(project,new JFrame());
+                  AddAircraftUI aircraft = new AddAircraftUI(project,EditProjectUI.this);
             }
         });
         

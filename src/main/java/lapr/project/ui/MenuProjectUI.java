@@ -45,7 +45,7 @@ public class MenuProjectUI extends JDialog{
 
     public MenuProjectUI(Project project, JFrame frame){
         
-        super(frame, "Project: ", true);        
+        super(frame, "Project: " + project.getName(), true);        
         
         this.project = project;
         
@@ -296,15 +296,15 @@ public class MenuProjectUI extends JDialog{
     }
     
     private void editProject(){
-        EditProjectUI editproj = new EditProjectUI(project, this);
+        EditProjectUI editproj = new EditProjectUI(project, MenuProjectUI.this);
     }
     
     private void importData(){
-        ImportDataUI imp = new ImportDataUI(project, this);
+        ImportDataUI imp = new ImportDataUI(project, MenuProjectUI.this);
     }
     
     private void exportResults(){
-        ExportProjectUI proj = new ExportProjectUI(project);
+        ExportProjectUI proj = new ExportProjectUI(project, MenuProjectUI.this);
     }
     
     private void analysis(){

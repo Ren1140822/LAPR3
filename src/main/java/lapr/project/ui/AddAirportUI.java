@@ -35,7 +35,7 @@ public class AddAirportUI extends JDialog {
     /**
      * Guarda a janela anterior
      */
-    private MenuProjectUI frame;   
+    private JDialog frame;   
     /**
      * dimension of default label
      */
@@ -90,7 +90,7 @@ public class AddAirportUI extends JDialog {
      */
     private transient AddAirportController controller;
     
-    public AddAirportUI(Project project, MenuProjectUI frame){
+    public AddAirportUI(Project project, JDialog frame){
         super(frame, "Add Airport", true);
         this.project = project;
         this.frame = frame;

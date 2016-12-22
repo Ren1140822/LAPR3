@@ -35,9 +35,9 @@ import javax.swing.event.ListSelectionListener;
 public class DialogSelectable extends JDialog {
 
     /**
-     * The parent JFrame.
+     * The parent JDialog.
      */
-    private final JFrame parentFrame;
+    private final JDialog parentDialog;
 
     /**
      * The selected object.
@@ -82,13 +82,13 @@ public class DialogSelectable extends JDialog {
     /**
      * Creates an instance of choose selectable dialog.
      *
-     * @param parentFrame parent JFrame
+     * @param parentDialog
      * @param list the list of selectables
      */
-    public DialogSelectable(JFrame parentFrame, List<String> list) {
-        super(parentFrame, WINDOW_TITLE, true);
+    public DialogSelectable(JDialog parentDialog, List<String> list) {
+        super(parentDialog, WINDOW_TITLE, true);
 
-        this.parentFrame = parentFrame;
+        this.parentDialog = parentDialog;
         this.selectablesList = list;
         this.chooseText = DEFAULT_CHOOSE_TEXT;
 
@@ -97,21 +97,21 @@ public class DialogSelectable extends JDialog {
         setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         pack();
         setResizable(false);
-        setLocationRelativeTo(parentFrame);
+        setLocationRelativeTo(parentDialog);
         setVisible(true);
     }
 
     /**
      * Creates an instance of choose selectable dialog.
      *
-     * @param parentFrame parent JFrame
+     * @param parentDialog
      * @param list selectables list
      * @param chooseText text to be shown on the top of the list
      */
-    public DialogSelectable(JFrame parentFrame, List<String> list, String chooseText) {
-        super(parentFrame, WINDOW_TITLE, true);
+    public DialogSelectable(JDialog parentDialog, List<String> list, String chooseText) {
+        super(parentDialog, WINDOW_TITLE, true);
 
-        this.parentFrame = parentFrame;
+        this.parentDialog = parentDialog;
         this.selectablesList = list;
         this.chooseText = chooseText;
 
@@ -120,7 +120,7 @@ public class DialogSelectable extends JDialog {
         setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         pack();
         setResizable(false);
-        setLocationRelativeTo(parentFrame);
+        setLocationRelativeTo(parentDialog);
         setVisible(true);
     }
 

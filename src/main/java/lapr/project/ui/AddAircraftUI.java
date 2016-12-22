@@ -18,6 +18,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -31,7 +32,7 @@ import lapr.project.model.Project;
  *
  * @author Renato Oliveira 1140822@isep.ipp.pt
  */
-public class AddAircraftUI extends JFrame {
+public class AddAircraftUI extends JDialog {
     
     Project project;
     /**
@@ -48,8 +49,11 @@ public class AddAircraftUI extends JFrame {
     private JTextField textNrOfCrewElements;
     private DialogSelectable dialog;
     private JButton btnSubmit;
+    private JDialog parentFrame;
 
-    public AddAircraftUI(Project project, JFrame parentFrame) {
+    public AddAircraftUI(Project project, JDialog parentFrame) {
+        super(parentFrame, "Add Aircraft", true);
+        this.parentFrame = parentFrame;
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
@@ -60,7 +64,7 @@ public class AddAircraftUI extends JFrame {
         addAircraftController = new AddAircraftController(project);
         this.setSize(new Dimension(WINDOW_WIDTH, WINDOW_HEIGHT));
         this.setTitle(WINDOW_TITLE);
-
+        setLocationRelativeTo(parentFrame);  
         createComponents();
         this.setVisible(true);
 
