@@ -17,30 +17,33 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import lapr.project.model.mapgraph.Graph;
 import lapr.project.model.mapgraph.GraphAlgorithms;
+import lapr.project.utils.DistanceCalculator;
 
 /**
  * Class that represents a air network of Segments and Nodes
+ *
  * @author Pedro Fernandes
  */
-@XmlRootElement(name="Network")
+@XmlRootElement(name = "Network")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class AirNetwork implements Serializable{    
+public class AirNetwork implements Serializable {
+
     /**
      * the id of airnetwork
      */
-    @XmlAttribute(name="id")
+    @XmlAttribute(name = "id")
     private String id;
     /**
      * the id of description
      */
-    @XmlAttribute(name="description")
+    @XmlAttribute(name = "description")
     private String description;
     /**
      * the list of nodes
      */
-    @XmlElementWrapper(name="node_list")
-    @XmlElement(name="node")
-    private List<Node>  nodeList;
+    @XmlElementWrapper(name = "node_list")
+    @XmlElement(name = "node")
+    private List<Node> nodeList;
     /**
      * Node to be added into list
      */
@@ -49,16 +52,16 @@ public class AirNetwork implements Serializable{
     /**
      * the list of segments
      */
-    @XmlElementWrapper(name="segment_list")
-    @XmlElement(name="segment")
+    @XmlElementWrapper(name = "segment_list")
+    @XmlElement(name = "segment")
     private List<Segment> segmentList;
-    
+
     /**
      * Segment to be added into list
      */
     @XmlTransient
     private Segment segment;
-    
+
     /**
      * graph
      */
@@ -70,19 +73,21 @@ public class AirNetwork implements Serializable{
     private String DEFAULT_ID = "NoID";
     @XmlTransient
     private String DEFAULT_DESCRIPTION = "NoDescription";
+
     /**
      * constructor
      */
-    public AirNetwork(){
+    public AirNetwork() {
         this.id = DEFAULT_ID;
-        this.description=DEFAULT_DESCRIPTION;
+        this.description = DEFAULT_DESCRIPTION;
         this.nodeList = new LinkedList<>();
         this.segmentList = new LinkedList<>();
         this.airNetworkGraph = new Graph<>(true);
     }
-    
+
     /**
      * gets the id
+     *
      * @return the id
      */
     public String getId() {
@@ -91,6 +96,7 @@ public class AirNetwork implements Serializable{
 
     /**
      * sets the id
+     *
      * @param id the id to set
      */
     public void setId(String id) {
@@ -99,6 +105,7 @@ public class AirNetwork implements Serializable{
 
     /**
      * gets the description
+     *
      * @return the description
      */
     public String getDescription() {
@@ -107,61 +114,68 @@ public class AirNetwork implements Serializable{
 
     /**
      * sets the description
+     *
      * @param description the description to set
      */
     public void setDescription(String description) {
         this.description = description;
     }
 //****************************** Node List *********************************    
+
     /**
      * sets the node
+     *
      * @param id the id of the node
      * @param latitude the latitude of the node
      * @param longitude the longitude of the node
      */
-    public void setNode(String id, double latitude, double longitude){
+    public void setNode(String id, double latitude, double longitude) {
         node = new Node();
         node.setId(id);
         node.setLatitude(latitude);
         node.setLongitude(longitude);
     }
-    
+
     /**
      * validate and saves the node into nodesList
+     *
      * @return true if node is valid and is added, false if not
      */
-    public boolean saveNode(){
-        if(validateNode()){
+    public boolean saveNode() {
+        if (validateNode()) {
             addNode();
             return true;
         }
         return false;
     }
-    
+
     /**
      * validate if node is valid and do not exist in the list
+     *
      * @return true if node is valid and do not exist in the list, false if not
      */
-    private boolean validateNode(){
+    private boolean validateNode() {
         return node.validate() && !nodeList.contains(node);
     }
-    
+
     /**
      * add the node into the list
+     *
      * @return true if node is added, false if not
      */
-    private void addNode(){
+    private void addNode() {
         nodeList.add(node);
     }
-    
+
     /**
      * gets the node list
+     *
      * @return the node list
      */
-    public List<Node> getNodeList(){
+    public List<Node> getNodeList() {
         return nodeList;
     }
-    
+
     /**
      * Sets the nodes list class reference.
      *
@@ -170,16 +184,17 @@ public class AirNetwork implements Serializable{
     public void setNodeList(List<Node> list) {
         nodeList = list;
     }
-    
+
     /**
      * get node by id
+     *
      * @param id the id of the node
      * @return node by id
      */
-    public Node getNodeByString(String id){
-        Node n= null;
-        for (Node nod : nodeList){
-            if(nod.getId().equalsIgnoreCase(id)){
+    public Node getNodeByString(String id) {
+        Node n = null;
+        for (Node nod : nodeList) {
+            if (nod.getId().equalsIgnoreCase(id)) {
                 return nod;
             }
         }
@@ -187,11 +202,10 @@ public class AirNetwork implements Serializable{
     }
 //*************************** end Node List *******************************
 
-
 //****************************** Segment List *********************************     
-
     /**
      * sets the segment
+     *
      * @param id the id of the segment
      * @param startNode the startNode of the segment
      * @param endNode the endNode of the segment
@@ -199,8 +213,8 @@ public class AirNetwork implements Serializable{
      * @param windIntensity the wind Intensity of the segment
      * @param windDirection the wind Direction of the segment
      */
-    public void setSegment(String id, String startNode, String endNode, 
-            String direction, int windIntensity, int windDirection){
+    public void setSegment(String id, String startNode, String endNode,
+            String direction, int windIntensity, int windDirection) {
         segment = new Segment();
         segment.setId(id);
         segment.setStartNode(startNode);
@@ -208,36 +222,41 @@ public class AirNetwork implements Serializable{
         segment.setDirection(direction);
         segment.setWind(windIntensity, windDirection);
     }
-    
+
     /**
      * validate and saves the segment into segmentsList
+     *
      * @return true if segment is valid and is added, false if not
      */
-    public boolean saveSegment(){
-        return validateSegment()&& addSegment();       
+    public boolean saveSegment() {
+        return validateSegment() && addSegment();
     }
-    
+
     /**
      * validate if segment is valid and do not exist in the list
-     * @return true if segment is valid and do not exist in the list, false if not
+     *
+     * @return true if segment is valid and do not exist in the list, false if
+     * not
      */
-    private boolean validateSegment(){
+    private boolean validateSegment() {
         return segment.validate() && !segmentList.contains(segment);
     }
-    
+
     /**
      * add the segment into the list
+     *
      * @return true if segment is added, false if not
      */
-    private boolean addSegment(){
+    private boolean addSegment() {
         return segmentList.add(segment);
     }
-    
+
     /**
      * gets the segment list
+     *
      * @return the segment list
      */
-    public List<Segment> getSegmentList(){
+    public List<Segment> getSegmentList() {
         return segmentList;
     }
 
@@ -249,67 +268,75 @@ public class AirNetwork implements Serializable{
     public void setSegmentList(List<Segment> list) {
         segmentList = list;
     }
-    
+
 //*************************** end Segment List *******************************
-    
     /**
      * gets the airnetwork graph
+     *
      * @return the airnetwork graph
      */
-    public Graph<Node, Segment> getAirNetwork(){
+    public Graph<Node, Segment> getAirNetwork() {
         return airNetworkGraph;
-    }   
-    
+    }
+
     /**
      * generate the graph with nodes -> vertex and segments -> edges
+     *
      * @return true if airnetwork is generated, false if not
      */
-    public boolean generateGraph(){
-        return insertNodes() &&  insertSegments(); 
+    public boolean generateGraph() {
+        return insertNodes() && insertSegments();
     }
-    
+
     /**
      * insert nodes into graph
+     *
      * @return true if num vertices == size of nodelist, false if not
      */
-    private boolean insertNodes(){        
-        for(Node node : nodeList){
-           airNetworkGraph.insertVertex(node);
+    private boolean insertNodes() {
+        for (Node node : nodeList) {
+            airNetworkGraph.insertVertex(node);
         }
         return airNetworkGraph.numVertices() == nodeList.size() && airNetworkGraph.numVertices() > 0;
     }
-    
+
     /**
      * insert segments into graph
-     * @return true if num edges >= size of segmentlist
-     * (because bidirectional segments add two edges), 
-     * false if not
+     *
+     * @return true if num edges >= size of segmentlist (because bidirectional
+     * segments add two edges), false if not
      */
-    private boolean insertSegments(){
-        for(Segment seg : segmentList){
-            airNetworkGraph.insertEdge(getNodeByString(seg.getStartNode()), 
-                    getNodeByString(seg.getEndNode()), seg, 1);
+    private boolean insertSegments() {
+        for (Segment seg : segmentList) {
+            airNetworkGraph.insertEdge(getNodeByString(seg.getStartNode()),
+                    getNodeByString(seg.getEndNode()), seg, DistanceCalculator.calculateDistance(getNodeByString(seg.getStartNode()).getLatitude(), getNodeByString(seg.getStartNode()).getLongitude(), getNodeByString(seg.getEndNode()).getLatitude(), getNodeByString(seg.getEndNode()).getLongitude()));
         }
         return airNetworkGraph.numEdges() == segmentList.size() && airNetworkGraph.numEdges() > 0;
     }
-    
+
     /**
      * description of airnetwork graph
+     *
      * @return description of airnetwork graph
      */
     @Override
     public String toString() {
         return airNetworkGraph.toString();
-    } 
+    }
 
     /**
      * Gets the possible end destinations relatives to origin of flight
+     *
      * @param startNode origin of flight
      * @return list of possible destination airports
      */
     public LinkedList<Node> getPossibleEndNodes(Node startNode) {
-        /**implement methods to find possible end airports by the segments in project**/
-        /** falta verificar range**/
+        /**
+         * implement methods to find possible end airports by the segments in project*
+         */
+        /**
+         * falta verificar range*
+         */
         return GraphAlgorithms.DepthFirstSearch(airNetworkGraph, startNode);
     }
 }
