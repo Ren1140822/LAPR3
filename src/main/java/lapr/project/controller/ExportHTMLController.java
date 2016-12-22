@@ -13,7 +13,6 @@ import lapr.project.model.Project;
 
 import lapr.project.model.anaylsis.ResultPath;
 import lapr.project.model.anaylsis.Simulation;
-import lapr.project.model.lists.ResultsList;
 import lapr.project.utils.HTMLExporter;
 
 /**
@@ -22,7 +21,6 @@ import lapr.project.utils.HTMLExporter;
  */
 public class ExportHTMLController {
 
-    List<ResultsList> results;
     String currentSim;
 
     public ExportHTMLController() {
@@ -41,9 +39,9 @@ public class ExportHTMLController {
         Simulation aux = getSimulationByString(sim);
         for (Simulation simulation : list) {
             if (aux.equals(simulation)) {
-                results.put("Best consumption", aux.getBestResultPath());
-                //results.put("Comparison",sim.getComparison());
-                //  results.put("Shortest Path", Project.getShortestPathResults());
+                results.put("Best consumption", simulation.getEcologicResultPath());
+                results.put("Fastest path",simulation.getFastestResultPath());
+                results.put("Shortest pth", simulation.getShortestResultPath());
             }
         }
 
@@ -180,18 +178,20 @@ public class ExportHTMLController {
      * @return true if exported
      */
     public boolean exportResults(String[] s, String filePath, String whatToExport) {
-        String results[][] = new String[s.length][6];
+        String results[][] = new String[s.length][9];
         if (whatToExport.equals("short")) {
 
             int i = 0;
             for (int j = 0; j < results.length; j++) {
                 Simulation sim = getSimulationByString(s[i]);
                 results[j][0] = sim.toString();
-                results[j][1] = "Best path result: " + String.valueOf(sim.getBestResultPath().getResult());
-                results[j][2] = "Origin node latitude: " + sim.getBestResultPath().getStartNode().getLatitude();
-                results[j][3] = "Origin node longitude: " + sim.getBestResultPath().getStartNode().getLongitude();
-                results[j][4] = "Destination node latitude: " + sim.getBestResultPath().getEndNode().getLatitude();
-                results[j][5] = "Destination node longitude: " + sim.getBestResultPath().getEndNode().getLongitude();
+                results[j][2] = "Shortest path result: " + String.valueOf(sim.getShortestResultPath());
+                results[j][3] = "Fastest path result: " + String.valueOf(sim.getFastestResultPath());
+                results[j][4] = "Ecologic path result: " + String.valueOf(sim.getEcologicResultPath());
+                results[j][5] = "Origin node latitude: " + sim.getStartNode().getLatitude();
+                results[j][6] = "Origin node longitude: " + sim.getStartNode().getLongitude();
+                results[j][7] = "Destination node latitude: " + sim.getEndNode().getLatitude();
+                results[j][8] = "Destination node longitude: " + sim.getEndNode().getLongitude();
                 i++;
             }
         }

@@ -6,13 +6,13 @@
 package lapr.project.model;
 
 import java.io.Serializable;
+import java.util.LinkedList;
 import java.util.List;
 import lapr.project.model.anaylsis.ResultPath;
 import lapr.project.model.lists.AircraftList;
 import lapr.project.model.lists.AircraftModelList;
 import lapr.project.model.lists.AirportList;
 import lapr.project.model.lists.CompareResultsList;
-import lapr.project.model.lists.ResultsList;
 import lapr.project.model.lists.SimulationsList;
 
 /**
@@ -30,7 +30,6 @@ public class Project implements Serializable {
         private static AircraftList aircraftList = new AircraftList();
         private static AirNetwork network = new AirNetwork();
         private static AirportList airportList = new AirportList();
-        private static ResultsList resultsList = new ResultsList();
         private static CompareResultsList compareList = new CompareResultsList();
 //         public static FlightList flightList=new FlightList();
         private static AircraftModelList modelList = new AircraftModelList();
@@ -39,6 +38,34 @@ public class Project implements Serializable {
         private static int idProject;
         private static String name;
         private static String description;
+
+    /**
+     * @return the simulationsList
+     */
+    public static SimulationsList getSimulationsList() {
+        return simulationsList;
+    }
+
+    /**
+     * @param aSimulationsList the simulationsList to set
+     */
+    public static void setSimulationsList(SimulationsList aSimulationsList) {
+        simulationsList = aSimulationsList;
+    }
+
+    /**
+     * @return the compareList
+     */
+    public static CompareResultsList getCompareList() {
+        return compareList;
+    }
+
+    /**
+     * @param aCompareList the compareList to set
+     */
+    public static void setCompareList(CompareResultsList aCompareList) {
+        compareList = aCompareList;
+    }
 
         /**
          * private constructor to hide the implicit public one
@@ -74,30 +101,16 @@ public class Project implements Serializable {
         }
 
         /**
-         * Gets the analysis results.
-         *
-         * @return the list of analysis results
-         */
-        public static ResultsList getListResults() {
-            return resultsList;
-        }
-
-        /**
-         * Gets the comparison results.
-         *
-         * @return the comparison results
-         */
-        public static List<ResultPath> getComparisonResults() {
-            return resultsList.getComparisonResultsList();
-        }
-
-        /**
          * Gets the ecologic results.
          *
          * @return the ecologic results
          */
         public static List<ResultPath> getEcologicPathResults() {
-            return resultsList.getEcologicResultsList();
+            LinkedList<ResultPath> list=new LinkedList<>();
+            getSimulationsList().getSimulationsList().stream().forEach((s) -> {
+                list.add(s.getEcologicResultPath());
+            });
+            return list;
         }
 
         /**
@@ -106,7 +119,11 @@ public class Project implements Serializable {
          * @return the shortest path results
          */
         public static List<ResultPath> getShortestPathResults() {
-            return resultsList.getShortesPathResultsList();
+            LinkedList<ResultPath> list=new LinkedList<>();
+            getSimulationsList().getSimulationsList().stream().forEach((s) -> {
+                list.add(s.getShortestResultPath());
+            });
+            return list;
         }
 
         /**
@@ -115,7 +132,11 @@ public class Project implements Serializable {
          * @return the fastestest path results
          */
         public static List<ResultPath> getFastestPathResults() {
-            return resultsList.getFastestResultsList();
+            LinkedList<ResultPath> list=new LinkedList<>();
+            getSimulationsList().getSimulationsList().stream().forEach((s) -> {
+                list.add(s.getFastestResultPath());
+            });
+            return list;
         }
 
         /**
@@ -125,15 +146,6 @@ public class Project implements Serializable {
          */
         public static void setAirNetwork(AircraftList list) {
             aircraftList = list;
-        }
-
-        /**
-         * Sets the results list class reference.
-         *
-         * @param list the list of analysis results
-         */
-        public static void setResultsList(ResultsList list) {
-            resultsList = list;
         }
 
         /**
@@ -212,8 +224,7 @@ public class Project implements Serializable {
             //flightList=new FlightList();
             network = new AirNetwork();
             airportList = new AirportList();
-            resultsList = new ResultsList();
-            compareList = new CompareResultsList();
+            setCompareList(new CompareResultsList());
             modelList = new AircraftModelList();
         }
 
@@ -230,8 +241,18 @@ public class Project implements Serializable {
         }
 
         public static SimulationsList getSimulationsListReference() {
-            return simulationsList;
+            return getSimulationsList();
         }
+        
+         /**
+         * Gets the comparison results.
+         *
+         * @return the comparison results
+         */
+        public static List<ResultPath> getComparisonResults() {
+            return compareList.getCompareResults();
+        }
+
     }
 
 

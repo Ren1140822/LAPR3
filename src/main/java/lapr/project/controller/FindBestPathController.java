@@ -6,51 +6,41 @@
 package lapr.project.controller;
 
 import java.util.LinkedList;
-import java.util.List;
+import lapr.project.model.Aircraft;
 import lapr.project.model.Node;
 import lapr.project.model.Project;
 
-import lapr.project.model.anaylsis.EcologicPathResult;
-import lapr.project.model.anaylsis.FastestPathResult;
 /**
  *
  * @author Diana Silva
  */
 public class FindBestPathController {
-    EcologicPathResult ecologicResult;
-    FastestPathResult fastestResult;
     
-    public void newEcologicResult(Node startNode){
-       ecologicResult=Project.getListResults().newEcologicResult(startNode);
-    }
-    
-    public void newFastestResult(Node startNode){
-       fastestResult=Project.getListResults().newFastestResult(startNode);
+    public void newSImulation(Node startNode){
+       Project.getSimulationsListReference().newSimulation();
     }
     
     public Node[] getVertices(){
         return Project.getAirNetwork().getAirNetwork().allkeyVerts();
     }
+      
+    public void setStartNode(Node startNode){
+       Project.getSimulationsListReference().getSimulation().setStartNode(startNode);
+    }
     
-    public List<Node> getPossibleEndNodes(Node startNode){
+    public LinkedList<Node> getPossibleEndNodes(Node startNode){
         return Project.getAirNetwork().getPossibleEndNodes(startNode);
     }
     
-    public void setEndNodeEcologic(Node endNode){
-        ecologicResult.setEndNode(endNode);
+    public void setEndNode(Node endNode){
+        Project.getSimulationsListReference().getSimulation().setEndNode(endNode);
     }
     
-    
-    public void setEndNodeFastest(Node endNode){
-        fastestResult.setEndNode(endNode);
+    public void setData(Aircraft aircraft, int passengers, int crew, double cargoLoad){
+        Project.getSimulationsListReference().getSimulation().setData(aircraft, passengers, crew, cargoLoad);
     }
   
-    private boolean saveEcologicResult(Node startNode, Node endNode, LinkedList<Node> shortPath){
-
-        return Project.getListResults().getShortesPathResultsList().add(ecologicResult);
-    }
-    
-     private boolean saveFastestResult(Node startNode, Node endNode, LinkedList<Node> shortPath){
-        return Project.getListResults().getShortesPathResultsList().add(fastestResult);
+    private boolean saveSimulation(){
+        return Project.getSimulationsListReference().saveSimulation();
     }
 }

@@ -16,6 +16,7 @@ import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import lapr.project.model.mapgraph.Graph;
+import lapr.project.model.mapgraph.GraphAlgorithms;
 
 /**
  * Class that represents a air network of Segments and Nodes
@@ -306,9 +307,9 @@ public class AirNetwork implements Serializable{
      * @param startNode origin of flight
      * @return list of possible destination airports
      */
-    public List<Node> getPossibleEndNodes(Node startNode) {
-        List<Node> list = new LinkedList<>();
+    public LinkedList<Node> getPossibleEndNodes(Node startNode) {
         /**implement methods to find possible end airports by the segments in project**/
-        return list;
+        /** falta verificar range**/
+        return GraphAlgorithms.DepthFirstSearch(airNetworkGraph, startNode);
     }
 }

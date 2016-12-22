@@ -87,10 +87,6 @@ public class ResultPath {
     
     public void calculateBestPath(){
     } 
- 
-    public boolean saveBestResult(){      
-        return true;
-    }
 
     boolean validate() {
         return result!=0 && resultPath.isEmpty();

@@ -16,8 +16,12 @@ import lapr.project.model.mapgraph.GraphAlgorithms;
  */
 public class ShortestPathResult extends ResultPath {
     
-    public ShortestPathResult(Node startNode){
-        super(startNode);
+    public ShortestPathResult(){
+        super();
+    }
+    
+    public ShortestPathResult (Node startNode, Node endNode){
+        super(startNode, endNode);
     }
     
      @Override
@@ -25,10 +29,5 @@ public class ShortestPathResult extends ResultPath {
         LinkedList<Node> shortPath=super.getResultPath();
         double res=GraphAlgorithms.shortestPath(Project.getAirNetwork().getAirNetwork(), super.getStartNode(), super.getEndNode(), shortPath);
         super.setResult(res);
-    }
-    
-    @Override
-    public boolean saveBestResult(){            
-        return Project.getShortestPathResults().add(this);
     }
 }

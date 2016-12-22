@@ -85,6 +85,15 @@ public class SimulationsList implements Serializable {
     } 
     
     /**
+     * Gets the simulation created
+     * @return simulation
+     */
+    public Simulation getSimulation(){
+        return simulation;
+    }
+    
+    
+    /**
      * Validate and saves the simulation into simulations list
      * @return true if valid, false if not
      */

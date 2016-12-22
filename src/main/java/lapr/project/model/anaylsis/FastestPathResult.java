@@ -6,6 +6,7 @@
 package lapr.project.model.anaylsis;
 
 import java.util.LinkedList;
+import lapr.project.model.Aircraft;
 import lapr.project.model.Node;
 import lapr.project.model.Project;
 import lapr.project.model.mapgraph.GraphAlgorithms;
@@ -16,9 +17,17 @@ import lapr.project.model.mapgraph.GraphAlgorithms;
  * @author DianaSilva
  */
 public class FastestPathResult extends ResultPath{
+    /**
+     * Aircraft of result path
+     */
+    private Aircraft aircraft;
     
-    public FastestPathResult(Node startNode) {
-        super(startNode);
+    public FastestPathResult() {
+        super();
+    }
+    public FastestPathResult(Node startNode, Node endNode, Aircraft aircraft){
+        super(startNode, endNode);
+        this.aircraft=aircraft;
     }
     
     @Override
@@ -28,12 +37,4 @@ public class FastestPathResult extends ResultPath{
         double res=GraphAlgorithms.shortestPath(Project.getAirNetwork().getAirNetwork(), super.getStartNode(), super.getEndNode(), fastestPath);
         super.setResult(res);
     }
-     
-     
-     
-    @Override
-    public boolean saveBestResult(){      
-        return Project.getFastestPathResults().add(this);
-    }
-
 }

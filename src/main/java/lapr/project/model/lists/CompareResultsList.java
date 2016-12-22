@@ -5,10 +5,23 @@
  */
 package lapr.project.model.lists;
 
+import java.util.LinkedList;
+import java.util.List;
+import lapr.project.model.anaylsis.ResultPath;
+
 /**
  *
  * @author Diana Silva
  */
 public class CompareResultsList {
     
+    private LinkedList<ResultPath> compareResults;
+    
+    public CompareResultsList(){
+         this.compareResults = new LinkedList<>();
+    }
+    
+    public List<ResultPath> getCompareResults(){
+        return  this.compareResults;
+    }
 }

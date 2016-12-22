@@ -6,6 +6,7 @@
 package lapr.project.model.anaylsis;
 
 import java.util.LinkedList;
+import lapr.project.model.Aircraft;
 import lapr.project.model.Node;
 import lapr.project.model.Project;
 
@@ -17,20 +18,28 @@ import lapr.project.model.mapgraph.GraphAlgorithms;
  */
 public class EcologicPathResult extends ResultPath{
     /**
-     * Total weight of aircraft
+     * Total weight of aircraft+passengers+crew
      */
-    private double weight; 
+    private double total_weight;
     
+    /**
+     * Default weight of aircraft+passengers+crew
+     */
     private static final double DEFAULT_WEIGHT=0;
     
-    public EcologicPathResult(Node startNode) {
-        super(startNode);
-        this.weight=DEFAULT_WEIGHT;
+    /**
+     * Aircraft of result path
+     */
+    private Aircraft aircraft;
+    
+    public EcologicPathResult(){
+        super();
     }
     
-    public EcologicPathResult(Node startNode, Node endNode, double totalWeight){
+    public EcologicPathResult(Node startNode, Node endNode, double totalWeight, Aircraft aircraft){
         super(startNode, endNode);
-        this.weight=totalWeight;       
+        this.total_weight=totalWeight;
+        this.aircraft=aircraft;
     }
     
     public double energyConsum(){
@@ -43,13 +52,5 @@ public class EcologicPathResult extends ResultPath{
         /**corrigir**/
         double res=GraphAlgorithms.shortestPath(Project.getAirNetwork().getAirNetwork(), super.getStartNode(), super.getEndNode(), ecologicPath);
         super.setResult(res);
-    }
-    
-    @Override
-    public boolean saveBestResult(){      
-        
-        return Project.getEcologicPathResults().add(this);
-    }
-
-    
+    }    
 }
