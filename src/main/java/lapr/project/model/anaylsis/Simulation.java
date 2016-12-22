@@ -249,4 +249,10 @@ public class Simulation{
         //195 libras per person
         return passengers*195+crew*195+cargoLoad; /**(falta combustivel)**/
     }
+    
+    @Override
+    public String toString()
+    {
+        return "Simulation";
+    }
 }

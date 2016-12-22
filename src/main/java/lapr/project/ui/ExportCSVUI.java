@@ -177,10 +177,12 @@ public class ExportCSVUI extends JFrame {
 
                             String allSims[] = (String[]) listSimulations.getSelectedValuesList().toArray(new String[selectedIndexes.length]);
                             if (rc == 0) {
-                                controller.exportResults(allSims, path + "\\simulation_results.csv", "short");
+                              if( controller.exportResults(allSims, path + "\\simulation_results.csv", "short"))
+                                  JOptionPane.showMessageDialog(rootPane, "Data exported sucessfully.", "Sucess", JOptionPane.INFORMATION_MESSAGE);
                             }
                             if (rc == 1) {
-                                controller.exportResults(allSims, path + "\\simulation_results.csv", "eco");
+                               if(controller.exportResults(allSims, path + "\\simulation_results.csv", "eco"))
+                                  JOptionPane.showMessageDialog(rootPane, "Data exported sucessfully.", "Sucess", JOptionPane.INFORMATION_MESSAGE);
                             }
                         }
                     }
