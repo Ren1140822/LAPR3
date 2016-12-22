@@ -125,7 +125,7 @@ public class Project implements Serializable {
     /**
      * @param network the network to set
      */
-    public void setNetwork(AirNetwork network) {
+    public void setAirNetwork(AirNetwork network) {
         this.network = network;
     }
 
@@ -167,7 +167,7 @@ public class Project implements Serializable {
     /**
      * @param modelList the modelList to set
      */
-    public void setModelList(AircraftModelList modelList) {
+    public void setAircraftModelList(AircraftModelList modelList) {
         this.modelList = modelList;
     }
 
@@ -268,13 +268,10 @@ public class Project implements Serializable {
     
     /**
      * Validates the name and description
-     *
-     * @param name name of project
-     * @param desc description of project
      * @return true if validates, false if not
      */
-    public boolean validate(String name, String desc) {
-        return name != null && desc != null;
+    public boolean validate() {
+        return !this.name.isEmpty() && !this.description.isEmpty();
     }
     
     @Override
