@@ -22,10 +22,10 @@ public class SimulationsList implements Serializable {
     /**
      * The list simulations
      */
-    private List<Simulation> simulationsList;
+    private transient List<Simulation> simulationsList;
   
        
-    private Simulation simulation;
+    private transient Simulation simulation;
     
     
     /**

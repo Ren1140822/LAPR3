@@ -7,7 +7,6 @@ package lapr.project.model.anaylsis;
 
 import lapr.project.model.Aircraft;
 import lapr.project.model.Node;
-import lapr.project.model.Project;
 
 /**
  *
@@ -238,7 +237,7 @@ public class Simulation{
 
     public boolean validate() {
         boolean v1=this.passengers!=0 && this.crew!=0 &&
-                cargoLoad!=0.0 && totalWeight!=0.0 &&
+                Double.doubleToLongBits(cargoLoad)!=0 && Double.doubleToLongBits(totalWeight)!=0 &&
                 this.aircraft!=null;
         boolean v2= aircraft.validate() && ecologicResultPath.validate() &&
                 fastestResultPath.validate() && shortestResultPath.validate();

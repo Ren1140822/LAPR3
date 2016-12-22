@@ -28,7 +28,7 @@ public class Project implements Serializable {
     private AircraftList aircraftList;
     private AirNetwork network;
     private AirportList airportList;
-    private CompareResultsList compareList;
+    private transient CompareResultsList compareList;
 //         public static FlightList flightList;
     private AircraftModelList modelList;
     private SimulationsList simulationsList;

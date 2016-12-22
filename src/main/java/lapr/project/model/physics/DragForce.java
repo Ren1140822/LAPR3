@@ -60,7 +60,10 @@ public class DragForce {
     }
      
     private boolean validateOperation(){
-        return getAirDensity()!=-1 && getDragCoef()!=-1000 && getVelocityAircraft()!=-1 && getAreaAircraft()!=-1;
+        return Double.doubleToLongBits(getAirDensity())!=-1 && 
+                Double.doubleToLongBits(getDragCoef())!=-1000 && 
+                Double.doubleToLongBits(getVelocityAircraft())!=-1 && 
+                Double.doubleToLongBits(getAreaAircraft())!=-1;
     }
 
     /**
