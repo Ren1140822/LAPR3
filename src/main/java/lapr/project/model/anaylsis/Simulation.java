@@ -238,7 +238,7 @@ public class Simulation{
 
     public boolean validate() {
         boolean v1=this.passengers!=0 && this.crew!=0 &&
-                this.cargoLoad!=0 && this.totalWeight!=0 &&
+                cargoLoad!=0.0 && totalWeight!=0.0 &&
                 this.aircraft!=null;
         boolean v2= aircraft.validate() && ecologicResultPath.validate() &&
                 fastestResultPath.validate() && shortestResultPath.validate();

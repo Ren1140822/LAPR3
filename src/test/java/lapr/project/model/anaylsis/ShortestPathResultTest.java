@@ -19,7 +19,7 @@ import lapr.project.model.Wind;
 
 /**
  *
- * @author NANA
+ * @author DianaSilva
  */
 public class ShortestPathResultTest {
     
@@ -53,9 +53,10 @@ public class ShortestPathResultTest {
         Node endNode=new Node("test3", 40, 80);
         
         Wind windTest=new Wind(10,10);
-        Segment segment1=new Segment("segmentTest1","test1", "test3", "BIDIRECTIONAL",windTest);       
-        Segment segment2=new Segment("segmentTest2", "test1", "test2", "BIDIRECTIONAL",windTest);
-        Segment segment3=new Segment("segmentTest3", "test2", "test3", "BIDIRECTIONAL", windTest);
+        String direction="BIDIRECTIONAL";
+        Segment segment1=new Segment("segmentTest1","test1", "test3", direction,windTest);       
+        Segment segment2=new Segment("segmentTest2", "test1", "test2", direction,windTest);
+        Segment segment3=new Segment("segmentTest3", "test2", "test3", direction, windTest);
         
         AirNetwork airnetwork=new AirNetwork();
         airnetwork.getAirNetwork().insertVertex(startNode);
