@@ -72,7 +72,7 @@ public class CSVExporter {
         for (int i = 0; i < body[0].length; i++) {
             for (int j = 0; j < body.length; j++) {
 
-                data[i] += body[j][i] + ";";
+                data[i] += body[j][i] + "; ";
 
             }
             data[i] += "\n";
