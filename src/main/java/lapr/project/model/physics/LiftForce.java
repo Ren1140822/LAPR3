@@ -139,6 +139,9 @@ public class LiftForce {
     }
     
     private boolean validateOperation(){
-        return getAirDensity()!=-1 && getLiftCoef()!=-1000 && getAircraftVelocity()!=-1 && getAreaWings()!=-1;
+        return Double.doubleToLongBits(getAirDensity())!=-1 && 
+                Double.doubleToLongBits(getLiftCoef())!=-1000 && 
+                Double.doubleToLongBits(getAircraftVelocity())!=-1
+                && Double.doubleToLongBits(getAreaWings())!=-1;
     }
 }

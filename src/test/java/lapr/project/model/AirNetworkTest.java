@@ -18,7 +18,7 @@ import org.junit.Test;
 
 /**
  *
- * @author Pedro Fernandes
+ * @author Pedro Fernandes, Diana Silva
  */
 public class AirNetworkTest {
     
@@ -283,19 +283,45 @@ public class AirNetworkTest {
         assertEquals(expResult2, result2);
     }
 
-//    /**
-//     * Test of getPossibleEndNodes method, of class AirNetwork.
-//     */
-//    @Test
-//    public void testGetPossibleEndNodes() {
-//        System.out.println("getPossibleEndNodes");
-//        Node startNode = null;
-//        AirNetwork instance = new AirNetwork();
-//        List<Node> expResult = null;
-//        List<Node> result = instance.getPossibleEndNodes(startNode);
-//        assertEquals(expResult, result);
-//        // TODO review the generated test code and remove the default call to fail.
-//        fail("The test case is a prototype.");
-//    }
+    /**
+     * Test of getPossibleEndNodes method, of class AirNetwork.
+     */
+    @Test
+    public void testGetPossibleEndNodes() {
+        System.out.println("getPossibleEndNodes");
+        System.out.println("calculateBestPath");
+        Node startNode=new Node("test1", 40, 40);
+        Node intNode=new Node("test2", 50, 70);
+        Node endNode=new Node("test3", 40, 80);
+        Node testNode1=new Node("test4", 40,30);
+        Node testNode=new Node("test5", 40, 90);
+        
+        Wind windTest=new Wind(10,10);
+        String direction="BIDIRECTIONAL";
+        Segment segment1=new Segment("segmentTest1","test1", "test3", direction,windTest);       
+        Segment segment2=new Segment("segmentTest2", "test1", "test2", direction,windTest);
+        Segment segment3=new Segment("segmentTest3", "test2", "test3", direction, windTest);
+        Segment segment4=new Segment("segmentTest4", "test4", "test5", direction, windTest);
+        
+        AirNetwork instance=new AirNetwork();
+        instance.getAirNetwork().insertVertex(startNode);
+        instance.getAirNetwork().insertVertex(intNode);
+        instance.getAirNetwork().insertVertex(endNode);
+        instance.getAirNetwork().insertVertex(testNode);
+
+        instance.getAirNetwork().insertEdge(startNode, intNode, segment2, 10);
+        instance.getAirNetwork().insertEdge(intNode, endNode, segment3, 30);
+        instance.getAirNetwork().insertEdge(startNode, endNode, segment1, 20); 
+        instance.getAirNetwork().insertEdge(testNode1, testNode, segment4, 5);
+        //falta verificar range
+        
+        LinkedList<Node> result=new LinkedList<>();
+        result.add(startNode);
+        result.add(intNode);
+        result.add(endNode);
+       
+        assertEquals(instance.getPossibleEndNodes(startNode), result);
+    }
+
 
 }

@@ -90,7 +90,7 @@ public class ResultPath {
     } 
 
     boolean validate() {
-        return result!=0 && resultPath.isEmpty();
+        return Double.doubleToLongBits(result)!=0 && resultPath.isEmpty();
     }
 
     /**
