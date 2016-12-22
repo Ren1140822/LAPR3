@@ -11,7 +11,9 @@ import lapr.project.model.AircraftModel;
  * 
  * @author Diana Silva
  */
-public class PhysicsAlgorithms {    
+public class PhysicsAlgorithms {  
+    //source: https://wahiduddin.net/calc/density_altitude.htm
+    
     /**
      * static pressure (pressure at sea level (Pa)
      */
@@ -35,7 +37,7 @@ public class PhysicsAlgorithms {
     /**
      * Temperature lapse rate (deg K/m)
      */
-    private static final double TEMPERATURE_LAPSE_RATE=6.5/1000;
+    private static final double TEMPERATURE_LAPSE_RATE=6.5;
     
     /**
      * Molecular weight of dry air (kg/mol)
@@ -60,8 +62,8 @@ public class PhysicsAlgorithms {
     public static double calculateAbsolutePressure(double altitude){
        //P=P0. (1- (L.h/to))^ ((g*m)/(R*L)
        double base=1- ((TEMPERATURE_LAPSE_RATE*(altitude/1000)/TEMPERATURE_SEA));
-       double exp=(GRAVITY_CONSTANT_SEA*WEIGHT_DRY_AIR)/(TEMPERATURE_LAPSE_RATE*GAS_CONSTANT_AIR); 
-       return PRESSURE_SEA*Math.pow(base, exp);
+       double exp=(GRAVITY_CONSTANT_SEA*WEIGHT_DRY_AIR)/(GAS_CONSTANT_AIR*TEMPERATURE_LAPSE_RATE); 
+       return Double.doubleToLongBits(PRESSURE_SEA*Math.pow(base, exp));
     }
     
     /**
@@ -72,7 +74,7 @@ public class PhysicsAlgorithms {
      */
     public static double calculateAirDensity(double pressure, double temperature){
 
-        return pressure/(GAS_CONSTANT_AIR*temperature);
+        return (pressure*WEIGHT_DRY_AIR/(GAS_CONSTANT_AIR*temperature*1000))*1000;
     }
     
     /**
