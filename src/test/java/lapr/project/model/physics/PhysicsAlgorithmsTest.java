@@ -37,20 +37,19 @@ public class PhysicsAlgorithmsTest {
     @After
     public void tearDown() {
     }
-//
-//    /**
-//     * Test of calculateAbsoluteTemperature method, of class PhysicsAlgorithms.
-//     */
-//    @Test
-//    public void testCalculateAbsoluteTemperature() {
-//        System.out.println("calculateAbsoluteTemperature");
-//        double altitude = 1000.0;
-//        double expResult = 0.0;
-//        double result = PhysicsAlgorithms.calculateAbsoluteTemperature(altitude);
-//        assertEquals(expResult, result, 0.0);
-//        // TODO review the generated test code and remove the default call to fail.
-//        fail("The test case is a prototype.");
-//    }
+
+    /**
+     * Test of calculateAbsoluteTemperature method, of class PhysicsAlgorithms.
+     * https://www.digitaldutch.com/atmoscalc/
+     */
+    @Test
+    public void testCalculateAbsoluteTemperature() {
+        System.out.println("calculateAbsoluteTemperature");
+        double altitude = 5000.0;
+        double expResult = 255.150;
+        double result = PhysicsAlgorithms.calculateAbsoluteTemperature(altitude);
+        assertEquals(expResult, result, 0.5);
+    }
 //
 //    /**
 //     * Test of calculateAbsolutePressure method, of class PhysicsAlgorithms.
@@ -58,27 +57,26 @@ public class PhysicsAlgorithmsTest {
 //    @Test
 //    public void testCalculateAbsolutePressure() {
 //        System.out.println("calculateAbsolutePressure");
-//        double altitude = 1000;
-//        double expResult = 89874.57;
+//        double altitude = 5000;
+//        double expResult = 54019.9;
+//        
 //        double result = PhysicsAlgorithms.calculateAbsolutePressure(altitude);
-//        assertEquals(expResult, result, 1000000.0);
+//        assertEquals(expResult, result, 0.5);
 //    }
-//
-//    /**
-//     * Test of calculateAirDensity method, of class PhysicsAlgorithms.
-//     */
-//    @Test
-//    public void testCalculateAirDensity() {
-//        System.out.println("calculateAirDensity");
-//        double pressure = 0.0;
-//        double temperature = 0.0;
-//        double expResult = 0.0;
-//        double result = PhysicsAlgorithms.calculateAirDensity(pressure, temperature);
-//        assertEquals(expResult, result, 0.0);
-//        // TODO review the generated test code and remove the default call to fail.
-//        fail("The test case is a prototype.");
-//    }
-//
+
+    /**
+     * Test of calculateAirDensity method, of class PhysicsAlgorithms.
+     */
+    @Test
+    public void testCalculateAirDensity() {
+        System.out.println("calculateAirDensity");
+        double pressure = 89874.6;
+        double temperature = 281.650;
+        double expResult = 1.11164;
+        double result = PhysicsAlgorithms.calculateAirDensity(pressure, temperature);
+        assertEquals(expResult, result, 0.5);
+    }
+
 //    /**
 //     * Test of calculateVelocityAircraft method, of class PhysicsAlgorithms.
 //     */
