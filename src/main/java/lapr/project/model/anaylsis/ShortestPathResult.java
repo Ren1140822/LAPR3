@@ -6,6 +6,7 @@
 package lapr.project.model.anaylsis;
 
 import java.util.LinkedList;
+import lapr.project.model.AirNetwork;
 import lapr.project.model.Node;
 import lapr.project.model.Project;
 import lapr.project.model.mapgraph.GraphAlgorithms;
@@ -25,9 +26,9 @@ public class ShortestPathResult extends ResultPath {
     }
     
      @Override
-    public void calculateBestPath(){
+    public void calculateBestPath(AirNetwork airNetwork){
         LinkedList<Node> shortPath=super.getResultPath();
-        double res=GraphAlgorithms.shortestPath(Project.getAirNetwork().getAirNetwork(), super.getStartNode(), super.getEndNode(), shortPath);
+        double res=GraphAlgorithms.shortestPath(airNetwork.getAirNetwork(), super.getStartNode(), super.getEndNode(), shortPath);
         super.setResult(res);
     }
 }

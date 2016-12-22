@@ -15,6 +15,7 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import lapr.project.model.Project;
 
 /**
  *
@@ -22,14 +23,16 @@ import javax.swing.JPanel;
  */
 public class EditProjectUI extends JDialog{
     
+    private Project project;
     /**
      * Guarda a janela anterior
      */
     private final MenuProjectUI frame;
     
-    public EditProjectUI(MenuProjectUI frame){
+    public EditProjectUI(Project project, MenuProjectUI frame){
         super(frame, "Edit Project", true);
         
+        this.project = project;
         this.frame = frame;
         
         add(createPanelButons()); 
@@ -62,7 +65,7 @@ public class EditProjectUI extends JDialog{
         bt1.addActionListener(new ActionListener() {
              @Override
             public void actionPerformed(ActionEvent e) {
-                AddAirportUI addairport = new AddAirportUI(frame);
+                AddAirportUI addairport = new AddAirportUI(project,frame);
             }
         });
         
@@ -70,7 +73,7 @@ public class EditProjectUI extends JDialog{
         bt2.addActionListener(new ActionListener() {
              @Override
             public void actionPerformed(ActionEvent e) {
-                  AddAircraftUI aircraft = new AddAircraftUI(new JFrame());
+                  AddAircraftUI aircraft = new AddAircraftUI(project,new JFrame());
             }
         });
         

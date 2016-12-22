@@ -13,18 +13,22 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import lapr.project.model.Project;
 
 /**
  *
  * @author Renato Oliveira 1140822@isep.ipp.pt
  */
 public class ExportProjectUI extends JFrame {
+    
+    Project project;
 
     private final int WINDOW_WIDTH = 250;
     private final int WINDOW_HEIGHT = 150;
     private final String WINDOW_TITLE = "Export data";
 
-    public ExportProjectUI() {
+    public ExportProjectUI(Project project) {
+        this.project = project;
         this.setSize(new Dimension(WINDOW_WIDTH, WINDOW_HEIGHT));
         this.setTitle(WINDOW_TITLE);
         this.setResizable(false);
@@ -48,7 +52,7 @@ public class ExportProjectUI extends JFrame {
         label.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent me) {
-                ExportHTMLUI instance = new ExportHTMLUI(ExportProjectUI.this);
+                ExportHTMLUI instance = new ExportHTMLUI(project,ExportProjectUI.this);
 
             }
         });
@@ -66,7 +70,7 @@ public class ExportProjectUI extends JFrame {
         label.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent me) {
-                ExportCSVUI instance = new ExportCSVUI(ExportProjectUI.this);
+                ExportCSVUI instance = new ExportCSVUI(project,ExportProjectUI.this);
             }
         });
         Dimension d = new Dimension(icon.getIconWidth(), icon.getIconHeight());

@@ -20,12 +20,14 @@ import lapr.project.model.Project;
  */
 public class ImportNetworkController {
     
+    Project project;
     AirNetwork network;
     
     JAXBContext jaxbContext;
     
-    public ImportNetworkController(){
-        network = Project.getAirNetwork();
+    public ImportNetworkController(Project project){
+        this.project = project;
+        network = project.getAirNetwork();
     }
     
     /**

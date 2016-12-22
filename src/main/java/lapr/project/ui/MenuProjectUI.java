@@ -36,15 +36,18 @@ import lapr.project.model.Project;
  */
 public class MenuProjectUI extends JDialog{
     
+    Project project;
     private JButton edit;
     private JButton export;
     private JButton analyses;
     private JButton importxml;
     private JButton back;
 
-    public MenuProjectUI(JFrame frame){
+    public MenuProjectUI(Project project, JFrame frame){
         
-        super(frame, "Project: " + Project.getName(), true);        
+        super(frame, "Project: ", true);        
+        
+        this.project = project;
         
         createComponents();        
         
@@ -293,15 +296,15 @@ public class MenuProjectUI extends JDialog{
     }
     
     private void editProject(){
-        EditProjectUI editproj = new EditProjectUI(this);
+        EditProjectUI editproj = new EditProjectUI(project, this);
     }
     
     private void importData(){
-        ImportDataUI imp = new ImportDataUI(this);
+        ImportDataUI imp = new ImportDataUI(project, this);
     }
     
     private void exportResults(){
-        ExportProjectUI proj = new ExportProjectUI();
+        ExportProjectUI proj = new ExportProjectUI(project);
     }
     
     private void analysis(){

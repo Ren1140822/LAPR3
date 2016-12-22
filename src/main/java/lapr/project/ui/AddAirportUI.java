@@ -24,12 +24,14 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 import lapr.project.controller.AddAirportController;
+import lapr.project.model.Project;
 
 /**
  * UI add airport
  * @author Pedro Fernandes
  */
 public class AddAirportUI extends JDialog {
+    Project project;
     /**
      * Guarda a janela anterior
      */
@@ -88,12 +90,12 @@ public class AddAirportUI extends JDialog {
      */
     private transient AddAirportController controller;
     
-    public AddAirportUI(MenuProjectUI frame){
+    public AddAirportUI(Project project, MenuProjectUI frame){
         super(frame, "Add Airport", true);
-        
+        this.project = project;
         this.frame = frame;
         
-        controller = new AddAirportController();
+        controller = new AddAirportController(project);
         
         add(createComponents()); 
         

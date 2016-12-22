@@ -6,6 +6,7 @@
 package lapr.project.model.anaylsis;
 
 import java.util.LinkedList;
+import lapr.project.model.AirNetwork;
 import lapr.project.model.Aircraft;
 import lapr.project.model.Node;
 import lapr.project.model.Project;
@@ -17,6 +18,7 @@ import lapr.project.model.mapgraph.GraphAlgorithms;
  * @author DianaSilva
  */
 public class EcologicPathResult extends ResultPath{
+    Project project;
     /**
      * Total weight of aircraft+passengers+crew
      */
@@ -46,11 +48,11 @@ public class EcologicPathResult extends ResultPath{
         return 0;
     }
     
-     @Override
-    public void calculateBestPath(){
+    @Override
+    public void calculateBestPath(AirNetwork airNetwork){
         LinkedList<Node> ecologicPath=super.getResultPath();
         /**corrigir**/
-        double res=GraphAlgorithms.shortestPath(Project.getAirNetwork().getAirNetwork(), super.getStartNode(), super.getEndNode(), ecologicPath);
+        double res=GraphAlgorithms.shortestPath(airNetwork.getAirNetwork(), super.getStartNode(), super.getEndNode(), ecologicPath);
         super.setResult(res);
     }    
 }

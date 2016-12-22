@@ -6,6 +6,7 @@
 package lapr.project.model.anaylsis;
 
 import java.util.LinkedList;
+import lapr.project.model.AirNetwork;
 import lapr.project.model.Node;
 
 /**
@@ -85,7 +86,7 @@ public class ResultPath {
         return resultPath;
     }
     
-    public void calculateBestPath(){
+    public void calculateBestPath(AirNetwork airNetwork){
     } 
 
     boolean validate() {

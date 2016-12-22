@@ -20,12 +20,15 @@ import lapr.project.model.lists.AircraftModelList;
  */
 public class ImportAircraftModelListController {
     
+    Project project;
+    
     AircraftModelList aircraftsModelList;
     
     JAXBContext jaxbContext;
     
-    public ImportAircraftModelListController(){
-        aircraftsModelList = Project.getAircraftModelListReference();
+    public ImportAircraftModelListController(Project project){
+        this.project = project;
+        aircraftsModelList = project.getAircraftModelList();
     }
     
     /**

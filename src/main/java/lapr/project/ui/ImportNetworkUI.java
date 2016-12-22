@@ -11,12 +11,14 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileFilter;
 import lapr.project.controller.ImportNetworkController;
+import lapr.project.model.Project;
 
 /**
  *
  * @author Pedro Fernandes
  */
 public class ImportNetworkUI extends JFileChooser{
+    Project project;
     /**
      * file chooser
      */
@@ -26,8 +28,9 @@ public class ImportNetworkUI extends JFileChooser{
      */
     private transient ImportNetworkController controller;
     
-    public ImportNetworkUI() throws FileNotFoundException{
-        controller = new ImportNetworkController();        
+    public ImportNetworkUI(Project project) throws FileNotFoundException{
+        this.project = project;
+        controller = new ImportNetworkController(project);        
         try{
                     fileChooser = new JFileChooser();
                     defineFilterExtXML(fileChooser);

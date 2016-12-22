@@ -20,6 +20,12 @@ import lapr.project.utils.CSVExporter;
  * @author Renato Oliveira 1140822@isep.ipp.pt
  */
 public class ExportCSVController {
+    
+    Project project;
+    
+    public ExportCSVController(Project project){
+        this.project = project;
+    }
 
     String currentSim;
     /**
@@ -30,7 +36,7 @@ public class ExportCSVController {
     public Map<String, ResultPath> getAvailableResults(String sim) {
         currentSim = sim;
         Map<String, ResultPath> results = new HashMap<>();
-        List<Simulation> list = Project.getSimulationsListReference().getSimulationsList();
+        List<Simulation> list = project.getSimulationsList().getSimulationsList();
         Simulation aux = getSimulationByString(sim);
         for (Simulation simulation : list) {
             if (aux.equals(simulation)) {
@@ -46,7 +52,7 @@ public class ExportCSVController {
 
     public List<String> getSimulationsList() {
         List<String> simString = new LinkedList<>();
-        List<Simulation> list = Project.getSimulationsListReference().getSimulationsList();
+        List<Simulation> list = project.getSimulationsList().getSimulationsList();
         Simulation sim = new Simulation();
         list.add(sim);
         sim = new Simulation();
@@ -63,7 +69,7 @@ public class ExportCSVController {
     }
 
     private Simulation getSimulationByString(String id) {
-        List<Simulation> list = Project.getSimulationsListReference().getSimulationsList();
+        List<Simulation> list = project.getSimulationsList().getSimulationsList();
         for (Simulation simulation : list) {
             if (simulation.toString().equals(id)) {
                 return simulation;
@@ -82,7 +88,7 @@ public class ExportCSVController {
     public List<String> getFlightPathAnalisysResultsGroupedByOriginDestination(String startNode, String endNode) {
         List<String> results = new LinkedList<>();
         if (startNode != null) {
-            List<Simulation> list = Project.getSimulationsListReference().getSimulationsList();
+            List<Simulation> list = project.getSimulationsList().getSimulationsList();
             for (Simulation simulation : list) {
                 if (simulation.getStartNode().getId().equals(startNode) && simulation.getEndNode().getId().equals(endNode)) {
                     results.add(simulation.toString());
@@ -103,7 +109,7 @@ public class ExportCSVController {
 
     public List<String> getFlightPathAnalisysResultsGroupedByAircraftType(String aircrafType) {
         List<String> results = new LinkedList<>();
-        List<Simulation> sims = Project.getSimulationsListReference().getSimulationsList();
+        List<Simulation> sims = project.getSimulationsList().getSimulationsList();
         for (Simulation s : sims) {
 
             if (s.getAircraft().getAircraftModel().getType().equals(aircrafType)) {
@@ -124,7 +130,7 @@ public class ExportCSVController {
      */
     public List<String> getListOfAircraftTypes() {
         List<String> results = new LinkedList<>();
-        List<Simulation> sims = Project.getSimulationsListReference().getSimulationsList();
+        List<Simulation> sims = project.getSimulationsList().getSimulationsList();
         for (Simulation s : sims) {
 
             results.add(s.getAircraft().getAircraftModel().getType());
@@ -140,7 +146,7 @@ public class ExportCSVController {
      */
     public List<String> getListOfNodes() {
         List<String> results = new LinkedList<>();
-        List<Simulation> sims = Project.getSimulationsListReference().getSimulationsList();
+        List<Simulation> sims = project.getSimulationsList().getSimulationsList();
         for (Simulation s : sims) {
             if (!results.contains(s.getStartNode().getId())) {
                 results.add(s.getStartNode().getId());
@@ -159,7 +165,9 @@ public class ExportCSVController {
     /**
      * Exports  results  to csv.
      *
+     * @param s
      * @param r the result
+     * @param whatToExport
      * @param filePath the file path
      * @return true if exported
      */

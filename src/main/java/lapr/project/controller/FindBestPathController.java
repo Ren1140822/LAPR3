@@ -16,31 +16,37 @@ import lapr.project.model.Project;
  */
 public class FindBestPathController {
     
+    Project project;
+    
+    public FindBestPathController(Project project){
+        this.project = project;
+    }
+    
     public void newSImulation(Node startNode){
-       Project.getSimulationsListReference().newSimulation();
+       project.getSimulationsList().newSimulation();
     }
     
     public Node[] getVertices(){
-        return Project.getAirNetwork().getAirNetwork().allkeyVerts();
+        return project.getAirNetwork().getAirNetwork().allkeyVerts();
     }
       
     public void setStartNode(Node startNode){
-       Project.getSimulationsListReference().getSimulation().setStartNode(startNode);
+       project.getSimulationsList().getSimulation().setStartNode(startNode);
     }
     
     public LinkedList<Node> getPossibleEndNodes(Node startNode){
-        return Project.getAirNetwork().getPossibleEndNodes(startNode);
+        return project.getAirNetwork().getPossibleEndNodes(startNode);
     }
     
     public void setEndNode(Node endNode){
-        Project.getSimulationsListReference().getSimulation().setEndNode(endNode);
+        project.getSimulationsList().getSimulation().setEndNode(endNode);
     }
     
     public void setData(Aircraft aircraft, int passengers, int crew, double cargoLoad){
-        Project.getSimulationsListReference().getSimulation().setData(aircraft, passengers, crew, cargoLoad);
+        project.getSimulationsList().getSimulation().setData(aircraft, passengers, crew, cargoLoad);
     }
   
-    private boolean saveSimulation(){
-        return Project.getSimulationsListReference().saveSimulation();
+    public boolean saveSimulation(){
+        return project.getSimulationsList().saveSimulation();
     }
 }

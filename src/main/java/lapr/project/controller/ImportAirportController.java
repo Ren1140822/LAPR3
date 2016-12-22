@@ -20,12 +20,15 @@ import lapr.project.model.lists.AirportList;
  */
 public class ImportAirportController {
     
+    Project project;
+    
     AirportList airportsList;
     
     JAXBContext jaxbContext;
     
-    public ImportAirportController(){
-        airportsList = Project.getAirportListReference();
+    public ImportAirportController(Project project){
+        this.project = project;
+        airportsList = project.getAirportList();
     }
     
     /**

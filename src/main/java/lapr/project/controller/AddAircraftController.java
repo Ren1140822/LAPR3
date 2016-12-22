@@ -16,7 +16,8 @@ import lapr.project.model.lists.AircraftList;
  * @author Renato Oliveira 1140822@isep.ipp.pt
  */
 public class AddAircraftController {
-
+    
+    Project project;
     /**
      * Instance variables.
      */
@@ -25,9 +26,11 @@ public class AddAircraftController {
 
     /**
      * Default constructor.
+     * @param project
      */
-    public AddAircraftController() {
-        aircraftList = Project.getAircraftListReference();
+    public AddAircraftController(Project project) {
+        this.project = project;
+        aircraftList = project.getAircraftList();
     }
 
     /**
@@ -81,7 +84,7 @@ public class AddAircraftController {
      */
     public List<String> getListOfAircraftModels() {
        
-        List<AircraftModel> list = Project.getModelList().getModelList();
+        List<AircraftModel> list = project.getAircraftModelList().getModelList();
         LinkedList<String> modelListInString = new LinkedList<>();
         for (AircraftModel model : list) {
             modelListInString.add(model.getId());
@@ -95,7 +98,7 @@ public class AddAircraftController {
      * @param id  the string ID
      */
     private void getModelByID(String id) {
-        List<AircraftModel> list = Project.getModelList().getModelList();
+        List<AircraftModel> list = project.getAircraftModelList().getModelList();
         for (AircraftModel model : list) {
             if (model.getId().equals(id)) {
                 this.model = model;

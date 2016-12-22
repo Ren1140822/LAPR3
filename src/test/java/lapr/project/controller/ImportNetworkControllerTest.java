@@ -9,6 +9,7 @@ import java.io.File;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
 import lapr.project.model.AirNetwork;
+import lapr.project.model.Project;
 import org.junit.After;
 import org.junit.AfterClass;
 import static org.junit.Assert.*;
@@ -46,9 +47,10 @@ public class ImportNetworkControllerTest {
      */
     @Test
     public void testImportXMLNetwork() throws Exception {
+        Project p = new Project();
         System.out.println("importXMLNetwork");
         File file = new File("src/main/resources/TestSet01a_Network.xml");
-        ImportNetworkController instance = new ImportNetworkController();
+        ImportNetworkController instance = new ImportNetworkController(p);
         boolean expResult = true;
         boolean result = instance.importXMLNetwork(file);
         //show in the screen imported file
@@ -61,7 +63,7 @@ public class ImportNetworkControllerTest {
         
         System.out.println("importXMLNetwork2");
         File file2 = new File("src/main/resources/Test.xml");
-        ImportNetworkController instance2 = new ImportNetworkController();
+        ImportNetworkController instance2 = new ImportNetworkController(p);
         boolean expResult2 = false;
         boolean result2 = instance2.importXMLNetwork(file2);
         assertEquals(expResult2, result2);
