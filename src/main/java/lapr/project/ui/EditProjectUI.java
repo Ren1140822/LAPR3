@@ -13,6 +13,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 /**
@@ -65,11 +66,11 @@ public class EditProjectUI extends JDialog{
             }
         });
         
-        JButton bt2 = new JButton("Export Project");
+        JButton bt2 = new JButton("Add aircraft");
         bt2.addActionListener(new ActionListener() {
              @Override
             public void actionPerformed(ActionEvent e) {
-//    converter para jdialog     AddAircraftUI aircraft = new AddAircraftUI(frame);
+                  AddAircraftUI aircraft = new AddAircraftUI(new JFrame());
             }
         });
         

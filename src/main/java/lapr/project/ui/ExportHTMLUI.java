@@ -148,7 +148,7 @@ public class ExportHTMLUI extends JFrame {
         return btn;
     }
 
-    private JButton createExportJButton() {
+    public JButton createExportJButton() {
         JButton btn = new JButton();
 
         btn.setText("Export selected results");

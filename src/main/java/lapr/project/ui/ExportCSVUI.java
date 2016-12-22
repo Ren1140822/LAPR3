@@ -35,40 +35,42 @@ import lapr.project.model.anaylsis.ResultPath;
  */
 public class ExportCSVUI extends JFrame {
 
+   /**
+     * Instance variables.
+     */
     private final int WINDOW_WIDTH = 550;
     private final int WINDOW_HEIGHT = 500;
-    private final String WINDOW_TITLE = "Export data to CSV";
+    private final String WINDOW_TITLE = "Export data to HTML";
     private transient ExportCSVController controller;
-    private transient Map<String, List<ResultPath>> results;
-    private JList listBest;
+    private transient List<String> results;
+    private JList listSimulations;
     private JList listComparison;
     private JList listShortestPath;
     private DialogSelectable dialog;
+    private DialogSelectable dialogSimulation;
     private JFrame parentFrame;
 
     public ExportCSVUI(JFrame parentFrame) {
-        this.parentFrame = parentFrame;
-        this.setLocationRelativeTo(this.parentFrame);
-
+           this.parentFrame = parentFrame;
+        this.setLocationRelativeTo(parentFrame);
         this.setResizable(false);
-
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
                 closeWindow();
             }
         });
-
         controller = new ExportCSVController();
-
-        results = controller.getAvailableResults();
+        //dialogSimulation= new DialogSelectable(this, controller.getSimulationsList());
+        results = controller.getSimulationsList();
         this.setSize(new Dimension(WINDOW_WIDTH, WINDOW_HEIGHT));
         this.setTitle(WINDOW_TITLE);
         createComponents();
         this.setVisible(true);
     }
+        
 
-    private void createComponents() {
+   private void createComponents() {
         FlowLayout fl = new FlowLayout(FlowLayout.LEADING);
         FlowLayout fl2 = new FlowLayout(FlowLayout.LEADING, 50, 0);
 
@@ -81,12 +83,10 @@ public class ExportCSVUI extends JFrame {
         panelLabels.add(labelComp);
         panelLabels.add(labelShort);
         JPanel panelUpdateBtn = new JPanel();
-        listBest = createJList("Best consumption");
-        listComparison = createJList("Comparison");
-        listShortestPath = createJList("Shortest Path");
-        panelLists.add(listBest);
-        panelLists.add(listComparison);
-        panelLists.add(listShortestPath);
+        listSimulations = createJList("List of simulations");
+
+        panelLists.add(listSimulations);
+
         JButton btn = createJButtonUpdate();
         panelUpdateBtn.add(btn, BorderLayout.NORTH);
         add(panelLists, BorderLayout.WEST);
@@ -105,10 +105,11 @@ public class ExportCSVUI extends JFrame {
 
     private JList createJList(String keyValue) {
         JList list = new JList();
+
         Border border = BorderFactory.createLineBorder(Color.BLACK);
         list.setBorder(border);
         list.setPreferredSize(new Dimension(150, 300));
-        list.setListData(results.get(keyValue).toArray());
+        list.setListData(results.toArray());
         return list;
     }
 
@@ -126,28 +127,30 @@ public class ExportCSVUI extends JFrame {
 
             @Override
             public void mouseClicked(MouseEvent me) {
-
                 String[] buttons = {"Filter by nodes", "Filter by aircraft type", "Cancel"};
-                int rc = JOptionPane.showOptionDialog(null, "Choose the filter", "Filter", JOptionPane.PLAIN_MESSAGE, 0, null, buttons, buttons[0]);
+                int rc = JOptionPane.showOptionDialog(null, "Choose the filter", "Filter", JOptionPane.PLAIN_MESSAGE, JOptionPane.PLAIN_MESSAGE, null, buttons, buttons[0]);
                 if (rc == 0) {
-                    dialog = new DialogSelectable(ExportCSVUI.this, controller.getListOfOrigins(), "Select origin node");
-                    results = controller.getFlightPathAnalisysResultsGroupedByOriginDestination(dialog.getSelectedItem(), "any");
+                    dialog = new DialogSelectable(ExportCSVUI.this, controller.getListOfNodes(), "Select origin node");
+                    String originNode = dialog.getSelectedItem();
+                    dialog = new DialogSelectable(ExportCSVUI.this, controller.getListOfNodes(), "Select destination node");
+                    results = controller.getFlightPathAnalisysResultsGroupedByOriginDestination(originNode, dialog.getSelectedItem());
+                    listSimulations.setListData(results.toArray());
+                    //dialogSimulation = new DialogSelectable(ExportHTMLUI.this, results);
                 }
                 if (rc == 1) {
-                    dialog = new DialogSelectable(ExportCSVUI.this, controller.getListOfOrigins(), "Select aircraft type");
+                    dialog = new DialogSelectable(ExportCSVUI.this, controller.getListOfAircraftTypes(), "Select aircraft type");
                     results = controller.getFlightPathAnalisysResultsGroupedByAircraftType(dialog.getSelectedItem());
+                    listSimulations.setListData(results.toArray());
+
                 }
 
-                listBest.setListData(results.get("Best consumption").toArray());
-
-                listComparison.setListData(results.get("Comparison").toArray());
-                listShortestPath.setListData(results.get("Shortest Path").toArray());
             }
+
         });
         return btn;
     }
 
-    private JButton createExportJButton() {
+    public JButton createExportJButton() {
         JButton btn = new JButton();
 
         btn.setText("Export selected results");
@@ -157,29 +160,29 @@ public class ExportCSVUI extends JFrame {
 
             @Override
             public void mouseClicked(MouseEvent me) {
-                if (listBest.getSelectedValue() == null && listComparison.getSelectedValue() == null && listShortestPath.getSelectedValue() == null) {
+                if (listSimulations.getSelectedValue() == null) {
                     JOptionPane.showMessageDialog(rootPane, "Nothing selected to export.", "Error", JOptionPane.ERROR_MESSAGE);
                 } else {
-                    int nrOfSelectedIndexes = listBest.getSelectedIndices().length + listComparison.getSelectedIndices().length + listShortestPath.getSelectedIndices().length;
+                    int nrOfSelectedIndexes = listSimulations.getSelectedIndices().length;
                     if (nrOfSelectedIndexes > 4) {
                         JOptionPane.showMessageDialog(rootPane, "Select less than four items to export..", "Error", JOptionPane.ERROR_MESSAGE);
                     } else {
-                        int selectedIndexes[] = listBest.getSelectedIndices();
-                        JFileChooser chooser = new JFileChooser();
-                        chooser.showSaveDialog(null);
-                        String path = chooser.getCurrentDirectory().getAbsolutePath();
-                        for (int i = 0; i < selectedIndexes.length; i++) {
-                            controller.exportResult((ResultPath) listBest.getSelectedValue(), path + "\\best_results" + (i + 1) + ".html");
-                        }
-                        selectedIndexes = listComparison.getSelectedIndices();
-                        for (int i = 0; i < selectedIndexes.length; i++) {
-                            controller.exportResult((ResultPath) listComparison.getSelectedValue(), path + "\\comparison_results" + (i + 1) + ".html");
-                        }
-                        selectedIndexes = listShortestPath.getSelectedIndices();
-                        for (int i = 0; i < selectedIndexes.length; i++) {
-                            controller.exportResult((ResultPath) listShortestPath.getSelectedValue(), path + "\\shortestpath" + (i + 1) + ".html");
-                        }
+                        String[] buttons = {"Export shortest path calculations", "Export most ecologic path calculations", "Cancel"};
+                        int rc = JOptionPane.showOptionDialog(null, "What to export?", "Export HTML", JOptionPane.PLAIN_MESSAGE, JOptionPane.QUESTION_MESSAGE, null, buttons, buttons[0]);
+                        if (rc != 2) {
+                            int selectedIndexes[] = listSimulations.getSelectedIndices();
+                            JFileChooser chooser = new JFileChooser();
+                            chooser.showSaveDialog(null);
+                            String path = chooser.getCurrentDirectory().getAbsolutePath();
 
+                            String allSims[] = (String[]) listSimulations.getSelectedValuesList().toArray(new String[selectedIndexes.length]);
+                            if (rc == 0) {
+                                controller.exportResults(allSims, path + "\\simulation_results.csv", "short");
+                            }
+                            if (rc == 1) {
+                                controller.exportResults(allSims, path + "\\simulation_results.csv", "eco");
+                            }
+                        }
                     }
                 }
             }
@@ -199,4 +202,7 @@ public class ExportCSVUI extends JFrame {
             setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         }
     }
+
+   
+
 }

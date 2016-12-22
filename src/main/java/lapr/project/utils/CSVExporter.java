@@ -9,6 +9,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Formatter;
 
+
 /**
  *
  * @author Renato Oliveira 1140822@isep.ipp.pt
@@ -70,7 +71,7 @@ public class CSVExporter {
         for (int i = 0; i < body[0].length; i++) {
             for (int j = 0; j < body.length; j++) {
 
-                data[i] += body[j][i] + "---";
+                data[i] += body[j][i] + ",";
 
             }
             data[i] += "\n";
@@ -82,6 +83,7 @@ public class CSVExporter {
         }
 
         System.out.println(page);
+  
         Formatter out = null;
         try {
             out = new Formatter(new File(filePath));
