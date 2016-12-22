@@ -149,7 +149,8 @@ public class Edge<V, E> implements Comparable {
             st = "\t ";
         }
 
-        if (weight < 0 || weight > 0) {
+        if (Double.doubleToLongBits(this.weight) < 0 || 
+                Double.doubleToLongBits(this.weight) > 0) {
             st += weight + " - " + vDest.getElement() + "\n";
         } else {
             st += vDest.getElement() + "\n";
