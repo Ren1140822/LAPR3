@@ -5,7 +5,6 @@
  */
 package lapr.project.model.mapgraph;
 
-import java.util.LinkedHashMap;
 import lapr.project.model.Node;
 import org.junit.After;
 import org.junit.AfterClass;

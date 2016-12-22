@@ -21,9 +21,7 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import static javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 
@@ -68,13 +66,13 @@ public class ImportDataUI extends JDialog{
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
-                closeImport();
+                dispose();
             }
         });
         
         pack();
         setResizable(false);
-        setMinimumSize(new Dimension(1100, 500));
+        setMinimumSize(new Dimension(900, 600));
         setLocationRelativeTo(frame);        
         setVisible(true);
     }
@@ -82,8 +80,8 @@ public class ImportDataUI extends JDialog{
     public JPanel createImportPanel(){
         panel = new JPanel(new BorderLayout());
         
-        int aux= 20;
-        JPanel imports = new JPanel(new GridLayout(1,3, aux,aux));          
+        int aux= 10;
+        JPanel imports = new JPanel(new GridLayout(2,2, aux,aux));          
         imports.setBorder(BorderFactory.createCompoundBorder(new TitledBorder(
                 "Import:"), new EmptyBorder(aux, aux, aux, aux)));        
         imports.add(createButonImportAircraft());
@@ -173,23 +171,10 @@ public class ImportDataUI extends JDialog{
         back.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                closeImport();
+                dispose();
             }
         });
         return back;
-    }
-    
-    public void closeImport(){
-        String[] op = {"Yes", "No"};
-        String question = "Close window?";
-        int opcao = JOptionPane.showOptionDialog(frame, question,
-                "Import Data", JOptionPane.YES_NO_OPTION,
-                JOptionPane.QUESTION_MESSAGE, null, op, op[0]);
-        if (opcao == JOptionPane.YES_OPTION) {
-            dispose();
-        } else {
-            setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-        }
     }
     
 }

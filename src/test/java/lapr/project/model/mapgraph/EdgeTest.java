@@ -5,8 +5,6 @@
  */
 package lapr.project.model.mapgraph;
 
-import java.lang.reflect.Array;
-import java.util.Objects;
 import lapr.project.model.Node;
 import lapr.project.model.Segment;
 import org.junit.After;

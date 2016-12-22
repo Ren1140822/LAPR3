@@ -13,6 +13,8 @@ import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -26,6 +28,7 @@ import javax.swing.JPanel;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 
@@ -42,16 +45,14 @@ public class MenuUI extends JFrame{
     
     public MenuUI(){
         super("AirNetwork Projects Simulator");
-        
-       
-        
+
         frame = MenuUI.this;
         
         createComponents();        
         
         pack();
         setResizable(true);        
-        setMinimumSize(new Dimension(800, 650));
+        setMinimumSize(new Dimension(900, 600));
         setLocationRelativeTo(null);
         setVisible(true);
         addWindowListener(new WindowAdapter() {
@@ -130,12 +131,12 @@ public class MenuUI extends JFrame{
                         }
                     }
                     SwingUtilities.updateComponentTreeUI(MenuUI.this);
-                } catch (Exception ex) {
+                } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
                     JOptionPane.showMessageDialog(MenuUI.this,
                             ex.getMessage(),
                             "Style " + menuItem.getActionCommand(),
                             JOptionPane.ERROR_MESSAGE);
-                    throw new RuntimeException(ex);
+                    Logger.getLogger(MenuUI.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         });

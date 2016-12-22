@@ -15,6 +15,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import javax.swing.BorderFactory;
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -23,10 +24,8 @@ import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.KeyStroke;
-import static javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 import lapr.project.model.Project;
@@ -50,14 +49,14 @@ public class MenuProjectUI extends JDialog{
         createComponents();        
         
         pack();
-        setResizable(true);        
-        setMinimumSize(new Dimension(800, 650));
+        setResizable(false);        
+        setMinimumSize(new Dimension(800, 600));
         setLocationRelativeTo(null);
         setVisible(true);
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
-                closeMenuProject();
+                closeBack();
             }
         });
         
@@ -72,22 +71,24 @@ public class MenuProjectUI extends JDialog{
         add(createPanelBack(),BorderLayout.SOUTH);   
     }
     public JPanel createPanelBack(){
+        int aux = 10;
         JPanel pback = new JPanel(new BorderLayout());
         pback.setBorder(BorderFactory.createCompoundBorder(new TitledBorder(
-                "Options:"), new EmptyBorder(20, 20, 20, 20)));
+                "Options:"), new EmptyBorder(aux, aux, aux, aux)));
         pback.add(createButtonBack(), BorderLayout.CENTER);
 
         return pback;
     }
     
     private JPanel createPanelImage() {
-        ImageIcon background = new ImageIcon("src/main/resources/images/airport_mini.jpg");
+        ImageIcon background = new ImageIcon("src/main/resources/images/airnetwork_2.jpg");
         
         JLabel label = new JLabel();
         label.setIcon(background);
-
+        
+        int aux = 15;
         JPanel panel = new JPanel();
-        panel.setBorder(new EmptyBorder(5, 10, 10, 10));
+        panel.setBorder(new EmptyBorder(aux, aux, aux, aux));
         panel.add(label, BorderLayout.CENTER);
 
         return panel;
@@ -95,24 +96,26 @@ public class MenuProjectUI extends JDialog{
     
     public JPanel createPanelButons(){
         
+        int aux = 5;
+        
         JPanel grid = new JPanel(new GridLayout(1,2));
 
-        JPanel p1 = new JPanel(new GridLayout(2,1));        
+        JPanel p1 = new JPanel(new GridLayout(1,2, aux, aux));        
         
         p1.setBorder(BorderFactory.createCompoundBorder(new TitledBorder(
-                "Data:"), new EmptyBorder(30, 30, 30, 30)));
+                "Data:"), new EmptyBorder(aux, aux, aux, aux)));
         
         getRootPane().setDefaultButton(createButtonImport());
         
         p1.add(createButtonImport());
         p1.add(createButtonEdit());
         
-        JPanel p2 = new JPanel(new GridLayout(2,1));        
+        JPanel p2 = new JPanel(new GridLayout(1,2, aux, aux));        
         
         p2.setBorder(BorderFactory.createCompoundBorder(new TitledBorder(
-                "Results:"), new EmptyBorder(30, 30, 30, 30)));
+                "Results:"), new EmptyBorder(aux, aux, aux, aux)));
         
-        p2.add(createButtonAnalyses());
+        p2.add(createButtonAnalysis());
         p2.add(createButtonExport());
         
         grid.add(p1);
@@ -122,7 +125,12 @@ public class MenuProjectUI extends JDialog{
     }
     
     public JButton createButtonEdit(){
-        edit = new JButton("Edit Project"); 
+        Icon icone = new ImageIcon( "src/main/resources/images/edit.png" );
+        edit = new JButton("Edit Project",icone); 
+        edit.setContentAreaFilled(false);
+        edit.setBorderPainted(false);
+        edit.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        edit.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         edit.setMnemonic(KeyEvent.VK_E);
         edit.setToolTipText("Edit Project");
         edit.addActionListener(new ActionListener() {
@@ -134,7 +142,12 @@ public class MenuProjectUI extends JDialog{
         return edit;
     }
     public JButton createButtonImport(){
-        importxml = new JButton("Import Data"); 
+        Icon icone = new ImageIcon( "src/main/resources/images/importlogo.jpg" );
+        importxml = new JButton("Import Data",icone); 
+        importxml.setContentAreaFilled(false);
+        importxml.setBorderPainted(false);
+        importxml.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        importxml.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM); 
         importxml.setMnemonic(KeyEvent.VK_I);
         importxml.setToolTipText("Import Data");
         importxml.addActionListener(new ActionListener() {
@@ -146,7 +159,12 @@ public class MenuProjectUI extends JDialog{
         return importxml;
     }
     public JButton createButtonExport(){
-        export = new JButton("Export Results"); 
+        Icon icone = new ImageIcon( "src/main/resources/images/exportlogo.jpg" );
+        export = new JButton("Export Results",icone); 
+        export.setContentAreaFilled(false);
+        export.setBorderPainted(false);
+        export.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        export.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM); 
         export.setMnemonic(KeyEvent.VK_R);
         export.setToolTipText("Export Results");
         export.addActionListener(new ActionListener() {
@@ -157,14 +175,19 @@ public class MenuProjectUI extends JDialog{
         });
         return export;
     }
-    public JButton createButtonAnalyses(){
-        analyses = new JButton("View Analyses"); 
+    public JButton createButtonAnalysis(){
+        Icon icone = new ImageIcon( "src/main/resources/images/analysis.jpg" );
+        analyses = new JButton("View Analysis",icone);
+        analyses.setContentAreaFilled(false);
+        analyses.setBorderPainted(false);
+        analyses.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        analyses.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM); 
         analyses.setMnemonic(KeyEvent.VK_A);
-        analyses.setToolTipText("View Analyses");
+        analyses.setToolTipText("View Analysis");
         analyses.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                analyses();
+                analysis();
             }
         });
         return analyses;
@@ -194,10 +217,10 @@ public class MenuProjectUI extends JDialog{
         JMenu menu=new JMenu("File");
         menu.setMnemonic(KeyEvent.VK_F);
         
-        menu.add(createItemEdit());
         menu.add(createItemImportData());
+        menu.add(createItemEdit());
         menu.addSeparator();
-        menu.add(createItemAnalyses());
+        menu.add(createItemAnalysis());
         menu.add(createItemResults());
         menu.addSeparator();
         menu.add(createItemClose());
@@ -243,13 +266,13 @@ public class MenuProjectUI extends JDialog{
 
         return item;
     }
-    private JMenuItem createItemAnalyses(){
-        JMenuItem item = new JMenuItem("Analyses", KeyEvent.VK_A);
+    private JMenuItem createItemAnalysis(){
+        JMenuItem item = new JMenuItem("View Analysis", KeyEvent.VK_A);
         item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, InputEvent.ALT_MASK));
         item.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                analyses();
+                analysis();
             }
         });
 
@@ -257,29 +280,16 @@ public class MenuProjectUI extends JDialog{
     }
     
     private JMenuItem createItemClose(){
-        JMenuItem item = new JMenuItem("Exit", KeyEvent.VK_C);
+        JMenuItem item = new JMenuItem("Close", KeyEvent.VK_C);
         item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, InputEvent.ALT_MASK));
         item.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                closeMenuProject();
+                closeBack();
             }
         });
 
         return item;
-    }
-    
-    public void closeMenuProject(){
-        String[] op = {"Yes", "No"};
-        String question = "Close aplication?";
-        int opcao = JOptionPane.showOptionDialog(MenuProjectUI.this, question,
-                this.getTitle(), JOptionPane.YES_NO_OPTION,
-                JOptionPane.QUESTION_MESSAGE, null, op, op[0]);
-        if (opcao == JOptionPane.YES_OPTION) {
-            closeBack();
-        } else {
-            setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-        }
     }
     
     private void editProject(){
@@ -294,8 +304,8 @@ public class MenuProjectUI extends JDialog{
         ExportProjectUI proj = new ExportProjectUI();
     }
     
-    private void analyses(){
-        // create project ui => implement
+    private void analysis(){
+        // create analyses ui => implement
     }
     
     private void closeBack() {
