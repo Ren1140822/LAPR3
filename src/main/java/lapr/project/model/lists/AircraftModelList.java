@@ -134,7 +134,7 @@ public class AircraftModelList implements Serializable{
         return aircraftModel.validate() && !aircraftsModelList.contains(aircraftModel);
     }
     
-    public boolean addAircraftModel(){
+    private boolean addAircraftModel(){
         return aircraftsModelList.add(aircraftModel);
     }
 }

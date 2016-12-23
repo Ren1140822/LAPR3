@@ -57,6 +57,7 @@ public class MenuUI extends JFrame{
         setResizable(true);        
         setMinimumSize(new Dimension(900, 600));
         setLocationRelativeTo(null);
+        setExtendedState(JFrame.MAXIMIZED_BOTH);
         setVisible(true);
         addWindowListener(new WindowAdapter() {
             @Override
