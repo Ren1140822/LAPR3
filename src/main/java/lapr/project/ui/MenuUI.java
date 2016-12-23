@@ -164,8 +164,8 @@ public class MenuUI extends JFrame{
     }
     
     private JMenuItem createItemOpen(){
-        JMenuItem item = new JMenuItem("Open Project", KeyEvent.VK_O);
-        item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, InputEvent.ALT_MASK));
+        JMenuItem item = new JMenuItem("Open Project", KeyEvent.VK_P);
+        item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_P, InputEvent.ALT_MASK));
         item.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -231,7 +231,7 @@ public class MenuUI extends JFrame{
     
     public JButton createButtonOpen(){
         open = new JButton("Open Project"); 
-        open.setMnemonic(KeyEvent.VK_O);
+        open.setMnemonic(KeyEvent.VK_P);
         open.setToolTipText("Open Project");
         open.addActionListener(new ActionListener() {
             @Override
@@ -286,7 +286,7 @@ public class MenuUI extends JFrame{
     }
     
     private void create(){
-        // create project ui => implement
+         CreateProjectUI createproj = new CreateProjectUI(project, frame);
     }
     
     private void finish() {

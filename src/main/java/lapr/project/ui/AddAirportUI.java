@@ -105,10 +105,9 @@ public class AddAirportUI extends JDialog {
                 closeWindow();
             }
         });
-        
-        setMinimumSize(new Dimension(800, 500));
-        setLocationRelativeTo(frame);
         pack();
+        setMinimumSize(new Dimension(800, 500));
+        setLocationRelativeTo(null);        
         setVisible(true);
     }
     

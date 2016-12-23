@@ -25,8 +25,8 @@ public class ExportProjectUI extends JDialog {
     
     Project project;
 
-    private final int WINDOW_WIDTH = 250;
-    private final int WINDOW_HEIGHT = 150;
+    private final int WINDOW_WIDTH = 850;
+    private final int WINDOW_HEIGHT = 600;
     private final String WINDOW_TITLE = "Export data";
 
     public ExportProjectUI(Project project, JDialog frame) {
@@ -43,9 +43,12 @@ public class ExportProjectUI extends JDialog {
 
     private void createComponents() {
         JLabel label = createLabellHTML();
-        JLabel label2 = createLabelCSV();
+        Icon icon = new ImageIcon("src/main/resources/images/export2.png");
+        JLabel label2 = new JLabel(icon);
+        JLabel label3 = createLabelCSV();
         this.add(label, BorderLayout.EAST);
-        this.add(label2, BorderLayout.WEST);
+        this.add(label2, BorderLayout.CENTER);
+        this.add(label3, BorderLayout.WEST);
     }
 
     private JLabel createLabellHTML() {

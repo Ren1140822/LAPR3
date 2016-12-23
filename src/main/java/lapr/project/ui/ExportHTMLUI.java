@@ -54,8 +54,7 @@ public class ExportHTMLUI extends JDialog {
     public ExportHTMLUI(Project project, JDialog parentFrame) {
         super(parentFrame, "Export HTML", true);
         this.project = project;
-        this.setLocationRelativeTo(parentFrame);
-        this.setResizable(false);
+        
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
@@ -65,11 +64,14 @@ public class ExportHTMLUI extends JDialog {
         controller = new ExportHTMLController(project);
         //dialogSimulation= new DialogSelectable(this, controller.getSimulationsList());
         results = controller.getSimulationsList();
+        
+        createComponents();
+        pack();
         this.setSize(new Dimension(WINDOW_WIDTH, WINDOW_HEIGHT));
         this.setTitle(WINDOW_TITLE);
-        createComponents();
-        this.setVisible(true);
-        pack();
+        this.setLocationRelativeTo(null);
+        this.setResizable(false);
+        this.setVisible(true);        
     }
 
     private void createComponents() {

@@ -58,8 +58,7 @@ public class ExportCSVUI extends JDialog {
         super(parentFrame, "Export CSV", true);
         this.project = project;
         this.parentFrame = parentFrame;
-        this.setLocationRelativeTo(parentFrame);
-        this.setResizable(false);
+        
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
@@ -69,11 +68,14 @@ public class ExportCSVUI extends JDialog {
         controller = new ExportCSVController(project);
         //dialogSimulation= new DialogSelectable(this, controller.getSimulationsList());
         results = controller.getSimulationsList();
-        this.setSize(new Dimension(WINDOW_WIDTH, WINDOW_HEIGHT));
-        this.setTitle(WINDOW_TITLE);
         createComponents();
-        this.setVisible(true);
         pack();
+        this.setSize(new Dimension(WINDOW_WIDTH, WINDOW_HEIGHT));
+        this.setTitle(WINDOW_TITLE);   
+        this.setLocationRelativeTo(null);
+        this.setResizable(false);
+        this.setVisible(true);
+        
     }
         
 

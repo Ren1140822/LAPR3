@@ -36,7 +36,7 @@ public class ImportDataUI extends JDialog{
     /**
      * Guarda a janela anterior
      */
-    private MenuProjectUI frame;
+    private JDialog frame;
     /**
      * panel
      */
@@ -58,7 +58,7 @@ public class ImportDataUI extends JDialog{
      */
     private JButton network;
     
-    public ImportDataUI(Project project, MenuProjectUI frame){
+    public ImportDataUI(Project project, JDialog frame){
         super(frame, "Import Data", true);
         
         this.project = project;
