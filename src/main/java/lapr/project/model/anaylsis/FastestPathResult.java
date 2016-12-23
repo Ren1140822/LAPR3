@@ -9,7 +9,6 @@ import java.util.LinkedList;
 import lapr.project.model.AirNetwork;
 import lapr.project.model.Aircraft;
 import lapr.project.model.Node;
-import lapr.project.model.Project;
 import lapr.project.model.mapgraph.GraphAlgorithms;
 
 
@@ -36,6 +35,8 @@ public class FastestPathResult extends ResultPath{
         LinkedList<Node> fastestPath=super.getResultPath();
         /**corrigir**/
         double res=GraphAlgorithms.shortestPath(airNetwork.getAirNetwork(), super.getStartNode(), super.getEndNode(), fastestPath);
+        //vento+cruiseSpeed
+        
         super.setResult(res);
     }
 }

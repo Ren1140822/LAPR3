@@ -140,12 +140,4 @@ public class DragForce {
     public double getResult(){
         return getDragForce();
     }
-    
-    public boolean calculateDragForce(){
-        if(validateOperation()){
-            setDragForce(getDragCoef() * (getAirDensity() * Math.pow(getVelocityAircraft(), 2) / 2) * getAreaAircraft());
-            return true;
-        }
-        return false;
-    }
 }

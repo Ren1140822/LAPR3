@@ -6,6 +6,7 @@
 package lapr.project.model.anaylsis;
 
 import lapr.project.model.AircraftModel;
+import lapr.project.model.physics.AircraftAlgorithms;
 import lapr.project.model.physics.DragForce;
 import lapr.project.model.physics.LiftForce;
 import lapr.project.model.physics.PhysicsAlgorithms;
@@ -27,7 +28,7 @@ public class SegmentResult {
     private DragForce dragForce;
     
     /**
-     * thrust specific fuel consumption (fuel efficienty)
+     * thrust specific fuel consumption (fuel efficienty) - lb/(hr*lbf)
      */
     private double tsfc;
     
@@ -64,7 +65,7 @@ public class SegmentResult {
     }
     
     public void setRange(AircraftModel aircraftModel){
-        setRangeFlight(PhysicsAlgorithms.calculateRangeAircraft(aircraftModel));
+        setRangeFlight(AircraftAlgorithms.calculateRangeAircraft(aircraftModel));
     }
 
     /**

@@ -129,15 +129,7 @@ public class LiftForce {
     public double getResult(){
         return getLiftForce();
     }
-    
-    public boolean calculateLiftForce(){
-        if(validateOperation()){
-            setLiftForce(getLiftCoef() * (getAirDensity() * Math.pow(getAircraftVelocity(), 2) / 2) * getAreaWings());
-            return true;
-        }
-        return false;
-    }
-    
+        
     private boolean validateOperation(){
         return Double.doubleToLongBits(getAirDensity())!=-1 && 
                 Double.doubleToLongBits(getLiftCoef())!=-1000 && 
