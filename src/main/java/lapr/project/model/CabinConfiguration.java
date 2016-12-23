@@ -16,8 +16,8 @@ public class CabinConfiguration implements Serializable{
     /**
      * Instance variables.
      */
-    int numberOfSeatsEconomic;
-    int numberOfSeatsComercial;
+    private int numberOfSeatsEconomic;
+    private int numberOfSeatsComercial;
 
     /**
      * Parameter constructor.
@@ -30,6 +30,46 @@ public class CabinConfiguration implements Serializable{
         this.numberOfSeatsComercial = numberOfSeatsComercial;
     }
 
+    /**
+     * Gets the number of seats in comercial class
+     * @return the numberOfSeatsComercial
+     */
+    public int getNumberOfSeatsComercial() {
+        return numberOfSeatsComercial;
+    }
+    
+    /**
+     * Gets the number of seats in economic class
+     * @return the numberOfSeatsEconomic
+     */
+    public int getNumberOfSeatsEconomic() {
+        return numberOfSeatsEconomic;
+    }
+    
+     /**
+     * Gets the number of seats 
+     * @return the number of seats
+     */
+    public int getTotalSeats() {
+        return numberOfSeatsEconomic + numberOfSeatsComercial;
+    }
+    
+    /**
+     * Sets the number of seats in economic class
+     * @param numberOfSeatsEconomic the numberOfSeatsEconomic to set
+     */
+    public void setNumberOfSeatsEconomic(int numberOfSeatsEconomic) {
+        this.numberOfSeatsEconomic = numberOfSeatsEconomic;
+    }
+
+    /**
+     * Sets the number of seat in comercial class
+     * @param numberOfSeatsComercial the numberOfSeatsComercial to set
+     */
+    public void setNumberOfSeatsComercial(int numberOfSeatsComercial) {
+        this.numberOfSeatsComercial = numberOfSeatsComercial;
+    }
+    
     @Override
     public boolean equals(Object otherObject) {
         if (otherObject == null || this.getClass() != otherObject.getClass()) {
@@ -40,15 +80,18 @@ public class CabinConfiguration implements Serializable{
         }
 
         CabinConfiguration otherCabin = (CabinConfiguration) otherObject;
-        return this.numberOfSeatsComercial == otherCabin.numberOfSeatsComercial && this.numberOfSeatsEconomic == otherCabin.numberOfSeatsEconomic;
+        return this.getNumberOfSeatsComercial() == otherCabin.getNumberOfSeatsComercial() && this.getNumberOfSeatsEconomic() == otherCabin.getNumberOfSeatsEconomic();
     }
 
     @Override
     public int hashCode() {
         int hash = 3;
-        hash = 97 * hash + this.numberOfSeatsEconomic;
-        hash = 97 * hash + this.numberOfSeatsComercial;
+        hash = 97 * hash + this.getNumberOfSeatsEconomic();
+        hash = 97 * hash + this.getNumberOfSeatsComercial();
         return hash;
     }
+
+  
+
 
 }

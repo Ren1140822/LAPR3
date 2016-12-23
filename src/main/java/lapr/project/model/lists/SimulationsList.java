@@ -72,19 +72,6 @@ public class SimulationsList implements Serializable {
     }
     
     /**
-     * Creates new simulation with data
-     * @param startNode start airport
-     * @param endNode end airport
-     * @param aircraft aircraft
-     * @param passengers total passengers
-     * @param crew total persons of crew
-     * @param cargoLoad cargo weight
-     */
-    public void newSimulation(Node startNode, Node endNode, Aircraft aircraft, int passengers, int crew, double cargoLoad){
-        simulation= new Simulation(startNode, endNode, aircraft, passengers, crew, cargoLoad);
-    } 
-    
-    /**
      * Gets the simulation created
      * @return simulation
      */

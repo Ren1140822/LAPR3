@@ -9,7 +9,6 @@ import lapr.project.model.AircraftModel;
 import lapr.project.model.physics.AircraftAlgorithms;
 import lapr.project.model.physics.DragForce;
 import lapr.project.model.physics.LiftForce;
-import lapr.project.model.physics.PhysicsAlgorithms;
 
 /**
  *
@@ -64,8 +63,10 @@ public class SegmentResult {
         this.setTsfc(tsfc);
     }
     
-    public void setRange(AircraftModel aircraftModel){
-        setRangeFlight(AircraftAlgorithms.calculateRangeAircraft(aircraftModel));
+    public void setRange(double tas, double tsfc, 
+            double wi, double wf, double liftForce, double dragForce){
+        setRangeFlight(AircraftAlgorithms.calculateRangeAircraft(tas, tsfc, 
+            wi, wf, liftForce, dragForce));
     }
 
     /**

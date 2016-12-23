@@ -84,5 +84,17 @@ public class ConversionAlgorithmsTest {
         double result = ConversionAlgorithms.convertLbfN(lbf);
         assertEquals(expResult, result, 0.01);
     }
+
+    /**
+     * Test of convertLbfGram method, of class ConversionAlgorithms.
+     */
+    @Test
+    public void testConvertLbfGram() {
+        System.out.println("convertLbfGram");
+        double lbf = 5.5;
+        double expResult = 2494.76;
+        double result = ConversionAlgorithms.convertLbfGram(lbf);
+        assertEquals(expResult, result, 0.01);
+    }
     
 }

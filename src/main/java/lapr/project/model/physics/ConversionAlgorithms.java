@@ -16,14 +16,19 @@ public class ConversionAlgorithms {
     private static final double METER_FEET_CONSTANT= 3.280840; 
     
     /**
-     * Pounds-force to gram constant (1 lbf= 44.4822 g)
+     * Pounds-force to newton constant (1 lbf= 44.4822 n)
      */
-    private static final double LBF_GRAM_CONSTANT=44.4822;
+    private static final double LBF_NEWTON_CONSTANT=44.4822;
     
     /**
      * Knots to meters/second constant (1kn= 0.514444m/s)
      */
     private static final double KNOT_MS=0.514444;
+    
+    /**
+     * Pounds to grams constant (1lb=453.592) 
+     */
+    private static final double LBF_G_CONSTANT=453.592;
     
     /**
      * Converts meters to feets
@@ -53,6 +58,15 @@ public class ConversionAlgorithms {
      * @return converted value (N)
      */
     public static double convertLbfN(double lbf){
-        return lbf*LBF_GRAM_CONSTANT;
+        return lbf*LBF_NEWTON_CONSTANT;
+    }
+    
+    /**
+     * Converts pounds to gram (lbf to g)
+     * @param lbf value in lbf
+     * @return converted value (N)
+     */
+    public static double convertLbfGram(double lbf){
+        return lbf*LBF_G_CONSTANT;
     }
 }

@@ -5,7 +5,6 @@
  */
 package lapr.project.model.physics;
 
-import lapr.project.model.AircraftModel;
 import lapr.project.model.Wind;
 
 /**
@@ -13,6 +12,14 @@ import lapr.project.model.Wind;
  * @author DianaSilva
  */
 public class AircraftAlgorithms {    
+    /**
+     * Fuel density (g/L)
+     */
+    private static final double FUEL_DENSITY=8040;
+    /**
+     * Default weight per person (g)
+     */
+    private static final double WEIGHT_PER_PERSON=88450.5;
     
       /**
      * Calculates the velocity of aircraft based on aircraft mass
@@ -77,10 +84,10 @@ public class AircraftAlgorithms {
     
     /**
      * Calculate the maximum climb and take-off thrust at standart conditions (N)
-     * @param coef1
-     * @param altitude
-     * @param coef2
-     * @param coef3
+     * @param coef1 (N)
+     * @param altitude altitude (m)
+     * @param coef2 feet
+     * @param coef3 1/(feet^2)
      * @return maximum climb thrust (N)
      */
     public static double calculateClimbThrustJet(double altitude, double coef1, double coef2, double coef3){
@@ -91,11 +98,11 @@ public class AircraftAlgorithms {
     
     /**
      * Calculate the maximum climb and take-off thrust at standart conditions (N)
-     * @param coef1
+     * @param coef1 (knot-N)
      * @param tas true air speed (kt)
-     * @param altitude altitutde (ft)
-     * @param coef2
-     * @param coef3
+     * @param altitude altitutde (m)
+     * @param coef2 feet
+     * @param coef3 N
      * @return maximum climb thrust (N)
      */
     public static double calculateClimbThrustTurboProp(double altitude, double tas, double coef1,  double coef2, double coef3){
@@ -105,11 +112,11 @@ public class AircraftAlgorithms {
     
        /**
      * Calculate the maximum climb and take-off thrust at standart conditions (N)
-     * @param coef1
+     * @param coef1 (N)
      * @param tas true air speed (kt)
      * @param altitude altitutde (ft)
-     * @param coef2
-     * @param coef3
+     * @param coef2 feet
+     * @param coef3 knot-N
      * @return maximum climb thrust (N)
      */
     public static double calculateClimbThrustPiston(double altitude, double tas, double coef1,  double coef2, double coef3){
@@ -133,7 +140,7 @@ public class AircraftAlgorithms {
     /**
      * Calculate true air speed based on cruise velocity and altitude (knot)
      * @param velocity velocity (m/s)
-     * @param altitude altitude (kg/m3)
+     * @param altitude altitude (m)
      * @return true air speed
      */
     public static double calculateTrueAirSpeed(double velocity, double altitude){
@@ -155,7 +162,8 @@ public class AircraftAlgorithms {
      * @return true speed
      */
     public static double calculateTrueForceSpeed(Wind wind, double groundSpeed){
-        return wind.getWindIntensity()*Math.cos(wind.getWindDirection()) + groundSpeed;
+        return wind.getWindIntensity()*Math.cos(wind.getWindDirection()) + 
+                groundSpeed;
     }
     
     
@@ -183,21 +191,47 @@ public class AircraftAlgorithms {
      * @param dragForce drag
      * @return estimative fuelConsumption range of aircraft in cruise flight
      */
-    public static double calculateRangeAircraft(double tas, double tsfc, double wi, double wf, double liftForce, double dragForce){
-        //TrueAirSpeed (TAS), TSFC, Wi=initial weight, Wf=final weight
+    public static double calculateRangeAircraft(double tas, double tsfc, 
+            double wi, double wf, double liftForce, double dragForce){
         //R= (TAS/TSFC)*(L/D)*ln(Wi/Wf)
         return (tas/tsfc)*(liftForce/dragForce)*-Math.log(wi/wf);
     }
     
-     /**
-     * Calculates the range of an aircraftModel in cruise flight
-     * @param aircraftModel aircraft model
-     * @return estimative fuelConsumption range of aircraftModel in cruise flight
+    /**
+     * Calculates the initial weight of aircraft
+     * @param passengers number of passengers
+     * @param crew number of crew members
+     * @param cargoLoad cargo load (g)
+     * @param emptyWeight
+     * @param fuel
+     * @return initial weight
      */
-    public static double calculateRangeAircraft(AircraftModel aircraftModel){
-        //TrueAirSpeed (TAS), TSFC, Wi=initial weight, Wf=final weight
-        //R= (TAS/TSFC)*(L/D)*ln(Wi/Wf)
-        return 0;
-                //(aircraftModel/tsfc)*(liftForce/dragForce)*-Math.log(wi/wf);
+    public static double calculateInitialWeight(int passengers, int crew, double cargoLoad, double emptyWeight, double fuel){
+        return (passengers*WEIGHT_PER_PERSON)+(crew*WEIGHT_PER_PERSON) +
+                cargoLoad+emptyWeight+(fuel*FUEL_DENSITY);
+    }
+    
+    
+    /**
+     * 
+     * @param initialWeight
+     * @param aircraftZFWeight
+     * @param timeFlight
+     * @param tsfc
+     * @return 
+     */
+    public static double calculateFinalWeight(double initialWeight, double aircraftZFWeight, double timeFlight, double tsfc){
+        return initialWeight -(timeFlight*tsfc);
+    }
+    
+    /**
+     * Calculate fuel used
+     * @param initialWeight initial weight of aircraft (g)
+     * @param finalWeight final weight of aircraft (g)
+     * @param weightZeroFuel zero fuel weight (total - weight of the usable fuel on board)
+     * @return  fuel used (g)
+     */
+    public static double calculateFuelUsed(double initialWeight, double finalWeight,double weightZeroFuel){
+        return finalWeight-initialWeight-weightZeroFuel;
     }
 }

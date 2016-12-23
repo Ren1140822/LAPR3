@@ -7,6 +7,7 @@ package lapr.project.model.anaylsis;
 
 import lapr.project.model.Aircraft;
 import lapr.project.model.Node;
+import lapr.project.model.physics.AircraftAlgorithms;
 
 /**
  *
@@ -70,27 +71,29 @@ public class Simulation{
         this.shortestResultPath = new ShortestPathResult();
     }
     
-    /**
-     * Constructor
-     * @param startNode start of flight simulation
-     * @param endNode destination of flight simulation
-     * @param aircraft aircraft of simulation
-     * @param passengers number of passengers 
-     * @param crew number of crew members
-     * @param cargoLoad cargoload of flight
-     */
-    public Simulation(Node startNode, Node endNode, Aircraft aircraft, int passengers, int crew, double cargoLoad){
-        this.passengers=passengers;
-        this.crew=crew;
-        this.cargoLoad=cargoLoad;
-        this.aircraft=aircraft;
-        this.startNode = startNode;
-        this.endNode = endNode;
-        this.ecologicResultPath=new EcologicPathResult(this.startNode, this.endNode, this.totalWeight, this.aircraft);
-        this.fastestResultPath = new FastestPathResult(this.startNode, this.endNode, this.aircraft);
-        this.shortestResultPath = new ShortestPathResult(this.startNode, this.endNode);
-       
-    } 
+//    /**
+//     * Constructor
+//     * @param startNode start of flight simulation
+//     * @param endNode destination of flight simulation
+//     * @param aircraft aircraft of simulation
+//     * @param passengers number of passengers 
+//     * @param crew number of crew members
+//     * @param cargoLoad cargoload of flight
+//    VALIDATE NUMBER OF PASSENGERS and CARGOLOAD  
+//    */   
+//    public Simulation(Node startNode, Node endNode, Aircraft aircraft, int passengers, int crew, double cargoLoad){
+//        this.passengers=passengers;
+//        this.crew=crew;
+//        this.cargoLoad=cargoLoad;
+//        this.aircraft=aircraft;
+//        this.startNode = startNode;
+//        this.endNode = endNode;
+//        this.totalWeight=calculateTotalWeight();
+//        this.ecologicResultPath=new EcologicPathResult(this.startNode, this.endNode, this.totalWeight, this.aircraft);
+//        this.fastestResultPath = new FastestPathResult(this.startNode, this.endNode, this.aircraft);
+//        this.shortestResultPath = new ShortestPathResult(this.startNode, this.endNode);
+//       
+//    } 
 
     /** Gets the number of passengers
      * @return the passengers
@@ -236,8 +239,9 @@ public class Simulation{
     }
 
     public boolean validate() {
-        boolean v1=this.passengers!=0 && this.crew!=0 &&
-                Double.doubleToLongBits(cargoLoad)!=0 && Double.doubleToLongBits(totalWeight)!=0 &&
+        boolean v1=this.passengers<=aircraft.getCabinConfig().getTotalSeats() &&
+                this.crew<=aircraft.getNrOfCrewElements() 
+                && Double.doubleToLongBits(totalWeight)<=aircraft.getAircraftModel().getMTOW() &&
                 this.aircraft!=null;
         boolean v2= aircraft.validate() && ecologicResultPath.validate() &&
                 fastestResultPath.validate() && shortestResultPath.validate();
@@ -245,9 +249,11 @@ public class Simulation{
         return v1 && v2;
     }
 
-    public double calculateTotalWeight(){
-        //195 libras per person
-        return passengers*195+crew*195+cargoLoad; /**(falta combustivel)**/
+    private double calculateTotalWeight(){
+       return AircraftAlgorithms.calculateInitialWeight(passengers, crew,
+               cargoLoad, aircraft.getAircraftModel().geteWeight(),
+               aircraft.getAircraftModel().getFuelCapacity());
+    
     }
     
     @Override
