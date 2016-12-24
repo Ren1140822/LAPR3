@@ -323,5 +323,28 @@ public class AirNetworkTest {
         assertEquals(instance.getPossibleEndNodes(startNode), result);
     }
 
+    /**
+     * Test of getAirportNode method, of class AirNetwork.
+     */
+    @Test
+    public void testGetAirportNode() {
+        System.out.println("getAirportNode");
+        AirNetwork instance = new AirNetwork();
+        
+        Node nodeTest1=new Node("test1", 10, 30);
+        Node nodeTest2=new Node("test2", 10, 20);
+        Node nodeTest3=new Node("test3", 40, 20);
+       
+        instance.getNodeList().add(nodeTest1);
+        instance.getNodeList().add(nodeTest2);
+        instance.getNodeList().add(nodeTest3);
+        
+        Airport airportTest=new Airport("", "", "", "", new Location(10,20,10));
+        
+        Node expResult = nodeTest2;
+        Node result = instance.getAirportNode(airportTest);
+        assertEquals(expResult, result);
+    }
+
 
 }

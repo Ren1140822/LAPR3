@@ -5,9 +5,13 @@
  */
 package lapr.project.model.anaylsis;
 
+import lapr.project.model.AirNetwork;
 import lapr.project.model.Aircraft;
+import lapr.project.model.Airport;
 import lapr.project.model.Node;
+import lapr.project.model.lists.AirportList;
 import lapr.project.model.physics.AircraftAlgorithms;
+import lapr.project.model.physics.PhysicsAlgorithms;
 
 /**
  *
@@ -52,15 +56,17 @@ public class Simulation{
     /**
      * default value
      */
-    private static final double DEFAULT_VALUE=0;
+    private static final double DEFAULT_VALUE=0;  
+    
     /**
-     * the origin of flight simlation
+     * Start airport of simulation flight
      */
-    private Node startNode;
+    private Airport startAirport;
+    
     /**
-     * destination of flight simulation
+     * End airport of simulation flight
      */
-    private Node endNode;
+    private Airport endAirport;
     
     /**
      * constructor
@@ -72,12 +78,7 @@ public class Simulation{
         this.totalWeight=DEFAULT_VALUE;
         this.fuelWeight=DEFAULT_VALUE;
         this.aircraft=new Aircraft();  
-        this.startNode = new Node();
-        this.endNode = new Node();
-        this.ecologicResultPath=new EcologicPathResult();
-        this.fastestResultPath = new FastestPathResult();
-        this.shortestResultPath = new ShortestPathResult();
-    }
+ }
 
     /** Gets the number of passengers
      * @return the passengers
@@ -198,22 +199,6 @@ public class Simulation{
         this.shortestResultPath = shortestResultPath;
     }
     
-    public Node getStartNode() {
-        return startNode;
-    }
-
-    public void setStartNode(Node startNode) {
-        this.startNode = startNode;
-    }
-
-    public Node getEndNode() {
-        return endNode;
-    }
-
-    public void setEndNode(Node endNode) {
-        this.endNode = endNode;
-    }
-    
     public void setData(Aircraft aircraft, int passengers, int crew, double cargoLoad){
         this.aircraft=aircraft;
         this.passengers=passengers;
@@ -237,7 +222,7 @@ public class Simulation{
 
     private double calculateTotalWeight(){
        return AircraftAlgorithms.calculateInitialWeight(passengers, crew,
-               cargoLoad, getFuelWeight(), aircraft.getAircraftModel().geteWeight());
+               cargoLoad, fuelWeight, aircraft.getAircraftModel().geteWeight());
     
     }
     
@@ -259,5 +244,78 @@ public class Simulation{
      */
     public void setFuelWeight(double fuelWeight) {
         this.fuelWeight = fuelWeight;
+    }
+  
+    
+    public double getAirdensityNode(Airport airport){
+        return PhysicsAlgorithms.calculateAirDensity(1, 1);
+    }
+    /**
+     * Calculates the travelling time simulation result
+     * @return 
+     */
+     public double calculateTravellingTime(){
+         /**
+          *   double altitude=PhysicsAlgorithms.calculateAirDensity(cargoLoad, fuelWeight)
+         double velocity=AircraftAlgorithms.calculateTrueAirSpeed(fuelWeight, )
+        return PhysicsAlgorithms.calculateTime(resultPath.getDistance(), aircraft.get)
+          */
+       return 0;
+    }
+    
+    /**
+     * Calculates the energy consum of simulation result
+     * @param initialWeight
+     * @param timeFlight
+     * @param tsfc
+     * @param weightZeroFuel
+     * @return 
+     */
+    public double calculateEnergyConsumption(double initialWeight, double timeFlight, double tsfc, double weightZeroFuel){
+        double finalWeight=AircraftAlgorithms.calculateFinalWeight(initialWeight, timeFlight, tsfc);
+        //falta converter fuel para energia
+        return AircraftAlgorithms.calculateFuelUsed(initialWeight, finalWeight, weightZeroFuel);      
+    }
+    
+     /**
+     * Creates a best path simullation
+     * @param air airnetwork
+     * @param startNode origin of flight simulation
+     * @param endNode destination of flight simulation
+     */
+    public void createBestPathSimulation(AirportList list, Node startNode,Node endNode){
+        this.startAirport=list.getAirportNode(startNode);
+        this.endAirport=list.getAirportNode(endNode);
+        this.shortestResultPath=new ShortestPathResult(startNode, endNode);
+        this.fastestResultPath=new FastestPathResult(startNode, endNode);
+        this.ecologicResultPath=new EcologicPathResult(startNode, endNode);
+    }
+
+    /**
+     * @return the startAirport
+     */
+    public Airport getStartAirport() {
+        return startAirport;
+    }
+
+    /**
+     * @param startAirport the startAirport to set
+     */
+    public void setStartAirport(Airport startAirport) {
+        this.startAirport = startAirport;
+    }
+
+    /**
+     * @return the endAirport
+     */
+    public Airport getEndAirport() {
+        return endAirport;
+    }
+
+    /**
+     * @param endAirport the endAirport to set
+     */
+    public void setEndAirport(Airport endAirport) {
+        this.endAirport = endAirport;
     }
 }

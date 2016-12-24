@@ -10,6 +10,7 @@ import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import lapr.project.model.Airport;
+import lapr.project.model.Node;
 
 /**
  * class that represents a list of airports
@@ -27,10 +28,10 @@ public class AirportList implements Serializable{
     private List<Airport> airportsList;
     
     /**
-     * airport to be added into list
+     * node to be added into list
      */
     @XmlTransient
-    private Airport airport;
+    private Airport node;
     
     /**
      * Constructor.
@@ -58,8 +59,8 @@ public class AirportList implements Serializable{
     }
 
     /**
-     * Gets the airport list.
-     * @return the airport list
+     * Gets the node list.
+     * @return the node list
      */
     public List<Airport> getAirportList() {
         return airportsList;
@@ -81,8 +82,8 @@ public class AirportList implements Serializable{
     
 
     /**
-     * Sets the airport list.
-     * @param airportList the airport list to set
+     * Sets the node list.
+     * @param airportList the node list to set
      */
     public void setAirportList(List<Airport> airportList) {
         this.airportsList = airportList;
@@ -92,11 +93,11 @@ public class AirportList implements Serializable{
      * create Airport
      */
     public void newAirport(){
-        airport = new Airport();
+        node = new Airport();
     }
     
     /**
-     * sets data of the airport
+     * sets data of the node
      * @param IATA
      * @param name
      * @param town
@@ -107,35 +108,49 @@ public class AirportList implements Serializable{
      */
     public void setAirportData(String IATA, String name, String town, String country,
             double latitude, double longitude, int altitude){
-        airport.setIATA(IATA);
-        airport.setName(name);
-        airport.setTown(town);
-        airport.setCountry(country);
-        airport.setLocation(latitude, longitude, altitude);
+        node.setIATA(IATA);
+        node.setName(name);
+        node.setTown(town);
+        node.setCountry(country);
+        node.setLocation(latitude, longitude, altitude);
     }
     
     /**
-     * validate and saves the airport into airportsList
-     * @return true if airport is valid and is added, false if not
+     * validate and saves the node into airportsList
+     * @return true if node is valid and is added, false if not
      */
     public boolean saveAirport(){
         return validate() && addAirport();       
     }
     
     /**
-     * validate if airport is valid and do not exist in the list
-     * @return true if airport is valid and do not exist in the list, false if not
+     * validate if node is valid and do not exist in the list
+     * @return true if node is valid and do not exist in the list, false if not
      */
     private boolean validate(){
-        return airport.validate() && !airportsList.contains(airport);
+        return node.validate() && !airportsList.contains(node);
     }
     
     /**
-     * add the airport into the list
-     * @return true if airport is added, false if not
+     * add the node into the list
+     * @return true if node is added, false if not
      */
     private boolean addAirport(){
-        return airportsList.add(airport);
+        return airportsList.add(node);
+    }
+    
+     /**
+     * Gets airport correspondent to the node if exists
+     * @param node node with latitude and longitude
+     * @return node with same latitude and longitude
+     */
+    public Airport getAirportNode(Node node){
+        for(Airport airportFind: airportsList){
+            if (node.getLatitude()==airportFind.getLocation().getLatitude() &&
+                    node.getLongitude()==airportFind.getLocation().getLongitude())
+                return airportFind;
+        }
+        return null;
     }
     
 }

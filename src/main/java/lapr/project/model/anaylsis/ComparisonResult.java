@@ -13,8 +13,8 @@ import lapr.project.model.Node;
  */
 public class ComparisonResult extends ResultPath {
 
-    public ComparisonResult(Node startNode) {
-        super(startNode);
+    public ComparisonResult() {
+        super();
     }
 
 }

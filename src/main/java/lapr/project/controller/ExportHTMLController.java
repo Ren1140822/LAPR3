@@ -91,7 +91,7 @@ public class ExportHTMLController {
         if (startNode != null) {
             List<Simulation> list = project.getSimulationsList().getSimulationsList();
             for (Simulation simulation : list) {
-                if (simulation.getStartNode().getId().equals(startNode) && simulation.getEndNode().getId().equals(endNode)) {
+                if (simulation.getStartAirport().getIATA().equals(startNode) && simulation.getEndAirport().getIATA().equals(endNode)) {
                     results.add(simulation.toString());
                     //results.put("Comparison",sim.getComparison());
                     //  results.put("Shortest Path", Project.getShortestPathResults());
@@ -149,11 +149,11 @@ public class ExportHTMLController {
         List<String> results = new LinkedList<>();
         List<Simulation> sims = project.getSimulationsList().getSimulationsList();
         for (Simulation s : sims) {
-            if (!results.contains(s.getStartNode().getId())) {
-                results.add(s.getStartNode().getId());
+            if (!results.contains(s.getStartAirport().getIATA())) {
+                results.add(s.getStartAirport().getIATA());
             }
-            if (!results.contains(s.getEndNode().getId())) {
-                results.add(s.getEndNode().getId());
+            if (!results.contains(s.getEndAirport().getIATA())) {
+                results.add(s.getEndAirport().getIATA());
             }
 
         }
@@ -188,10 +188,10 @@ public class ExportHTMLController {
                 Simulation sim = getSimulationByString(s[i]);
                
                 results[j][0] = "Shortest path result: " + String.valueOf(sim.getShortestResultPath());
-                results[j][1] = "Origin node latitude: " + sim.getStartNode().getLatitude();
-                results[j][2] = "Origin node longitude: " + sim.getStartNode().getLongitude();
-                results[j][3] = "Destination node latitude: " + sim.getEndNode().getLatitude();
-                results[j][4] = "Destination node longitude: " + sim.getEndNode().getLongitude();
+                results[j][1] = "Origin node latitude: " + sim.getShortestResultPath().getStartNode().getLatitude();
+                results[j][2] = "Origin node longitude: " + sim.getShortestResultPath().getStartNode().getLongitude();
+                results[j][3] = "Destination node latitude: " + sim.getShortestResultPath().getEndNode().getLatitude();
+                results[j][4] = "Destination node longitude: " + sim.getShortestResultPath().getEndNode().getLongitude();
                 results[j][5] = "Total distance calculated: " + sim.getShortestResultPath().getResult();
                 i++;
             }

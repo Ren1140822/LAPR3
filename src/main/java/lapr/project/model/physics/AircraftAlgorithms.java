@@ -213,14 +213,13 @@ public class AircraftAlgorithms {
     
     
     /**
-     * 
-     * @param initialWeight
-     * @param aircraftZFWeight
-     * @param timeFlight
-     * @param tsfc
-     * @return 
+     * Calculates the weight of aircraft in the end of a flight
+     * @param initialWeight total initial weight of aircraft
+     * @param timeFlight time flight (s)
+     * @param tsfc thrust specific fuel consumption
+     * @return final weight
      */
-    public static double calculateFinalWeight(double initialWeight, double aircraftZFWeight, double timeFlight, double tsfc){
+    public static double calculateFinalWeight(double initialWeight, double timeFlight, double tsfc){
         return initialWeight -(timeFlight*tsfc);
     }
     

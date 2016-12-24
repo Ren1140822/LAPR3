@@ -11,6 +11,7 @@ import lapr.project.model.Aircraft;
 import lapr.project.model.Airport;
 import lapr.project.model.Node;
 import lapr.project.model.Project;
+import lapr.project.model.anaylsis.ResultPath;
 
 /**
  *
@@ -19,12 +20,13 @@ import lapr.project.model.Project;
 public class FindBestPathController {
     
     Project project;
+    LinkedList<Node> endNodes;
     
     public FindBestPathController(Project project){
         this.project = project;
     }
     
-    public void newSImulation(Node startNode){
+    public void newSImulation(){
        project.getSimulationsList().newSimulation();
     }
     
@@ -32,21 +34,27 @@ public class FindBestPathController {
         return project.getAircraftList().getAircraftList();
     }
     
-    public List<Airport> getAirportsList(){
+    public List<Airport> getAirportList(){
         return project.getAirportList().getAirportList();
     }
-      
-    public void setStartNode(Node startNode){
-       project.getSimulationsList().getSimulation().setStartNode(startNode);
+    
+    public Airport convertNodeToAirport(Node node){
+       return project.getAirportList().getAirportNode(node);
     }
     
-    public LinkedList<Node> getPossibleEndNodes(Node startNode){
-        return project.getAirNetwork().getPossibleEndNodes(startNode);
+    public Node convertAirportToNode(Airport airport){
+         return project.getAirNetwork().getAirportNode(airport);
+    }
+          
+    public LinkedList<Airport> getPossibleEndAirports(Node startNode){
+        return project.getPossibleEndAirports(startNode);
     }
     
-    public void setEndNode(Node endNode){
-        project.getSimulationsList().getSimulation().setEndNode(endNode);
-    }
+    public void createBestPathSimulation(Airport startAirport, Airport endAirport){
+        Node startNode=convertAirportToNode(startAirport);
+        Node endNode=convertAirportToNode(endAirport);
+            project.getSimulationsList().getSimulation().createBestPathSimulation(project.getAirportList(), startNode, endNode);
+    }   
     
     public void setData(Aircraft aircraft, int passengers, int crew, double cargoLoad){
         project.getSimulationsList().getSimulation().setData(aircraft, passengers, crew, cargoLoad);
@@ -62,6 +70,23 @@ public class FindBestPathController {
       public void calculateShortesPath(){
         project.getSimulationsList().getSimulation().getShortestResultPath().calculateBestPath(project.getAirNetwork());
     }
+      
+      public ResultPath getResult(String type){
+          switch (type){
+              case "SHORTEST_PATH":
+                  return project.getSimulationsList().getSimulation().getShortestResultPath();
+              case "FASTEST_PATH":
+                  return project.getSimulationsList().getSimulation().getFastestResultPath();
+              case "ECOLOGIC_PATH":
+                  return project.getSimulationsList().getSimulation().getEcologicResultPath();
+          }
+          return null;
+      }
+      
+      public double getTravellingTime(String type) {
+        //project.getSimulationsList().getSimulation().calculateTravellingTime(resultPath)
+        return getResult(type).getTravellingTime();
+      }
   
     public boolean saveSimulation(){
         return project.getSimulationsList().saveSimulation();

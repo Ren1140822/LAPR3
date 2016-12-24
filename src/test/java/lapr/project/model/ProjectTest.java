@@ -351,5 +351,49 @@ public class ProjectTest {
         String result = instance.toString();
         assertEquals(expResult, result);
     }
+
+    
+    /**
+     * Test of getPossibleEndAirports method, of class Project.
+     */
+    @Test
+    public void testGetPossibleEndAirports() {
+        System.out.println("getPossibleEndAirports");
+        
+        Project instance=new Project();
+        Node startNode=new Node("test1", 40, 40);
+        Node intNode=new Node("test2", 50, 70);
+        Node endNode=new Node("test3", 40, 80);
+        
+        Wind windTest=new Wind(10,10);
+        String direction="BIDIRECTIONAL";
+        Segment segment1=new Segment("segmentTest1","test1", "test3", direction,windTest);       
+        Segment segment2=new Segment("segmentTest2", "test1", "test2", direction,windTest);
+        Segment segment3=new Segment("segmentTest3", "test2", "test3", direction, windTest);
+        
+        AirNetwork airnetwork=instance.getAirNetwork();
+        airnetwork.getAirNetwork().insertVertex(startNode);
+        airnetwork.getAirNetwork().insertVertex(intNode);
+        airnetwork.getAirNetwork().insertVertex(endNode);
+
+        airnetwork.getAirNetwork().insertEdge(startNode, intNode, segment2, 10);
+        airnetwork.getAirNetwork().insertEdge(intNode, endNode, segment3, 30);
+        airnetwork.getAirNetwork().insertEdge(startNode, endNode, segment1, 20);  
+        
+        Airport airport1=new Airport("1", "", "", "", new Location(40,40,10));
+        Airport airport2=new Airport("2", "", "", "", new Location(50,70,10));
+        Airport airport3=new Airport("3", "", "", "", new Location(40,80,10));
+        
+        AirportList airportsList=instance.getAirportList();
+        airportsList.getAirportList().add(airport1);
+        airportsList.getAirportList().add(airport2);
+        airportsList.getAirportList().add(airport3);
+        
+        LinkedList<Airport> result=new LinkedList<>();
+        result.add(airport1);
+        result.add(airport2);
+        result.add(airport3);
+        assertEquals(result, instance.getPossibleEndAirports(startNode));
+    }
     
 }

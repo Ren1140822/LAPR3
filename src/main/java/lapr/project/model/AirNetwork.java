@@ -339,4 +339,18 @@ public class AirNetwork implements Serializable {
          */
         return GraphAlgorithms.DepthFirstSearch(airNetworkGraph, startNode);
     }
+    
+    /**
+     * Gets node correspondent to the airport if exists
+     * @param airport airport
+     * @return node equivalent to the node
+     */
+    public Node getAirportNode(Airport airport){
+        for(Node nodeFind: nodeList){
+            if (nodeFind.getLatitude()==airport.getLocation().getLatitude() &&
+                    nodeFind.getLongitude()==airport.getLocation().getLongitude())
+                return nodeFind;
+        }
+        return null;
+    }
 }

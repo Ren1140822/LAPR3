@@ -274,6 +274,20 @@ public class Project implements Serializable {
         return !this.name.isEmpty() && !this.description.isEmpty();
     }
     
+    /**
+     * Gets the possible end airports linked to the origin node
+     * @param startNode origin node of airnetwork
+     * @return list airports linked to the start node
+     */
+    public LinkedList<Airport> getPossibleEndAirports(Node startNode){
+        LinkedList<Airport> listAirports=new LinkedList<>();
+        LinkedList<Node> endNodes=getAirNetwork().getPossibleEndNodes(startNode);
+        endNodes.stream().forEach((nodeEnd) -> {
+            listAirports.add(getAirportList().getAirportNode(nodeEnd));
+        });
+        return listAirports;
+    }
+    
     @Override
     public String toString(){
         return name;

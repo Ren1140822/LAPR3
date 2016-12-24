@@ -72,7 +72,7 @@ public class ShortestPathResultTest {
         LinkedList<Node> result=new LinkedList<>();
         result.add(startNode);
         result.add(endNode);
-        assertEquals(instance.resultPath, result);
+        assertEquals(instance.getResultPath(), result);
     }
     
 }

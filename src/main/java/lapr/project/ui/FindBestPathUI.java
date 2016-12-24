@@ -6,9 +6,7 @@
 package lapr.project.ui;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -29,7 +27,6 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import static javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE;
-import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.ListSelectionEvent;
@@ -37,24 +34,24 @@ import javax.swing.event.ListSelectionListener;
 import lapr.project.controller.FindBestPathController;
 import lapr.project.model.Aircraft;
 import lapr.project.model.Airport;
+import lapr.project.model.Location;
 import lapr.project.model.Node;
 import lapr.project.model.Project;
+import lapr.project.model.Segment;
+import lapr.project.model.Wind;
+import lapr.project.model.lists.AirportList;
 
 /**
  *
  * @author DianaSilva
  */
 public class FindBestPathUI extends JDialog{
-    Project project;
+ 
     /**
      * Guarda a janela anterior
      */
-    private JDialog frame;   
-    /**
-     * dimension of default label
-     */
-    private static final Dimension LABEL_SIZE = new JLabel("Number of passengers: ").
-                                                        getPreferredSize(); 
+    private final JDialog frame;   
+   
     /**
      * Saves the analysis input data
      */
@@ -68,26 +65,33 @@ public class FindBestPathUI extends JDialog{
     /**
      * buttons
      */
-    private JButton saveBtn, cleanBtn, backBtn;
+    private JButton btClean, btBack;
+    
+    /**
+     * list of aircrafts, list of airports, list of possible destinations
+     */
+    private JList listAircrafts, listStartAirports, listEndAirports;
+    
     /**
      * controller
      */
     private transient FindBestPathController controller;
     
-    /**
-     * list of aircrafts, list of airports, list of possible destinations
-     */
-    private JList listAircrafts, listStartNodes, listEndNodes;
+    private transient Project project;
     
     /**
      * aircrafts, start nodes, possible end nodes
      */
-    private transient List<Aircraft> aircrafts, endNodes;
+    private transient List<Aircraft> aircrafts;
     /**
      * aircrafts, start nodes, possible end nodes
      */
-    private transient List<Airport> startNodes;
+    private transient List<Airport> startAirports, endAirports;
     
+   private enum Type {
+        SHORTEST_PATH, FASTEST_PATH,ECOLOGIC_PATH
+    };
+  
     public FindBestPathUI(Project project, JDialog frame){
         super(frame, "Find BestPath", true);
         this.project = project;
@@ -100,22 +104,44 @@ public class FindBestPathUI extends JDialog{
         project.getAircraftList().getAircraftList().add(a);
         project.getAircraftList().getAircraftList().add(b);
         //--------------------------------------------------------//
-        Airport e= new Airport();
-        Airport f=new Airport();
-        project.getAirportList().getAirportList().add(e);
-        project.getAirportList().getAirportList().add(f);
-             /**---------------------------test---------------------------*/
-        Node c=new Node();
-        Node d=new Node();
-        project.getAirNetwork().getNodeList().add(c);
-        project.getAirNetwork().getNodeList().add(d);
-        //--------------------------------------------------------/        
+        Node startNode=new Node("test1", 40, 40);
+        Node intNode=new Node("test2", 50, 70);
+        Node endNode=new Node("test3", 40, 80);
+        
+        Wind windTest=new Wind(10,10);
+        String direction="BIDIRECTIONAL";
+        Segment segment1=new Segment("segmentTest1","test1", "test3", direction,windTest);       
+        Segment segment2=new Segment("segmentTest2", "test1", "test2", direction,windTest);
+        Segment segment3=new Segment("segmentTest3", "test2", "test3", direction, windTest);
+        
+        project.getAirNetwork().getAirNetwork().insertVertex(startNode);
+        project.getAirNetwork().getAirNetwork().insertVertex(intNode);
+        project.getAirNetwork().getAirNetwork().insertVertex(endNode);
+        
+        project.getAirNetwork().getNodeList().add(startNode);
+        project.getAirNetwork().getNodeList().add(intNode);
+        project.getAirNetwork().getNodeList().add(endNode);
+
+        project.getAirNetwork().getAirNetwork().insertEdge(startNode, intNode, segment2, 10);
+        project.getAirNetwork().getAirNetwork().insertEdge(intNode, endNode, segment3, 30);
+        project.getAirNetwork().getAirNetwork().insertEdge(startNode, endNode, segment1, 20); 
+        
+        Airport airport1=new Airport("OPO", "", "", "", new Location(40,40,10));
+        Airport airport2=new Airport("LIS", "", "", "", new Location(50,70,10));
+        Airport airport3=new Airport("LON", "", "", "", new Location(40,80,10));
+        
+        AirportList airportsList=project.getAirportList();
+        airportsList.getAirportList().add(airport1);
+        airportsList.getAirportList().add(airport2);
+        airportsList.getAirportList().add(airport3);
+        //-----------------------------------------------------------------------///
         
         controller = new FindBestPathController(project);
+        controller.newSImulation();
         aircrafts= controller.getAircraftsList();
-        startNodes=controller.getAirportsList();
-        endNodes=new LinkedList();
-        
+        startAirports=controller.getAirportList();
+        endAirports=new LinkedList();
+         
         add(createComponents()); 
         
         addWindowListener(new WindowAdapter() {
@@ -130,31 +156,48 @@ public class FindBestPathUI extends JDialog{
         setVisible(true);
     }
     
-    public JPanel createComponents(){
+    private JPanel createComponents(){
         panel = new JPanel(new BorderLayout());
         panel.add(createInputPanel(), BorderLayout.CENTER);
-        panel.add(createButtonsPanel(), BorderLayout.SOUTH);
+        
+        btClean=UI.createButtonClean();
+        btBack=UI.createButtonBack();
+        buttonBackAddListener();
+        buttonCleanAddListener();     
+        panel.add(UI.createButtonsCleanBackPanel(btClean, btBack), BorderLayout.SOUTH);
         
         return panel;
     }
        
-    public JPanel createInputPanel(){
+    private JPanel createInputPanel(){
         
         panelData = new JPanel(new BorderLayout());
         
         panelData.setBorder(BorderFactory.createTitledBorder("Simulation Data:"));
         
+        JPanel pSelect=new JPanel(new BorderLayout());    
+        pSelect.add(createPanelImage(), BorderLayout.NORTH);
+        pSelect.add(createPanelInputData(), BorderLayout.CENTER);
+
+        panelData.add(createPanelAircraft(), BorderLayout.EAST);
+        panelData.add(pSelect, BorderLayout.WEST);
+        panelData.add(createPanelAirports(), BorderLayout.CENTER);
+        
+        return panelData;
+    }
+    
+    private JPanel createPanelAircraft(){
         JPanel pleft = new JPanel(new BorderLayout());
     
-        JLabel labelAircraft = createJLabels("Select aircraft:");
-        listAircrafts = createJListAircraft(aircrafts);
+        JLabel labelAircraft = UI.createJLabels("Select aircraft:");
+        listAircrafts = UI.createJListAircraft(aircrafts);
         JTextArea txtDetails=new JTextArea();
-        txtDetails.setSize(new Dimension(700,700));
+        txtDetails.setPreferredSize(new Dimension(150,100));
         listAircrafts.addListSelectionListener(new ListSelectionListener(){
             @Override
             public void valueChanged(ListSelectionEvent e){
                 if(!e.getValueIsAdjusting()){
-                    for(Aircraft a: project.getAircraftList().getAircraftList()){
+                    for(Aircraft a: controller.getAircraftsList()){
                         
                         txtDetails.setText("teste");
                         if (a.equals(listAircrafts.getSelectedValue())){
@@ -167,8 +210,10 @@ public class FindBestPathUI extends JDialog{
         pleft.add(labelAircraft, BorderLayout.NORTH);
         pleft.add(listAircrafts, BorderLayout.CENTER);
         pleft.add(txtDetails, BorderLayout.SOUTH);
-        
-        JPanel pSelect=new JPanel(new BorderLayout());
+        return pleft;
+    }
+    
+    private JPanel createPanelInputData(){
         JPanel pcenter = new JPanel(new GridLayout(4,1));
         
         txtPassenger = new JTextField(10);
@@ -176,40 +221,50 @@ public class FindBestPathUI extends JDialog{
         txtCargoLoad = new JTextField(10);
         txtFuelLoad=new JTextField(10);
         
-        pcenter.add(createPanelLabelTextLabel("No.Passengers:", txtPassenger, ""));
-        pcenter.add(createPanelLabelTextLabel("No.Crew members: ", txtCrew, ""));
-        pcenter.add(createPanelLabelTextLabel("Cargo load: ", txtCargoLoad, "grams"));  
-        pcenter.add(createPanelLabelTextLabel("Fuel load: ", txtFuelLoad, "L")); 
+        pcenter.add(UI.createPanelLabelTextLabel("No.Passengers:", txtPassenger, ""));
+        pcenter.add(UI.createPanelLabelTextLabel("No.Crew members: ", txtCrew, ""));
+        pcenter.add(UI.createPanelLabelTextLabel("Cargo load: ", txtCargoLoad, "grams"));  
+        pcenter.add(UI.createPanelLabelTextLabel("Fuel load: ", txtFuelLoad, "L"));
         
-       
+        return pcenter;
+    }
+    
+    private JPanel createPanelAirports(){
         JPanel pright=new JPanel(new BorderLayout());
         JPanel pBlock=new JPanel();
         JPanel po=new JPanel(new GridLayout(2,1));
-        JLabel labelOrigin = createJLabels("Select origin:");
-        listStartNodes = createJListAirport(startNodes);
+        JLabel labelOrigin = UI.createJLabels("Select origin:");
+        listStartAirports = UI.createJListAirport(startAirports);
+        
+        listStartAirports.addListSelectionListener(new ListSelectionListener(){
+            @Override
+            public void valueChanged(ListSelectionEvent e){
+                if(!e.getValueIsAdjusting()){
+                    Airport selected=(Airport) listStartAirports.getSelectedValue();
+                    Node startNode=controller.convertAirportToNode(selected);
+                    
+                    endAirports=controller.getPossibleEndAirports(startNode);
+                    listEndAirports.setListData(endAirports.toArray());
+                }
+            }
+        });   
+   
         po.add(labelOrigin);
-        po.add(listStartNodes);
+        po.add(listStartAirports);
         
        
-        JLabel labelADest = createJLabels("Select destination:");
+        JLabel labelADest = UI.createJLabels("Select destination:");
         JPanel pd=new JPanel(new GridLayout(2,1));
-        listEndNodes = createJListAircraft(endNodes);
+        listEndAirports = UI.createJListAirport(endAirports);
         pd.add(labelADest);
-        pd.add(listEndNodes);
+        pd.add(listEndAirports);
         
         pBlock.add(po);
         pBlock.add(pd);
         pright.add(pBlock, BorderLayout.CENTER);
         pright.add(createPanelFind(), BorderLayout.SOUTH);
         
-        pSelect.add(createPanelImage(), BorderLayout.NORTH);
-        pSelect.add(pcenter, BorderLayout.CENTER);
-
-        panelData.add(pleft, BorderLayout.EAST);
-        panelData.add(pSelect, BorderLayout.WEST);
-        panelData.add(pright, BorderLayout.CENTER);
-        
-        return panelData;
+        return pright;
     }
     
     private JPanel createPanelFind(){
@@ -240,129 +295,9 @@ public class FindBestPathUI extends JDialog{
 
         return p;
     }
-    
-    private JList createJListAircraft(List<Aircraft> list) {
-        JList jList = new JList();
-
-        Border border = BorderFactory.createLineBorder(Color.BLACK);
-        jList.setBorder(border);
-        jList.setPreferredSize(new Dimension(150, 70));
-        jList.setListData(list.toArray());
-        return jList;
-    }
-    
-     
-    private JList createJListAirport(List<Airport> list) {
-        JList jList = new JList();
-
-        Border border = BorderFactory.createLineBorder(Color.BLACK);
-        jList.setBorder(border);
-        jList.setPreferredSize(new Dimension(150, 70));
-        jList.setListData(list.toArray());
-        return jList;
-    }
-    
-    /**
-     * create panel to label1, text and label2
-     * @param label1 label1
-     * @param texto text
-     * @param label2 label2
-     * @return painel
-     */
-    private JPanel createPanelLabelTextLabel(String label1, JTextField text, String label2) {
-        JLabel lb1 = new JLabel(label1, JLabel.RIGHT);
-        lb1.setPreferredSize(LABEL_SIZE);
-        
-        JLabel lb2 = new JLabel(label2, JLabel.LEFT);
-        lb2.setPreferredSize(new Dimension(80,20));
-        
-        JPanel p = new JPanel(new FlowLayout(FlowLayout.CENTER));
-
-        p.add(lb1);
-        p.add(text);
-        p.add(lb2);
-
-        return p;
-    }
-    
-    private JLabel createJLabels(String text) {
-        JLabel label = new JLabel(text);
-        Border border = BorderFactory.createLineBorder(Color.BLACK);
-        label.setBorder(border);
-        return label;
-    }
-
-    public JPanel createButtonsPanel(){
-        
-        FlowLayout l = new FlowLayout();
-
-        l.setHgap(20);
-        l.setVgap(20);
-
-        JPanel p = new JPanel(l);
-        
-        p.setBorder(BorderFactory.createTitledBorder("Options:"));
-        
-        JButton bt1 = createButonSave();
-        JButton bt2 = createButonClean();
-        JButton bt3 = createButonBack();
-        
-        getRootPane().setDefaultButton(bt1);
-        
-        p.add(bt1);
-        p.add(bt2);
-        p.add(bt3);
-        
-        return p;
-        
-        
-    }
-    
-    public JButton createButonSave(){
-        saveBtn = new JButton("Save Simulation");
-        saveBtn.setMnemonic(KeyEvent.VK_B);
-        saveBtn.setToolTipText("Save the simulation and go to previous window");
-        saveBtn.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                try{
-//                    String IATA = txtIATA.getText();
-//                    String name = txtName.getText();
-//                    String town = txtTown.getText();
-//                    String country = txtCountry.getText();
-//                    double latitude = Double.parseDouble(txtLatitude.getText());
-//                    double longitude = Double.parseDouble(txtLongitude.getText());
-//                    int altitude = Integer.parseInt(txtAltitude.getText());
-
-//                    controller.setAirportData(IATA, name, town, country,latitude,longitude,altitude);
-//
-//                    if(controller.saveAirport()){
-//                        finish();
-//                    }else{
-                        JOptionPane.showMessageDialog(
-                                    null,
-                                    "It was not possible to add the simulation!\n",
-                                    "Error",
-                                    JOptionPane.ERROR_MESSAGE); 
-//                    }
-                }catch (NumberFormatException ex){
-                    JOptionPane.showMessageDialog(
-                                    null,
-                                    "Check all simulation data, please!",
-                                    "Error",
-                                    JOptionPane.ERROR_MESSAGE); 
-                }       
-            }
-        });
-        return saveBtn;
-        
-    }
-    
-    public JButton createButonClean(){
-        cleanBtn = new JButton("Clean");
-        cleanBtn.setMnemonic(KeyEvent.VK_C);
-        cleanBtn.setToolTipText("Clean all data inserted");
-        cleanBtn.addActionListener(new ActionListener() {
+            
+    public void buttonCleanAddListener(){
+        btClean.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 txtPassenger.setText("");
@@ -370,28 +305,23 @@ public class FindBestPathUI extends JDialog{
                 txtCargoLoad.setText("");
                 txtFuelLoad.setText("");
             }
-        });
-        return cleanBtn;        
+        });       
     }
     
-    public JButton createButonBack(){
-        backBtn = new JButton("Back");
-        backBtn.setMnemonic(KeyEvent.VK_B);
-        backBtn.setToolTipText("Cancel find best path and go to previous window");
-        backBtn.addActionListener(new ActionListener() {
+    public void buttonBackAddListener(){
+        btBack.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 closeWindow();
             }
         });
-        return backBtn;
     }
     
     public void closeWindow(){
         String[] op = {"Yes", "No"};
         String question = "Close window and discard Find Best Path?";
         int opcao = JOptionPane.showOptionDialog(frame, question,
-                "Add Airport", JOptionPane.YES_NO_OPTION,
+                "Find Best Path", JOptionPane.YES_NO_OPTION,
                 JOptionPane.QUESTION_MESSAGE, null, op, op[0]);
         if (opcao == JOptionPane.YES_OPTION) {
             dispose();
@@ -401,7 +331,6 @@ public class FindBestPathUI extends JDialog{
     }
     
     private void finish() {
-        //implementar para gravacao na bd
         JOptionPane.showMessageDialog(
                                     null,
                                     "Simulation added successfully!",
@@ -419,11 +348,14 @@ public class FindBestPathUI extends JDialog{
         button.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);  
         button.setMnemonic(KeyEvent.VK_S);
         button.setToolTipText("Find Shortest Path");
-        button.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                
-            }
+        button.addActionListener((ActionEvent e) -> {
+            Airport startAirportSelected=(Airport)listStartAirports.getSelectedValue();
+            Airport endAirportSelected=(Airport) listEndAirports.getSelectedValue();
+            
+            controller.createBestPathSimulation(startAirportSelected, endAirportSelected);
+            
+            controller.calculateShortesPath();
+            openResultWindow(Type.SHORTEST_PATH);
         });
         return button;
     }
@@ -437,11 +369,9 @@ public class FindBestPathUI extends JDialog{
         button.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);  
         button.setMnemonic(KeyEvent.VK_F);
         button.setToolTipText("Find Fastest Path");
-        button.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                
-            }
+        button.addActionListener((ActionEvent e) -> {
+            controller.calculateFastestPath();
+            openResultWindow(Type.FASTEST_PATH);
         });
         return button;
     }
@@ -458,9 +388,14 @@ public class FindBestPathUI extends JDialog{
         button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                
+                controller.calculateEcologicPath();
+                 openResultWindow(Type.ECOLOGIC_PATH);
             }
         });
         return button;
+    }
+    
+    private void openResultWindow(Type type) {
+        ResultUI result=new ResultUI(controller,controller.getResult(type.name()), type.toString(), frame);
     }
 }

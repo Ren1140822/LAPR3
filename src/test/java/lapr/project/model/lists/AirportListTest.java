@@ -8,6 +8,8 @@ package lapr.project.model.lists;
 import java.util.LinkedList;
 import java.util.List;
 import lapr.project.model.Airport;
+import lapr.project.model.Location;
+import lapr.project.model.Node;
 import org.junit.After;
 import org.junit.AfterClass;
 import static org.junit.Assert.*;
@@ -112,6 +114,30 @@ public class AirportListTest {
         instance.newAirport();
         assertTrue(instance.saveAirport());
 
+    }
+
+    /**
+     * Test of getAirportNode method, of class AirportList.
+     */
+    @Test
+    public void testGetAirportNode() {
+        System.out.println("getAirportNode");
+        AirportList instanceTest = new AirportList();
+        
+        Airport airportTest1=new Airport("1", "", "", "", new Location(20,30,10));
+        Airport airportTest2=new Airport("2", "", "", "", new Location(40,50,10));
+        Airport airportTest3=new Airport("3", "", "", "", new Location(10,20,10));
+        
+        instanceTest.getAirportList().add(airportTest1);
+        instanceTest.getAirportList().add(airportTest2);
+        instanceTest.getAirportList().add(airportTest3);
+  
+        Node nodeTest=new Node("test1", 40, 50);
+       
+        Airport expResult = airportTest2;
+        Airport result = instanceTest.getAirportNode(nodeTest);
+        assertEquals(expResult, result);
+        
     }
 
 }

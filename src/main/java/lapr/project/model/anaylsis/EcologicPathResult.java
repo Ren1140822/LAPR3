@@ -7,9 +7,7 @@ package lapr.project.model.anaylsis;
 
 import java.util.LinkedList;
 import lapr.project.model.AirNetwork;
-import lapr.project.model.Aircraft;
 import lapr.project.model.Node;
-import lapr.project.model.Project;
 
 import lapr.project.model.mapgraph.GraphAlgorithms;
 
@@ -18,41 +16,29 @@ import lapr.project.model.mapgraph.GraphAlgorithms;
  * @author DianaSilva
  */
 public class EcologicPathResult extends ResultPath{
-    Project project;
-    /**
-     * Total weight of aircraft+passengers+crew
-     */
-    private double total_weight;
     
-    /**
-     * Default weight of aircraft+passengers+crew
-     */
-    private static final double DEFAULT_WEIGHT=0;
-    
-    /**
-     * Aircraft of result path
-     */
-    private Aircraft aircraft;
-    
-    public EcologicPathResult(){
-        super();
-    }
-    
-    public EcologicPathResult(Node startNode, Node endNode, double totalWeight, Aircraft aircraft){
+    public EcologicPathResult(Node startNode, Node endNode){
         super(startNode, endNode);
-        this.total_weight=totalWeight;
-        this.aircraft=aircraft;
     }
-    
-    public double energyConsum(){
-        return 0;
-    }
-    
+ 
     @Override
     public void calculateBestPath(AirNetwork airNetwork){
         LinkedList<Node> ecologicPath=super.getResultPath();
         /**corrigir**/
-        double res=GraphAlgorithms.shortestPath(airNetwork.getAirNetwork(), super.getStartNode(), super.getEndNode(), ecologicPath);
+        double res=GraphAlgorithms.shortestPath(airNetwork.getAirNetwork(), 
+                super.getStartNode(), super.getEndNode(), ecologicPath);
         super.setResult(res);
+        super.setResultPath(ecologicPath);
     }    
+    
+    
+     /**
+     * Get distance of result path (m)
+     * @return distance (m)
+     */
+    @Override
+    public double getDistance(){
+        //alterar
+        return super.getResult();
+    }
 }

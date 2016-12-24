@@ -139,9 +139,9 @@ public class ExportCSVUI extends JDialog {
                 String[] buttons = {"Filter by nodes", "Filter by aircraft type", "Cancel"};
                 int rc = JOptionPane.showOptionDialog(null, "Choose the filter", "Filter", JOptionPane.PLAIN_MESSAGE, JOptionPane.PLAIN_MESSAGE, null, buttons, buttons[0]);
                 if (rc == 0) {
-                    dialog = new DialogSelectable(ExportCSVUI.this, controller.getListOfNodes(), "Select origin node");
+                    dialog = new DialogSelectable(ExportCSVUI.this, controller.getListOfAirports(), "Select origin node");
                     String originNode = dialog.getSelectedItem();
-                    dialog = new DialogSelectable(ExportCSVUI.this, controller.getListOfNodes(), "Select destination node");
+                    dialog = new DialogSelectable(ExportCSVUI.this, controller.getListOfAirports(), "Select destination node");
                     results = controller.getFlightPathAnalisysResultsGroupedByOriginDestination(originNode, dialog.getSelectedItem());
                     listSimulations.setListData(results.toArray());
                     //dialogSimulation = new DialogSelectable(ExportHTMLUI.this, results);
