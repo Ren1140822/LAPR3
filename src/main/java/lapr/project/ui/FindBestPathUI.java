@@ -205,9 +205,9 @@ public class FindBestPathUI extends JDialog{
         pSelect.add(createPanelImage(), BorderLayout.NORTH);
         pSelect.add(pcenter, BorderLayout.CENTER);
 
-        panelData.add(pleft, BorderLayout.CENTER);
+        panelData.add(pleft, BorderLayout.EAST);
         panelData.add(pSelect, BorderLayout.WEST);
-        panelData.add(pright, BorderLayout.EAST);
+        panelData.add(pright, BorderLayout.CENTER);
         
         return panelData;
     }
