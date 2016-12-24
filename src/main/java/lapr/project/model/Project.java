@@ -265,7 +265,7 @@ public class Project implements Serializable {
         });
         return list;
     }
-    
+        
     /**
      * Validates the name and description
      * @return true if validates, false if not

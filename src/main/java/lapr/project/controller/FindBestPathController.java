@@ -6,7 +6,9 @@
 package lapr.project.controller;
 
 import java.util.LinkedList;
+import java.util.List;
 import lapr.project.model.Aircraft;
+import lapr.project.model.Airport;
 import lapr.project.model.Node;
 import lapr.project.model.Project;
 
@@ -26,8 +28,12 @@ public class FindBestPathController {
        project.getSimulationsList().newSimulation();
     }
     
-    public Node[] getVertices(){
-        return project.getAirNetwork().getAirNetwork().allkeyVerts();
+    public List<Aircraft> getAircraftsList(){
+        return project.getAircraftList().getAircraftList();
+    }
+    
+    public List<Airport> getAirportsList(){
+        return project.getAirportList().getAirportList();
     }
       
     public void setStartNode(Node startNode){
@@ -44,6 +50,17 @@ public class FindBestPathController {
     
     public void setData(Aircraft aircraft, int passengers, int crew, double cargoLoad){
         project.getSimulationsList().getSimulation().setData(aircraft, passengers, crew, cargoLoad);
+    }
+    
+    public void calculateEcologicPath(){
+        project.getSimulationsList().getSimulation().getEcologicResultPath().calculateBestPath(project.getAirNetwork());
+    }
+    
+     public void calculateFastestPath(){
+        project.getSimulationsList().getSimulation().getFastestResultPath().calculateBestPath(project.getAirNetwork());
+    }
+      public void calculateShortesPath(){
+        project.getSimulationsList().getSimulation().getShortestResultPath().calculateBestPath(project.getAirNetwork());
     }
   
     public boolean saveSimulation(){

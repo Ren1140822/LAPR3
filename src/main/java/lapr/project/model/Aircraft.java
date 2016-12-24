@@ -196,4 +196,9 @@ public class Aircraft implements Serializable {
         return this.nrOfCrewElements > 0 && this.company != null && this.registration != null && this.cabinConfig != null;
     }
 
+    public String toStringInfo(){
+        return "ID: " + registration+ "\nCompany: " + company + "\naircraft model: " + this.aircraftModel.getDescription()
+                + "\nMax nr. crew: " + this.nrOfCrewElements + "\nMax passengers: " + this.getCabinConfig().getTotalSeats();
+    }
+
 }

@@ -95,6 +95,21 @@ public class AircraftList implements Serializable{
         aircraft.setAircraftModel(model);
         return true;
     }
+    
+        
+    /**
+     * Return the list of aircrafts (string)
+     * @return list of aircrafts (strings)
+     */
+    public List<String> getAircraftsListString() {
+        List<String> listString = new LinkedList<>();
+        List<Aircraft> list = aircraftList;
+
+        list.stream().forEach((air) -> {
+            listString.add(air.toString());
+        });
+        return listString;
+    }
 
     private boolean validate() {
         return !this.aircraftList.contains(aircraft);

@@ -22,10 +22,17 @@ public class Simulation{
      * cargoLoad of simulation flight
      */
     private double cargoLoad;
+    
     /**
-     * total weight
+     * Fuel loaded in aircraft (g)
+     */
+    private double fuelWeight;
+    
+    /**
+     * total weight (g)
      */
     private double totalWeight;
+    
     /**
      * aircraft of simulation flight
      */
@@ -63,6 +70,7 @@ public class Simulation{
         this.crew=(int) DEFAULT_VALUE;
         this.cargoLoad=DEFAULT_VALUE;
         this.totalWeight=DEFAULT_VALUE;
+        this.fuelWeight=DEFAULT_VALUE;
         this.aircraft=new Aircraft();  
         this.startNode = new Node();
         this.endNode = new Node();
@@ -70,30 +78,6 @@ public class Simulation{
         this.fastestResultPath = new FastestPathResult();
         this.shortestResultPath = new ShortestPathResult();
     }
-    
-//    /**
-//     * Constructor
-//     * @param startNode start of flight simulation
-//     * @param endNode destination of flight simulation
-//     * @param aircraft aircraft of simulation
-//     * @param passengers number of passengers 
-//     * @param crew number of crew members
-//     * @param cargoLoad cargoload of flight
-//    VALIDATE NUMBER OF PASSENGERS and CARGOLOAD  
-//    */   
-//    public Simulation(Node startNode, Node endNode, Aircraft aircraft, int passengers, int crew, double cargoLoad){
-//        this.passengers=passengers;
-//        this.crew=crew;
-//        this.cargoLoad=cargoLoad;
-//        this.aircraft=aircraft;
-//        this.startNode = startNode;
-//        this.endNode = endNode;
-//        this.totalWeight=calculateTotalWeight();
-//        this.ecologicResultPath=new EcologicPathResult(this.startNode, this.endNode, this.totalWeight, this.aircraft);
-//        this.fastestResultPath = new FastestPathResult(this.startNode, this.endNode, this.aircraft);
-//        this.shortestResultPath = new ShortestPathResult(this.startNode, this.endNode);
-//       
-//    } 
 
     /** Gets the number of passengers
      * @return the passengers
@@ -240,19 +224,20 @@ public class Simulation{
 
     public boolean validate() {
         boolean v1=this.passengers<=aircraft.getCabinConfig().getTotalSeats() &&
-                this.crew<=aircraft.getNrOfCrewElements() 
+                this.crew<=aircraft.getNrOfCrewElements() && 
+                this.fuelWeight<=aircraft.getAircraftModel().getFuelCapacity()
                 && Double.doubleToLongBits(totalWeight)<=aircraft.getAircraftModel().getMTOW() &&
                 this.aircraft!=null;
-        boolean v2= aircraft.validate() && ecologicResultPath.validate() &&
-                fastestResultPath.validate() && shortestResultPath.validate();
+        boolean v2= aircraft.validate();
+        boolean v3= ecologicResultPath.validate() || fastestResultPath.validate() 
+                || shortestResultPath.validate();
         
-        return v1 && v2;
+        return v1 && v2 && v3;
     }
 
     private double calculateTotalWeight(){
        return AircraftAlgorithms.calculateInitialWeight(passengers, crew,
-               cargoLoad, aircraft.getAircraftModel().geteWeight(),
-               aircraft.getAircraftModel().getFuelCapacity());
+               cargoLoad, getFuelWeight(), aircraft.getAircraftModel().geteWeight());
     
     }
     
@@ -260,5 +245,19 @@ public class Simulation{
     public String toString()
     {
         return "Simulation";
+    }
+
+    /**
+     * @return the fuelWeight
+     */
+    public double getFuelWeight() {
+        return fuelWeight;
+    }
+
+    /**
+     * @param fuelWeight the fuelWeight to set
+     */
+    public void setFuelWeight(double fuelWeight) {
+        this.fuelWeight = fuelWeight;
     }
 }

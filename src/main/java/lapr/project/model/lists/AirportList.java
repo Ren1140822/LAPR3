@@ -64,6 +64,21 @@ public class AirportList implements Serializable{
     public List<Airport> getAirportList() {
         return airportsList;
     }
+    
+      /**
+     * Return the list of airports (string)
+     * @return list of airports (strings)
+     */
+    public List<String> getAirportListString() {
+        List<String> listString = new LinkedList<>();
+        List<Airport> list = airportsList;
+
+        list.stream().forEach((air) -> {
+            listString.add(air.toString());
+        });
+        return listString;
+    }
+    
 
     /**
      * Sets the airport list.
