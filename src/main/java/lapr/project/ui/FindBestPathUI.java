@@ -18,6 +18,8 @@ import java.awt.event.WindowEvent;
 import java.util.LinkedList;
 import java.util.List;
 import javax.swing.BorderFactory;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
@@ -28,6 +30,8 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import static javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE;
 import javax.swing.border.Border;
+import javax.swing.border.EmptyBorder;
+import javax.swing.border.TitledBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import lapr.project.controller.FindBestPathController;
@@ -138,13 +142,14 @@ public class FindBestPathUI extends JDialog{
         
         panelData = new JPanel(new BorderLayout());
         
-        panelData.setBorder(BorderFactory.createTitledBorder("Input data:"));
+        panelData.setBorder(BorderFactory.createTitledBorder("Simulation Data:"));
         
         JPanel pleft = new JPanel(new BorderLayout());
-        
-        JLabel labelAircrafts = createJLabels("Select aircraft:");
+    
+        JLabel labelAircraft = createJLabels("Select aircraft:");
         listAircrafts = createJListAircraft(aircrafts);
         JTextArea txtDetails=new JTextArea();
+        txtDetails.setSize(new Dimension(700,700));
         listAircrafts.addListSelectionListener(new ListSelectionListener(){
             @Override
             public void valueChanged(ListSelectionEvent e){
@@ -159,8 +164,7 @@ public class FindBestPathUI extends JDialog{
                 }
             }
         });   
-         
-        pleft.add(labelAircrafts, BorderLayout.NORTH);
+        pleft.add(labelAircraft, BorderLayout.NORTH);
         pleft.add(listAircrafts, BorderLayout.CENTER);
         pleft.add(txtDetails, BorderLayout.SOUTH);
         
@@ -177,27 +181,65 @@ public class FindBestPathUI extends JDialog{
         pcenter.add(createPanelLabelTextLabel("Cargo load: ", txtCargoLoad, "grams"));  
         pcenter.add(createPanelLabelTextLabel("Fuel load: ", txtFuelLoad, "L")); 
         
-        pSelect.add(pcenter, BorderLayout.NORTH);
-        
-        JPanel pright=new JPanel();
+       
+        JPanel pright=new JPanel(new BorderLayout());
+        JPanel pBlock=new JPanel();
+        JPanel po=new JPanel(new GridLayout(2,1));
         JLabel labelOrigin = createJLabels("Select origin:");
         listStartNodes = createJListAirport(startNodes);
-        pright.add(labelOrigin);
-        pright.add(listStartNodes);
+        po.add(labelOrigin);
+        po.add(listStartNodes);
         
+       
         JLabel labelADest = createJLabels("Select destination:");
+        JPanel pd=new JPanel(new GridLayout(2,1));
         listEndNodes = createJListAircraft(endNodes);
-        pright.add(labelADest);
-        pright.add(listEndNodes);
+        pd.add(labelADest);
+        pd.add(listEndNodes);
         
-         pSelect.add(pright, BorderLayout.CENTER);
-                
-        panelData.add(pleft, BorderLayout.WEST);
-        panelData.add(pSelect, BorderLayout.CENTER);
+        pBlock.add(po);
+        pBlock.add(pd);
+        pright.add(pBlock, BorderLayout.CENTER);
+        pright.add(createPanelFind(), BorderLayout.SOUTH);
+        
+        pSelect.add(createPanelImage(), BorderLayout.NORTH);
+        pSelect.add(pcenter, BorderLayout.CENTER);
+
+        panelData.add(pleft, BorderLayout.CENTER);
+        panelData.add(pSelect, BorderLayout.WEST);
+        panelData.add(pright, BorderLayout.EAST);
         
         return panelData;
     }
     
+    private JPanel createPanelFind(){
+        JPanel p=new JPanel();
+        
+        int aux= 2;
+        JPanel imports = new JPanel(new GridLayout(1,3, aux,aux));          
+        imports.setBorder(BorderFactory.createCompoundBorder(new TitledBorder(
+                "Simulate:"), new EmptyBorder(aux, aux, aux, aux)));        
+        imports.add(createButtonShortest());
+        imports.add(createButtonFastest());
+        imports.add(createButtonEcologic());
+
+        p.add(imports);     
+                
+        return p;
+    }
+    
+    private JPanel createPanelImage(){
+        ImageIcon background = new ImageIcon("src/main/resources/images/path.jpg");
+        
+        JLabel label = new JLabel();
+        label.setIcon(background);
+
+        JPanel p = new JPanel();
+        p.setBorder(new EmptyBorder(5, 10, 5, 10));
+        p.add(label, BorderLayout.CENTER);
+
+        return p;
+    }
     
     private JList createJListAircraft(List<Aircraft> list) {
         JList jList = new JList();
@@ -366,5 +408,59 @@ public class FindBestPathUI extends JDialog{
                                     "Find Best Path",
                                     JOptionPane.INFORMATION_MESSAGE);
         dispose();
+    }
+
+    private JButton createButtonShortest() {
+        Icon icone = new ImageIcon( "src/main/resources/images/shortest.png" );
+        JButton button = new JButton("Find Shortest Path", icone);
+        button.setContentAreaFilled(false);
+        button.setBorderPainted(false);
+        button.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        button.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);  
+        button.setMnemonic(KeyEvent.VK_S);
+        button.setToolTipText("Find Shortest Path");
+        button.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                
+            }
+        });
+        return button;
+    }
+
+    private JButton createButtonFastest() {
+        Icon icone = new ImageIcon( "src/main/resources/images/fastest.png" );
+        JButton button = new JButton("Find Fastest Path", icone);
+        button.setContentAreaFilled(false);
+        button.setBorderPainted(false);
+        button.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        button.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);  
+        button.setMnemonic(KeyEvent.VK_F);
+        button.setToolTipText("Find Fastest Path");
+        button.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                
+            }
+        });
+        return button;
+    }
+
+    private JButton createButtonEcologic() {
+        Icon icone = new ImageIcon( "src/main/resources/images/ecologic.png" );
+        JButton button = new JButton("Find Ecologic Path", icone);
+        button.setContentAreaFilled(false);
+        button.setBorderPainted(false);
+        button.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        button.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);  
+        button.setMnemonic(KeyEvent.VK_E);
+        button.setToolTipText("Find Ecologic Path");
+        button.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                
+            }
+        });
+        return button;
     }
 }
