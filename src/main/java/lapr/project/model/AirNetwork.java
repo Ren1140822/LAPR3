@@ -309,7 +309,11 @@ public class AirNetwork implements Serializable {
     private boolean insertSegments() {
         for (Segment seg : segmentList) {
             airNetworkGraph.insertEdge(getNodeByString(seg.getStartNode()),
-                    getNodeByString(seg.getEndNode()), seg, DistanceCalculator.calculateDistance(getNodeByString(seg.getStartNode()).getLatitude(), getNodeByString(seg.getStartNode()).getLongitude(), getNodeByString(seg.getEndNode()).getLatitude(), getNodeByString(seg.getEndNode()).getLongitude()));
+                    getNodeByString(seg.getEndNode()), seg, 
+                    DistanceCalculator.calculateDistance(getNodeByString(seg.getStartNode()).getLatitude(), 
+                            getNodeByString(seg.getStartNode()).getLongitude(), 
+                            getNodeByString(seg.getEndNode()).getLatitude(), 
+                            getNodeByString(seg.getEndNode()).getLongitude()));
         }
         return airNetworkGraph.numEdges() == segmentList.size() && airNetworkGraph.numEdges() > 0;
     }
@@ -347,8 +351,10 @@ public class AirNetwork implements Serializable {
      */
     public Node getAirportNode(Airport airport){
         for(Node nodeFind: nodeList){
-            if (nodeFind.getLatitude()==airport.getLocation().getLatitude() &&
-                    nodeFind.getLongitude()==airport.getLocation().getLongitude())
+            if (Double.doubleToLongBits(nodeFind.getLatitude())==
+                    Double.doubleToLongBits(airport.getLocation().getLatitude()) &&
+                Double.doubleToLongBits(nodeFind.getLongitude())==
+                    Double.doubleToLongBits(airport.getLocation().getLongitude()))
                 return nodeFind;
         }
         return null;

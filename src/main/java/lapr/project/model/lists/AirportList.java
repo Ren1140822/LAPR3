@@ -146,8 +146,10 @@ public class AirportList implements Serializable{
      */
     public Airport getAirportNode(Node node){
         for(Airport airportFind: airportsList){
-            if (node.getLatitude()==airportFind.getLocation().getLatitude() &&
-                    node.getLongitude()==airportFind.getLocation().getLongitude())
+            if (Double.doubleToLongBits(node.getLatitude())==
+                    Double.doubleToLongBits(airportFind.getLocation().getLatitude()) &&
+                Double.doubleToLongBits(node.getLongitude())==
+                    Double.doubleToLongBits(airportFind.getLocation().getLongitude()))
                 return airportFind;
         }
         return null;

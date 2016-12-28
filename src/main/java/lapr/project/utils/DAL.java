@@ -20,12 +20,12 @@ public class DAL {
 
     private final String url = "jdbc:oracle:thin:@gandalf.dei.isep.ipp.pt:1521/pdborcl";
     private final String user = "LAPR3_38";
-    private final String password = "grupo38";
+    private final String passw = "grupo38";
 
     private Connection connect() {
         Connection conn = null;
         try {
-            conn = DriverManager.getConnection(url, user, password);
+            conn = DriverManager.getConnection(url, user, passw);
         } catch (SQLException e) {
             System.err.printf(e.toString());
         }

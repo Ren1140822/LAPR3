@@ -42,7 +42,7 @@ public class ResultUI extends JDialog{
      */
     private transient ResultPath resultPath;
     
-    private FindBestPathController controller;
+    private transient FindBestPathController controller;
     
     private transient String type="DEFAULT";
     
