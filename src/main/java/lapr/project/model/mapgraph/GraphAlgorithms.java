@@ -85,15 +85,6 @@ public class GraphAlgorithms {
    */
     public static<V,E> LinkedList<V> DepthFirstSearch(Graph<V,E> g, V vert){
     
-        //        int index = graph.toIndex(vertex);
-//        if (index == -1)
-//            return null;
-//
-//        LinkedList<V> resultQueue = new LinkedList<V>();
-//        resultQueue.add(vertex);
-//        boolean [] knownVertices = new boolean[graph.numVertices];
-//        DFS(graph, index, knownVertices, resultQueue);
-//        return resultQueue;
        if (!g.validVertex(vert)){
            return null;
        }

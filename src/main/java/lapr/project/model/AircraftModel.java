@@ -17,7 +17,7 @@ import lapr.project.utils.StringToSIUnitConverter;
 /**
  * Class that represents motorized commercial aircraft
  *
- * @author Diana Silva
+ * @author Diana Silva, Flavio Relvas
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 public class AircraftModel implements Serializable {
@@ -28,39 +28,102 @@ public class AircraftModel implements Serializable {
     @XmlAttribute(name = "model_ID")
     private String id;
 
+    /**
+     * Type (passenger, cargo, mixed)
+     */
     @XmlTransient
     private enum Type {
 
         PASSENGER, CARGO, MIXED
     };
+    
+    /**
+     * Variable who stores the type
+     */
     @XmlTransient
     private Type type;
+    
+    /**
+     * Description of aircraft model
+     */
     @XmlAttribute(name = "description")
     private String description;
+    
+    /**
+     * Maker of aircraft model
+     */
     @XmlElement(name = "maker")
     private String maker;
+    
+    /**
+     * Motorization of aircraft model
+     */
     @XmlElement(name = "motorization")
     private Motorization motorization;
+    
+    /**
+     * Empty weight
+     */
     @XmlTransient
     private double eWeight;
+    
+    /**
+     * Maximum take-off weight (MTOW) - kg
+     */
     @XmlTransient
-    private double MTOW;
+    private double maxTakeOffWeight;
+    
+    /**
+     * Maximum zero fuel weight (maxZeroFuelWeight) - kg
+     */
     @XmlTransient
-    private double MZFW;
+    private double maxZeroFuelWeight;
+    
+    /**
+     * Maximum payload (kg)
+     */
     @XmlTransient
     private double maxPayload;
+    
+    /**
+     * Maximum fuel capacity (L)
+     */
     @XmlTransient
     private double fuelCapacity;
+    
+    /**
+     * Maximum operating speed (maximum permitted speed for the aircraft)- m/s
+     */
     @XmlTransient
-    private double VMO;
+    private double maxSpeed;
     @XmlTransient
-    private double MMO;
+    
+    /**
+     * Maximum operating Match number - MMO - (relative to the speed of sound)
+     */
+    private double matchOperating;
+    
+    /**
+     * Wing area (m2)
+     */
     @XmlTransient
     private double wingArea;
+    
+    /**
+     * Wing span - distance from one wingtip to the other (m)
+     */
     @XmlTransient
     private double wingSpan;
+    
+    /**
+     * Coefficient of drag
+     */
     @XmlElement(name = "Cdrag_0")
     private double cDrag;
+    
+    /**
+     * Constant e
+     */
     @XmlElement(name = "e")
     private double e;
 
@@ -108,12 +171,12 @@ public class AircraftModel implements Serializable {
         type = DEFAULT_TYPE;
         motorization = new Motorization();
         eWeight = DEFAULT_EWEIGHT;
-        MTOW = DEFAULT_MTOW;
-        MZFW = DEFAULT_MZFW;
+        maxTakeOffWeight = DEFAULT_MTOW;
+        maxZeroFuelWeight = DEFAULT_MZFW;
         maxPayload = DEFAULT_MAXPAYLOAD;
         fuelCapacity = DEFAULT_FUELCAPACITY;
-        VMO = DEFAULT_VMO;
-        MMO = DEFAULT_MMO;
+        maxSpeed = DEFAULT_VMO;
+        matchOperating = DEFAULT_MMO;
         wingArea = DEFAULT_WINGAREA;
         wingSpan = DEFAULT_WINGSPAN;
         cDrag = DEFAULT_CDRAG;
@@ -152,12 +215,12 @@ public class AircraftModel implements Serializable {
         setType(type);
         this.motorization = motorization;
         this.eWeight = eWeight;
-        this.MTOW = MTOW;
-        this.MZFW = MZFW;
+        this.maxTakeOffWeight = MTOW;
+        this.maxZeroFuelWeight = MZFW;
         this.maxPayload = maxPayload;
         this.fuelCapacity = fuelCapacity;
-        this.VMO = VMO;
-        this.MMO = MMO;
+        this.maxSpeed = VMO;
+        this.matchOperating = MMO;
         this.wingArea = wingArea;
         this.wingSpan = wingSpan;
         this.cDrag = cDrag;
@@ -175,12 +238,12 @@ public class AircraftModel implements Serializable {
         this.maker = model.maker;
         this.motorization = model.motorization;
         this.eWeight = model.eWeight;
-        this.MTOW = model.MTOW;
-        this.MZFW = model.MZFW;
+        this.maxTakeOffWeight = model.maxTakeOffWeight;
+        this.maxZeroFuelWeight = model.maxZeroFuelWeight;
         this.maxPayload = model.maxPayload;
         this.fuelCapacity = model.fuelCapacity;
-        this.VMO = model.VMO;
-        this.MMO = model.MMO;
+        this.maxSpeed = model.maxSpeed;
+        this.matchOperating = model.matchOperating;
         this.wingArea = model.wingArea;
         this.wingSpan = model.wingSpan;
         this.cDrag = model.cDrag;
@@ -242,9 +305,9 @@ public class AircraftModel implements Serializable {
 
     public void setMotorization(int number_motors, String motor, String motor_type,
             List<Regime> regimeList) {
-        motorization.setNumber_motors(number_motors);
+        motorization.setNumberMotors(number_motors);
         motorization.setMotor(motor);
-        motorization.setMotor_type(motor_type);
+        motorization.setMotorType(motor_type);
         motorization.setRegimeList(regimeList);
 
     }
@@ -267,37 +330,37 @@ public class AircraftModel implements Serializable {
     }
 
     public double getMTOW() {
-        return MTOW;
+        return maxTakeOffWeight;
     }
 
     public void setMTOW(double MTOW) {
-        this.MTOW = MTOW;
+        this.maxTakeOffWeight = MTOW;
     }
 
     @XmlElement(name = "MTOW")
     public String getMTOW_() {
-        return String.valueOf(MTOW);
+        return String.valueOf(maxTakeOffWeight);
     }
 
     public void setMTOW_(String MTOW) {
-        this.MTOW = StringToSIUnitConverter.weight(MTOW);
+        this.maxTakeOffWeight = StringToSIUnitConverter.weight(MTOW);
     }
 
     public double getMZFW() {
-        return MZFW;
+        return maxZeroFuelWeight;
     }
 
     public void setMZFW(double MZFW) {
-        this.MZFW = MZFW;
+        this.maxZeroFuelWeight = MZFW;
     }
 
     @XmlElement(name = "MZFW")
     public String getMZFW_() {
-        return String.valueOf(MZFW);
+        return String.valueOf(maxZeroFuelWeight);
     }
 
     public void setMZFW_(String MZFW) {
-        this.MZFW = StringToSIUnitConverter.weight(MZFW);
+        this.maxZeroFuelWeight = StringToSIUnitConverter.weight(MZFW);
     }
 
     public double getMaxPayload() {
@@ -335,39 +398,39 @@ public class AircraftModel implements Serializable {
     }
 
     public double getVMO() {
-        return VMO;
+        return maxSpeed;
     }
 
     public void setVMO(double VMO) {
-        this.VMO = VMO;
+        this.maxSpeed = VMO;
     }
 
     @XmlElement(name = "VMO")
     public String getVMO_() {
-        return String.valueOf(VMO);
+        return String.valueOf(maxSpeed);
     }
 
     public void setVMO_(String VMO) {
         String a = VMO.replaceAll(" Knot", "");
-        this.VMO = Double.parseDouble(a);
+        this.maxSpeed = Double.parseDouble(a);
     }
 
     public double getMMO() {
-        return MMO;
+        return matchOperating;
     }
 
     public void setMMO(double MMO) {
-        this.MMO = MMO;
+        this.matchOperating = MMO;
     }
 
     @XmlElement(name = "MMO")
     public String getMMO_() {
-        return String.valueOf(MMO);
+        return String.valueOf(matchOperating);
     }
 
     public void setMMO_(String MMO) {
         String a = MMO.replaceAll(" M", "");
-        this.MMO = Double.parseDouble(a);
+        this.matchOperating = Double.parseDouble(a);
     }
 
     public double getWingArea() {
@@ -447,9 +510,9 @@ public class AircraftModel implements Serializable {
 
     public boolean validate() {
         boolean v1 = !id.isEmpty() && !description.isEmpty() && !maker.isEmpty();
-        v1 = v1 && motorization != null && eWeight > 0 && MTOW > 0;
-        v1 = v1 && MZFW > 0 && maxPayload > 0 && fuelCapacity > 0;
-        v1 = v1 && VMO > 0 && MMO > 0 && wingArea > 0;
+        v1 = v1 && motorization != null && eWeight > 0 && maxTakeOffWeight > 0;
+        v1 = v1 && maxZeroFuelWeight > 0 && maxPayload > 0 && fuelCapacity > 0;
+        v1 = v1 && maxSpeed > 0 && matchOperating > 0 && wingArea > 0;
         v1 = v1 && wingSpan > 0 && cDrag > 0 && e > 0;
         v1 = v1 && type != null && motorization.validate();
 

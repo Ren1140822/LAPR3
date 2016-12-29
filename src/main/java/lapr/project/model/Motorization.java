@@ -23,11 +23,11 @@ public class Motorization implements Serializable{
      * Class attributes
      */
     @XmlElement(name = "number_motors")
-    private int number_motors;
+    private int numberMotors;
     @XmlElement(name = "motor")
     private String motor;
     @XmlElement(name = "motor_type")
-    private String motor_type;
+    private String motorType;
     @XmlElementWrapper(name = "regime_list")
     @XmlElement(name = "regime")
     private List<Regime> regimeList;
@@ -46,40 +46,40 @@ public class Motorization implements Serializable{
      * Default constructor
      */
     public Motorization() {
-        this.number_motors = DEFAULT_NUMBER_MOTORS;
+        this.numberMotors = DEFAULT_NUMBER_MOTORS;
         this.motor = DEFAULT_MOTOR;
-        this.motor_type = DEFAULT_MOTOR_TYPE;
+        this.motorType = DEFAULT_MOTOR_TYPE;
         this.regimeList = new LinkedList<>();
     }
 
     /**
      * Parameter constructor
      *
-     * @param number_motors
+     * @param numberMotors
      * @param motor
-     * @param motor_type
+     * @param motorType
      * @param regimeList
      */
-    public Motorization(int number_motors, String motor, String motor_type,
+    public Motorization(int numberMotors, String motor, String motorType,
             List<Regime> regimeList) {
-        this.number_motors = number_motors;
+        this.numberMotors = numberMotors;
         this.motor = motor;
-        this.motor_type = motor_type;
+        this.motorType = motorType;
         this.regimeList = regimeList;
     }
 
     /**
-     * @return the number_motors
+     * @return the numberMotors
      */
-    public int getNumber_motors() {
-        return number_motors;
+    public int getNumberMotors() {
+        return numberMotors;
     }
 
     /**
-     * @param number_motors the number_motors to set
+     * @param numberMotors the numberMotors to set
      */
-    public void setNumber_motors(int number_motors) {
-        this.number_motors = number_motors;
+    public void setNumberMotors(int numberMotors) {
+        this.numberMotors = numberMotors;
     }
 
     /**
@@ -97,17 +97,17 @@ public class Motorization implements Serializable{
     }
 
     /**
-     * @return the motor_type
+     * @return the motorType
      */
-    public String getMotor_type() {
-        return motor_type;
+    public String getMotorType() {
+        return motorType;
     }
 
     /**
-     * @param motor_type the motor_type to set
+     * @param motorType the motorType to set
      */
-    public void setMotor_type(String motor_type) {
-        this.motor_type = motor_type;
+    public void setMotorType(String motorType) {
+        this.motorType = motorType;
     }
 
 //********************** regime list ***************************************
@@ -169,8 +169,8 @@ public class Motorization implements Serializable{
      * @return
      */
     public boolean validate() {
-        boolean v1 = this.number_motors > 0
-                && !this.motor_type.isEmpty()
+        boolean v1 = this.numberMotors > 0
+                && !this.motorType.isEmpty()
                 && !this.motor.isEmpty()
                 && this.regimeList.size() > 0;
         return v1;

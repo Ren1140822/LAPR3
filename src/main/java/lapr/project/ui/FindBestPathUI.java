@@ -236,16 +236,14 @@ public class FindBestPathUI extends JDialog{
         JLabel labelOrigin = UI.createJLabels("Select origin:");
         listStartAirports = UI.createJListAirport(startAirports);
         
-        listStartAirports.addListSelectionListener(new ListSelectionListener(){
-            @Override
-            public void valueChanged(ListSelectionEvent e){
-                if(!e.getValueIsAdjusting()){
-                    Airport selected=(Airport) listStartAirports.getSelectedValue();
-                    Node startNode=controller.convertAirportToNode(selected);
-                    
-                    endAirports=controller.getPossibleEndAirports(startNode);
-                    listEndAirports.setListData(endAirports.toArray());
-                }
+        listStartAirports.addListSelectionListener((ListSelectionEvent e) -> {
+            if(!e.getValueIsAdjusting()){
+                Airport selected=(Airport) listStartAirports.getSelectedValue();
+                Node startNode=controller.convertAirportToNode(selected);
+                
+                endAirports=controller.getPossibleEndAirports(startNode);
+                endAirports.remove(0);
+                listEndAirports.setListData(endAirports.toArray());
             }
         });   
    

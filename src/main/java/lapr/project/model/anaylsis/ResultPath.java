@@ -10,6 +10,7 @@ import lapr.project.model.AirNetwork;
 import lapr.project.model.Airport;
 import lapr.project.model.Node;
 import lapr.project.model.lists.AirportList;
+import lapr.project.model.physics.AircraftAlgorithms;
 
 /**
  * The class to stores and manage analysis results of simulation
@@ -45,6 +46,11 @@ public class ResultPath extends Simulation{
      * Origin and Destination of result path
      */
     private Node startNode,  endNode;
+    
+    /**
+     * Default value for the variables
+     */
+    private static final double DEFAULT_VALUE=0.0;
    
     /**
      * Constructor
@@ -52,6 +58,11 @@ public class ResultPath extends Simulation{
     public ResultPath(){
         this.startNode=new Node();
         this.endNode=new Node();
+        this.resultPath=new LinkedList<>();
+        this.distance=DEFAULT_VALUE;
+        this.energyConsum=DEFAULT_VALUE;
+        this.travellingTime=DEFAULT_VALUE;
+        this.result=DEFAULT_VALUE;
     }  
     
     /**
@@ -62,6 +73,28 @@ public class ResultPath extends Simulation{
     public ResultPath(Node startNode, Node endNode){
         this.startNode=startNode;
         this.endNode=endNode;
+        this.resultPath=new LinkedList<>();
+        this.distance=DEFAULT_VALUE;
+        this.energyConsum=DEFAULT_VALUE;
+        this.travellingTime=DEFAULT_VALUE;
+        this.result=DEFAULT_VALUE;
+       
+    }  
+    
+     /**
+     * Constructor
+     */
+    public ResultPath(Node startNode, Node endNode, LinkedList resultPath, 
+            double distance, double energyConsum, double travellingTime,
+            double result){
+        this.startNode=startNode;
+        this.endNode=endNode;
+        this.resultPath=resultPath;
+        this.distance=distance;
+        this.energyConsum=energyConsum;
+        this.travellingTime=travellingTime;
+        this.result=result;
+       
     }  
       
     /**
@@ -91,11 +124,6 @@ public class ResultPath extends Simulation{
     public void calculateBestPath(AirNetwork airNetwork){
     } 
    
-    @Override
-    public boolean validate() {
-        return Double.doubleToLongBits(result)!=0 && resultPath.isEmpty();
-    }
-
     /**
      * Gets the origin of flight
      * @return the startNode
@@ -187,5 +215,36 @@ public class ResultPath extends Simulation{
      */
     public Airport getEndAirport(AirportList list){
         return list.getAirportNode(endNode);
+    }
+    
+     /**
+     * Calculates the travelling time simulation result
+     * @return 
+     */
+     public double calculateTravellingTime(){
+         /**
+          *   double altitude=PhysicsAlgorithms.calculateAirDensity(cargoLoad, fuelWeight)
+         double velocity=AircraftAlgorithms.calculateTrueAirSpeed(fuelWeight, )
+        return PhysicsAlgorithms.calculateTime(resultPath.getDistance(), aircraft.get)
+          */
+       return 0;
+    }
+    
+    /**
+     * Calculates the energy consum of simulation result
+     * @param initialWeight
+     * @param timeFlight
+     * @param tsfc
+     * @param weightZeroFuel
+     * @return 
+     */
+    public double calculateEnergyConsumption(double initialWeight, double timeFlight, double tsfc, double weightZeroFuel){
+        double finalWeight=AircraftAlgorithms.calculateFinalWeight(initialWeight, timeFlight, tsfc);
+        //falta converter fuel para energia
+        return AircraftAlgorithms.calculateFuelUsed(initialWeight, finalWeight, weightZeroFuel);      
+    }
+        
+    public boolean validate() {
+        return Double.doubleToLongBits(result)!=0 && resultPath.isEmpty();
     }
 }

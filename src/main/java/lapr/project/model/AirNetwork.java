@@ -334,7 +334,7 @@ public class AirNetwork implements Serializable {
      * @param startNode origin of flight
      * @return list of possible destination airports
      */
-    public LinkedList<Node> getPossibleEndNodes(Node startNode) {
+    public List<Node> getPossibleEndNodes(Node startNode) {
         /**
          * implement methods to find possible end airports by the segments in project*
          */

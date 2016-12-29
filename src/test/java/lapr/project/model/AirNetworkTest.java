@@ -308,6 +308,7 @@ public class AirNetworkTest {
         instance.getAirNetwork().insertVertex(intNode);
         instance.getAirNetwork().insertVertex(endNode);
         instance.getAirNetwork().insertVertex(testNode);
+        instance.getAirNetwork().insertVertex(testNode1);
 
         instance.getAirNetwork().insertEdge(startNode, intNode, segment2, 10);
         instance.getAirNetwork().insertEdge(intNode, endNode, segment3, 30);

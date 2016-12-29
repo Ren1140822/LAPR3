@@ -27,7 +27,7 @@ public class Regime implements Serializable {
      * (grams/second) per unit of thrust (kN) (SI units).
      */    
     @XmlTransient
-    private double TSFC;
+    private double thrustSFC;
 
     /**
      * speed of aircraft (m/s)
@@ -60,7 +60,7 @@ public class Regime implements Serializable {
     
     public Regime() {
         this.id = DEFAULT_ID;
-        this.TSFC = DEFAULT_TSFC;
+        this.thrustSFC = DEFAULT_TSFC;
         this.speed = DEFAULT_SPEED;
         this.thrust = DEFAULT_THRUST;
         this.altitude = DEFAULT_ALTITUDE;
@@ -68,7 +68,7 @@ public class Regime implements Serializable {
     
     public Regime(String id, double TSFC, double speed, double thrust, double altitude) {
         this.id = id;
-        this.TSFC = TSFC;
+        this.thrustSFC = TSFC;
         this.speed = speed;
         this.thrust = thrust;
         this.altitude = altitude;
@@ -83,32 +83,32 @@ public class Regime implements Serializable {
     }
 
     /**
-     * @return the TSFC
+     * @return the thrustSFC
      */
     public double getTSFC() {
-        return TSFC;
+        return thrustSFC;
     }
 
     /**
-     * @param TSFC the TSFC to set
+     * @param TSFC the thrustSFC to set
      */
     public void setTSFC(double TSFC) {
-        this.TSFC = TSFC;
+        this.thrustSFC = TSFC;
     }
 
     /**
-     * @return the TSFC for JAXB
+     * @return the thrustSFC for JAXB
      */
     @XmlElement(name = "TSFC")
     public String getTSFC_() {
-        return String.valueOf(TSFC);
+        return String.valueOf(thrustSFC);
     }
 
     /**
-     * @param tsfc the TSFC to set for JAXB
+     * @param tsfc the thrustSFC to set for JAXB
      */
     public void setTSFC_(String tsfc) {
-        this.TSFC = StringToSIUnitConverter.TSFC(tsfc);
+        this.thrustSFC = StringToSIUnitConverter.TSFC(tsfc);
     }
 
     /**
@@ -199,7 +199,7 @@ public class Regime implements Serializable {
     }
     
     public boolean validate() {
-        boolean v1 = !id.isEmpty() && TSFC > 0 && speed > 0;
+        boolean v1 = !id.isEmpty() && thrustSFC > 0 && speed > 0;
         return v1 && thrust > 0 && altitude > 0;
     }
 }

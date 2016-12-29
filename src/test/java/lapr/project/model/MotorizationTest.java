@@ -40,26 +40,26 @@ public class MotorizationTest {
     }
 
     /**
-     * Test of getNumber_motors method, of class Motorization.
+     * Test of getNumberMotors method, of class Motorization.
      */
     @Test
     public void testGetNumber_motors() {
         System.out.println("getNumber_motors");
         Motorization instance = new Motorization();
         int expResult = 0;
-        int result = instance.getNumber_motors();
+        int result = instance.getNumberMotors();
         assertEquals(expResult, result);
     }
 
     /**
-     * Test of setNumber_motors method, of class Motorization.
+     * Test of setNumberMotors method, of class Motorization.
      */
     @Test
     public void testSetNumber_motors() {
         System.out.println("setNumber_motors");
         int number_motors = 10;
         Motorization instance = new Motorization();
-        instance.setNumber_motors(number_motors);
+        instance.setNumberMotors(number_motors);
     }
 
     /**
@@ -86,26 +86,26 @@ public class MotorizationTest {
     }
 
     /**
-     * Test of getMotor_type method, of class Motorization.
+     * Test of getMotorType method, of class Motorization.
      */
     @Test
     public void testGetMotor_type() {
         System.out.println("getMotor_type");
         Motorization instance = new Motorization();
         String expResult = "NOMOTORTYPE";
-        String result = instance.getMotor_type();
+        String result = instance.getMotorType();
         assertEquals(expResult, result);
     }
 
     /**
-     * Test of setMotor_type method, of class Motorization.
+     * Test of setMotorType method, of class Motorization.
      */
     @Test
     public void testSetMotor_type() {
         System.out.println("setMotor_type");
         String motor_type = "turbofan";
         Motorization instance = new Motorization();
-        instance.setMotor_type(motor_type);
+        instance.setMotorType(motor_type);
     }
 
     /**

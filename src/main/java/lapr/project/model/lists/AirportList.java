@@ -142,7 +142,7 @@ public class AirportList implements Serializable{
      /**
      * Gets airport correspondent to the node if exists
      * @param node node with latitude and longitude
-     * @return node with same latitude and longitude
+     * @return airport with same latitude and longitude
      */
     public Airport getAirportNode(Node node){
         for(Airport airportFind: airportsList){

@@ -9,6 +9,7 @@ import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
 import lapr.project.model.anaylsis.ResultPath;
+import lapr.project.model.anaylsis.Simulation;
 import lapr.project.model.lists.AircraftList;
 import lapr.project.model.lists.AircraftModelList;
 import lapr.project.model.lists.AirportList;
@@ -234,9 +235,10 @@ public class Project implements Serializable {
      */
     public List<ResultPath> getEcologicPathResults() {
         LinkedList<ResultPath> list = new LinkedList<>();
-        getSimulationsList().getSimulationsList().stream().forEach((s) -> {
-            list.add(s.getEcologicResultPath());
-        });
+        for(Simulation s: getSimulationsList().getSimulationsList()) {
+            if(s.getEcologicResultPath().getResult()!=0)
+                list.add(s.getEcologicResultPath());
+        }
         return list;
     }
 
@@ -247,9 +249,10 @@ public class Project implements Serializable {
      */
     public List<ResultPath> getShortestPathResults() {
         LinkedList<ResultPath> list = new LinkedList<>();
-        getSimulationsList().getSimulationsList().stream().forEach((s) -> {
-            list.add(s.getShortestResultPath());
-        });
+        for(Simulation s: getSimulationsList().getSimulationsList()) {
+            if(s.getShortestResultPath().getResult()!=0)
+                list.add(s.getShortestResultPath());
+        }
         return list;
     }
 
@@ -260,9 +263,10 @@ public class Project implements Serializable {
      */
     public List<ResultPath> getFastestPathResults() {
         LinkedList<ResultPath> list = new LinkedList<>();
-        getSimulationsList().getSimulationsList().stream().forEach((s) -> {
-            list.add(s.getFastestResultPath());
-        });
+        for(Simulation s: getSimulationsList().getSimulationsList()) {
+            if(s.getFastestResultPath().getResult()!=0)
+                list.add(s.getFastestResultPath());
+        }
         return list;
     }
         
@@ -279,9 +283,9 @@ public class Project implements Serializable {
      * @param startNode origin node of airnetwork
      * @return list airports linked to the start node
      */
-    public LinkedList<Airport> getPossibleEndAirports(Node startNode){
+    public List<Airport> getPossibleEndAirports(Node startNode){
         LinkedList<Airport> listAirports=new LinkedList<>();
-        LinkedList<Node> endNodes=getAirNetwork().getPossibleEndNodes(startNode);
+        List<Node> endNodes=getAirNetwork().getPossibleEndNodes(startNode);
         endNodes.stream().forEach((nodeEnd) -> {
             listAirports.add(getAirportList().getAirportNode(nodeEnd));
         });

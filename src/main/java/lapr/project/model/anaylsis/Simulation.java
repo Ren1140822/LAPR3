@@ -5,7 +5,6 @@
  */
 package lapr.project.model.anaylsis;
 
-import lapr.project.model.AirNetwork;
 import lapr.project.model.Aircraft;
 import lapr.project.model.Airport;
 import lapr.project.model.Node;
@@ -199,39 +198,31 @@ public class Simulation{
         this.shortestResultPath = shortestResultPath;
     }
     
+    /**
+     * Sets data needed to the simulation 
+     * @param aircraft aircraft of flight
+     * @param passengers number of passengers
+     * @param crew number of crew members
+     * @param cargoLoad cargo load (kg)
+     */
     public void setData(Aircraft aircraft, int passengers, int crew, double cargoLoad){
         this.aircraft=aircraft;
         this.passengers=passengers;
         this.crew=crew;
-        this.cargoLoad=cargoLoad;
-        this.totalWeight=calculateTotalWeight();
+        this.cargoLoad=cargoLoad*1000;
+        this.totalWeight=calculateInitialWeight();
     }
 
-    public boolean validate() {
-        boolean v1=this.passengers<=aircraft.getCabinConfig().getTotalSeats() &&
-                this.crew<=aircraft.getNrOfCrewElements() && 
-                this.fuelWeight<=aircraft.getAircraftModel().getFuelCapacity()
-                && Double.doubleToLongBits(totalWeight)<=aircraft.getAircraftModel().getMTOW() &&
-                this.aircraft!=null;
-        boolean v2= aircraft.validate();
-        boolean v3= ecologicResultPath.validate() || fastestResultPath.validate() 
-                || shortestResultPath.validate();
-        
-        return v1 && v2 && v3;
-    }
-
-    private double calculateTotalWeight(){
+    /**
+     * Calculates the initial weight of aircraft
+     * @return the initial weight of aircraft (kg)
+     */
+    private double calculateInitialWeight(){
        return AircraftAlgorithms.calculateInitialWeight(passengers, crew,
-               cargoLoad, fuelWeight, aircraft.getAircraftModel().geteWeight());
-    
+               cargoLoad, fuelWeight, aircraft.getAircraftModel().geteWeight())
+               /1000;
     }
     
-    @Override
-    public String toString()
-    {
-        return "Simulation";
-    }
-
     /**
      * @return the fuelWeight
      */
@@ -250,33 +241,7 @@ public class Simulation{
     public double getAirdensityNode(Airport airport){
         return PhysicsAlgorithms.calculateAirDensity(1, 1);
     }
-    /**
-     * Calculates the travelling time simulation result
-     * @return 
-     */
-     public double calculateTravellingTime(){
-         /**
-          *   double altitude=PhysicsAlgorithms.calculateAirDensity(cargoLoad, fuelWeight)
-         double velocity=AircraftAlgorithms.calculateTrueAirSpeed(fuelWeight, )
-        return PhysicsAlgorithms.calculateTime(resultPath.getDistance(), aircraft.get)
-          */
-       return 0;
-    }
-    
-    /**
-     * Calculates the energy consum of simulation result
-     * @param initialWeight
-     * @param timeFlight
-     * @param tsfc
-     * @param weightZeroFuel
-     * @return 
-     */
-    public double calculateEnergyConsumption(double initialWeight, double timeFlight, double tsfc, double weightZeroFuel){
-        double finalWeight=AircraftAlgorithms.calculateFinalWeight(initialWeight, timeFlight, tsfc);
-        //falta converter fuel para energia
-        return AircraftAlgorithms.calculateFuelUsed(initialWeight, finalWeight, weightZeroFuel);      
-    }
-    
+   
      /**
      * Creates a best path simullation
      * @param air airnetwork
@@ -318,4 +283,28 @@ public class Simulation{
     public void setEndAirport(Airport endAirport) {
         this.endAirport = endAirport;
     }
+    
+    /**
+     * Validates simulation 
+     * @return true if all data is valid, false if not
+     */
+     public boolean validate() {
+        boolean v1= validateAircraftRelatedData();
+        boolean v2= ecologicResultPath.validate() || fastestResultPath.validate() 
+                || shortestResultPath.validate();
+        
+        return v1 && v2;
+    }
+     
+     /**
+      * Validates aircraft related data (nr passengers/crew, weight, fuel capacity)
+      * @return true if data related to the aircraft is valid, false if not
+      */
+     public boolean validateAircraftRelatedData(){
+         return this.passengers<=aircraft.getCabinConfig().getTotalSeats() &&
+                this.crew<=aircraft.getNrOfCrewElements() && 
+                this.fuelWeight<=aircraft.getAircraftModel().getFuelCapacity()
+                && Double.doubleToLongBits(totalWeight)<=aircraft.getAircraftModel().getMTOW() &&
+                aircraft.validate();
+     }
 }
