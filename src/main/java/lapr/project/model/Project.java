@@ -236,7 +236,7 @@ public class Project implements Serializable {
     public List<ResultPath> getEcologicPathResults() {
         LinkedList<ResultPath> list = new LinkedList<>();
         for(Simulation s: getSimulationsList().getSimulationsList()) {
-            if(s.getEcologicResultPath().getResult()!=0)
+            if(Double.doubleToLongBits(s.getEcologicResultPath().getResult())!=0)
                 list.add(s.getEcologicResultPath());
         }
         return list;
@@ -250,7 +250,7 @@ public class Project implements Serializable {
     public List<ResultPath> getShortestPathResults() {
         LinkedList<ResultPath> list = new LinkedList<>();
         for(Simulation s: getSimulationsList().getSimulationsList()) {
-            if(s.getShortestResultPath().getResult()!=0)
+            if(Double.doubleToLongBits(s.getShortestResultPath().getResult())!=0)
                 list.add(s.getShortestResultPath());
         }
         return list;
@@ -264,7 +264,7 @@ public class Project implements Serializable {
     public List<ResultPath> getFastestPathResults() {
         LinkedList<ResultPath> list = new LinkedList<>();
         for(Simulation s: getSimulationsList().getSimulationsList()) {
-            if(s.getFastestResultPath().getResult()!=0)
+            if(Double.doubleToLongBits(s.getFastestResultPath().getResult())!=0)
                 list.add(s.getFastestResultPath());
         }
         return list;
