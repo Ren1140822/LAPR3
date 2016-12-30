@@ -34,14 +34,26 @@ public class Segment implements Serializable{
     private Direction direction;
     @XmlElement
     private Wind wind;
+    @XmlTransient
+    private int minAltSlot;
+    @XmlTransient
+    private int maxAltSlot;
     
     /**
      * Default values.
      */
+    @XmlTransient
     private static final String DEFAULT_ID = "NOID";
+    @XmlTransient
     private static final String DEFAULT_START_NODE = "STARTNODE";
+    @XmlTransient
     private static final String DEFAULT_END_NODE = "ENDNODE";
+    @XmlTransient
     private static final Direction DEFAULT_DIRECTION = Direction.BIDIRECTIONAL;
+    @XmlTransient
+    private static final int DEFAULT_MIN_ALT_SLOT = 0;
+    @XmlTransient
+    private static final int DEFAULT_MAX_ALT_SLOT = 0;
     
     /**
      * Default constructor.
@@ -52,6 +64,8 @@ public class Segment implements Serializable{
         this.endNode = DEFAULT_END_NODE;
         this.direction = DEFAULT_DIRECTION;
         this.wind = new Wind();
+        this.minAltSlot = DEFAULT_MIN_ALT_SLOT;
+        this.maxAltSlot = DEFAULT_MAX_ALT_SLOT;
     }
     /**
      * Parameter constructor
@@ -61,12 +75,15 @@ public class Segment implements Serializable{
      * @param direction the Direction of the segment
      * @param wind the wind of the segment
      */
-    public Segment(String id, String startNode, String endNode, String direction, Wind wind){
+    public Segment(String id, String startNode, String endNode, String direction, 
+            Wind wind, int minAltSlot, int maxAltSlot){
         this.id = id;
         this.startNode = startNode;
         this.endNode = endNode;
         setDirection(direction);
         this.wind = wind;
+        this.minAltSlot = minAltSlot;
+        this.maxAltSlot = minAltSlot;
     }
     
     /**
@@ -79,6 +96,8 @@ public class Segment implements Serializable{
         this.endNode = segment.endNode;
         this.direction = segment.direction;
         this.wind = segment.wind;
+        this.minAltSlot = segment.minAltSlot;
+        this.maxAltSlot = segment.maxAltSlot;
     }
 
     /**
@@ -183,6 +202,34 @@ public class Segment implements Serializable{
     public void setWind(int windIntensity, int windDirection) {
         wind.setWindIntensity(windIntensity);
         wind.setWindDirection(windDirection);
+    }
+    
+    /**
+     * @return the minAltSlot
+     */
+    public int getMinAltSlot() {
+        return minAltSlot;
+    }
+
+    /**
+     * @param minAltSlot the minAltSlot to set
+     */
+    public void setMinAltSlot(int minAltSlot) {
+        this.minAltSlot = minAltSlot;
+    }
+
+    /**
+     * @return the maxAltSlot
+     */
+    public int getMaxAltSlot() {
+        return maxAltSlot;
+    }
+
+    /**
+     * @param maxAltSlot the maxAltSlot to set
+     */
+    public void setMaxAltSlot(int maxAltSlot) {
+        this.maxAltSlot = maxAltSlot;
     }
     
     /**

@@ -160,7 +160,7 @@ public class SegmentTest {
         
         System.out.println("equals2");
         Object otherObject2 = new Segment();
-        Segment instance2 =new Segment("", "id1", "id1", "direct", new Wind(15, 40));
+        Segment instance2 =new Segment("", "id1", "id1", "direct", new Wind(15, 40),0,0);
         boolean expResult2 = false;
         boolean result2 = instance2.equals(otherObject2);
         assertEquals(expResult2, result2);
@@ -192,31 +192,31 @@ public class SegmentTest {
         Node n7 = new Node("id7",-91,90);
         
         System.out.println("validate1");
-        Segment instance = new Segment("", n1.getId(), n2.getId(), "direct", new Wind(15, 40));
+        Segment instance = new Segment("", n1.getId(), n2.getId(), "direct", new Wind(15, 40),0,0);
         boolean expResult = false;
         boolean result = instance.validate();
         assertEquals(expResult, result);
         
         System.out.println("validate2");
-        Segment instance2 = new Segment("seg01", n5.getId(), n5.getId(), "bidirectional", new Wind(15, 40));
+        Segment instance2 = new Segment("seg01", n5.getId(), n5.getId(), "bidirectional", new Wind(15, 40),0,0);
         boolean expResult2 = false;
         boolean result2 = instance2.validate();
         assertEquals(expResult2, result2);
         
         System.out.println("validate3");
-        Segment instance3 = new Segment("s1",n1.getId(), n4.getId(), "blbla", new Wind(15, 40));
+        Segment instance3 = new Segment("s1",n1.getId(), n4.getId(), "blbla", new Wind(15, 40),0,0);
         boolean expResult3 = false;
         boolean result3 = instance3.validate();
         assertEquals(expResult3, result3);
         
         System.out.println("validate4");
-        Segment instance4 = new Segment("s1", n5.getId(), n3.getId(), "direct", new Wind(-15, 40));
+        Segment instance4 = new Segment("s1", n5.getId(), n3.getId(), "direct", new Wind(-15, 40),0,0);
         boolean expResult4 = false;
         boolean result4 = instance4.validate();
         assertEquals(expResult4, result4);
         
         System.out.println("validate5");
-        Segment instance5 = new Segment("seg01", n5.getId(), n3.getId(), "bidirectional", new Wind(15, 40));
+        Segment instance5 = new Segment("seg01", n5.getId(), n3.getId(), "bidirectional", new Wind(15, 40),0,0);
         boolean expResult5 = true;
         boolean result5 = instance5.validate();
         assertEquals(expResult5, result5);
@@ -246,6 +246,52 @@ public class SegmentTest {
         String expResult = "ENDNODE";
         String result = instance.getEndNode();
         assertEquals(expResult, result);
+    }
+
+    /**
+     * Test of getMinAltSlot method, of class Segment.
+     */
+    @Test
+    public void testGetMinAltSlot() {
+        System.out.println("getMinAltSlot");
+        Segment instance = new Segment();
+        int expResult = 0;
+        int result = instance.getMinAltSlot();
+        assertEquals(expResult, result);
+    }
+
+    /**
+     * Test of setMinAltSlot method, of class Segment.
+     */
+    @Test
+    public void testSetMinAltSlot() {
+        System.out.println("setMinAltSlot");
+        int minAltSlot = 1000;
+        Segment instance = new Segment();
+        instance.setMinAltSlot(minAltSlot);
+    }
+
+    /**
+     * Test of getMaxAltSlot method, of class Segment.
+     */
+    @Test
+    public void testGetMaxAltSlot() {
+        System.out.println("getMaxAltSlot");
+        Segment instance = new Segment();
+        int expResult = 0;
+        int result = instance.getMaxAltSlot();
+        assertEquals(expResult, result);
+    }
+
+    /**
+     * Test of setMaxAltSlot method, of class Segment.
+     */
+    @Test
+    public void testSetMaxAltSlot() {
+        System.out.println("setMaxAltSlot");
+        int maxAltSlot = 12000;
+        Segment instance = new Segment();
+        instance.setMaxAltSlot(maxAltSlot);
     }
     
 }

@@ -370,9 +370,9 @@ public class ProjectTest {
         
         Wind windTest=new Wind(10,10);
         String direction="BIDIRECTIONAL";
-        Segment segment1=new Segment("segmentTest1","test1", "test3", direction,windTest);       
-        Segment segment2=new Segment("segmentTest2", "test1", "test2", direction,windTest);
-        Segment segment3=new Segment("segmentTest3", "test2", "test3", direction, windTest);
+        Segment segment1=new Segment("segmentTest1","test1", "test3", direction,windTest,0,0);       
+        Segment segment2=new Segment("segmentTest2", "test1", "test2", direction,windTest,0,0);
+        Segment segment3=new Segment("segmentTest3", "test2", "test3", direction, windTest,0,0);
         
         AirNetwork airnetwork=instance.getAirNetwork();
         airnetwork.getAirNetwork().insertVertex(startNode);
