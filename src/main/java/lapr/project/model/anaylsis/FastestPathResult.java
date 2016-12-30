@@ -7,6 +7,7 @@ package lapr.project.model.anaylsis;
 
 import java.util.LinkedList;
 import lapr.project.model.AirNetwork;
+import lapr.project.model.Airport;
 import lapr.project.model.Node;
 import lapr.project.model.mapgraph.GraphAlgorithms;
 
@@ -19,20 +20,31 @@ public class FastestPathResult extends ResultPath{
     
     /**
      * Constructor
-     * @param startNode
-     * @param endNode 
      */
-    public FastestPathResult(Node startNode, Node endNode) {
-        super(startNode, endNode);
+    public FastestPathResult() {
+        super();
     }
     
+    /**
+     * Constructor
+     * @param startAirport
+     * @param endAirport
+     */
+    public FastestPathResult(Airport startAirport, Airport endAirport) {
+        super(startAirport,endAirport);
+    }
+    
+    /**
+     * Calculates the fastest path
+     * @param airNetwork airnetwork of active project
+     */
     @Override
     public void calculateBestPath(AirNetwork airNetwork){
-        LinkedList<Node> fastestPath=super.getResultPath();
+        LinkedList<Node> fastestPath=(LinkedList<Node>)super.getResultPath();
         /**corrigir**/
 
          double res=GraphAlgorithms.shortestPath(airNetwork.getAirNetwork(), 
-                super.getStartNode(), super.getEndNode(), fastestPath);
+                super.getStartNode(airNetwork), super.getEndNode(airNetwork), fastestPath);
         //vento+cruiseSpeed
         super.setResultPath(fastestPath);
         super.setResult(res);

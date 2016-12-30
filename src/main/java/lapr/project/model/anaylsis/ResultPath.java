@@ -6,6 +6,7 @@
 package lapr.project.model.anaylsis;
 
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Objects;
 import lapr.project.model.AirNetwork;
 import lapr.project.model.Airport;
@@ -17,7 +18,7 @@ import lapr.project.model.physics.AircraftAlgorithms;
  * The class to stores and manage analysis results of simulation
  * @author Diana Silva
  */
-public class ResultPath {
+public class ResultPath extends Simulation {
     /**
      * Value of result path calculated
      */
@@ -44,11 +45,6 @@ public class ResultPath {
     private double distance;
     
     /**
-     * Origin and Destination of result path
-     */
-    private Node startNode,  endNode;
-    
-    /**
      * Default value for the variables
      */
     private static final double DEFAULT_VALUE=0.0;
@@ -57,8 +53,7 @@ public class ResultPath {
      * Constructor
      */
     public ResultPath(){
-        this.startNode=new Node();
-        this.endNode=new Node();
+        super();
         this.resultPath=new LinkedList<>();
         this.distance=DEFAULT_VALUE;
         this.energyConsum=DEFAULT_VALUE;
@@ -68,12 +63,11 @@ public class ResultPath {
     
     /**
      * Constructor
-     * @param startNode
-     * @param endNode
+     * @param startAirport startAirport of path
+     * @param endAirport endAirport of path
      */
-    public ResultPath(Node startNode, Node endNode){
-        this.startNode=startNode;
-        this.endNode=endNode;
+    public ResultPath(Airport startAirport, Airport endAirport){
+        super(startAirport, endAirport);
         this.resultPath=new LinkedList<>();
         this.distance=DEFAULT_VALUE;
         this.energyConsum=DEFAULT_VALUE;
@@ -82,22 +76,21 @@ public class ResultPath {
        
     }  
     
-     /**
+ /**
      * Constructor
-     * @param startNode startNode of flight
-     * @param endNode endNode of flight
+     * @param startAirport startAirport of path
+     * @param endAirport endAirport of path
      * @param resultPath result path of best path calculated
      * @param distance distance of best path calculated
      * @param energyConsum energy consume of best path calculated
      * @param travellingTime travelling time of best path calculated
      * @param result result of best path
      */
-    public ResultPath(Node startNode, Node endNode, LinkedList resultPath, 
+    public ResultPath(Airport startAirport, Airport endAirport, List resultPath, 
             double distance, double energyConsum, double travellingTime,
             double result){
-        this.startNode=startNode;
-        this.endNode=endNode;
-        this.resultPath=resultPath;
+        super(startAirport, endAirport);
+        this.resultPath=(LinkedList<Node>) resultPath;
         this.distance=distance;
         this.energyConsum=energyConsum;
         this.travellingTime=travellingTime;
@@ -117,52 +110,25 @@ public class ResultPath {
      * Sets the analysis final result
      * @param resultPath result path  
      */
-    public void setResultPath(LinkedList<Node> resultPath){
-        this.resultPath=resultPath;
+    public void setResultPath(List<Node> resultPath){
+        this.resultPath=(LinkedList<Node>) resultPath;
     }
 
+    /**
+     * Gets the result of result path
+     * @return result
+     */
     public double getResult() {
         return result;
     }
     
-    public LinkedList<Node> getResultPath(){
+    /**
+     * Gets the result path 
+     * @return result path 
+     */
+    public List<Node> getResultPath(){
         return resultPath;
     }
-    
-    public void calculateBestPath(AirNetwork airNetwork){
-    } 
-   
-    /**
-     * Gets the origin of flight
-     * @return the startNode
-     */
-    public Node getStartNode() {
-        return startNode;
-    }
-
-    /**
-     * Sets the origin of flight
-     * @param startNode the startNode to set
-     */
-    public void setStartNode(Node startNode) {
-        this.startNode = startNode;
-    }
-
-    /**
-     * Gets the destination of flight
-     * @return the endNode
-     */
-    public Node getEndNode() {
-        return endNode;
-    }
-
-    /**
-     * Sets the destination of flight
-     * @param endNode the endNode to set
-     */
-    public void setEndNode(Node endNode) {
-        this.endNode = endNode;
-    } 
     
     /**
      * @return the energyConsum
@@ -207,35 +173,29 @@ public class ResultPath {
         this.distance = distance;
     }
     
-    /**
-     * Gets the start airport equivalent to the start node
-     * @param list list of airports in the project
-     * @return airport equivalent
+     /**
+     * Calculate best path
+     * @param airNetwork airnetwork of active project
      */
-    public Airport getStartAirport(AirportList list){
-        return list.getAirportNode(startNode);
-    }
-    
-    /**
-     * Gets the end airport equivalent to the end node
-     * @param list list of airports in the project
-     * @return airport equivalent
-     */
-    public Airport getEndAirport(AirportList list){
-        return list.getAirportNode(endNode);
-    }
-    
+    public void calculateBestPath(AirNetwork airNetwork){
+        try{
+            throw new UnsupportedOperationException("Invalid operation for "
+                    + "superclass.");
+        } catch(java.lang.UnsupportedOperationException e){
+            System.out.println("Invalid operation for superclass");
+        }
+    } 
+
      /**
      * Calculates the travelling time simulation result
-     * @return 
      */
-     public double calculateTravellingTime(){
+     public void calculateTravellingTime(){
          /**
           *   double altitude=PhysicsAlgorithms.calculateAirDensity(cargoLoad, fuelWeight)
          double velocity=AircraftAlgorithms.calculateTrueAirSpeed(fuelWeight, )
         return PhysicsAlgorithms.calculateTime(resultPath.getDistance(), aircraft.get)
           */
-       return 0;
+         travellingTime=0;
     }
     
     /**
@@ -244,21 +204,24 @@ public class ResultPath {
      * @param timeFlight
      * @param tsfc
      * @param weightZeroFuel
-     * @return 
      */
-    public double calculateEnergyConsumption(double initialWeight, double timeFlight, double tsfc, double weightZeroFuel){
+    public void calculateEnergyConsumption(double initialWeight, double timeFlight, double tsfc, double weightZeroFuel){
         double finalWeight=AircraftAlgorithms.calculateFinalWeight(initialWeight, timeFlight, tsfc);
         //falta converter fuel para energia
-        return AircraftAlgorithms.calculateFuelUsed(initialWeight, finalWeight, weightZeroFuel);      
+        energyConsum= AircraftAlgorithms.calculateFuelUsed(initialWeight, finalWeight, weightZeroFuel);      
     }
      
     /**
      * Validates the result path
      * @return true if valid, false if not
      */
+    @Override
     public boolean validate() {
-        return Double.doubleToLongBits(result)!=0 && resultPath.isEmpty() &&
-                travellingTime!=0 && energyConsum!=0 && distance!=0;
+        boolean v1=Double.doubleToLongBits(result)!=0 && resultPath.isEmpty();
+        boolean v2=Double.doubleToLongBits(travellingTime)!=0 && 
+                Double.doubleToLongBits(energyConsum)!=0 && 
+                Double.doubleToLongBits(distance)!=0;
+        return v1 && v2;
     }
     
      /**
@@ -276,10 +239,10 @@ public class ResultPath {
             return true;
         }
         ResultPath otherResultPath = (ResultPath) otherObject;
-        return this.startNode.equals(otherResultPath.getStartNode()) &&
-                this.endNode.equals(otherResultPath.getEndNode()) &&
+        return super.getStartAirport().equals(otherResultPath.getStartAirport()) &&
+                super.getEndAirport().equals(otherResultPath.getEndAirport()) &&
                 this.resultPath.equals(otherResultPath.getResultPath()) &&
-                this.result==otherResultPath.getResult();
+                Double.doubleToLongBits(this.result)==Double.doubleToLongBits(otherResultPath.getResult());
     }
 
     @Override
@@ -287,9 +250,8 @@ public class ResultPath {
         int hash = 7;
         hash = 79 * hash + (int) (Double.doubleToLongBits(this.result) ^ (Double.doubleToLongBits(this.result) >>> 32));
         hash = 79 * hash + Objects.hashCode(this.resultPath);
-        hash = 79 * hash + Objects.hashCode(this.startNode);
-        hash = 79 * hash + Objects.hashCode(this.endNode);
+        hash = 79 * hash + Objects.hashCode(super.getStartAirport());
+        hash = 79 * hash + Objects.hashCode(super.getEndAirport());
         return hash;
-    }
-    
+    }   
 }

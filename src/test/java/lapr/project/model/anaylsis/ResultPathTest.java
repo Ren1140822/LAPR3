@@ -6,11 +6,10 @@
 package lapr.project.model.anaylsis;
 
 import java.util.LinkedList;
-import lapr.project.model.AirNetwork;
 import lapr.project.model.Airport;
 import lapr.project.model.Location;
 import lapr.project.model.Node;
-import lapr.project.model.lists.AirportList;
+import lapr.project.model.Project;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -94,7 +93,7 @@ public class ResultPathTest {
         
         ResultPath instance = new ResultPath(null, null, expResult, 0, 0, 0, 0);
    
-        LinkedList<Node> result = instance.getResultPath();
+        LinkedList<Node> result = (LinkedList<Node>) instance.getResultPath();
         assertEquals(expResult, result);
     }
 
@@ -105,10 +104,18 @@ public class ResultPathTest {
     @Test
     public void testGetStartNode() {
         System.out.println("getStartNode");
-        Node expResult=new Node("test1",0,0);
+        Node expResult=new Node("test1",20,0);
         Node node2=new Node("test2", 0,0);
-        ResultPath instance = new ResultPath(expResult,node2);
-        Node result = instance.getStartNode();
+        
+        Project p=new Project();
+        p.getAirNetwork().getNodeList().add(node2);
+        p.getAirNetwork().getNodeList().add(expResult);
+        
+        Airport startAirport=new Airport("test","","","", new Location(20,0,0));
+        Airport endAirport=new Airport("test2","","","", new Location(0,0,0));
+        
+        ResultPath instance = new ResultPath(startAirport, endAirport);
+        Node result = instance.getStartNode(p.getAirNetwork());
         assertEquals(expResult, result);
     }
 
@@ -119,9 +126,14 @@ public class ResultPathTest {
     public void testSetStartNode() {
         System.out.println("setStartNode");
         Node expResult=new Node("test1",0,0);
+        Airport airportResult=new Airport("","","","",new Location(0,0,0));
+        Project p=new Project();
+        p.getAirportList().getAirportList().add(airportResult);
+        p.getAirNetwork().getNodeList().add(expResult);
+        
         ResultPath instance = new ResultPath();
-        instance.setStartNode(expResult);
-        Node result = instance.getStartNode();
+        instance.setStartNode(expResult, p.getAirportList());
+        Node result = instance.getStartNode(p.getAirNetwork());
         assertEquals(expResult, result);
     }
 
@@ -131,10 +143,19 @@ public class ResultPathTest {
     @Test
     public void testGetEndNode() {
         System.out.println("getEndNode");
-        Node expResult=new Node("test1",0,0);
-        Node node2=new Node("test2", 0,0);
-        ResultPath instance = new ResultPath(node2,expResult);
-        Node result = instance.getEndNode();
+        Node expResult=new Node("test1",20,0);
+        Node node2=new Node("test2", 10,0);
+        
+        Project p=new Project();
+        p.getAirNetwork().getNodeList().add(node2);
+        p.getAirNetwork().getNodeList().add(expResult);
+        
+        Airport startAirport=new Airport("test","","","", new Location(10,0,0));
+        Airport endAirport=new Airport("test2","","","", new Location(20,0,0));
+        
+        ResultPath instance = new ResultPath(startAirport, endAirport);
+        Node result = instance.getEndNode(p.getAirNetwork());
+        assertEquals(expResult, result);
         assertEquals(expResult, result);
     }
 
@@ -144,10 +165,15 @@ public class ResultPathTest {
     @Test
     public void testSetEndNode() {
         System.out.println("setEndNode");
-        Node expResult=new Node("test1",0,0);
+        Node expResult=new Node("test1",10,0);
+        Airport airportResult=new Airport("","","","",new Location(10,0,0));
+        Project p=new Project();
+        p.getAirportList().getAirportList().add(airportResult);
+        p.getAirNetwork().getNodeList().add(expResult);
+        
         ResultPath instance = new ResultPath();
-        instance.setEndNode(expResult);
-        Node result = instance.getEndNode();
+        instance.setEndNode(expResult, p.getAirportList());
+        Node result = instance.getEndNode(p.getAirNetwork());
         assertEquals(expResult, result);
     }
 
@@ -232,20 +258,13 @@ public class ResultPathTest {
     @Test
     public void testGetStartAirport() {
         System.out.println("getStartAirport");
-        AirportList list = new AirportList();
+      
         Location locationTest=new Location(1,1,1);
         Airport test1=new Airport("airportTest", "", "", "", locationTest);
-        Node node1=new Node("nodeTest", 1, 1);
-        Node node2=new Node("nodeTest2", 2, 2);
-        list.getAirportList().add(test1);
-        
-        AirNetwork air=new AirNetwork();
-        air.getNodeList().add(node1);
-        air.getNodeList().add(node2);
-        
-        ResultPath instance=new ResultPath(node1, node2);
+
+        ResultPath instance=new ResultPath(test1, new Airport());
         Airport expResult = test1;
-        Airport result = instance.getStartAirport(list);
+        Airport result = instance.getStartAirport();
         assertEquals(expResult, result);
     }
 
@@ -255,20 +274,12 @@ public class ResultPathTest {
     @Test
     public void testGetEndAirport() {
         System.out.println("getEndAirport");
-        AirportList list = new AirportList();
-        Location locationTest=new Location(1,2,2);
+         Location locationTest=new Location(1,1,1);
         Airport test1=new Airport("airportTest", "", "", "", locationTest);
-        Node node1=new Node("nodeTest", 1, 1);
-        Node node2=new Node("nodeTest2", 1, 2);
-        list.getAirportList().add(test1);
-        
-        AirNetwork air=new AirNetwork();
-        air.getNodeList().add(node1);
-        air.getNodeList().add(node2);
-        
-        ResultPath instance=new ResultPath(node1, node2);
+
+        ResultPath instance=new ResultPath(new Airport(),test1);
         Airport expResult = test1;
-        Airport result = instance.getEndAirport(list);
+        Airport result = instance.getEndAirport();
         assertEquals(expResult, result);
     }
       

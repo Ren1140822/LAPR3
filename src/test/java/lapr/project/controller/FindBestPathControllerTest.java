@@ -18,8 +18,6 @@ import lapr.project.model.Node;
 import lapr.project.model.Project;
 import lapr.project.model.Segment;
 import lapr.project.model.Wind;
-import lapr.project.model.anaylsis.ResultPath;
-import lapr.project.model.anaylsis.ShortestPathResult;
 import lapr.project.model.anaylsis.Simulation;
 import lapr.project.model.lists.AirportList;
 import org.junit.After;
@@ -228,11 +226,11 @@ public class FindBestPathControllerTest {
         FindBestPathController instance = new FindBestPathController(p);
         instance.newSImulation();
         instance.createBestPathSimulation(startAirport, endAirport);
+       
         Simulation result =instance.getSimulation();
-        
+  
         Simulation expResult= new Simulation();
-        expResult.setStartAirport(startAirport);
-        expResult.setEndAirport(endAirport);
+        expResult.createBestPathSimulation(startAirport, endAirport);
         assertEquals(expResult, result);
     }
 
@@ -289,21 +287,34 @@ public class FindBestPathControllerTest {
         Segment segment2=new Segment("segmentTest2", "test1", "test2", direction,windTest);
         Segment segment3=new Segment("segmentTest3", "test2", "test3", direction, windTest);
         
-        AirNetwork airnetwork=new AirNetwork();
+        Project p=new Project();
+        AirNetwork airnetwork=p.getAirNetwork();
         airnetwork.getAirNetwork().insertVertex(startNode);
         airnetwork.getAirNetwork().insertVertex(intNode);
         airnetwork.getAirNetwork().insertVertex(endNode);
-
+        
+        airnetwork.getAirNetwork().insertEdge(startNode, endNode, segment1, 20);
         airnetwork.getAirNetwork().insertEdge(startNode, intNode, segment2, 10);
         airnetwork.getAirNetwork().insertEdge(intNode, endNode, segment3, 30);
-        airnetwork.getAirNetwork().insertEdge(startNode, endNode, segment1, 20);  
+  
         
-        ShortestPathResult instance = new ShortestPathResult(startNode, endNode);
-        instance.calculateBestPath(airnetwork);
+        FindBestPathController instance= new FindBestPathController(p);
+        p.getAirNetwork().getNodeList().add(startNode);
+        p.getAirNetwork().getNodeList().add(endNode);
+        p.getAirNetwork().getNodeList().add(intNode);
+        
+        Airport startAirport=new Airport("test1", "","","", new Location(40, 40,10));
+        Airport endAirport=new Airport("test2", "","","", new Location(50,70,10));
+        p.getAirportList().getAirportList().add(startAirport);
+        p.getAirportList().getAirportList().add(endAirport);
+        
+        instance.newSImulation();
+        instance.createBestPathSimulation(startAirport, endAirport);
+        instance.calculateShortesPath();
         LinkedList<Node> result=new LinkedList<>();
         result.add(startNode);
-        result.add(endNode);
-        assertEquals(instance.getResultPath(), result);
+        result.add(intNode);
+        assertEquals(instance.getSimulation().getShortestResultPath().getResultPath(), result);
     }
 
     /**

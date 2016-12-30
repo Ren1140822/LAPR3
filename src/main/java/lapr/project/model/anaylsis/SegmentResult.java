@@ -5,7 +5,6 @@
  */
 package lapr.project.model.anaylsis;
 
-import lapr.project.model.AircraftModel;
 import lapr.project.model.physics.AircraftAlgorithms;
 import lapr.project.model.physics.DragForce;
 import lapr.project.model.physics.LiftForce;
@@ -59,8 +58,15 @@ public class SegmentResult {
         return dragForce;
     }
     
+        /**
+     * @return the tsfc
+     */
+    public double getTsfc() {
+        return tsfc;
+    }
+    
     public void setTSFC(double tsfc){
-        this.setTsfc(tsfc);
+        this.tsfc=tsfc;
     }
     
     public void setRange(double tas, double tsfc, 
@@ -81,20 +87,6 @@ public class SegmentResult {
      */
     public void setDragForce(DragForce dragForce) {
         this.dragForce = dragForce;
-    }
-
-    /**
-     * @return the tsfc
-     */
-    public double getTsfc() {
-        return tsfc;
-    }
-
-    /**
-     * @param tsfc the tsfc to set
-     */
-    public void setTsfc(double tsfc) {
-        this.tsfc = tsfc;
     }
 
     /**

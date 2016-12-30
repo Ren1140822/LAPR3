@@ -93,14 +93,8 @@ public class FindBestPathController {
      * @return true if creates new simulation, false if start airport or
     end airport doesn´t exists
     */
-    public boolean createBestPathSimulation(Airport startAirport, Airport endAirport){
-        Node startNode=convertAirportToNode(startAirport);
-        Node endNode=convertAirportToNode(endAirport);
-        if(startNode!=null && endNode!=null){
-            project.getSimulationsList().getSimulation().createBestPathSimulation(project.getAirportList(), startNode, endNode);
-            return true;
-        }
-        return false;
+    public void createBestPathSimulation(Airport startAirport, Airport endAirport){
+        project.getSimulationsList().getSimulation().createBestPathSimulation(startAirport, endAirport);
     }   
     
     /**

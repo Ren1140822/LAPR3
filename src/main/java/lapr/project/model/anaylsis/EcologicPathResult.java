@@ -7,6 +7,7 @@ package lapr.project.model.anaylsis;
 
 import java.util.LinkedList;
 import lapr.project.model.AirNetwork;
+import lapr.project.model.Airport;
 import lapr.project.model.Node;
 
 import lapr.project.model.mapgraph.GraphAlgorithms;
@@ -16,17 +17,27 @@ import lapr.project.model.mapgraph.GraphAlgorithms;
  * @author DianaSilva
  */
 public class EcologicPathResult extends ResultPath{
-    
-    public EcologicPathResult(Node startNode, Node endNode){
-        super(startNode, endNode);
+    /**
+     * Constructor
+     */
+    public EcologicPathResult(){
+        super();
     }
- 
+    
+    public EcologicPathResult(Airport startAirport, Airport endAirport){
+        super(startAirport,endAirport);
+    }
+    
+    /**
+     * Calculates the ecologic best path
+     * @param airNetwork airnetwork of active project
+     */
     @Override
     public void calculateBestPath(AirNetwork airNetwork){
-        LinkedList<Node> ecologicPath=super.getResultPath();
+        LinkedList<Node> ecologicPath=(LinkedList<Node>)super.getResultPath();
         /**corrigir**/
         double res=GraphAlgorithms.shortestPath(airNetwork.getAirNetwork(), 
-                super.getStartNode(), super.getEndNode(), ecologicPath);
+                super.getStartNode(airNetwork), super.getEndNode(airNetwork), ecologicPath);
         super.setResult(res);
         super.setResultPath(ecologicPath);
     }    

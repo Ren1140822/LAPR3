@@ -6,6 +6,7 @@
 package lapr.project.model.anaylsis;
 
 import java.util.Objects;
+import lapr.project.model.AirNetwork;
 import lapr.project.model.Aircraft;
 import lapr.project.model.Airport;
 import lapr.project.model.Node;
@@ -77,6 +78,8 @@ public class Simulation{
      * Constructor
      */
     public Simulation(){
+        this.startAirport=new Airport();
+        this.endAirport=new Airport();
         this.passengers=(int) DEFAULT_VALUE;
         this.crew=(int) DEFAULT_VALUE;
         this.cargoLoad=DEFAULT_VALUE;
@@ -86,7 +89,24 @@ public class Simulation{
         counterCode++;
     }
     
-       /**
+    /**
+     * Constructor
+     * @param startAirport the origin of flight simulated
+     * @param endAirport the destination of flight simulated
+     */
+    public Simulation(Airport startAirport, Airport endAirport){
+        this.startAirport=startAirport;
+        this.endAirport=endAirport;
+        this.passengers=(int) DEFAULT_VALUE;
+        this.crew=(int) DEFAULT_VALUE;
+        this.cargoLoad=DEFAULT_VALUE;
+        this.totalWeight=DEFAULT_VALUE;
+        this.fuelWeight=DEFAULT_VALUE;
+        this.aircraft=new Aircraft();  
+        counterCode++;
+    }  
+    
+     /**
      * constructor
      * @param passengers number of passengers
      * @param crew number of crew members
@@ -96,6 +116,8 @@ public class Simulation{
      * @param aircraft aircraft 
      */
     public Simulation(int passengers, int crew, double cargoLoad, double totalWeight, double fuelWeight, Aircraft aircraft){
+        this.startAirport=new Airport();
+        this.endAirport=new Airport();
         this.passengers=passengers;
         this.crew=crew;
         this.cargoLoad=cargoLoad*1000;
@@ -224,6 +246,41 @@ public class Simulation{
         this.shortestResultPath = shortestResultPath;
     }
     
+      /**
+     * @return the startAirport
+     */
+    public Airport getStartAirport() {
+        return startAirport;
+    }
+
+    /**
+     * @param startAirport the startAirport to set
+     */
+    public void setStartAirport(Airport startAirport) {
+        this.startAirport = startAirport;
+    }
+
+    /**
+     * @return the endAirport
+     */
+    public Airport getEndAirport() {
+        return endAirport;
+    }
+
+    /**
+     * @param endAirport the endAirport to set
+     */
+    public void setEndAirport(Airport endAirport) {
+        this.endAirport = endAirport;
+    }
+
+    /**
+     * @return the counterCode
+     */
+    public int getCounterCode() {
+        return counterCode;
+    }
+    
     /**
      * Sets data needed to the simulation 
      * @param aircraft aircraft of flight
@@ -263,51 +320,60 @@ public class Simulation{
         this.fuelWeight = fuelWeight;
     }
   
-    
+    /**
+     * Get air density node
+     * @param airport
+     * @return 
+     */
     public double getAirdensityNode(Airport airport){
         return PhysicsAlgorithms.calculateAirDensity(1, 1);
     }
-   
+    
+    /**
+     * Gets the start node of simulated flight
+     * @param net airnetwork of active project
+     * @return start node
+     */
+    public Node getStartNode(AirNetwork net){
+        return net.getAirportNode(startAirport);
+    }
+
+      /**
+     * Gets the end node of simulated flight
+     * @param net airnetwork of active project
+     * @return end node
+     */
+    public Node getEndNode(AirNetwork net){
+        return net.getAirportNode(endAirport);
+    }
+    
+    /**
+     * Sets the start node of flight
+     * @param startNode origin of flight
+     * @param list airport list of active project
+     */
+    public void setStartNode(Node startNode, AirportList list){
+        this.startAirport=list.getAirportNode(startNode);
+    }
+    
+        /**
+     * Sets the start node of flight
+     * @param endNode destination of flight
+     * @param list airport list of active project
+     */
+    public void setEndNode(Node endNode, AirportList list){
+        this.endAirport=list.getAirportNode(endNode);
+    }
+    
      /**
      * Creates a best path simulation
-     * @param list airport list of project
-     * @param startNode origin of flight simulation
-     * @param endNode destination of flight simulation
+     * @param startAirport start airport of simulation
+     * @param endAirport end airport of simulation
      */
-    public void createBestPathSimulation(AirportList list, Node startNode,Node endNode){
-        this.startAirport=list.getAirportNode(startNode);
-        this.endAirport=list.getAirportNode(endNode);
-        this.shortestResultPath=new ShortestPathResult(startNode, endNode);
-        this.fastestResultPath=new FastestPathResult(startNode, endNode);
-        this.ecologicResultPath=new EcologicPathResult(startNode, endNode);
-    }
-
-    /**
-     * @return the startAirport
-     */
-    public Airport getStartAirport() {
-        return startAirport;
-    }
-
-    /**
-     * @param startAirport the startAirport to set
-     */
-    public void setStartAirport(Airport startAirport) {
-        this.startAirport = startAirport;
-    }
-
-    /**
-     * @return the endAirport
-     */
-    public Airport getEndAirport() {
-        return endAirport;
-    }
-
-    /**
-     * @param endAirport the endAirport to set
-     */
-    public void setEndAirport(Airport endAirport) {
-        this.endAirport = endAirport;
+    public void createBestPathSimulation(Airport startAirport, Airport endAirport){
+        this.shortestResultPath=new ShortestPathResult(startAirport,endAirport);
+        this.fastestResultPath=new FastestPathResult(startAirport, endAirport);
+        this.ecologicResultPath=new EcologicPathResult(startAirport,endAirport);
     }
     
     /**
@@ -338,7 +404,7 @@ public class Simulation{
      * @return the number of simulations created
      */
     public int getNumberSimulationsCreated() {
-        return counterCode;
+        return getCounterCode();
     }
     
      /**
@@ -357,12 +423,14 @@ public class Simulation{
         }
         Simulation otherSimulation = (Simulation) otherObject;
         return this.aircraft.equals(otherSimulation.getAircraft()) &&
-                this.startAirport.equals(otherSimulation.getStartAirport()) &&
-                 this.endAirport.equals(otherSimulation.getEndAirport()) &&
+                this.getStartAirport().equals(otherSimulation.getStartAirport()) &&
+                this.getEndAirport().equals(otherSimulation.getEndAirport()) &&
                 this.passengers==otherSimulation.getPassengers() &&
                 this.crew==otherSimulation.getCrew() &&
-                this.cargoLoad==otherSimulation.getCargoLoad() &&
-                this.fuelWeight==otherSimulation.getFuelWeight();              
+                Double.doubleToLongBits(this.cargoLoad)==
+                Double.doubleToLongBits(otherSimulation.getCargoLoad()) &&
+                Double.doubleToLongBits(this.fuelWeight)==
+                Double.doubleToLongBits(otherSimulation.getFuelWeight());              
     }
 
     @Override
@@ -373,8 +441,8 @@ public class Simulation{
         hash = 67 * hash + (int) (Double.doubleToLongBits(this.cargoLoad) ^ (Double.doubleToLongBits(this.cargoLoad) >>> 32));
         hash = 67 * hash + (int) (Double.doubleToLongBits(this.fuelWeight) ^ (Double.doubleToLongBits(this.fuelWeight) >>> 32));
         hash = 67 * hash + Objects.hashCode(this.aircraft);
-        hash = 67 * hash + Objects.hashCode(this.startAirport);
-        hash = 67 * hash + Objects.hashCode(this.endAirport);
+        hash = 67 * hash + Objects.hashCode(this.getStartAirport());
+        hash = 67 * hash + Objects.hashCode(this.getEndAirport());
         return hash;
     }
 }

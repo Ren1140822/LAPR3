@@ -398,5 +398,29 @@ public class ProjectTest {
         result.add(airport3);
         assertEquals(result, instance.getPossibleEndAirports(startNode));
     }
-    
+
+    /**
+     * Test of setAirNetwork method, of class Project.
+     */
+    @Test
+    public void testSetAirNetwork() {
+        System.out.println("setAirNetwork");
+        AirNetwork expResult = new AirNetwork();
+        Project instance = new Project();
+        instance.setAirNetwork(expResult);
+       assertEquals(expResult, instance.getAirNetwork());
+    }
+
+    /**
+     * Test of setAircraftModelList method, of class Project.
+     */
+    @Test
+    public void testSetAircraftModelList() {
+        System.out.println("setAircraftModelList");
+        AircraftModelList expResult = new AircraftModelList();
+        expResult.getModelList().add(new AircraftModel());
+        Project instance = new Project();
+        instance.setAircraftModelList(expResult);
+        assertEquals(expResult, instance.getAircraftModelList());
+    } 
 }
