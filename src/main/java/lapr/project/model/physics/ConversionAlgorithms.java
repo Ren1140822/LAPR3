@@ -31,6 +31,11 @@ public class ConversionAlgorithms {
     private static final double LBF_G_CONSTANT=453.592;
     
     /**
+     * Gallons to liters (1galon=3.785411784
+     */
+    private static final double GAL_L=3.785411784;
+    
+    /**
      * Converts meters to feets
      * @param meters value in meters
      * @return converted value (feets)
@@ -68,5 +73,9 @@ public class ConversionAlgorithms {
      */
     public static double convertLbfGram(double lbf){
         return lbf*LBF_G_CONSTANT;
+    }
+    
+    public static double convertGallonsLit(double gal){
+        return gal*GAL_L;
     }
 }

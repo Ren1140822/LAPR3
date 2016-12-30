@@ -30,6 +30,8 @@ public class AircraftAlgorithms {
      */
     private static final double AIR_DENSITY_SEA=1.225*1000;
     
+    private static final double mEmpiricalCoefficient=0.90;
+    
       /**
      * Calculates the velocity of aircraft based on aircraft mass
      * @param velocityRef reference velocity
@@ -245,6 +247,6 @@ public class AircraftAlgorithms {
     }
     
     public static double calculateThrust(double airDensity){
-        return THRUST_SEA_LEVEL*Math.pow((airDensity/AIR_DENSITY_SEA),0.90);   
+        return THRUST_SEA_LEVEL*Math.pow((airDensity/AIR_DENSITY_SEA),mEmpiricalCoefficient);   
     }
 }
