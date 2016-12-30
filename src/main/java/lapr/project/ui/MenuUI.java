@@ -39,16 +39,14 @@ import lapr.project.model.Project;
  */
 public class MenuUI extends JFrame{
     
-    private Project project;
     private MenuUI frame;
     private JButton open;
     private JButton create;
     private JButton exit;
     
-    public MenuUI(Project project){
+    public MenuUI(){
         super("AirNetwork Projects Simulator");
         
-        this.project = project;
         frame = MenuUI.this;
         
         createComponents();        
@@ -283,11 +281,11 @@ public class MenuUI extends JFrame{
     }
     
     private void open(){
-        MenuProjectUI menuproj = new MenuProjectUI(project,frame);
+        OpenProjectUI openproj = new OpenProjectUI(frame);
     }
     
     private void create(){
-         CreateProjectUI createproj = new CreateProjectUI(project, frame);
+         CreateProjectUI createproj = new CreateProjectUI(frame);
     }
     
     private void finish() {

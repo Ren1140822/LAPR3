@@ -24,8 +24,10 @@ import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.KeyStroke;
+import static javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 import lapr.project.model.Project;
@@ -44,9 +46,9 @@ public class MenuProjectUI extends JDialog {
     private JButton importxml;
     private JButton back;
 
-    public MenuProjectUI(Project project, JFrame frame) {
+    public MenuProjectUI(Project project, JDialog dialog) {
 
-        super(frame, "Project: " + project.getName(), true);
+        super(dialog, "Project: " + project.getName(), true);
 
         this.project = project;
 
@@ -325,7 +327,16 @@ public class MenuProjectUI extends JDialog {
     }
 
     private void closeBack() {
-        dispose();
+        String[] op = {"Yes", "No"};
+        String question = "Close Project " + project.getName() +"?";
+        int opcao = JOptionPane.showOptionDialog(MenuProjectUI.this, question,
+                "Close Project?", JOptionPane.YES_NO_OPTION,
+                JOptionPane.QUESTION_MESSAGE, null, op, op[0]);
+        if (opcao == JOptionPane.YES_OPTION) {
+            dispose();
+        } else {
+            setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+        }        
     }
 
 }

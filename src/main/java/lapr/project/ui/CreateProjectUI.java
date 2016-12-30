@@ -44,11 +44,9 @@ public class CreateProjectUI extends JDialog {
     private JButton back;
     private JButton importdata;
     
-    public CreateProjectUI(Project project, JFrame dialog){
+    public CreateProjectUI(JFrame dialog){
         
         super(dialog, "Create Project", true);    
-
-        this.project = project;
 
         createComponents(); 
 
@@ -202,8 +200,9 @@ public class CreateProjectUI extends JDialog {
     
     private boolean create(){
         // implements controller and validate
+        project = new Project();// retirar depois de concluido o controller
         
-        return false;
+        return true;
     }
     
     private void clean(){

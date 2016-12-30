@@ -20,7 +20,6 @@ class Main {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        Project p = new Project();
-        MenuUI ui = new MenuUI(p);
+        MenuUI ui = new MenuUI();
     }
 }
