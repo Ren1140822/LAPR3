@@ -11,7 +11,6 @@ import java.util.Objects;
 import lapr.project.model.AirNetwork;
 import lapr.project.model.Airport;
 import lapr.project.model.Node;
-import lapr.project.model.lists.AirportList;
 import lapr.project.model.physics.AircraftAlgorithms;
 
 /**
@@ -178,12 +177,7 @@ public class ResultPath extends Simulation {
      * @param airNetwork airnetwork of active project
      */
     public void calculateBestPath(AirNetwork airNetwork){
-        try{
-            throw new UnsupportedOperationException("Invalid operation for "
-                    + "superclass.");
-        } catch(java.lang.UnsupportedOperationException e){
-            System.out.println("Invalid operation for superclass");
-        }
+        result=0;
     } 
 
      /**
