@@ -51,7 +51,8 @@ public class ProjectTest {
     @Test
     public void testGetAircraftList() {
         System.out.println("getAircraftList");
-        Project instance = new Project();
+        Project instance2 = new Project();
+        Project instance = new Project(instance2);
         AircraftList expResult = new AircraftList();
         instance.setAircraftList(expResult);
         AircraftList result = instance.getAircraftList();
@@ -65,7 +66,9 @@ public class ProjectTest {
     public void testSetAircraftList() {
         System.out.println("setAircraftList");
         AircraftList aircraftList = new AircraftList();
-        Project instance = new Project();
+        Project instance = new Project(99, "teste", "teste", new AircraftList(), 
+                new AirNetwork(), new AirportList(), new CompareResultsList(), 
+                new AircraftModelList(), new SimulationsList());
         instance.setAircraftList(aircraftList);
     }
 
