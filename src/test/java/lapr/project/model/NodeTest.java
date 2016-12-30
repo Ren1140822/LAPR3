@@ -43,7 +43,7 @@ public class NodeTest {
     @Test
     public void testGetId() {
         System.out.println("getId");
-        Node instance = new Node();
+        Node instance = new Node(new Node());
         instance.setId("idteste");
         String expResult = "idteste";
         String result = instance.getId();

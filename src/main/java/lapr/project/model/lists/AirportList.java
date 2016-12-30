@@ -74,9 +74,9 @@ public class AirportList implements Serializable{
         List<String> listString = new LinkedList<>();
         List<Airport> list = airportsList;
 
-        list.stream().forEach((air) -> {
+        for(Airport air : list){
             listString.add(air.toString());
-        });
+        }
         return listString;
     }
     

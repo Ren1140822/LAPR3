@@ -18,7 +18,7 @@ import org.junit.Test;
  */
 public class AirportTest {
 
-    Airport instance = new Airport();
+    Airport instance2 = new Airport();
 
     public AirportTest() {
     }
@@ -45,7 +45,7 @@ public class AirportTest {
     @Test
     public void testGetName() {
         System.out.println("getName");
-        Airport instance = this.instance;
+        Airport instance = this.instance2;
         String expResult = "No name.";
         String result = instance.getName();
         assertEquals(expResult, result);
@@ -59,7 +59,7 @@ public class AirportTest {
     public void testSetName() {
         System.out.println("setName");
         String name = "newname";
-        Airport instance = new Airport();
+        Airport instance = new Airport(new Airport());
         instance.setName(name);
         assertEquals(instance.getName(), "newname");
     }

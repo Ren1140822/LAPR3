@@ -7,6 +7,7 @@ package lapr.project.model.lists;
 
 import java.util.LinkedList;
 import java.util.List;
+import javafx.scene.shape.Line;
 import lapr.project.model.Airport;
 import lapr.project.model.Location;
 import lapr.project.model.Node;
@@ -22,8 +23,6 @@ import org.junit.Test;
  * @author Renato Oliveira 1140822@isep.ipp.pt
  */
 public class AirportListTest {
-
-    AirportList instance = new AirportList();
 
     public AirportListTest() {
     }
@@ -50,7 +49,7 @@ public class AirportListTest {
     @Test
     public void testGetAirportList() {
         System.out.println("getAirportList");
-        AirportList instance = new AirportList();
+        AirportList instance = new AirportList(new AirportList());
         List<Airport> expResult = new LinkedList<Airport>();
         List<Airport> result = instance.getAirportList();
         assertEquals(expResult, result);
@@ -63,9 +62,9 @@ public class AirportListTest {
     @Test
     public void testSetAirportList() {
         System.out.println("setAirportList");
-        List<Airport> airportList = new LinkedList<Airport>();
+        List<Airport> airportList = new LinkedList<>();
         airportList.add(new Airport());
-        AirportList instance = new AirportList();
+        AirportList instance = new AirportList(new LinkedList<>());
         instance.setAirportList(airportList);
         List<Airport> result = instance.getAirportList();
         assertEquals(airportList, result);
@@ -138,6 +137,24 @@ public class AirportListTest {
         Airport result = instanceTest.getAirportNode(nodeTest);
         assertEquals(expResult, result);
         
+    }
+
+    /**
+     * Test of getAirportListString method, of class AirportList.
+     */
+    @Test
+    public void testGetAirportListString() {
+        System.out.println("getAirportListString");
+        AirportList instance = new AirportList();
+        instance.newAirport();
+        instance.setAirportData("TESTE", "name", "town", "country", 10, 10, 10);
+        instance.saveAirport();
+        List<String> expResult = new LinkedList<>();
+        for(Airport air : instance.getAirportList()){
+            expResult.add(air.toString());
+        }
+        List<String> result = instance.getAirportListString();
+        assertEquals(expResult, result);
     }
 
 }

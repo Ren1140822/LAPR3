@@ -43,7 +43,7 @@ public class LocationTest {
     @Test
     public void testGetLatitude() {
         System.out.println("getLatitude");
-        Location instance = new Location();
+        Location instance = new Location(new Location());
         double expResult = 0.0;
         double result = instance.getLatitude();
         assertEquals(expResult, result, 0.0);

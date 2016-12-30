@@ -47,7 +47,7 @@ public class AircraftModelListTest {
     @Test
     public void testGetModelList() {
         System.out.println("getModelList");
-        AircraftModelList instance = new AircraftModelList();
+        AircraftModelList instance = new AircraftModelList(new LinkedList<>());
         List<AircraftModel> expResult = new LinkedList<>();
         instance.setModelList(expResult);
         List<AircraftModel> result = instance.getModelList();

@@ -180,5 +180,47 @@ public class AircraftTest {
         assertEquals(expResult, result);
   
     }
-    
+
+    /**
+     * Test of hashCode method, of class Aircraft.
+     */
+    @Test
+    public void testHashCode() {
+        System.out.println("hashCode");
+        Aircraft instance = new Aircraft();
+        int expResult = 7;
+        expResult = expResult *79 + instance.getRegistration().hashCode();
+        expResult = expResult *79 + instance.getCompany().hashCode();
+        expResult = expResult *79 + instance.getCabinConfig().hashCode();
+        expResult = expResult *79 + instance.getNrOfCrewElements();
+        expResult = expResult *79 + instance.getAircraftModel().hashCode();
+        int result = instance.hashCode();
+        assertEquals(expResult, result);
+    }
+
+    /**
+     * Test of getAircraftModel method, of class Aircraft.
+     */
+    @Test
+    public void testGetAircraftModel() {
+        System.out.println("getAircraftModel");
+        Aircraft instance = new Aircraft();
+        AircraftModel expResult = new AircraftModel(new AircraftModel());
+        AircraftModel result = instance.getAircraftModel();
+        assertEquals(expResult, result);
+    }
+
+    /**
+     * Test of setAircraftModel method, of class Aircraft.
+     */
+    @Test
+    public void testSetAircraftModel() {
+        System.out.println("setAircraftModel");
+        AircraftModel aircraftModel = new AircraftModel("id", "description", "maker", "passenger", 
+                new Motorization(), 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10);
+        Aircraft instance = new Aircraft();
+        instance.setAircraftModel(aircraftModel);
+
+    }
+
 }

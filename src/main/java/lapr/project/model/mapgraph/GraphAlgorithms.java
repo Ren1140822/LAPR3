@@ -58,15 +58,7 @@ public class GraphAlgorithms {
    * @param qdfs queue with vertices of depth-first search
    */
     private static<V,E> void DepthFirstSearch(Graph<V,E> g, V vOrig, boolean[] visited, LinkedList<V> qdfs){
-        
-//        knownVertices[index] = true;                              
-//        for (int i = 0 ; i < graph.numVertices ; i++) {     
-//            if(graph.edgeMatrix[index][i] != null && knownVertices[i] == false){
-//                verticesQueue.add(graph.vertices.get(i));
-//                DFS(graph, i, knownVertices, verticesQueue);
-//            }
-//        }
-//        
+
         visited[g.getKey(vOrig)]=true;
         for(Edge<V,E> edge: g.outgoingEdges(vOrig)){
             V vAdj= g.opposite(vOrig, edge);
@@ -79,8 +71,10 @@ public class GraphAlgorithms {
     }  
   
    /**
+     * @param <V>
+     * @param <E>
    * @param g Graph instance
-   * @param vInf information of the Vertex that will be the source of the search
+     * @param vert
    * @return qdfs a queue with the vertices of depth-first search 
    */
     public static<V,E> LinkedList<V> DepthFirstSearch(Graph<V,E> g, V vert){
@@ -89,7 +83,7 @@ public class GraphAlgorithms {
            return null;
        }
        
-       LinkedList<V> qdfs = new LinkedList<V>();
+       LinkedList<V> qdfs = new LinkedList<>();
        qdfs.add(vert);
        boolean [] knownVertices = new boolean[g.numVertices()];
        DepthFirstSearch(g, vert, knownVertices, qdfs);

@@ -43,7 +43,7 @@ public class SegmentTest {
     @Test
     public void testGetId() {
         System.out.println("getId");
-        Segment instance = new Segment();
+        Segment instance = new Segment(new Segment());
         instance.setId("teste");
         String expResult = "teste";
         String result = instance.getId();

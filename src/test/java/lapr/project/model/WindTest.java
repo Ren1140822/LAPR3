@@ -43,7 +43,7 @@ public class WindTest {
     @Test
     public void testGetWindIntensity() {
         System.out.println("getWindIntensity");
-        Wind instance = new Wind();
+        Wind instance = new Wind(new Wind());
         instance.setWindIntensity(90);
         int expResult = 90;
         int result = instance.getWindIntensity();

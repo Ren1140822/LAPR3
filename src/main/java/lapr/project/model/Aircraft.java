@@ -104,11 +104,11 @@ public class Aircraft implements Serializable {
     @Override
     public int hashCode() {
         int hash = 7;
-        hash = 79 * hash + Objects.hashCode(this.registration);
-        hash = 79 * hash + Objects.hashCode(this.company);
-        hash = 79 * hash + Objects.hashCode(this.cabinConfig);
+        hash = 79 * hash + this.registration.hashCode();
+        hash = 79 * hash + this.company.hashCode();
+        hash = 79 * hash + this.cabinConfig.hashCode();
         hash = 79 * hash + this.nrOfCrewElements;
-        hash = 79 * hash + Objects.hashCode(this.aircraftModel);
+        hash = 79 * hash + this.aircraftModel.hashCode();
         return hash;
     }
 
