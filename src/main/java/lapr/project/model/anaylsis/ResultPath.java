@@ -6,6 +6,7 @@
 package lapr.project.model.anaylsis;
 
 import java.util.LinkedList;
+import java.util.Objects;
 import lapr.project.model.AirNetwork;
 import lapr.project.model.Airport;
 import lapr.project.model.Node;
@@ -16,14 +17,14 @@ import lapr.project.model.physics.AircraftAlgorithms;
  * The class to stores and manage analysis results of simulation
  * @author Diana Silva
  */
-public class ResultPath extends Simulation{
+public class ResultPath {
     /**
-     * Value of result path
+     * Value of result path calculated
      */
     private double result; 
     
     /**
-     * Path result
+     * Path result of best path calculated
      */
     LinkedList<Node> resultPath=new LinkedList<>();
     
@@ -83,6 +84,13 @@ public class ResultPath extends Simulation{
     
      /**
      * Constructor
+     * @param startNode startNode of flight
+     * @param endNode endNode of flight
+     * @param resultPath result path of best path calculated
+     * @param distance distance of best path calculated
+     * @param energyConsum energy consume of best path calculated
+     * @param travellingTime travelling time of best path calculated
+     * @param result result of best path
      */
     public ResultPath(Node startNode, Node endNode, LinkedList resultPath, 
             double distance, double energyConsum, double travellingTime,
@@ -243,8 +251,45 @@ public class ResultPath extends Simulation{
         //falta converter fuel para energia
         return AircraftAlgorithms.calculateFuelUsed(initialWeight, finalWeight, weightZeroFuel);      
     }
-        
+     
+    /**
+     * Validates the result path
+     * @return true if valid, false if not
+     */
     public boolean validate() {
-        return Double.doubleToLongBits(result)!=0 && resultPath.isEmpty();
+        return Double.doubleToLongBits(result)!=0 && resultPath.isEmpty() &&
+                travellingTime!=0 && energyConsum!=0 && distance!=0;
     }
+    
+     /**
+     * Checks if two object are equal.
+     *
+     * @param otherObject the other object
+     * @return true if equal
+     */
+    @Override
+    public boolean equals(Object otherObject) {
+        if (otherObject == null || this.getClass() != otherObject.getClass()) {
+            return false;
+        }
+        if (this == otherObject) {
+            return true;
+        }
+        ResultPath otherResultPath = (ResultPath) otherObject;
+        return this.startNode.equals(otherResultPath.getStartNode()) &&
+                this.endNode.equals(otherResultPath.getEndNode()) &&
+                this.resultPath.equals(otherResultPath.getResultPath()) &&
+                this.result==otherResultPath.getResult();
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 79 * hash + (int) (Double.doubleToLongBits(this.result) ^ (Double.doubleToLongBits(this.result) >>> 32));
+        hash = 79 * hash + Objects.hashCode(this.resultPath);
+        hash = 79 * hash + Objects.hashCode(this.startNode);
+        hash = 79 * hash + Objects.hashCode(this.endNode);
+        return hash;
+    }
+    
 }

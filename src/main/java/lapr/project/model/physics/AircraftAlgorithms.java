@@ -21,6 +21,15 @@ public class AircraftAlgorithms {
      */
     private static final double WEIGHT_PER_PERSON=88450.5;
     
+    /**
+     * Sea level static thrust at takeoff (g)
+     */
+    private static final double THRUST_SEA_LEVEL=7711.07029*1000;
+    /**
+     * Density at sea level standart - g/m3
+     */
+    private static final double AIR_DENSITY_SEA=1.225*1000;
+    
       /**
      * Calculates the velocity of aircraft based on aircraft mass
      * @param velocityRef reference velocity
@@ -49,7 +58,7 @@ public class AircraftAlgorithms {
      * @param coefDrag drag coefficient
      * @param airDensity air density (kg/m3)
      * @param velocity velocity of aircraft (m/s)
-     * @param area reference area of the aircraft (m2)
+     * @param area area of the wings
      * @return drag force
      */
     public double calculateDragForce(double coefDrag, double airDensity, double velocity, double area){
@@ -73,13 +82,14 @@ public class AircraftAlgorithms {
      * Calculates the drag coefficient of aircraft
      * @param cDrag0 drag coefficient
      * @param liftCoef lift coefficient
-     * @param area area
+     * @param wingArea wing area (m2)
+     * @param wingSpan wing span (m)
      * @param e
      * @return lift coefficient
      */
-    public static double calculateDragCoefficient(double cDrag0, double liftCoef, double area, double e){
+    public static double calculateDragCoefficient(double cDrag0, double liftCoef, double wingArea, double wingSpan, double e){
        //R=287.06J/KgK  
-        return cDrag0 + (Math.pow(liftCoef,2)/ Math.PI*area*e);
+        return cDrag0 + (Math.pow(liftCoef,2)/ Math.PI*(Math.pow(wingSpan, 2)/wingArea)*e);
     }
     
     /**
@@ -232,5 +242,9 @@ public class AircraftAlgorithms {
      */
     public static double calculateFuelUsed(double initialWeight, double finalWeight,double weightZeroFuel){
         return finalWeight-initialWeight-weightZeroFuel;
+    }
+    
+    public static double calculateThrust(double airDensity){
+        return THRUST_SEA_LEVEL*Math.pow((airDensity/AIR_DENSITY_SEA),0.90);   
     }
 }

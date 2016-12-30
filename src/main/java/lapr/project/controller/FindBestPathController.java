@@ -12,6 +12,7 @@ import lapr.project.model.Airport;
 import lapr.project.model.Node;
 import lapr.project.model.Project;
 import lapr.project.model.anaylsis.ResultPath;
+import lapr.project.model.anaylsis.Simulation;
 
 /**
  *
@@ -185,5 +186,9 @@ public class FindBestPathController {
      */
     public boolean saveSimulation(){
         return project.getSimulationsList().saveSimulation();
+    }
+    
+    public Simulation getSimulation(){
+        return project.getSimulationsList().getSimulation();
     }
 }

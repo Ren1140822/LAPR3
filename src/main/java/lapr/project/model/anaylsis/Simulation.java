@@ -5,6 +5,7 @@
  */
 package lapr.project.model.anaylsis;
 
+import java.util.Objects;
 import lapr.project.model.Aircraft;
 import lapr.project.model.Airport;
 import lapr.project.model.Node;
@@ -68,7 +69,12 @@ public class Simulation{
     private Airport endAirport;
     
     /**
-     * constructor
+     * Id of simulation
+     */
+    private int counterCode=0;
+    
+    /**
+     * Constructor
      */
     public Simulation(){
         this.passengers=(int) DEFAULT_VALUE;
@@ -77,6 +83,26 @@ public class Simulation{
         this.totalWeight=DEFAULT_VALUE;
         this.fuelWeight=DEFAULT_VALUE;
         this.aircraft=new Aircraft();  
+        counterCode++;
+    }
+    
+       /**
+     * constructor
+     * @param passengers number of passengers
+     * @param crew number of crew members
+     * @param cargoLoad cargo load (kg)
+     * @param totalWeight total weight (kg)
+     * @param fuelWeight fuel weight (kg)
+     * @param aircraft aircraft 
+     */
+    public Simulation(int passengers, int crew, double cargoLoad, double totalWeight, double fuelWeight, Aircraft aircraft){
+        this.passengers=passengers;
+        this.crew=crew;
+        this.cargoLoad=cargoLoad*1000;
+        this.totalWeight=totalWeight*1000;
+        this.fuelWeight=fuelWeight*1000;
+        this.aircraft=aircraft; 
+        counterCode++;
  }
 
     /** Gets the number of passengers
@@ -243,8 +269,8 @@ public class Simulation{
     }
    
      /**
-     * Creates a best path simullation
-     * @param air airnetwork
+     * Creates a best path simulation
+     * @param list airport list of project
      * @param startNode origin of flight simulation
      * @param endNode destination of flight simulation
      */
@@ -307,4 +333,48 @@ public class Simulation{
                 && Double.doubleToLongBits(totalWeight)<=aircraft.getAircraftModel().getMTOW() &&
                 aircraft.validate();
      }
+
+    /**
+     * @return the number of simulations created
+     */
+    public int getNumberSimulationsCreated() {
+        return counterCode;
+    }
+    
+     /**
+     * Checks if two object are equal.
+     *
+     * @param otherObject the other object
+     * @return true if equal
+     */
+    @Override
+    public boolean equals(Object otherObject) {
+        if (otherObject == null || this.getClass() != otherObject.getClass()) {
+            return false;
+        }
+        if (this == otherObject) {
+            return true;
+        }
+        Simulation otherSimulation = (Simulation) otherObject;
+        return this.aircraft.equals(otherSimulation.getAircraft()) &&
+                this.startAirport.equals(otherSimulation.getStartAirport()) &&
+                 this.endAirport.equals(otherSimulation.getEndAirport()) &&
+                this.passengers==otherSimulation.getPassengers() &&
+                this.crew==otherSimulation.getCrew() &&
+                this.cargoLoad==otherSimulation.getCargoLoad() &&
+                this.fuelWeight==otherSimulation.getFuelWeight();              
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 5;
+        hash = 67 * hash + this.passengers;
+        hash = 67 * hash + this.crew;
+        hash = 67 * hash + (int) (Double.doubleToLongBits(this.cargoLoad) ^ (Double.doubleToLongBits(this.cargoLoad) >>> 32));
+        hash = 67 * hash + (int) (Double.doubleToLongBits(this.fuelWeight) ^ (Double.doubleToLongBits(this.fuelWeight) >>> 32));
+        hash = 67 * hash + Objects.hashCode(this.aircraft);
+        hash = 67 * hash + Objects.hashCode(this.startAirport);
+        hash = 67 * hash + Objects.hashCode(this.endAirport);
+        return hash;
+    }
 }

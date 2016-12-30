@@ -22,9 +22,11 @@ public class SimulationsList implements Serializable {
      */
     private transient List<Simulation> simulationsList;
   
-       
+    /**
+     * The simulation created
+     */   
     private transient Simulation simulation;
-    
+   
     
     /**
      * Constructor
@@ -67,6 +69,7 @@ public class SimulationsList implements Serializable {
      */
     public void newSimulation(){
         simulation= new Simulation();
+        
     }
     
     /**

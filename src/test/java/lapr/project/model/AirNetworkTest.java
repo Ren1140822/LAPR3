@@ -289,7 +289,6 @@ public class AirNetworkTest {
     @Test
     public void testGetPossibleEndNodes() {
         System.out.println("getPossibleEndNodes");
-        System.out.println("calculateBestPath");
         Node startNode=new Node("test1", 40, 40);
         Node intNode=new Node("test2", 50, 70);
         Node endNode=new Node("test3", 40, 80);
