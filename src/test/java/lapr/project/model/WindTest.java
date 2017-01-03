@@ -45,9 +45,9 @@ public class WindTest {
         System.out.println("getWindIntensity");
         Wind instance = new Wind(new Wind());
         instance.setWindIntensity(90);
-        int expResult = 90;
-        int result = instance.getWindIntensity();
-        assertEquals(expResult, result);
+        double expResult = 90;
+        double result = instance.getWindIntensity();
+        assertEquals(expResult, result,0.0);
     }
 
     /**
@@ -56,7 +56,7 @@ public class WindTest {
     @Test
     public void testSetWindIntensity() {
         System.out.println("setWindIntensity");
-        int windIntensity = 90;
+        double windIntensity = 90;
         Wind instance = new Wind();
         instance.setWindIntensity(windIntensity);
     }
@@ -69,9 +69,9 @@ public class WindTest {
         System.out.println("getWindDirection");
         Wind instance = new Wind();
         instance.setWindDirection(20);
-        int expResult = 20;
-        int result = instance.getWindDirection();
-        assertEquals(expResult, result);
+        double expResult = 20;
+        double result = instance.getWindDirection();
+        assertEquals(expResult, result,0.0);
     }
 
     /**
@@ -80,7 +80,7 @@ public class WindTest {
     @Test
     public void testSetWindDirection() {
         System.out.println("setWindDirection");
-        int windDirection = 20;
+        double windDirection = 20;
         Wind instance = new Wind();
         instance.setWindDirection(windDirection);
     }
@@ -164,6 +164,29 @@ public class WindTest {
         int expResult = 6627;
         int result = instance.hashCode();
         assertEquals(expResult, result);
+    }
+
+    /**
+     * Test of getWindIntensity_ method, of class Wind.
+     */
+    @Test
+    public void testGetWindIntensity_() {
+        System.out.println("getWindIntensity_");
+        Wind instance = new Wind();
+        String expResult = "0.0";
+        String result = instance.getWindIntensity_();
+        assertEquals(expResult, result);
+    }
+
+    /**
+     * Test of setWindIntensity_ method, of class Wind.
+     */
+    @Test
+    public void testSetWindIntensity_() {
+        System.out.println("setWindIntensity_");
+        String windInt = "10.0";
+        Wind instance = new Wind();
+        instance.setWindIntensity_(windInt);
     }
     
 }

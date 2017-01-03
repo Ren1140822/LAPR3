@@ -30,7 +30,7 @@ public class Location implements Serializable{
     @XmlElement(name="longitude")
     private double longitude;
     @XmlTransient
-    private int altitude;
+    private double altitude;
     
     /**
      * Default values.
@@ -40,7 +40,7 @@ public class Location implements Serializable{
     @XmlTransient
     private final double DEFAULT_LONG = 0.0;
     @XmlTransient
-    private final int DEFAULT_ALTITUDE = 0;
+    private final double DEFAULT_ALTITUDE = 0;
     
     /**
      * Default constructor.
@@ -58,7 +58,7 @@ public class Location implements Serializable{
      * @param longitude the longitude of the airport
      * @param altitude the alt of the airport
      */
-    public Location(double latitude, double longitude, int altitude) {
+    public Location(double latitude, double longitude, double altitude) {
         this.latitude = latitude;
         this.longitude = longitude;
         this.altitude = altitude;
@@ -117,7 +117,7 @@ public class Location implements Serializable{
      *
      * @return the alt
      */
-    public int getAltitude() {
+    public double getAltitude() {
         return altitude;
     }
 
@@ -126,7 +126,7 @@ public class Location implements Serializable{
      *
      * @param altitude the alt to set
      */
-    public void setAltitude(int altitude) {
+    public void setAltitude(double altitude) {
         this.altitude = altitude;
     }
     
@@ -145,7 +145,7 @@ public class Location implements Serializable{
      * @param altitude the alt to set
      */
     private void setAltitude_(String alt) {
-        this.altitude = (int) StringToSIUnitConverter.length(alt);
+        this.altitude = (double) StringToSIUnitConverter.length(alt);
     }
     
     /**
@@ -183,7 +183,7 @@ public class Location implements Serializable{
         int hash = 3;
         hash = 29 * hash + Objects.hashCode(this.latitude);
         hash = 29 * hash + Objects.hashCode(this.longitude);
-        hash = 29 * hash + this.altitude;
+        hash = 29 * hash + Objects.hashCode(this.altitude);
         return hash;
     }
     
@@ -196,8 +196,6 @@ public class Location implements Serializable{
         boolean lat = !(latitude < -90 || latitude > 90);
         //longitude => min:-180 max:180
         boolean lon = !(longitude < -180 || longitude > 180);
-        //altitude >= 0
-        boolean alt = this.altitude >= 0;
-        return lat && lon && alt;
+        return lat && lon;
     }
 }

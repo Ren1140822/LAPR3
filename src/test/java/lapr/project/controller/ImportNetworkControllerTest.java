@@ -49,7 +49,6 @@ public class ImportNetworkControllerTest {
     public void testImportXMLNetwork() throws Exception {
         Project p = new Project();
         System.out.println("importXMLNetwork");
-//        File file = new File("src/main/resources/TestSet01a_Network.xml");
         File file = new File("src/main/resources/TestSet02_Network.xml");
         ImportNetworkController instance = new ImportNetworkController(p);
         boolean expResult = true;

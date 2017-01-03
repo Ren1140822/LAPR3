@@ -9,7 +9,7 @@
             <motor_type>turbofan</motor_type>
             <cruise_altitude>43.1E+03 US</cruise_altitude>
             <cruise_speed>0.84 M</cruise_speed>
-            <TSFC>1.6e-4 SI</TSFC>
+            <TSFC>1.6E-4 SI</TSFC>
             <lapse_rate_factor>1.0</lapse_rate_factor>
             <thrust_function>
                 <thrust_0>4.89E+05 SI</thrust_0>
@@ -67,7 +67,7 @@
             <motor_type>turbofan</motor_type>
             <cruise_altitude>43E+03 US</cruise_altitude>
             <cruise_speed>0.85 M</cruise_speed>
-            <TSFC>1.6e-4 SI</TSFC>
+            <TSFC>1.6E-4 SI</TSFC>
             <lapse_rate_factor>0.96</lapse_rate_factor>
             <thrust_function>
                 <thrust_0>348.31E+03 SI</thrust_0>

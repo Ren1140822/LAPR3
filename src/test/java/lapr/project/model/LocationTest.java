@@ -90,9 +90,9 @@ public class LocationTest {
     public void testGetAltitude() {
         System.out.println("getAltitude");
         Location instance = new Location();
-        int expResult = 0;
-        int result = instance.getAltitude();
-        assertEquals(expResult, result);
+        double expResult = 0;
+        double result = instance.getAltitude();
+        assertEquals(expResult, result,0.0);
     }
 
     /**
@@ -101,7 +101,7 @@ public class LocationTest {
     @Test
     public void testSetAltitude() {
         System.out.println("setAltitude");
-        int altitude = 10;
+        double altitude = 10;
         Location instance = new Location();
         instance.setAltitude(altitude);
     }

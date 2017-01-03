@@ -22,17 +22,17 @@ public class Wind implements Serializable{
      * Class atributes.
      */
     @XmlTransient
-    private int windIntensity;
+    private double windIntensity;
     @XmlElement(name="wind_direction")
-    private int windDirection;
+    private double windDirection;
     
     /**
      * Default values.
      */
     @XmlTransient
-    private final int DEFAULT_WIND_INTENSITY = 0;
+    private final double DEFAULT_WIND_INTENSITY = 0;
     @XmlTransient
-    private final int DEFAULT_WIND_DIRECTION = 0;
+    private final double DEFAULT_WIND_DIRECTION = 0;
     
     /**
      * Default constructor.
@@ -47,7 +47,7 @@ public class Wind implements Serializable{
      * @param windIntensity the intensity of the wind
      * @param windDirection the direction of the wind
      */
-    public Wind(int windIntensity, int windDirection){
+    public Wind(double windIntensity, double windDirection){
         this.windDirection = windDirection;
         this.windIntensity = windIntensity;
     }
@@ -66,7 +66,7 @@ public class Wind implements Serializable{
      * @return the wind Intensity
      */
     @XmlTransient
-    public int getWindIntensity() {
+    public double getWindIntensity() {
         return windIntensity;
     }
 
@@ -74,7 +74,7 @@ public class Wind implements Serializable{
      * sets the intensity of the wind
      * @param windIntensity the windIntensity to set
      */
-    public void setWindIntensity(int windIntensity) {
+    public void setWindIntensity(double windIntensity) {
         this.windIntensity = windIntensity;
     }
     
@@ -93,14 +93,14 @@ public class Wind implements Serializable{
      */
     public void setWindIntensity_(String windInt) {
         String a = windInt.replaceAll(" knot", "");
-        this.windIntensity = Integer.parseInt(a);
+        this.windIntensity = Double.parseDouble(a);
     }
 
     /**
      * gets the direction of the wind
      * @return the windDirection
      */
-    public int getWindDirection() {
+    public double getWindDirection() {
         return windDirection;
     }
 
@@ -108,7 +108,7 @@ public class Wind implements Serializable{
      * sets the direction of the wind
      * @param windDirection the windDirection to set
      */
-    public void setWindDirection(int windDirection) {
+    public void setWindDirection(double windDirection) {
         this.windDirection = windDirection;
     }
     
@@ -148,8 +148,8 @@ public class Wind implements Serializable{
     @Override
     public int hashCode() {
         int hash = 3;
-        Integer i1 = this.windIntensity;
-        Integer i2 = this.windDirection;
+        Double i1 = this.windIntensity;
+        Double i2 = this.windDirection;
         hash = 47 * hash + i1.hashCode();
         hash = 47 * hash + i2.hashCode();
         return hash;

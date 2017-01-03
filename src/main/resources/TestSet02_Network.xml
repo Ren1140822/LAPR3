@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Network id="TestSet01" description="test set 01">
+<Network id="TestSet02" description="test set 02">
   <node_list>
     <node id="PT01">
       <latitude>41.2481003</latitude>
@@ -236,15 +236,15 @@
         <wind_intensity>10 knot</wind_intensity>
         <wind_direction>-90</wind_direction>
       </wind>
-      </segment>
-      <segment id="ATC0203">
-        <start_node>ATC02</start_node>
-      	<end_node>ATC03</end_node>
-        <direction>bidirectional</direction>
-        <wind>
-          <wind_intensity>40 knot</wind_intensity>
-          <wind_direction>-135</wind_direction>
-        </wind>
+    </segment>
+    <segment id="ATC0203">
+      <start_node>ATC02</start_node>
+      <end_node>ATC03</end_node>
+      <direction>bidirectional</direction>
+      <wind>
+        <wind_intensity>40 knot</wind_intensity>
+        <wind_direction>-135</wind_direction>
+      </wind>
     </segment>
     <segment id="ATC03PT04">
       <start_node>ATC03</start_node>
