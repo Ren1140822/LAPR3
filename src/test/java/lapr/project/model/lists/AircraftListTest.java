@@ -5,6 +5,7 @@
  */
 package lapr.project.model.lists;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import lapr.project.model.Aircraft;
@@ -92,7 +93,7 @@ public class AircraftListTest {
         AircraftList instance = this.instance2;
         instance.createAircraft();
         boolean expResult = true;
-        boolean result = instance.setAircraftData(registration, company, nrOfSeatsEcon, nrOfSeatsCommercial, NrOfElements);
+        boolean result = instance.setAircraftData(registration, company, new HashMap<String,Integer>(), NrOfElements);
         assertEquals(expResult, result);
         
     }

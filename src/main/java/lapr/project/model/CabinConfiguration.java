@@ -6,70 +6,35 @@
 package lapr.project.model;
 
 import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
 
 /**
  *
  * @author Renato Oliveira 1140822@isep.ipp.pt
  */
-public class CabinConfiguration implements Serializable{
+public class CabinConfiguration implements Serializable {
 
     /**
      * Instance variables.
      */
-    private int numberOfSeatsEconomic;
-    private int numberOfSeatsComercial;
+    Map<String, Integer> mapOfClasses;
 
     /**
      * Parameter constructor.
-     *
-     * @param numberOfSeatsEconomic number of seats in economic class
-     * @param numberOfSeatsComercial number of seats in commercial class
      */
-    public CabinConfiguration(int numberOfSeatsEconomic, int numberOfSeatsComercial) {
-        this.numberOfSeatsEconomic = numberOfSeatsEconomic;
-        this.numberOfSeatsComercial = numberOfSeatsComercial;
+    public CabinConfiguration(Map<String, Integer> map) {
+        this.mapOfClasses = map;
     }
 
     /**
-     * Gets the number of seats in comercial class
-     * @return the numberOfSeatsComercial
+     * Default constructor.
      */
-    public int getNumberOfSeatsComercial() {
-        return numberOfSeatsComercial;
-    }
-    
-    /**
-     * Gets the number of seats in economic class
-     * @return the numberOfSeatsEconomic
-     */
-    public int getNumberOfSeatsEconomic() {
-        return numberOfSeatsEconomic;
-    }
-    
-     /**
-     * Gets the number of seats 
-     * @return the number of seats
-     */
-    public int getTotalSeats() {
-        return numberOfSeatsEconomic + numberOfSeatsComercial;
-    }
-    
-    /**
-     * Sets the number of seats in economic class
-     * @param numberOfSeatsEconomic the numberOfSeatsEconomic to set
-     */
-    public void setNumberOfSeatsEconomic(int numberOfSeatsEconomic) {
-        this.numberOfSeatsEconomic = numberOfSeatsEconomic;
+    public CabinConfiguration() {
+        this.mapOfClasses = new HashMap<>();
     }
 
-    /**
-     * Sets the number of seat in comercial class
-     * @param numberOfSeatsComercial the numberOfSeatsComercial to set
-     */
-    public void setNumberOfSeatsComercial(int numberOfSeatsComercial) {
-        this.numberOfSeatsComercial = numberOfSeatsComercial;
-    }
-    
     @Override
     public boolean equals(Object otherObject) {
         if (otherObject == null || this.getClass() != otherObject.getClass()) {
@@ -80,18 +45,22 @@ public class CabinConfiguration implements Serializable{
         }
 
         CabinConfiguration otherCabin = (CabinConfiguration) otherObject;
-        return this.getNumberOfSeatsComercial() == otherCabin.getNumberOfSeatsComercial() && this.getNumberOfSeatsEconomic() == otherCabin.getNumberOfSeatsEconomic();
+        return this.mapOfClasses.equals(otherCabin.mapOfClasses);
+    }
+
+    public int getTotalSeats() {
+        int result = 0;
+        for (Integer i : mapOfClasses.values()) {
+            result += i;
+        }
+        return result;
     }
 
     @Override
     public int hashCode() {
-        int hash = 3;
-        hash = 97 * hash + this.getNumberOfSeatsEconomic();
-        hash = 97 * hash + this.getNumberOfSeatsComercial();
+        int hash = 7;
+        hash = 43 * hash + Objects.hashCode(this.mapOfClasses);
         return hash;
     }
-
-  
-
 
 }

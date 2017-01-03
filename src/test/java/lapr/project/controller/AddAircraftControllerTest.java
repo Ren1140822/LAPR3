@@ -5,6 +5,8 @@
  */
 package lapr.project.controller;
 
+import java.util.HashMap;
+import java.util.Map;
 import lapr.project.model.Project;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -63,9 +65,10 @@ public class AddAircraftControllerTest {
         int nrOfSeatsCommercial = 10;
         int NrOfElements = 10;
         AddAircraftController instance =this.instance;
+        Map<String,Integer> map = new HashMap<>();
         boolean expResult = true;
         instance.createAircraft();
-        boolean result = instance.setAircraftData(registration, company, nrOfSeatsEcon, nrOfSeatsCommercial, NrOfElements);
+        boolean result = instance.setAircraftData(registration, company,map, NrOfElements);
         assertEquals(expResult, result);
    
     }

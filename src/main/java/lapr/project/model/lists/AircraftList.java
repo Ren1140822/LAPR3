@@ -8,6 +8,7 @@ package lapr.project.model.lists;
 import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import lapr.project.model.Aircraft;
 import lapr.project.model.AircraftModel;
 import lapr.project.model.CabinConfiguration;
@@ -78,10 +79,10 @@ public class AircraftList implements Serializable{
         return true;
     }
 
-    public boolean setAircraftData(String registration, String company, int nrOfSeatsEcon, int nrOfSeatsCommercial, int NrOfElements) {
+    public boolean setAircraftData(String registration, String company,Map<String,Integer> mapConfig, int NrOfElements) {
 
         aircraft.setRegistration(registration);
-        aircraft.setCabinConfig(new CabinConfiguration(nrOfSeatsEcon, nrOfSeatsCommercial));
+        aircraft.setCabinConfig(new CabinConfiguration(mapConfig));
         aircraft.setCompany(company);
         aircraft.setNrOfCrewElements(NrOfElements);
         if (aircraft.validate() && validate()) {

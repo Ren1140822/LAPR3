@@ -7,6 +7,7 @@ package lapr.project.controller;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import lapr.project.model.AircraftModel;
 import lapr.project.model.Project;
 import lapr.project.model.lists.AircraftList;
@@ -50,8 +51,8 @@ public class AddAircraftController {
      * @param NrOfElements nr of crew elements
      * @return  true if data is set, false otherwise
      */
-    public boolean setAircraftData(String registration, String company, int nrOfSeatsEcon, int nrOfSeatsCommercial, int NrOfElements) {
-        return aircraftList.setAircraftData(registration, company, nrOfSeatsEcon, nrOfSeatsCommercial, NrOfElements);
+    public boolean setAircraftData(String registration, String company, Map<String,Integer> mapConfig, int NrOfElements) {
+        return aircraftList.setAircraftData(registration, company, mapConfig, NrOfElements);
     }
 
     /**

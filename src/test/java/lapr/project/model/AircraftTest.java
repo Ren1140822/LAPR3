@@ -122,7 +122,7 @@ public class AircraftTest {
     public void testGetCabinConfig() {
         System.out.println("getCabinConfig");
         Aircraft instance =this.instance2;
-        CabinConfiguration expResult = new CabinConfiguration(0,0);
+        CabinConfiguration expResult = new CabinConfiguration();
         CabinConfiguration result = instance.getCabinConfig();
         assertEquals(expResult, result);
        
@@ -134,7 +134,7 @@ public class AircraftTest {
     @Test
     public void testSetCabinConfig() {
         System.out.println("setCabinConfig");
-        CabinConfiguration cabinConfig = new CabinConfiguration(1,1);
+        CabinConfiguration cabinConfig = new CabinConfiguration();
         Aircraft instance = this.instance2;
         instance.setCabinConfig(cabinConfig);
         assertEquals(instance.getCabinConfig(), cabinConfig);

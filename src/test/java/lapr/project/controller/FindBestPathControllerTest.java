@@ -371,7 +371,7 @@ public class FindBestPathControllerTest {
         p.getAirportList().getAirportList().add(endAirport);
      
         instance.createBestPathSimulation(startAirport, endAirport);
-        CabinConfiguration cc=new CabinConfiguration(100, 100);
+        CabinConfiguration cc=new CabinConfiguration();
         AircraftModel am=new AircraftModel("", "", "", "", new Motorization(), 
                 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000);
         instance.setData(new Aircraft("", "", cc,3, am), 50, 10, 100);

@@ -16,10 +16,12 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.regex.Pattern;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JDialog;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -33,12 +35,12 @@ import lapr.project.model.Project;
  * @author Renato Oliveira 1140822@isep.ipp.pt
  */
 public class AddAircraftUI extends JDialog {
-    
+
     Project project;
     /**
      * Instance variables
      */
-    private final int WINDOW_WIDTH = 500;
+    private final int WINDOW_WIDTH = 700;
     private final int WINDOW_HEIGHT = 500;
     private final String WINDOW_TITLE = "Add aircraft";
     private transient AddAircraftController addAircraftController;
@@ -50,6 +52,7 @@ public class AddAircraftUI extends JDialog {
     private DialogSelectable dialog;
     private JButton btnSubmit;
     private JDialog parentFrame;
+    private Map<String, Integer> mapConfig;
 
     public AddAircraftUI(Project project, JDialog parentFrame) {
         super(parentFrame, "Add Aircraft", true);
@@ -62,9 +65,10 @@ public class AddAircraftUI extends JDialog {
         });
         this.project = project;
         addAircraftController = new AddAircraftController(project);
+        mapConfig = new HashMap<>();
         this.setSize(new Dimension(WINDOW_WIDTH, WINDOW_HEIGHT));
         this.setTitle(WINDOW_TITLE);
-        setLocationRelativeTo(parentFrame);  
+        setLocationRelativeTo(parentFrame);
         createComponents();
         this.setVisible(true);
 
@@ -77,10 +81,12 @@ public class AddAircraftUI extends JDialog {
         add(panelText, BorderLayout.CENTER);
         JPanel buttons = new JPanel(new FlowLayout());
         btnSubmit = createSubmitButton();
-      
+        JButton btnClass = createAddClassButton();
         JButton btnModel = createAddAircraftModelButton();
         buttons.add(btnModel);
+        buttons.add(btnClass);
         buttons.add(btnSubmit);
+
         add(buttons, BorderLayout.SOUTH);
     }
 
@@ -89,13 +95,10 @@ public class AddAircraftUI extends JDialog {
         JPanel panel = new JPanel(layout);
         JLabel labelRegistration = createLabels("Registration ID:");
         JLabel labelCompany = createLabels("Company name:");
-        JLabel labelSeatsEcon = createLabels("Nr. of seats in economic class:");
-        JLabel labelSeatsCommercial = createLabels("Nr. of seats in commercial class:");
         JLabel labelNrOfCrewElements = createLabels("Nr. of crew elements:");
         panel.add(labelRegistration);
         panel.add(labelCompany);
-        panel.add(labelSeatsEcon);
-        panel.add(labelSeatsCommercial);
+
         panel.add(labelNrOfCrewElements);
 
         return panel;
@@ -107,13 +110,11 @@ public class AddAircraftUI extends JDialog {
 
         textRegistration = createJTextField();
         textCompany = createJTextField();
-        textSeatsEcon = createJTextField();
-        textSeatsCommercial = createJTextField();
+
         textNrOfCrewElements = createJTextField();
         panel.add(textRegistration);
         panel.add(textCompany);
-        panel.add(textSeatsEcon);
-        panel.add(textSeatsCommercial);
+
         panel.add(textNrOfCrewElements);
         return panel;
     }
@@ -136,19 +137,18 @@ public class AddAircraftUI extends JDialog {
     public JButton createSubmitButton() {
         JButton button = new JButton("Create aircraft");
         button.setPreferredSize(new Dimension(170, 30));
-        button.addActionListener(new ActionListener()  {
+        button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
 
-               
                 try {
-                    if (addAircraftController.setAircraftData(textRegistration.getText(), textCompany.getText(), Integer.parseInt(textSeatsEcon.getText()), Integer.parseInt(textSeatsCommercial.getText()), Integer.parseInt(textNrOfCrewElements.getText())) && addAircraftController.hasModel()) {
+                    if (addAircraftController.setAircraftData(textRegistration.getText(), textCompany.getText(), mapConfig, Integer.parseInt(textNrOfCrewElements.getText())) && addAircraftController.hasModel() && !mapConfig.isEmpty()) {
                         JOptionPane.showMessageDialog(rootPane, "Aircraft added sucessfully.", "Sucess", JOptionPane.INFORMATION_MESSAGE);
                         btnSubmit.setEnabled(false);
                     }
-                } catch (NumberFormatException|NullPointerException ex) {
+                } catch (NumberFormatException | NullPointerException ex) {
                     System.err.print(ex);
-                    JOptionPane.showMessageDialog(rootPane, "Invalid values submitted or no valid model set for this aircraft.", "Error", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(rootPane, "Invalid values submitted or no valid model/cabin configuration set for this aircraft.", "Error", JOptionPane.ERROR_MESSAGE);
                 }
             }
 
@@ -163,8 +163,38 @@ public class AddAircraftUI extends JDialog {
         button.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent me) {
-                 addAircraftController.createAircraft();
-                dialog = new DialogSelectable(AddAircraftUI.this, addAircraftController.getListOfAircraftModels(),"Select aircraft model");
+                addAircraftController.createAircraft();
+                dialog = new DialogSelectable(AddAircraftUI.this, addAircraftController.getListOfAircraftModels(), "Select aircraft model");
+                if (addAircraftController.setAircraftModel(dialog.getSelectedItem())) {
+                    JOptionPane.showMessageDialog(rootPane, "Model set sucessfully.", "Sucess", JOptionPane.INFORMATION_MESSAGE);
+                    btnSubmit.setEnabled(true);
+                }
+            }
+        });
+        return button;
+    }
+
+    public JButton createAddClassButton() {
+        JButton button = new JButton("Insert class info");
+        button.setPreferredSize(new Dimension(170, 30));
+        button.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent me) {
+                String className = JOptionPane.showInputDialog("Please insert a name for the class.");
+                try {
+                    int classSeats = Integer.parseInt(JOptionPane.showInputDialog("Please insert the number of seats for this class."));
+                    mapConfig.put(className, classSeats);
+                    if (!Pattern.matches("[0-9]+", className)) {
+
+                        JOptionPane.showMessageDialog(rootPane, "Data saved to this aircraft sucessfully.", "Sucess", JOptionPane.INFORMATION_MESSAGE);
+                    }
+                    else{
+                         JOptionPane.showMessageDialog(rootPane, "Invalid values submitted for number of class name, please try again.", "Error", JOptionPane.ERROR_MESSAGE);
+                    }
+
+                } catch (NumberFormatException ex) {
+                    JOptionPane.showMessageDialog(rootPane, "Invalid values submitted for number of seats, please try again.", "Error", JOptionPane.ERROR_MESSAGE);
+                }
                 if (addAircraftController.setAircraftModel(dialog.getSelectedItem())) {
                     JOptionPane.showMessageDialog(rootPane, "Model set sucessfully.", "Sucess", JOptionPane.INFORMATION_MESSAGE);
                     btnSubmit.setEnabled(true);
