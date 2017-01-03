@@ -12,7 +12,7 @@
             <TSFC>1.6e-4 SI</TSFC>
             <lapse_rate_factor>1.0</lapse_rate_factor>
             <thrust_function>
-                <thrust_0>4.89+05 SI</thrust_0>
+                <thrust_0>4.89E+05 SI</thrust_0>
                 <thrust_max_speed>3.0E+05 SI</thrust_max_speed>
                 <max_speed>1.0 M</max_speed>
             </thrust_function>

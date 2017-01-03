@@ -5,6 +5,7 @@
  */
 package lapr.project.model;
 
+import java.util.LinkedList;
 import org.junit.After;
 import org.junit.AfterClass;
 import static org.junit.Assert.*;
@@ -216,9 +217,8 @@ public class AircraftTest {
     @Test
     public void testSetAircraftModel() {
         System.out.println("setAircraftModel");
-        Cdrag_function c = new Cdrag_function();
         AircraftModel aircraftModel = new AircraftModel("id", "description", "maker", "passenger", 
-                new Motorization(), 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, c);
+                new Motorization(), 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, new LinkedList<>());
         Aircraft instance = new Aircraft();
         instance.setAircraftModel(aircraftModel);
 

@@ -12,7 +12,6 @@ import lapr.project.model.Aircraft;
 import lapr.project.model.AircraftModel;
 import lapr.project.model.Airport;
 import lapr.project.model.CabinConfiguration;
-import lapr.project.model.Cdrag_function;
 import lapr.project.model.Location;
 import lapr.project.model.Motorization;
 import lapr.project.model.Node;
@@ -374,7 +373,7 @@ public class FindBestPathControllerTest {
         instance.createBestPathSimulation(startAirport, endAirport);
         CabinConfiguration cc=new CabinConfiguration();
         AircraftModel am=new AircraftModel("", "", "", "", new Motorization(), 
-                1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000,new Cdrag_function());
+                1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, new LinkedList<>());
        
         instance.setData(new Aircraft("", "", cc,3, am), 50, 10, 100);
         

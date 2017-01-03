@@ -6,11 +6,13 @@
 package lapr.project.model;
 
 import java.io.Serializable;
+import java.util.LinkedList;
 import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlTransient;
 import lapr.project.utils.StringToSIUnitConverter;
 
@@ -121,8 +123,9 @@ public class AircraftModel implements Serializable {
     /**
      * Coefficient of drag
      */
-    @XmlElement(name = "Cdrag_function")
-    private Cdrag_function cdrag_function;
+    @XmlElementWrapper(name = "Cdrag_function")
+    @XmlElement(name = "iten")
+    private List<Iten> listIten;
 
     /**
      * Default attributes
@@ -175,7 +178,7 @@ public class AircraftModel implements Serializable {
         wingSpan = DEFAULT_WINGSPAN;
         aspect_ratio = DEFAULT_ASPECT_RATIO;
         e = DEFAULT_E;
-        cdrag_function = new Cdrag_function();        
+        listIten = new LinkedList<>();        
     }
 
     /**
@@ -197,14 +200,14 @@ public class AircraftModel implements Serializable {
      * @param wingArea
      * @param aspect_ratio
      * @param wingSpan
-     * @param cdrag_function
+     * @param listIten
      * @param e
      */
     public AircraftModel(String id, String description, String maker, String type,
             Motorization motorization, double eWeight, double MTOW,
             double maxPayload, double fuelCapacity, double VMO, double MMO,
             double wingArea, double wingSpan, double aspect_ratio,
-            double e, Cdrag_function cdrag_function) {
+            double e, List<Iten> listIten) {
         this.id = id;
         this.description = description;
         this.maker = maker;
@@ -220,7 +223,7 @@ public class AircraftModel implements Serializable {
         this.wingSpan = wingSpan;
         this.aspect_ratio = aspect_ratio;
         this.e = e;
-        this.cdrag_function = cdrag_function;
+        this.listIten = listIten;
     }
 
     /**
@@ -244,7 +247,7 @@ public class AircraftModel implements Serializable {
         this.wingSpan = model.wingSpan;
         this.aspect_ratio = model.aspect_ratio;
         this.e = model.e;
-        this.cdrag_function = model.cdrag_function;
+        this.listIten = model.listIten;
     }
 
     public String getId() {
@@ -465,19 +468,24 @@ public class AircraftModel implements Serializable {
     public void setAspect_ratio(double aspect_ratio) {
         this.aspect_ratio = aspect_ratio;
     }
-
-    /**
-     * @return the cdrag_function
-     */
-    public Cdrag_function getCdrag_function() {
-        return cdrag_function;
+    
+    public boolean addIten(double speed, double Cdrag_0){
+        Iten i = new Iten(speed, Cdrag_0);
+        return listIten.add(i);
     }
 
     /**
-     * @param cdrag_function the cdrag_function to set
+     * @return the listIten
      */
-    public void setCdrag_function(Cdrag_function cdrag_function) {
-        this.cdrag_function = cdrag_function;
+    public List<Iten> getListIten() {
+        return listIten;
+    }
+
+    /**
+     * @param listIten the listIten to set
+     */
+    public void setListIten(List<Iten> listIten) {
+        this.listIten = listIten;
     }
 
     public double getE() {
@@ -518,7 +526,7 @@ public class AircraftModel implements Serializable {
         v1 = v1 && motorization != null && eWeight > 0 && MTOW > 0;
         v1 = v1 && maxPayload > 0 && fuelCapacity > 0 && aspect_ratio > 0;
         v1 = v1 && VMO > 0 && MMO > 0 && wingArea > 0;
-        v1 = v1 && wingSpan > 0 && getCdrag_function().validate() && e > 0;
+        v1 = v1 && wingSpan > 0  && e > 0;
         v1 = v1 && type != null && motorization.validate();
 
         return v1;

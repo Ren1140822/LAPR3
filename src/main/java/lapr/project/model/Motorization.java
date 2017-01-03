@@ -39,7 +39,7 @@ public class Motorization implements Serializable{
     private double TSFC;
     @XmlElement(name = "lapse_rate_factor")
     private double lapse_rate_factor;
-    @XmlElementWrapper(name = "thrust_function")
+    @XmlElement(name = "thrust_function")
     private Thrust_Function thrust_function;
 
     /**
@@ -167,7 +167,7 @@ public class Motorization implements Serializable{
      * @param cruise_altitude the cruise_altitude to set for JAXB
      */
     public void setCruise_altitude_(String cruise_altitude) {
-        this.cruise_altitude = StringToSIUnitConverter.speed(cruise_altitude);
+        this.cruise_altitude = StringToSIUnitConverter.length(cruise_altitude);
     }
 
     /**

@@ -5,8 +5,6 @@
  */
 package lapr.project.model;
 
-import java.util.LinkedList;
-import java.util.List;
 import org.junit.After;
 import org.junit.AfterClass;
 import static org.junit.Assert.*;

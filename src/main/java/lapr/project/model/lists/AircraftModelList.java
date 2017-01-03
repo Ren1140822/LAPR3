@@ -14,7 +14,6 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import lapr.project.model.AircraftModel;
-import lapr.project.model.Cdrag_function;
 import lapr.project.model.Thrust_Function;
 
 /**
@@ -117,7 +116,7 @@ public class AircraftModelList implements Serializable{
      * @param cdrag_0 
      */
     public void setCdrag_function(double speed, double cdrag_0){
-        aircraftModel.getCdrag_function().addIten(speed, cdrag_0);
+        aircraftModel.addIten(speed, cdrag_0);
     }
     
     /**
