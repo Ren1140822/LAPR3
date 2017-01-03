@@ -49,7 +49,8 @@ public class ImportAirportControllerTest {
     public void testImportXMLAirportList() throws Exception {
         Project p = new Project();
         System.out.println("importXMLAirportList1");
-        File file = new File("src/main/resources/TestSet01a_Airports.xml");
+        File file = new File("src/main/resources/TestSet02_Airports.xml");
+//        File file = new File("src/main/resources/TestSet01a_Airports.xml");
         ImportAirportController instance = new ImportAirportController(p);        
         boolean expResult = true;
         boolean result = instance.importXMLAirportList(file);

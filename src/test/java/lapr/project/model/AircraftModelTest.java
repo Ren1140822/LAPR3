@@ -66,7 +66,7 @@ public class AircraftModelTest {
         System.out.println("equals2");
         Object otherObject2 = new AircraftModel("Dummy 01", "Dummy aircraft 01", 
                 "Boeing", "passenger", new Motorization(), 
-                1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
+                1, 1, 1, 1, 1, 1, 1, 1, 1, 1, new Cdrag_function());
         AircraftModel instance2 = new AircraftModel();
         boolean expResult2 = true;
         boolean result2 = instance2.equals(otherObject2);
@@ -86,39 +86,39 @@ public class AircraftModelTest {
     @Test
     public void testValidate() {
         
-        List<Regime> regimeList = new LinkedList<>();
-        Regime r = new Regime();
+        List<Thrust_Function> regimeList = new LinkedList<>();
+        Thrust_Function r = new Thrust_Function();
         regimeList.add(r);
         
         
         System.out.println("validate1");
         AircraftModel instance = new AircraftModel("", "Dummy aircraft 01", 
                 "Boeing", "passenger", new Motorization(), 
-                1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
+                1, 1, 1, 1, 1, 1, 1, 1, 1, 1, new  Cdrag_function());
         boolean expResult = false;
         boolean result = instance.validate();
         assertEquals(expResult, result);
         
         System.out.println("validate2");
         AircraftModel instance2 = new AircraftModel("Dummy 01", "", 
-                "Boeing", "passenger", new Motorization(10, "motor", "motor_type", regimeList), 
-                1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
+                "Boeing", "passenger", new Motorization(10, "motor", "motor_type", 1,1,1,1, new Thrust_Function()), 
+                1, 1, 1, 1, 1, 1, 1, 1, 1, 1, new  Cdrag_function());
         boolean expResult2 = false;
         boolean result2 = instance2.validate();
         assertEquals(expResult2, result2);
         
         System.out.println("validate3");
         AircraftModel instance3 = new AircraftModel("Dummy 01", "Dummy aircraft 01", 
-                "", "passenger", new Motorization(10, "motor", "motor_type", regimeList), 
-                1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
+                "", "passenger", new Motorization(10, "motor", "motor_type", 1,1,1,1, new Thrust_Function()), 
+                1, 1, 1, 1, 1, 1, 1, 1, 1, 1, new  Cdrag_function());
         boolean expResult3 = false;
         boolean result3 = instance3.validate();
         assertEquals(expResult3, result3);
         
         System.out.println("validate4");
         AircraftModel instance4 = new AircraftModel("Dummy 01", "Dummy aircraft 01", 
-                "Boeing", "", new Motorization(10, "motor", "motor_type", regimeList), 
-                1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
+                "Boeing", "", new Motorization(10, "motor", "motor_type", 1,1,1,1, new Thrust_Function()), 
+                1, 1, 1, 1, 1, 1, 1, 1, 1, 1, new  Cdrag_function());
         boolean expResult4 = false;
         boolean result4 = instance4.validate();
         assertEquals(expResult4, result4);
@@ -126,106 +126,100 @@ public class AircraftModelTest {
         System.out.println("validate5");
         AircraftModel instance5 = new AircraftModel("Dummy 01", "Dummy aircraft 01", 
                 "Boeing", "passenger", null, 
-                1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
+                1, 1, 1, 1, 1, 1, 1, 1, 1, 1, new Cdrag_function());
         boolean expResult5 = false;
         boolean result5 = instance5.validate();
         assertEquals(expResult5, result5);
         
         System.out.println("validate6");
         AircraftModel instance6 = new AircraftModel("Dummy 01", "Dummy aircraft 01", 
-                "Boeing", "passenger", new Motorization(10, "motor", "motor_type", regimeList), 
-                0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
+                "Boeing", "passenger", new Motorization(10, "motor", "motor_type", 1,1,1,1, new Thrust_Function()), 
+                0, 1, 1, 1, 1, 1, 1, 1, 1, 1, new  Cdrag_function());
         boolean expResult6 = false;
         boolean result6 = instance6.validate();
         assertEquals(expResult6, result6);
         
         System.out.println("validate7");
         AircraftModel instance7 = new AircraftModel("Dummy 01", "Dummy aircraft 01", 
-                "Boeing", "passenger", new Motorization(10, "motor", "motor_type", regimeList), 
-                1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1);
+                "Boeing", "passenger", new Motorization(10, "motor", "motor_type", 1,1,1,1, new Thrust_Function()), 
+                1, 0, 1, 1, 1, 1, 1, 1, 1, 1, new  Cdrag_function());
         boolean expResult7 = false;
         boolean result7 = instance7.validate();
         assertEquals(expResult7, result7);
         
         System.out.println("validate8");
         AircraftModel instance8 = new AircraftModel("Dummy 01", "Dummy aircraft 01", 
-                "Boeing", "passenger", new Motorization(10, "motor", "motor_type", regimeList), 
-                1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1);
+                "Boeing", "passenger", new Motorization(10, "motor", "motor_type", 1,1,1,1, new Thrust_Function()), 
+                1, 1, 0, 1, 1, 1, 1, 1, 1, 1, new  Cdrag_function());
         boolean expResult8 = false;
         boolean result8 = instance8.validate();
         assertEquals(expResult8, result8);
         
         System.out.println("validate9");
         AircraftModel instance9 = new AircraftModel("Dummy 01", "Dummy aircraft 01", 
-                "Boeing", "passenger", new Motorization(10, "motor", "motor_type", regimeList), 
-                1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1);
+                "Boeing", "passenger", new Motorization(10, "motor", "motor_type", 1,1,1,1, new Thrust_Function()), 
+                1, 1, 1, 0, 1, 1, 1, 1, 1, 1, new  Cdrag_function());
         boolean expResult9 = false;
         boolean result9 = instance9.validate();
         assertEquals(expResult9, result9);
         
         System.out.println("validate10");
         AircraftModel instance10 = new AircraftModel("Dummy 01", "Dummy aircraft 01", 
-                "Boeing", "passenger", new Motorization(10, "motor", "motor_type", regimeList), 
-                1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1);
+                "Boeing", "passenger", new Motorization(10, "motor", "motor_type", 1,1,1,1, new Thrust_Function()), 
+                1, 1, 1, 1, 0, 1, 1, 1, 1, 1, new  Cdrag_function());
         boolean expResult10 = false;
         boolean result10 = instance10.validate();
         assertEquals(expResult10, result10);
         
         System.out.println("validate11");
         AircraftModel instance11 = new AircraftModel("Dummy 01", "Dummy aircraft 01", 
-                "Boeing", "passenger", new Motorization(10, "motor", "motor_type", regimeList), 
-                1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1);
+                "Boeing", "passenger", new Motorization(10, "motor", "motor_type", 1,1,1,1, new Thrust_Function()), 
+                1, 1, 1, 1, 1, 0, 1, 1, 1, 1, new  Cdrag_function());
         boolean expResult11 = false;
         boolean result11 = instance11.validate();
         assertEquals(expResult11, result11);
         
         System.out.println("validate12");
         AircraftModel instance12 = new AircraftModel("Dummy 01", "Dummy aircraft 01", 
-                "Boeing", "passenger", new Motorization(10, "motor", "motor_type", regimeList), 
-                1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1);
+                "Boeing", "passenger", new Motorization(10, "motor", "motor_type", 1,1,1,1, new Thrust_Function()), 
+                1, 1, 1, 1, 1, 1, 0, 1, 1, 1, new  Cdrag_function());
         boolean expResult12 = false;
         boolean result12 = instance12.validate();
         assertEquals(expResult12, result12);
         
         System.out.println("validate13");
         AircraftModel instance13 = new AircraftModel("Dummy 01", "Dummy aircraft 01", 
-                "Boeing", "passenger", new Motorization(10, "motor", "motor_type", regimeList), 
-                1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1);
+                "Boeing", "passenger", new Motorization(10, "motor", "motor_type", 1,1,1,1, new Thrust_Function()), 
+                1, 1, 1, 1, 1, 1, 1, 0, 1, 1, new  Cdrag_function());
         boolean expResult13 = false;
         boolean result13 = instance13.validate();
         assertEquals(expResult13, result13);
         
         System.out.println("validate14");
         AircraftModel instance14 = new AircraftModel("Dummy 01", "Dummy aircraft 01", 
-                "Boeing", "passenger", new Motorization(10, "motor", "motor_type", regimeList), 
-                1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1);
+                "Boeing", "passenger", new Motorization(10, "motor", "motor_type", 1,1,1,1, new Thrust_Function()), 
+                1, 1, 1, 1, 1, 1, 1, 1, 0, 1, new  Cdrag_function());
         boolean expResult14 = false;
         boolean result14 = instance14.validate();
         assertEquals(expResult14, result14);
         
         System.out.println("validate15");
         AircraftModel instance15 = new AircraftModel("Dummy 01", "Dummy aircraft 01", 
-                "Boeing", "passenger", new Motorization(10, "motor", "motor_type", regimeList), 
-                1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1);
+                "Boeing", "passenger", new Motorization(10, "motor", "motor_type", 1,1,1,1, new Thrust_Function()), 
+                1, 1, 1, 1, 1, 1, 1, 1, 1, 0, new  Cdrag_function());
         boolean expResult15 = false;
         boolean result15 = instance15.validate();
         assertEquals(expResult15, result15);
         
         System.out.println("validate16");
+        Cdrag_function c = new Cdrag_function();
+        c.addIten(1, 1);
         AircraftModel instance16 = new AircraftModel("Dummy 01", "Dummy aircraft 01", 
-                "Boeing", "passenger", new Motorization(10, "motor", "motor_type", regimeList), 
-                1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0);
-        boolean expResult16 = false;
+                "Boeing", "passenger", new Motorization(10, "motor", "motor_type", 1,1,1,1, new Thrust_Function()), 
+                1, 1, 1, 1, 1, 1, 1, 1, 1, 1, c);
+        boolean expResult16 = true;
         boolean result16 = instance16.validate();
         assertEquals(expResult16, result16);
-        
-        System.out.println("validate17");
-        AircraftModel instance17 = new AircraftModel("Dummy 01", "Dummy aircraft 01", 
-                "Boeing", "passenger", new Motorization(10, "motor", "motor_type", regimeList), 
-                1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1);
-        boolean expResult17 = true;
-        boolean result17 = instance17.validate();
-        assertEquals(expResult17, result17);
     }
 
     /**
@@ -349,11 +343,11 @@ public class AircraftModelTest {
     @Test
     public void testGetMotorization() {
         System.out.println("getMotorization");
-        List<Regime> regimeList = new LinkedList<>();
-        Regime r = new Regime();
+        List<Thrust_Function> regimeList = new LinkedList<>();
+        Thrust_Function r = new Thrust_Function();
         regimeList.add(r);
         AircraftModel instance = new AircraftModel();
-        Motorization expResult = new Motorization(10, "motor", "motor_type", regimeList);
+        Motorization expResult = new Motorization(10, "motor", "motor_type", 1,1,1,1, new Thrust_Function());
         instance.setMotorization(expResult);
         Motorization result = instance.getMotorization();
         assertEquals(expResult, result);
@@ -368,11 +362,11 @@ public class AircraftModelTest {
         int number_motors =4;
         String motor = "dsf";
         String motor_type = "gdf";
-        List<Regime> regimeList = new LinkedList<>();
-        Regime r = new Regime();
+        List<Thrust_Function> regimeList = new LinkedList<>();
+        Thrust_Function r = new Thrust_Function();
         regimeList.add(r);
         AircraftModel instance = new AircraftModel();
-        instance.setMotorization(number_motors, motor, motor_type, regimeList);
+        instance.setMotorization(number_motors, motor, motor_type, 1,1,1,1, new Thrust_Function());
     }
 
     /**
@@ -465,52 +459,6 @@ public class AircraftModelTest {
         String MTOW = "875E+03 US";
         AircraftModel instance = new AircraftModel();
         instance.setMTOW_(MTOW);
-    }
-
-    /**
-     * Test of getMZFW method, of class AircraftModel.
-     */
-    @Test
-    public void testGetMZFW() {
-        System.out.println("getMZFW");
-        AircraftModel instance = new AircraftModel();
-        double expResult = 1.0;
-        double result = instance.getMZFW();
-        assertEquals(expResult, result, 0.0);
-    }
-
-    /**
-     * Test of setMZFW method, of class AircraftModel.
-     */
-    @Test
-    public void testSetMZFW() {
-        System.out.println("setMZFW");
-        double MZFW = 101.20;
-        AircraftModel instance = new AircraftModel();
-        instance.setMZFW(MZFW);
-    }
-
-    /**
-     * Test of getMZFW_ method, of class AircraftModel.
-     */
-    @Test
-    public void testGetMZFW_() {
-        System.out.println("getMZFW_");
-        AircraftModel instance = new AircraftModel();
-        String expResult = "1.0";
-        String result = instance.getMZFW_();
-        assertEquals(expResult, result);
-    }
-
-    /**
-     * Test of setMZFW_ method, of class AircraftModel.
-     */
-    @Test
-    public void testSetMZFW_() {
-        System.out.println("setMZFW_");
-        String MZFW = "535E+03 US";
-        AircraftModel instance = new AircraftModel();
-        instance.setMZFW_(MZFW);
     }
 
     /**
@@ -790,29 +738,6 @@ public class AircraftModelTest {
     }
 
     /**
-     * Test of getcDrag method, of class AircraftModel.
-     */
-    @Test
-    public void testGetcDrag() {
-        System.out.println("getcDrag");
-        AircraftModel instance = new AircraftModel();
-        double expResult = 1.0;
-        double result = instance.getcDrag();
-        assertEquals(expResult, result, 0.0);
-    }
-
-    /**
-     * Test of setcDrag method, of class AircraftModel.
-     */
-    @Test
-    public void testSetcDrag() {
-        System.out.println("setcDrag");
-        double cDrag = 0.450;
-        AircraftModel instance = new AircraftModel();
-        instance.setcDrag(cDrag);
-    }
-
-    /**
      * Test of getE method, of class AircraftModel.
      */
     @Test
@@ -856,5 +781,71 @@ public class AircraftModelTest {
         int expResult = instance.getId().hashCode() + 7 * 79;
         int result = instance.hashCode();
         assertEquals(expResult, result);
+    }
+
+    /**
+     * Test of setMotorization method, of class AircraftModel.
+     */
+    @Test
+    public void testSetMotorization_8args() {
+        System.out.println("setMotorization");
+        int number_motors = 4;
+        String motor = "df";
+        String motor_type = "fgd";
+        double cruise_altitude = 1.0;
+        double cruise_speed = 1.0;
+        double TSFC = 1.0;
+        double lapse_rate_factor = 1.0;
+        Thrust_Function thrust_function = new Thrust_Function(12, 12, 12);
+        AircraftModel instance = new AircraftModel();
+        instance.setMotorization(number_motors, motor, motor_type, cruise_altitude, cruise_speed, TSFC, lapse_rate_factor, thrust_function);
+    }
+
+    /**
+     * Test of getAspect_ratio method, of class AircraftModel.
+     */
+    @Test
+    public void testGetAspect_ratio() {
+        System.out.println("getAspect_ratio");
+        AircraftModel instance = new AircraftModel();
+        double expResult = 1.0;
+        double result = instance.getAspect_ratio();
+        assertEquals(expResult, result, 0.0);
+    }
+
+    /**
+     * Test of setAspect_ratio method, of class AircraftModel.
+     */
+    @Test
+    public void testSetAspect_ratio() {
+        System.out.println("setAspect_ratio");
+        double aspect_ratio = 1.0;
+        AircraftModel instance = new AircraftModel();
+        instance.setAspect_ratio(aspect_ratio);
+    }
+
+    /**
+     * Test of getCdrag_function method, of class AircraftModel.
+     */
+    @Test
+    public void testGetCdrag_function() {
+        System.out.println("getCdrag_function");
+        AircraftModel instance = new AircraftModel();
+        Cdrag_function expResult = new Cdrag_function();
+        instance.setCdrag_function(expResult);
+        Cdrag_function result = instance.getCdrag_function();
+        assertEquals(expResult, result);
+    }
+
+    /**
+     * Test of setCdrag_function method, of class AircraftModel.
+     */
+    @Test
+    public void testSetCdrag_function() {
+        System.out.println("setCdrag_function");
+        Cdrag_function cdrag_function = new Cdrag_function();
+        AircraftModel instance = new AircraftModel();
+        instance.setCdrag_function(cdrag_function);
+
     }
 }

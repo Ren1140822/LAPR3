@@ -216,8 +216,9 @@ public class AircraftTest {
     @Test
     public void testSetAircraftModel() {
         System.out.println("setAircraftModel");
+        Cdrag_function c = new Cdrag_function();
         AircraftModel aircraftModel = new AircraftModel("id", "description", "maker", "passenger", 
-                new Motorization(), 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10);
+                new Motorization(), 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, c);
         Aircraft instance = new Aircraft();
         instance.setAircraftModel(aircraftModel);
 

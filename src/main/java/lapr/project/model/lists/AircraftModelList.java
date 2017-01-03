@@ -14,7 +14,8 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import lapr.project.model.AircraftModel;
-import lapr.project.model.Regime;
+import lapr.project.model.Cdrag_function;
+import lapr.project.model.Thrust_Function;
 
 /**
  * class that represents a list of aircraft model
@@ -85,28 +86,38 @@ public class AircraftModelList implements Serializable{
      * @param wingCl
      * @param bodyCl
      * @param cDrag
+     * @param aspect_ratio
      * @param e
      */
     public void setAircraftModelData(String id, String description, String maker,
             String type,double eWeight, double MTOW, double MZFW, double maxPayload, 
             double fuelCapacity, double VMO, double MMO, double wingArea, 
-            double wingSpan, double wingCl, double bodyCl, double cDrag, double e){
+            double wingSpan, double wingCl, double bodyCl, double cDrag, 
+            double aspect_ratio, double e){
         aircraftModel = new AircraftModel();
-        aircraftModel.setDescription(description);
-        aircraftModel.setE(e);
-        aircraftModel.setFuelCapacity(fuelCapacity);
         aircraftModel.setId(id);
-        aircraftModel.setMMO(MMO);
-        aircraftModel.setMTOW(MTOW);
-        aircraftModel.setMZFW(MZFW);
+        aircraftModel.setDescription(description);
         aircraftModel.setMaker(maker);
-        aircraftModel.setMaxPayload(maxPayload);
         aircraftModel.setType(type);
+        aircraftModel.seteWeight(eWeight);
+        aircraftModel.setMTOW(MTOW);
+        aircraftModel.setMaxPayload(maxPayload);
+        aircraftModel.setFuelCapacity(fuelCapacity);
         aircraftModel.setVMO(VMO);
+        aircraftModel.setMMO(MMO);
         aircraftModel.setWingArea(wingArea);
         aircraftModel.setWingSpan(wingSpan);
-        aircraftModel.setcDrag(cDrag);
-        aircraftModel.seteWeight(eWeight);
+        aircraftModel.setAspect_ratio(aspect_ratio);
+        aircraftModel.setE(e);        
+    }
+    
+    /**
+     * 
+     * @param speed
+     * @param cdrag_0 
+     */
+    public void setCdrag_function(double speed, double cdrag_0){
+        aircraftModel.getCdrag_function().addIten(speed, cdrag_0);
     }
     
     /**
@@ -114,11 +125,18 @@ public class AircraftModelList implements Serializable{
      * @param number_motors
      * @param motor
      * @param motor_type
-     * @param regimeList 
+     * @param cruise_altitude
+     * @param cruise_speed
+     * @param TSFC
+     * @param lapse_rate_factor 
+     * @param thrust_function 
      */
-    public void setAircraftModelMotorization(int number_motors, String motor, String motor_type, 
-            List<Regime> regimeList){
-        aircraftModel.setMotorization(number_motors, motor, motor_type, regimeList);
+    public void setMotorization(int number_motors, String motor, String motor_type,
+            double cruise_altitude, double cruise_speed, double TSFC,
+            double lapse_rate_factor, Thrust_Function thrust_function) {
+        aircraftModel.setMotorization(number_motors, motor, motor_type, 
+                cruise_altitude, cruise_speed, TSFC, lapse_rate_factor, 
+                thrust_function);
     }
      
     /**

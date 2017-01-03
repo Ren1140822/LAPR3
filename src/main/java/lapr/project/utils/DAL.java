@@ -268,7 +268,7 @@ public class DAL {
                 double wingSpan = rs.getDouble("wingSpan");
                 double cDrag = rs.getDouble("cDrag");
                 double e = rs.getDouble("e");
-                model = new AircraftModel(id, description, maker, maker, motorization, eWeight, e, e, maxPayload, fuelCapacity, e, e, wingArea, wingSpan, cDrag, e);
+//                model = new AircraftModel(id, description, maker, maker, motorization, eWeight, e, e, maxPayload, fuelCapacity, e, e, wingArea, wingSpan, cDrag, e);
             }
 
         } catch (SQLException ex) {

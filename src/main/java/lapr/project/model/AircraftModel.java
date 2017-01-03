@@ -17,7 +17,7 @@ import lapr.project.utils.StringToSIUnitConverter;
 /**
  * Class that represents motorized commercial aircraft
  *
- * @author Diana Silva, Flavio Relvas
+ * @author Diana Silva, Flavio Relvas, Pedro Fernandes
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 public class AircraftModel implements Serializable {
@@ -71,13 +71,7 @@ public class AircraftModel implements Serializable {
      * Maximum take-off weight (MTOW) - kg
      */
     @XmlTransient
-    private double maxTakeOffWeight;
-    
-    /**
-     * Maximum zero fuel weight (maxZeroFuelWeight) - kg
-     */
-    @XmlTransient
-    private double maxZeroFuelWeight;
+    private double MTOW;
     
     /**
      * Maximum payload (kg)
@@ -92,16 +86,16 @@ public class AircraftModel implements Serializable {
     private double fuelCapacity;
     
     /**
-     * Maximum operating speed (maximum permitted speed for the aircraft)- m/s
+     * VMO (knot)
      */
     @XmlTransient
-    private double maxSpeed;
-    @XmlTransient
+    private double VMO;
     
     /**
      * Maximum operating Match number - MMO - (relative to the speed of sound)
      */
-    private double matchOperating;
+    @XmlTransient
+    private double MMO;
     
     /**
      * Wing area (m2)
@@ -115,17 +109,20 @@ public class AircraftModel implements Serializable {
     @XmlTransient
     private double wingSpan;
     
-    /**
-     * Coefficient of drag
-     */
-    @XmlElement(name = "Cdrag_0")
-    private double cDrag;
+    @XmlElement(name = "aspect_ratio")
+    private double aspect_ratio;
     
     /**
      * Constant e
      */
     @XmlElement(name = "e")
     private double e;
+    
+    /**
+     * Coefficient of drag
+     */
+    @XmlElement(name = "Cdrag_function")
+    private Cdrag_function cdrag_function;
 
     /**
      * Default attributes
@@ -143,7 +140,7 @@ public class AircraftModel implements Serializable {
     @XmlTransient
     private final double DEFAULT_MTOW = 1;
     @XmlTransient
-    private final double DEFAULT_MZFW = 1;
+    private final double DEFAULT_ASPECT_RATIO = 1;
     @XmlTransient
     private final double DEFAULT_MAXPAYLOAD = 1;
     @XmlTransient
@@ -155,9 +152,7 @@ public class AircraftModel implements Serializable {
     @XmlTransient
     private final double DEFAULT_WINGAREA = 1;
     @XmlTransient
-    private final double DEFAULT_WINGSPAN = 1;
-    @XmlTransient
-    private final double DEFAULT_CDRAG = 1;
+    private final double DEFAULT_WINGSPAN = 1;    
     @XmlTransient
     private final double DEFAULT_E = 1;
 
@@ -171,16 +166,16 @@ public class AircraftModel implements Serializable {
         type = DEFAULT_TYPE;
         motorization = new Motorization();
         eWeight = DEFAULT_EWEIGHT;
-        maxTakeOffWeight = DEFAULT_MTOW;
-        maxZeroFuelWeight = DEFAULT_MZFW;
+        MTOW = DEFAULT_MTOW;
         maxPayload = DEFAULT_MAXPAYLOAD;
         fuelCapacity = DEFAULT_FUELCAPACITY;
-        maxSpeed = DEFAULT_VMO;
-        matchOperating = DEFAULT_MMO;
+        VMO = DEFAULT_VMO;
+        MMO = DEFAULT_MMO;
         wingArea = DEFAULT_WINGAREA;
         wingSpan = DEFAULT_WINGSPAN;
-        cDrag = DEFAULT_CDRAG;
+        aspect_ratio = DEFAULT_ASPECT_RATIO;
         e = DEFAULT_E;
+        cdrag_function = new Cdrag_function();        
     }
 
     /**
@@ -195,36 +190,37 @@ public class AircraftModel implements Serializable {
      * @param motorization
      * @param eWeight
      * @param MTOW
-     * @param MZFW
      * @param maxPayload
      * @param fuelCapacity
      * @param VMO
      * @param MMO
      * @param wingArea
+     * @param aspect_ratio
      * @param wingSpan
-     * @param cDrag
+     * @param cdrag_function
      * @param e
      */
     public AircraftModel(String id, String description, String maker, String type,
-            Motorization motorization, double eWeight, double MTOW, double MZFW,
+            Motorization motorization, double eWeight, double MTOW,
             double maxPayload, double fuelCapacity, double VMO, double MMO,
-            double wingArea, double wingSpan, double cDrag, double e) {
+            double wingArea, double wingSpan, double aspect_ratio,
+            double e, Cdrag_function cdrag_function) {
         this.id = id;
         this.description = description;
         this.maker = maker;
         setType(type);
         this.motorization = motorization;
         this.eWeight = eWeight;
-        this.maxTakeOffWeight = MTOW;
-        this.maxZeroFuelWeight = MZFW;
+        this.MTOW = MTOW;
         this.maxPayload = maxPayload;
         this.fuelCapacity = fuelCapacity;
-        this.maxSpeed = VMO;
-        this.matchOperating = MMO;
+        this.VMO = VMO;
+        this.MMO = MMO;
         this.wingArea = wingArea;
         this.wingSpan = wingSpan;
-        this.cDrag = cDrag;
+        this.aspect_ratio = aspect_ratio;
         this.e = e;
+        this.cdrag_function = cdrag_function;
     }
 
     /**
@@ -236,18 +232,19 @@ public class AircraftModel implements Serializable {
         this.id = model.id;
         this.description = model.description;
         this.maker = model.maker;
+        setType(model.getType());
         this.motorization = model.motorization;
         this.eWeight = model.eWeight;
-        this.maxTakeOffWeight = model.maxTakeOffWeight;
-        this.maxZeroFuelWeight = model.maxZeroFuelWeight;
+        this.MTOW = model.MTOW;
         this.maxPayload = model.maxPayload;
         this.fuelCapacity = model.fuelCapacity;
-        this.maxSpeed = model.maxSpeed;
-        this.matchOperating = model.matchOperating;
+        this.VMO = model.VMO;
+        this.MMO = model.MMO;
         this.wingArea = model.wingArea;
         this.wingSpan = model.wingSpan;
-        this.cDrag = model.cDrag;
+        this.aspect_ratio = model.aspect_ratio;
         this.e = model.e;
+        this.cdrag_function = model.cdrag_function;
     }
 
     public String getId() {
@@ -304,11 +301,16 @@ public class AircraftModel implements Serializable {
     }
 
     public void setMotorization(int number_motors, String motor, String motor_type,
-            List<Regime> regimeList) {
+            double cruise_altitude, double cruise_speed, double TSFC,
+            double lapse_rate_factor, Thrust_Function thrust_function) {
         motorization.setNumberMotors(number_motors);
         motorization.setMotor(motor);
         motorization.setMotorType(motor_type);
-        motorization.setRegimeList(regimeList);
+        motorization.setCruise_altitude(cruise_altitude);
+        motorization.setCruise_speed(cruise_speed);
+        motorization.setTSFC(TSFC);
+        motorization.setLapse_rate_factor(lapse_rate_factor);
+        motorization.setThrust_function(thrust_function);
 
     }
 
@@ -330,37 +332,20 @@ public class AircraftModel implements Serializable {
     }
 
     public double getMTOW() {
-        return maxTakeOffWeight;
+        return MTOW;
     }
 
     public void setMTOW(double MTOW) {
-        this.maxTakeOffWeight = MTOW;
+        this.MTOW = MTOW;
     }
 
     @XmlElement(name = "MTOW")
     public String getMTOW_() {
-        return String.valueOf(maxTakeOffWeight);
+        return String.valueOf(MTOW);
     }
 
     public void setMTOW_(String MTOW) {
-        this.maxTakeOffWeight = StringToSIUnitConverter.weight(MTOW);
-    }
-
-    public double getMZFW() {
-        return maxZeroFuelWeight;
-    }
-
-    public void setMZFW(double MZFW) {
-        this.maxZeroFuelWeight = MZFW;
-    }
-
-    @XmlElement(name = "MZFW")
-    public String getMZFW_() {
-        return String.valueOf(maxZeroFuelWeight);
-    }
-
-    public void setMZFW_(String MZFW) {
-        this.maxZeroFuelWeight = StringToSIUnitConverter.weight(MZFW);
+        this.MTOW = StringToSIUnitConverter.weight(MTOW);
     }
 
     public double getMaxPayload() {
@@ -398,39 +383,39 @@ public class AircraftModel implements Serializable {
     }
 
     public double getVMO() {
-        return maxSpeed;
+        return VMO;
     }
 
     public void setVMO(double VMO) {
-        this.maxSpeed = VMO;
+        this.VMO = VMO;
     }
 
     @XmlElement(name = "VMO")
     public String getVMO_() {
-        return String.valueOf(maxSpeed);
+        return String.valueOf(VMO);
     }
 
     public void setVMO_(String VMO) {
         String a = VMO.replaceAll(" Knot", "");
-        this.maxSpeed = Double.parseDouble(a);
+        this.VMO = Double.parseDouble(a);
     }
 
     public double getMMO() {
-        return matchOperating;
+        return MMO;
     }
 
     public void setMMO(double MMO) {
-        this.matchOperating = MMO;
+        this.MMO = MMO;
     }
 
     @XmlElement(name = "MMO")
     public String getMMO_() {
-        return String.valueOf(matchOperating);
+        return String.valueOf(MMO);
     }
 
     public void setMMO_(String MMO) {
         String a = MMO.replaceAll(" M", "");
-        this.matchOperating = Double.parseDouble(a);
+        this.MMO = Double.parseDouble(a);
     }
 
     public double getWingArea() {
@@ -467,12 +452,32 @@ public class AircraftModel implements Serializable {
         this.wingSpan = StringToSIUnitConverter.length(wingSpan);
     }
 
-    public double getcDrag() {
-        return cDrag;
+    /**
+     * @return the aspect_ratio
+     */
+    public double getAspect_ratio() {
+        return aspect_ratio;
     }
 
-    public void setcDrag(double cDrag) {
-        this.cDrag = cDrag;
+    /**
+     * @param aspect_ratio the aspect_ratio to set
+     */
+    public void setAspect_ratio(double aspect_ratio) {
+        this.aspect_ratio = aspect_ratio;
+    }
+
+    /**
+     * @return the cdrag_function
+     */
+    public Cdrag_function getCdrag_function() {
+        return cdrag_function;
+    }
+
+    /**
+     * @param cdrag_function the cdrag_function to set
+     */
+    public void setCdrag_function(Cdrag_function cdrag_function) {
+        this.cdrag_function = cdrag_function;
     }
 
     public double getE() {
@@ -510,13 +515,12 @@ public class AircraftModel implements Serializable {
 
     public boolean validate() {
         boolean v1 = !id.isEmpty() && !description.isEmpty() && !maker.isEmpty();
-        v1 = v1 && motorization != null && eWeight > 0 && maxTakeOffWeight > 0;
-        v1 = v1 && maxZeroFuelWeight > 0 && maxPayload > 0 && fuelCapacity > 0;
-        v1 = v1 && maxSpeed > 0 && matchOperating > 0 && wingArea > 0;
-        v1 = v1 && wingSpan > 0 && cDrag > 0 && e > 0;
+        v1 = v1 && motorization != null && eWeight > 0 && MTOW > 0;
+        v1 = v1 && maxPayload > 0 && fuelCapacity > 0 && aspect_ratio > 0;
+        v1 = v1 && VMO > 0 && MMO > 0 && wingArea > 0;
+        v1 = v1 && wingSpan > 0 && getCdrag_function().validate() && e > 0;
         v1 = v1 && type != null && motorization.validate();
 
         return v1;
-
     }
 }

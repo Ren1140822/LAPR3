@@ -39,8 +39,10 @@ public class AircraftAlgorithms {
      * @param massRef reference mass
      * @return the velocity of aircraft (m/s)
      */
-    public static double calculateVelocityAircraftMass(double velocityRef, double mass, double massRef){
-        return velocityRef * Math.pow(mass/massRef, 0.5);
+    public static double calculateVelocityAircraftMass(double velocityRef, 
+            double mass, double massRef){
+        return Double.doubleToLongBits(velocityRef) * 
+                Math.pow(Double.doubleToLongBits(mass)/Double.doubleToLongBits(massRef), 0.5);
     }
     
     /**
@@ -51,7 +53,8 @@ public class AircraftAlgorithms {
      * @param area area of the wings (m2)
      * @return lift force
      */
-    public double calculateLiftForce(double coefLift, double airDensity, double velocity, double area){
+    public double calculateLiftForce(double coefLift, double airDensity, 
+            double velocity, double area){
            return coefLift * ((airDensity * Math.pow(velocity, 2)) / 2) * area;
         }
     
@@ -63,7 +66,8 @@ public class AircraftAlgorithms {
      * @param area area of the wings
      * @return drag force
      */
-    public double calculateDragForce(double coefDrag, double airDensity, double velocity, double area){
+    public double calculateDragForce(double coefDrag, double airDensity, 
+            double velocity, double area){
            return coefDrag * ((airDensity * Math.pow(velocity, 2)) / 2) * area;    
     }
      
@@ -72,12 +76,12 @@ public class AircraftAlgorithms {
      * @param mass total mass of aircraft
      * @param airDensity density of air (kg/m3)
      * @param areaWings area of wings (m2)
-     * @param velocity velocity of aircraft (m2)
+     * @param velocity velocity of aircraft (m/s)
      * @return lift coefficient
      */
-    public static double calculateLiftCoefficient(double mass, double airDensity, double areaWings,double velocity){
-       //9.8= gravitational constant 
-        return (2*mass*9.8)/(airDensity*areaWings*velocity);
+    public static double calculateLiftCoefficient(double mass, double airDensity, 
+            double areaWings,double velocity){
+        return (2*mass)/(airDensity*areaWings*Math.pow(velocity,2));
     }
    
      /**
@@ -89,27 +93,29 @@ public class AircraftAlgorithms {
      * @param e
      * @return lift coefficient
      */
-    public static double calculateDragCoefficient(double cDrag0, double liftCoef, double wingArea, double wingSpan, double e){
+    public static double calculateDragCoefficient(double cDrag0, double liftCoef, 
+            double wingArea, double wingSpan, double e){
        //R=287.06J/KgK  
         return cDrag0 + (Math.pow(liftCoef,2)/ Math.PI*(Math.pow(wingSpan, 2)/wingArea)*e);
     }
     
     /**
-     * Calculate the maximum climb and take-off thrust at standart conditions (N)
+     * Calculate the maximum climb and take-off thrust at standard conditions (N)
      * @param coef1 (N)
      * @param altitude altitude (m)
      * @param coef2 feet
      * @param coef3 1/(feet^2)
      * @return maximum climb thrust (N)
      */
-    public static double calculateClimbThrustJet(double altitude, double coef1, double coef2, double coef3){
+    public static double calculateClimbThrustJet(double altitude, double coef1, 
+            double coef2, double coef3){
         double altitudeFeets=ConversionAlgorithms.convertMetersFeet(altitude);
         return coef1* ( 1- (altitudeFeets/coef2) + coef3*Math.pow(altitude,2));
     }
 
     
     /**
-     * Calculate the maximum climb and take-off thrust at standart conditions (N)
+     * Calculate the maximum climb and take-off thrust at standard conditions (N)
      * @param coef1 (knot-N)
      * @param tas true air speed (kt)
      * @param altitude altitutde (m)
@@ -117,13 +123,14 @@ public class AircraftAlgorithms {
      * @param coef3 N
      * @return maximum climb thrust (N)
      */
-    public static double calculateClimbThrustTurboProp(double altitude, double tas, double coef1,  double coef2, double coef3){
+    public static double calculateClimbThrustTurboProp(double altitude, double tas,
+            double coef1,  double coef2, double coef3){
         double altitudeFeets=ConversionAlgorithms.convertMetersFeet(altitude);
         return coef1/tas * (1- (altitudeFeets/coef2)) + coef3 ;
     }
     
        /**
-     * Calculate the maximum climb and take-off thrust at standart conditions (N)
+     * Calculate the maximum climb and take-off thrust at standard conditions (N)
      * @param coef1 (N)
      * @param tas true air speed (kt)
      * @param altitude altitutde (ft)
@@ -131,7 +138,8 @@ public class AircraftAlgorithms {
      * @param coef3 knot-N
      * @return maximum climb thrust (N)
      */
-    public static double calculateClimbThrustPiston(double altitude, double tas, double coef1,  double coef2, double coef3){
+    public static double calculateClimbThrustPiston(double altitude, double tas, 
+            double coef1,  double coef2, double coef3){
         double altitudeFeets=ConversionAlgorithms.convertMetersFeet(altitude);
         return coef1 * (1- (altitudeFeets/coef2)) + coef3/tas ;
     }
@@ -144,7 +152,8 @@ public class AircraftAlgorithms {
      * @param wind wind 
      * @return thrust (knots)
      */
-    public static double calculateThrust(double dragCoef, double airDensity, double groundSpeed, Wind wind){
+    public static double calculateThrust(double dragCoef, double airDensity,
+            double groundSpeed, Wind wind){
         double trueSpeed=calculateTrueForceSpeed(wind, groundSpeed);
         return  dragCoef*airDensity*Math.pow(trueSpeed, 2);
     }
@@ -160,11 +169,11 @@ public class AircraftAlgorithms {
         /**
          * cruiseSpeed + 2% per 2000feets altitude
          *     2000 feets  ----- 2%
-                  1 feet   ------ x= 2000/2= 1000%=0.1
+                  1 feet   ------ x
          */
         
         double altitudeFeets=ConversionAlgorithms.convertMetersFeet(altitude);
-        return ConversionAlgorithms.convertKnotMS(velocity+ 0.1*altitudeFeets);      
+        return ConversionAlgorithms.convertKnotMS(velocity+ 0.00001*altitudeFeets);      
     }
     
     /**
@@ -218,7 +227,8 @@ public class AircraftAlgorithms {
      * @param fuel
      * @return initial weight
      */
-    public static double calculateInitialWeight(int passengers, int crew, double cargoLoad, double emptyWeight, double fuel){
+    public static double calculateInitialWeight(int passengers, int crew, 
+            double cargoLoad, double emptyWeight, double fuel){
         return (passengers*WEIGHT_PER_PERSON)+(crew*WEIGHT_PER_PERSON) +
                 cargoLoad+emptyWeight+(fuel*FUEL_DENSITY);
     }
@@ -231,7 +241,8 @@ public class AircraftAlgorithms {
      * @param tsfc thrust specific fuel consumption
      * @return final weight
      */
-    public static double calculateFinalWeight(double initialWeight, double timeFlight, double tsfc){
+    public static double calculateFinalWeight(double initialWeight, double timeFlight,
+            double tsfc){
         return initialWeight -(timeFlight*tsfc);
     }
     
@@ -242,11 +253,13 @@ public class AircraftAlgorithms {
      * @param weightZeroFuel zero fuel weight (total - weight of the usable fuel on board)
      * @return  fuel used (g)
      */
-    public static double calculateFuelUsed(double initialWeight, double finalWeight,double weightZeroFuel){
+    public static double calculateFuelUsed(double initialWeight, double finalWeight,
+            double weightZeroFuel){
         return finalWeight-initialWeight-weightZeroFuel;
     }
     
     public static double calculateThrust(double airDensity){
-        return THRUST_SEA_LEVEL*Math.pow((airDensity/AIR_DENSITY_SEA),mEmpiricalCoefficient);   
+        return THRUST_SEA_LEVEL*Math.pow((airDensity/AIR_DENSITY_SEA),
+                mEmpiricalCoefficient);   
     }
 }
