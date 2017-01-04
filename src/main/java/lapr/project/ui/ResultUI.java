@@ -25,6 +25,7 @@ import javax.swing.JPanel;
 import static javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE;
 import lapr.project.controller.FindBestPathController;
 import lapr.project.model.anaylsis.ResultPath;
+import lapr.project.model.anaylsis.TypePath;
 
 /**
  *
@@ -44,11 +45,11 @@ public class ResultUI extends JDialog{
     
     private transient FindBestPathController controller;
     
-    private transient String type="DEFAULT";
+    private transient TypePath type=TypePath.SHORTEST_PATH;
     
     private JList jListSegments;
     
-     public ResultUI(FindBestPathController controller, ResultPath result, String type, JDialog frame){
+     public ResultUI(FindBestPathController controller, ResultPath result, TypePath type, JDialog frame){
         super(frame, "Simulation: ",true);
         this.controller= controller;
         this.resultPath=result;
@@ -94,17 +95,19 @@ public class ResultUI extends JDialog{
 
     private JPanel createResultsPanel() {
         JPanel p=new JPanel(new BorderLayout());
-        p.setBorder(BorderFactory.createTitledBorder(type));
+        p.setBorder(BorderFactory.createTitledBorder(type.toString()));
         jListSegments=UI.createJListNodes(resultPath.getResultPath());
         jListSegments.setVisibleRowCount(1);
         jListSegments.setPreferredSize(new Dimension(150,15));
         jListSegments.setLayoutOrientation(JList.HORIZONTAL_WRAP);
         
-        JPanel pRes=new JPanel(new GridLayout(2,1));
-        JLabel lblTravellingLabel=UI.createJLabels("Travelling time: " + resultPath.getTravellingTime() + " hour");
-        JLabel lblEnergyLabel=UI.createJLabels("Energy consumption: " + resultPath.getEnergyConsum()+ "??");
-        pRes.add(lblTravellingLabel);
-        pRes.add(lblEnergyLabel);
+        JPanel pRes=new JPanel(new GridLayout(3,1));
+        JLabel lblTravelling=UI.createJLabels("Travelling time: " + resultPath.getTravellingTime()/3600 + " hour");
+        JLabel lblDistance=UI.createJLabels("Distance: " + resultPath.getDistance()/1000 + " km");  
+        JLabel lblEnergy=UI.createJLabels("Energy consumption: " + resultPath.getEnergyConsum()+ "??");
+        pRes.add(lblDistance);
+        pRes.add(lblTravelling);   
+        pRes.add(lblEnergy);
         
         p.add(jListSegments, BorderLayout.CENTER);
         p.add(pRes, BorderLayout.SOUTH);

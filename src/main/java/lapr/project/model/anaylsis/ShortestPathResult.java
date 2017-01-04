@@ -38,7 +38,7 @@ public class ShortestPathResult extends ResultPath {
      */
     @Override
     public void calculateBestPath(AirNetwork airNetwork){
-        LinkedList<Node> shortPath=(LinkedList<Node>)super.getResultPath();
+        LinkedList<Node> shortPath=new LinkedList<>();
         double res=GraphAlgorithms.shortestPath(airNetwork.getAirNetwork(), 
                 super.getStartNode(airNetwork), super.getEndNode(airNetwork), shortPath);
         super.setResult(res);
@@ -52,5 +52,15 @@ public class ShortestPathResult extends ResultPath {
     @Override
     public double getDistance(){
         return super.getResult();
+    }
+    
+      
+    /**
+     * Sets the distance result
+     * @param res
+     */
+    @Override
+    public  void setDistance(double res){
+        super.setResult(res);
     }
 }

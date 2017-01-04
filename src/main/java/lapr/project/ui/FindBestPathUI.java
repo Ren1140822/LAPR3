@@ -34,12 +34,9 @@ import javax.swing.event.ListSelectionListener;
 import lapr.project.controller.FindBestPathController;
 import lapr.project.model.Aircraft;
 import lapr.project.model.Airport;
-import lapr.project.model.Location;
 import lapr.project.model.Node;
 import lapr.project.model.Project;
-import lapr.project.model.Segment;
-import lapr.project.model.Wind;
-import lapr.project.model.lists.AirportList;
+import lapr.project.model.anaylsis.TypePath;
 
 /**
  *
@@ -60,7 +57,7 @@ public class FindBestPathUI extends JDialog{
     /**
      * panel with analysis input data 
      */
-    private JPanel panel,panelData, panelAircraft, panelAirports;
+    private JPanel panel,panelData;
     
     /**
      * buttons
@@ -88,55 +85,16 @@ public class FindBestPathUI extends JDialog{
      */
     private transient List<Airport> startAirports, endAirports;
     
-   private enum Type {
-        SHORTEST_PATH, FASTEST_PATH,ECOLOGIC_PATH
-    };
-  
+    private int dialogResult=JOptionPane.CANCEL_OPTION;
+    
+    private JButton btEco, btFast,btShort, btAll;
+   
     public FindBestPathUI(Project project, JDialog frame){
         super(frame, "Find BestPath", true);
         this.project = project;
         this.frame = frame;
         
-        /**---------------------------test---------------------------*/
-        Aircraft a=new Aircraft();
-        Aircraft b=new Aircraft();
-        b.setRegistration("cucu");
-        project.getAircraftList().getAircraftList().add(a);
-        project.getAircraftList().getAircraftList().add(b);
-        //--------------------------------------------------------//
-        Node startNode=new Node("test1", 40, 40);
-        Node intNode=new Node("test2", 50, 70);
-        Node endNode=new Node("test3", 40, 80);
-        
-        Wind windTest=new Wind(10,10);
-        String direction="BIDIRECTIONAL";
-        Segment segment1=new Segment("segmentTest1","test1", "test3", direction,windTest,0,0);       
-        Segment segment2=new Segment("segmentTest2", "test1", "test2", direction,windTest,0,0);
-        Segment segment3=new Segment("segmentTest3", "test2", "test3", direction, windTest,0,0);
-        
-        project.getAirNetwork().getAirNetwork().insertVertex(startNode);
-        project.getAirNetwork().getAirNetwork().insertVertex(intNode);
-        project.getAirNetwork().getAirNetwork().insertVertex(endNode);
-        
-        project.getAirNetwork().getNodeList().add(startNode);
-        project.getAirNetwork().getNodeList().add(intNode);
-        project.getAirNetwork().getNodeList().add(endNode);
-
-        project.getAirNetwork().getAirNetwork().insertEdge(startNode, intNode, segment2, 10);
-        project.getAirNetwork().getAirNetwork().insertEdge(intNode, endNode, segment3, 30);
-        project.getAirNetwork().getAirNetwork().insertEdge(startNode, endNode, segment1, 20); 
-        
-        Airport airport1=new Airport("OPO", "", "", "", new Location(40,40,10));
-        Airport airport2=new Airport("LIS", "", "", "", new Location(50,70,10));
-        Airport airport3=new Airport("LON", "", "", "", new Location(40,80,10));
-        
-        AirportList airportsList=project.getAirportList();
-        airportsList.getAirportList().add(airport1);
-        airportsList.getAirportList().add(airport2);
-        airportsList.getAirportList().add(airport3);
-        //-----------------------------------------------------------------------///
-        
-        controller = new FindBestPathController(project);
+        controller = new FindBestPathController(this.project);
         controller.newSImulation();
         aircrafts= controller.getAircraftsList();
         startAirports=controller.getAirportList();
@@ -158,14 +116,14 @@ public class FindBestPathUI extends JDialog{
     
     private JPanel createComponents(){
         panel = new JPanel(new BorderLayout());
-        panel.add(createInputPanel(), BorderLayout.CENTER);
+        panel.add(createInputPanel(), BorderLayout.NORTH);
         
         btClean=UI.createButtonClean();
         btBack=UI.createButtonBack();
         buttonBackAddListener();
         buttonCleanAddListener();     
         panel.add(UI.createButtonsCleanBackPanel(btClean, btBack), BorderLayout.SOUTH);
-        
+        panel.add(createPanelFind(), BorderLayout.CENTER);
         return panel;
     }
        
@@ -205,7 +163,13 @@ public class FindBestPathUI extends JDialog{
                         }
                     }
                 }
+                if(listStartAirports.getSelectedValue()!=null && 
+                        listEndAirports.getSelectedValue()!=null && 
+                        validateData())
+                    btEco.setEnabled(true);
+                    btAll.setEnabled(true);
             }
+            
         });   
         pleft.add(labelAircraft, BorderLayout.NORTH);
         pleft.add(listAircrafts, BorderLayout.CENTER);
@@ -223,16 +187,17 @@ public class FindBestPathUI extends JDialog{
         
         pcenter.add(UI.createPanelLabelTextLabel("No.Passengers:", txtPassenger, ""));
         pcenter.add(UI.createPanelLabelTextLabel("No.Crew members: ", txtCrew, ""));
-        pcenter.add(UI.createPanelLabelTextLabel("Cargo load: ", txtCargoLoad, "grams"));  
-        pcenter.add(UI.createPanelLabelTextLabel("Fuel load: ", txtFuelLoad, "L"));
+        pcenter.add(UI.createPanelLabelTextLabel("Cargo load: ", txtCargoLoad, "Kg"));  
+        pcenter.add(UI.createPanelLabelTextLabel("Fuel load: ", txtFuelLoad, "Kg"));
         
         return pcenter;
     }
     
     private JPanel createPanelAirports(){
-        JPanel pright=new JPanel(new BorderLayout());
-        JPanel pBlock=new JPanel();
-        JPanel po=new JPanel(new GridLayout(2,1));
+       JPanel panel=new JPanel(new BorderLayout());
+        JPanel pright=new JPanel();
+        JPanel pleft=new JPanel();
+        JPanel po=new JPanel(new BorderLayout());
         JLabel labelOrigin = UI.createJLabels("Select origin:");
         listStartAirports = UI.createJListAirport(startAirports);
         
@@ -247,34 +212,48 @@ public class FindBestPathUI extends JDialog{
             }
         });   
    
-        po.add(labelOrigin);
-        po.add(listStartAirports);
-        
+        po.add(labelOrigin, BorderLayout.NORTH);
+        po.add(listStartAirports, BorderLayout.CENTER);
        
         JLabel labelADest = UI.createJLabels("Select destination:");
-        JPanel pd=new JPanel(new GridLayout(2,1));
+        labelADest.setPreferredSize(new JLabel("Select destination: ").
+                                                        getPreferredSize());
+        JPanel pd=new JPanel(new BorderLayout());
         listEndAirports = UI.createJListAirport(endAirports);
-        pd.add(labelADest);
-        pd.add(listEndAirports);
+        listEndAirports.addListSelectionListener((ListSelectionEvent e) -> {
+            if(!e.getValueIsAdjusting()){
+                btShort.setEnabled(true);
+                btFast.setEnabled(true);
+                
+             if(listAircrafts.getSelectedValue()!=null && validateData())
+                btEco.setEnabled(true);
+                btAll.setEnabled(true);
+            }
+        }); 
+
+        pd.add(labelADest, BorderLayout.NORTH);
+        pd.add(listEndAirports, BorderLayout.CENTER);
         
-        pBlock.add(po);
-        pBlock.add(pd);
-        pright.add(pBlock, BorderLayout.CENTER);
-        pright.add(createPanelFind(), BorderLayout.SOUTH);
+        pleft.add(po);
+        pright.add(pd);
         
-        return pright;
+//        pright.add(createPanelFind(), BorderLayout.SOUTH);
+        panel.add(pleft, BorderLayout.WEST);
+        panel.add(pright, BorderLayout.EAST);
+        return panel;
     }
     
     private JPanel createPanelFind(){
         JPanel p=new JPanel();
         
         int aux= 2;
-        JPanel imports = new JPanel(new GridLayout(1,3, aux,aux));          
+        JPanel imports = new JPanel(new GridLayout(1,4, aux,aux));          
         imports.setBorder(BorderFactory.createCompoundBorder(new TitledBorder(
                 "Simulate:"), new EmptyBorder(aux, aux, aux, aux)));        
         imports.add(createButtonShortest());
         imports.add(createButtonFastest());
         imports.add(createButtonEcologic());
+        imports.add(createButtonAll());
 
         p.add(imports);     
                 
@@ -331,7 +310,7 @@ public class FindBestPathUI extends JDialog{
     private void finish() {
         JOptionPane.showMessageDialog(
                                     null,
-                                    "Simulation added successfully!",
+                                    "Simulation concluded successfully!",
                                     "Find Best Path",
                                     JOptionPane.INFORMATION_MESSAGE);
         dispose();
@@ -339,61 +318,142 @@ public class FindBestPathUI extends JDialog{
 
     private JButton createButtonShortest() {
         Icon icone = new ImageIcon( "src/main/resources/images/shortest.png" );
-        JButton button = new JButton("Find Shortest Path", icone);
-        button.setContentAreaFilled(false);
-        button.setBorderPainted(false);
-        button.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        button.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);  
-        button.setMnemonic(KeyEvent.VK_S);
-        button.setToolTipText("Find Shortest Path");
-        button.addActionListener((ActionEvent e) -> {
-            Airport startAirportSelected=(Airport)listStartAirports.getSelectedValue();
-            Airport endAirportSelected=(Airport) listEndAirports.getSelectedValue();
-            
-            controller.createBestPathSimulation(startAirportSelected, endAirportSelected);
-            
-            controller.calculateShortesPath();
-            openResultWindow(Type.SHORTEST_PATH);
+        btShort = new JButton("Find Shortest Path", icone);
+        btShort.setContentAreaFilled(false);
+        btShort.setBorderPainted(false);
+        btShort.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btShort.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);  
+        btShort.setMnemonic(KeyEvent.VK_S);
+        btShort.setEnabled(false);
+        btShort.setToolTipText("Please insert origin and destination airports");
+        btShort.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                createSimulation(TypePath.SHORTEST_PATH);
+                openResultWindow(TypePath.SHORTEST_PATH);
+            }
         });
-        return button;
+    
+        return btShort;
     }
 
     private JButton createButtonFastest() {
         Icon icone = new ImageIcon( "src/main/resources/images/fastest.png" );
-        JButton button = new JButton("Find Fastest Path", icone);
-        button.setContentAreaFilled(false);
-        button.setBorderPainted(false);
-        button.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        button.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);  
-        button.setMnemonic(KeyEvent.VK_F);
-        button.setToolTipText("Find Fastest Path");
-        button.addActionListener((ActionEvent e) -> {
-            controller.calculateFastestPath();
-            openResultWindow(Type.FASTEST_PATH);
+        btFast = new JButton("Find Fastest Path", icone);
+        btFast.setContentAreaFilled(false);
+        btFast.setBorderPainted(false);
+        btFast.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btFast.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);  
+        btFast.setMnemonic(KeyEvent.VK_F);
+        btFast.setEnabled(false);
+        btFast.setToolTipText("Please insert origin and destination airports");
+        btFast.addActionListener((ActionEvent e) -> {
+             createSimulation(TypePath.FASTEST_PATH);
+                openResultWindow(TypePath.FASTEST_PATH);
         });
-        return button;
+        return btFast;
     }
 
     private JButton createButtonEcologic() {
         Icon icone = new ImageIcon( "src/main/resources/images/ecologic.png" );
-        JButton button = new JButton("Find Ecologic Path", icone);
-        button.setContentAreaFilled(false);
-        button.setBorderPainted(false);
-        button.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        button.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);  
-        button.setMnemonic(KeyEvent.VK_E);
-        button.setToolTipText("Find Ecologic Path");
-        button.addActionListener(new ActionListener() {
+        btEco = new JButton("Find Ecologic Path", icone);
+        btEco.setContentAreaFilled(false);
+        btEco.setBorderPainted(false);
+        btEco.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btEco.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);  
+        btEco.setMnemonic(KeyEvent.VK_E);
+        btEco.setEnabled(false);
+        btEco.setToolTipText("Please insert all data");
+        btEco.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                controller.calculateEcologicPath();
-                 openResultWindow(Type.ECOLOGIC_PATH);
+                try{
+                    Airport startAirportSelected=(Airport)listStartAirports.getSelectedValue();
+                    Airport endAirportSelected=(Airport) listEndAirports.getSelectedValue();
+                    controller.createBestPathSimulation(startAirportSelected, endAirportSelected, TypePath.ECOLOGIC_PATH);
+                    setData();
+                    controller.calculateEcologicPath();
+                    openResultWindow(TypePath.ECOLOGIC_PATH);
+                    
+                }catch(java.lang.UnsupportedOperationException en){
+                        JOptionPane.showMessageDialog(frame,
+                                "It wasn´t possible to create simulation", "Erro", JOptionPane.ERROR_MESSAGE);
+                }
             }
         });
-        return button;
+        return btEco;
     }
     
-    private void openResultWindow(Type type) {
-        ResultUI result=new ResultUI(controller,controller.getResult(type.name()), type.toString(), frame);
+    private JButton createButtonAll() {
+        Icon icone = new ImageIcon( "src/main/resources/images/findPath.jpg" );
+        btAll = new JButton("All Best Paths", icone);
+        btAll.setContentAreaFilled(false);
+        btAll.setBorderPainted(false);
+        btAll.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btAll.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);  
+        btAll.setMnemonic(KeyEvent.VK_E);
+        btAll.setEnabled(false);
+        btAll.setToolTipText("Please insert all data");
+        btAll.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try{
+                    Airport startAirportSelected=(Airport)listStartAirports.getSelectedValue();
+                    Airport endAirportSelected=(Airport) listEndAirports.getSelectedValue();
+                    controller.createBestPathSimulation(startAirportSelected, endAirportSelected,TypePath.ALL);
+                    setData();
+                    controller.calculateShortesPath();
+                    controller.calculateFastestPath();
+                    controller.calculateEcologicPath();
+
+                    
+                }catch(java.lang.UnsupportedOperationException en){
+                        JOptionPane.showMessageDialog(frame,
+                                "It wasn´t possible to create simulation", "Erro", JOptionPane.ERROR_MESSAGE);
+                }
+                
+            }
+        });
+        return btAll;
+    }
+   
+    private void openResultWindow(TypePath type) {
+        ResultUI result=new ResultUI(controller,controller.getResult(type), type, null);
+    }
+    
+    private boolean validateData(){
+        return !txtCargoLoad.getText().equals("") &&
+                !txtPassenger.getText().equals("") &&
+                !txtCrew.getText().equals("") &&
+                !txtFuelLoad.getText().equals("");
+    }
+    
+    private void setData(){
+        Aircraft aircraft=(Aircraft) listAircrafts.getSelectedValue();
+        int passenger=Integer.parseInt(txtPassenger.getText());
+        int crew= Integer.parseInt(txtCrew.getText());
+        double cargo= Double.parseDouble(txtCargoLoad.getText());
+        double fuel=Double.parseDouble(txtFuelLoad.getText());
+        
+        controller.setData(aircraft,passenger, crew,cargo,fuel);    
+    }
+ 
+    private void createSimulation(TypePath type){
+        
+        Airport startAirportSelected=(Airport)listStartAirports.getSelectedValue();
+        Airport endAirportSelected=(Airport) listEndAirports.getSelectedValue();
+        controller.createBestPathSimulation(startAirportSelected, endAirportSelected, type);
+        if(listAircrafts.getSelectedValue()==null || !validateData()){
+            int dialogButton=JOptionPane.YES_NO_OPTION;
+            dialogResult = JOptionPane.showConfirmDialog (frame,"You didn´t insert all data. Would you like to proceed?","Warning",dialogButton);
+        }else{
+            setData();
+        }
+        try{   
+            controller.calculateShortesPath();
+        }catch(java.lang.UnsupportedOperationException en){
+            JOptionPane.showMessageDialog(frame,
+                    "It wasn´t possible to create simulation", "Erro", JOptionPane.ERROR_MESSAGE);
+        }
     }
 }

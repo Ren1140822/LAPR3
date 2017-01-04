@@ -81,7 +81,7 @@ public class ShortestPathResultTest {
         p.getAirportList().getAirportList().add(endAirport);
         
         Simulation instance=new Simulation();
-        instance.createBestPathSimulation(startAirport, endAirport);
+        instance.createAllPathSimulation(startAirport, endAirport);
         instance.getShortestResultPath().calculateBestPath(airnetwork);
 
         LinkedList<Node> result=new LinkedList<>();

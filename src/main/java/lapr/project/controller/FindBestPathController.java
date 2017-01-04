@@ -13,6 +13,7 @@ import lapr.project.model.Node;
 import lapr.project.model.Project;
 import lapr.project.model.anaylsis.ResultPath;
 import lapr.project.model.anaylsis.Simulation;
+import lapr.project.model.anaylsis.TypePath;
 
 /**
  *
@@ -93,8 +94,8 @@ public class FindBestPathController {
      * @return true if creates new simulation, false if start airport or
     end airport doesn´t exists
     */
-    public void createBestPathSimulation(Airport startAirport, Airport endAirport){
-        project.getSimulationsList().getSimulation().createBestPathSimulation(startAirport, endAirport);
+    public void createBestPathSimulation(Airport startAirport, Airport endAirport, TypePath type){   
+       project.getSimulationsList().getSimulation().createPathSimulation(startAirport, endAirport, type);
     }   
     
     /**
@@ -103,9 +104,10 @@ public class FindBestPathController {
      * @param passengers
      * @param crew
      * @param cargoLoad 
+     * @param fuelLoad 
      */
-    public void setData(Aircraft aircraft, int passengers, int crew, double cargoLoad){
-        project.getSimulationsList().getSimulation().setData(aircraft, passengers, crew, cargoLoad);
+    public void setData(Aircraft aircraft, int passengers, int crew, double cargoLoad, double fuelLoad){
+        project.getSimulationsList().getSimulation().setData(aircraft, passengers, crew, cargoLoad, fuelLoad);
     }
     
     /**
@@ -134,13 +136,14 @@ public class FindBestPathController {
        * @param type type of simulation (shortest, fastest, ecologic
        * @return the result of simulation´s type
        */
-      public ResultPath getResult(String type){
-          switch (type){
-              case "SHORTEST_PATH":
+      public ResultPath getResult(TypePath type){
+          TypePath p=type;
+          switch (p){
+              case SHORTEST_PATH:
                   return project.getSimulationsList().getSimulation().getShortestResultPath();
-              case "FASTEST_PATH":
+              case FASTEST_PATH:
                   return project.getSimulationsList().getSimulation().getFastestResultPath();
-              case "ECOLOGIC_PATH":
+              case ECOLOGIC_PATH:
                   return project.getSimulationsList().getSimulation().getEcologicResultPath();
               default:
                   return null;
@@ -152,7 +155,7 @@ public class FindBestPathController {
        * @param type type of simulation 
        * @return the travelling time result (min)
        */
-      public double getTravellingTime(String type) {
+      public double getTravellingTime(TypePath type) {
         return getResult(type).getTravellingTime()/60;
       }
       
@@ -161,7 +164,7 @@ public class FindBestPathController {
        * @param type type of simulation
        * @return the distance (km)
        */
-      public double getDistance(String type) {
+      public double getDistance(TypePath type) {
         return getResult(type).getDistance()/1000;
       }
       
@@ -170,8 +173,8 @@ public class FindBestPathController {
        * @param type type of simulation
        * @return the energy consume
        */
-      public double getEnergyConsume(String type){
-          return getResult(type).getTravellingTime();
+      public double getEnergyConsume(TypePath type){
+          return getResult(type).getEnergyConsum();
       }
   
     /**

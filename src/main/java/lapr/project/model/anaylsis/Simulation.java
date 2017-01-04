@@ -287,12 +287,14 @@ public class Simulation{
      * @param passengers number of passengers
      * @param crew number of crew members
      * @param cargoLoad cargo load (kg)
+     * @param fuelLoad weight of fuel (kg)
      */
-    public void setData(Aircraft aircraft, int passengers, int crew, double cargoLoad){
+    public void setData(Aircraft aircraft, int passengers, int crew, double cargoLoad, double fuelLoad){
         this.aircraft=aircraft;
         this.passengers=passengers;
         this.crew=crew;
         this.cargoLoad=cargoLoad*1000;
+        this.fuelWeight=fuelWeight*1000;
         this.totalWeight=calculateInitialWeight();
     }
 
@@ -366,14 +368,39 @@ public class Simulation{
     }
     
      /**
-     * Creates a best path simulation
+     * Creates all best path simulation
      * @param startAirport start airport of simulation
      * @param endAirport end airport of simulation
      */
-    public void createBestPathSimulation(Airport startAirport, Airport endAirport){
+    public void createAllPathSimulation(Airport startAirport, Airport endAirport){
         this.shortestResultPath=new ShortestPathResult(startAirport,endAirport);
         this.fastestResultPath=new FastestPathResult(startAirport, endAirport);
         this.ecologicResultPath=new EcologicPathResult(startAirport,endAirport);
+    }
+    
+    /**
+     * Creates a best path simulation
+     * @param startAirport start airport of simulation
+     * @param endAirport end airport of simulation
+     * @param type type of path to be simulated
+     */
+    public void createPathSimulation(Airport startAirport, Airport endAirport, TypePath type){
+    
+        TypePath p=type;
+        switch(p){
+            case ALL:
+                this.shortestResultPath=new ShortestPathResult(startAirport,endAirport);
+                this.fastestResultPath=new FastestPathResult(startAirport, endAirport);
+                this.ecologicResultPath=new EcologicPathResult(startAirport,endAirport);
+            case SHORTEST_PATH:
+                this.shortestResultPath=new ShortestPathResult(startAirport,endAirport);
+            case FASTEST_PATH:
+                this.fastestResultPath=new FastestPathResult(startAirport, endAirport);
+            case ECOLOGIC_PATH:
+            this.ecologicResultPath=new EcologicPathResult(startAirport, endAirport);
+            default:
+                this.shortestResultPath=new ShortestPathResult(startAirport,endAirport);
+        }
     }
     
     /**
@@ -422,7 +449,7 @@ public class Simulation{
             return true;
         }
         Simulation otherSimulation = (Simulation) otherObject;
-        return this.aircraft.equals(otherSimulation.getAircraft()) &&
+        boolean v1=this.aircraft.equals(otherSimulation.getAircraft()) &&
                 this.getStartAirport().equals(otherSimulation.getStartAirport()) &&
                 this.getEndAirport().equals(otherSimulation.getEndAirport()) &&
                 this.passengers==otherSimulation.getPassengers() &&
@@ -430,7 +457,11 @@ public class Simulation{
                 Double.doubleToLongBits(this.cargoLoad)==
                 Double.doubleToLongBits(otherSimulation.getCargoLoad()) &&
                 Double.doubleToLongBits(this.fuelWeight)==
-                Double.doubleToLongBits(otherSimulation.getFuelWeight());              
+                Double.doubleToLongBits(otherSimulation.getFuelWeight());
+       boolean v2=this.getEcologicResultPath().equals(otherSimulation.getEcologicResultPath()) &&
+               this.getShortestResultPath().equals(otherSimulation.getShortestResultPath()) 
+               && this.getFastestResultPath().equals(otherSimulation.getFastestResultPath());
+       return v1 && v2;
     }
 
     @Override

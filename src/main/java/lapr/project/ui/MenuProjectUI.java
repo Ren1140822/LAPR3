@@ -19,7 +19,6 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -285,7 +284,7 @@ public class MenuProjectUI extends JDialog {
     }
 
     private JMenuItem createItemAnalysis() {
-        JMenuItem item = new JMenuItem("View Analysis", KeyEvent.VK_A);
+        JMenuItem item = new JMenuItem("Analysis/Compare", KeyEvent.VK_A);
         item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, InputEvent.ALT_MASK));
         item.addActionListener(new ActionListener() {
             @Override
@@ -323,7 +322,7 @@ public class MenuProjectUI extends JDialog {
     }
 
     private void analysis() {
-         FindBestPathUI best= new FindBestPathUI(project, MenuProjectUI.this);
+         AnalysisUI aui= new AnalysisUI(project, MenuProjectUI.this);
     }
 
     private void closeBack() {

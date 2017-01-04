@@ -144,14 +144,14 @@ public class ResultPath extends Simulation {
     }
 
     /**
-     * @return the travellingTime
+     * @return the travellingTime (s)
      */
     public double getTravellingTime() {
         return travellingTime;
     }
     
       /**
-     * Sets distance of result path (m)
+     * Sets distance of result path (s)
      * @param travellingTime
      */
     public void setTravellingTime(double travellingTime){
@@ -159,7 +159,7 @@ public class ResultPath extends Simulation {
     }
 
     /**
-     * @return the distance
+     * @return the distance (m)
      */
     public double getDistance() {
         return distance;

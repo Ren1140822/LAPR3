@@ -42,7 +42,11 @@ public class ImportAircraftModelListController {
             jaxbContext = JAXBContext.newInstance(AircraftModelList.class);
             Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
             aircraftsModelList = (AircraftModelList) jaxbUnmarshaller.unmarshal(file);
-            return !aircraftsModelList.getModelList().isEmpty();
+            boolean b=!aircraftsModelList.getModelList().isEmpty();
+            if(b)
+                project.setAircraftModelList(aircraftsModelList);
+            return b;
+                    
         } catch (JAXBException ex) { 
             System.err.println(ex);
             return false;

@@ -19,6 +19,7 @@ import lapr.project.model.Project;
 import lapr.project.model.Segment;
 import lapr.project.model.Wind;
 import lapr.project.model.anaylsis.Simulation;
+import lapr.project.model.anaylsis.TypePath;
 import lapr.project.model.lists.AirportList;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -225,12 +226,12 @@ public class FindBestPathControllerTest {
         
         FindBestPathController instance = new FindBestPathController(p);
         instance.newSImulation();
-        instance.createBestPathSimulation(startAirport, endAirport);
+        instance.createBestPathSimulation(startAirport, endAirport,TypePath.ALL);
        
         Simulation result =instance.getSimulation();
   
         Simulation expResult= new Simulation();
-        expResult.createBestPathSimulation(startAirport, endAirport);
+        expResult.createAllPathSimulation(startAirport, endAirport);
         assertEquals(expResult, result);
     }
 
@@ -260,14 +261,15 @@ public class FindBestPathControllerTest {
         int passengers = 20;
         int crew = 100;
         double cargoLoad = 40.4;
+        double fuelWeight=0;
         instance.newSImulation();
-        instance.createBestPathSimulation(startAirport, endAirport);
-        instance.setData(a, passengers, crew, cargoLoad);
+        instance.createBestPathSimulation(startAirport, endAirport,TypePath.ALL);
+        instance.setData(a, passengers, crew, cargoLoad, fuelWeight);
         
         Simulation s=new Simulation(passengers, crew, cargoLoad, 0, 0, a);
         s.setStartAirport(startAirport);
         s.setEndAirport(endAirport);
-        
+        s.createPathSimulation(startAirport, endAirport, TypePath.ALL);
         assertEquals(instance.getSimulation(), s);
     }
 
@@ -309,7 +311,7 @@ public class FindBestPathControllerTest {
         p.getAirportList().getAirportList().add(endAirport);
         
         instance.newSImulation();
-        instance.createBestPathSimulation(startAirport, endAirport);
+        instance.createBestPathSimulation(startAirport, endAirport, TypePath.ALL);
         instance.calculateShortesPath();
         LinkedList<Node> result=new LinkedList<>();
         result.add(startNode);
@@ -323,7 +325,7 @@ public class FindBestPathControllerTest {
     @Test
     public void testGetResult() {
         System.out.println("getResult");
-        String type = "SHORTEST_PATH";
+        TypePath type = TypePath.SHORTEST_PATH;
         Project p=new Project();
         
         Node startNode=new Node("", 10, 10);
@@ -341,7 +343,7 @@ public class FindBestPathControllerTest {
         FindBestPathController instance = new FindBestPathController(p);        
         
         instance.newSImulation();
-        instance.createBestPathSimulation(startAirport, endAirport);
+        instance.createBestPathSimulation(startAirport, endAirport, TypePath.ALL);
         
         instance.getSimulation().getShortestResultPath().setResult(expResult);
         double result = instance.getResult(type).getResult();
@@ -370,17 +372,94 @@ public class FindBestPathControllerTest {
         p.getAirportList().getAirportList().add(startAirport);
         p.getAirportList().getAirportList().add(endAirport);
      
-        instance.createBestPathSimulation(startAirport, endAirport);
+        instance.createBestPathSimulation(startAirport, endAirport,TypePath.ALL);
         CabinConfiguration cc=new CabinConfiguration();
         AircraftModel am=new AircraftModel("", "", "", "", new Motorization(), 
                 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, new LinkedList<>(),new LinkedList<>());
        
-        instance.setData(new Aircraft("", "", cc,3, am), 50, 10, 100);
+        instance.setData(new Aircraft("", "", cc,3, am), 50, 10, 100,1);
         
         instance.getSimulation().getEcologicResultPath().setResult(10);
         instance.getSimulation().getEcologicResultPath().setResultPath(new LinkedList<>());
         boolean expResult = false;
         boolean result = instance.saveSimulation();
+        assertEquals(expResult, result);
+    }
+
+    /**
+     * Test of getTravellingTime method, of class FindBestPathController.
+     */
+    @Test
+    public void testGetTravellingTime() {
+        System.out.println("getTravellingTime");
+        TypePath type = TypePath.ECOLOGIC_PATH;
+         double expResult = 60;
+         
+        FindBestPathController instance = new FindBestPathController(new Project());
+        instance.newSImulation();
+        instance.createBestPathSimulation(new Airport(), new Airport(), type);
+        instance.getSimulation().getEcologicResultPath().setTravellingTime(3600);
+
+        double result = instance.getTravellingTime(type);
+        assertEquals(expResult, result, 0.0);
+    }
+
+    /**
+     * Test of getDistance method, of class FindBestPathController.
+     */
+    @Test
+    public void testGetDistance() {
+        System.out.println("getDistance");
+        TypePath type = TypePath.ECOLOGIC_PATH;
+         double expResult = 0.02;
+         
+        FindBestPathController instance = new FindBestPathController(new Project());
+        
+        instance.newSImulation();
+        instance.createBestPathSimulation(new Airport(), new Airport(), type);
+        instance.getSimulation().getEcologicResultPath().setDistance(20);
+
+        double result = instance.getDistance(type);
+        assertEquals(expResult, result, 0.0);
+    }
+
+    /**
+     * Test of getEnergyConsume method, of class FindBestPathController.
+     */
+    @Test
+    public void testGetEnergyConsume() {
+        System.out.println("getEnergyConsume");
+        TypePath type = TypePath.ECOLOGIC_PATH;
+         double expResult = 200;
+         
+        FindBestPathController instance = new FindBestPathController(new Project());
+        
+        instance.newSImulation();
+        instance.createBestPathSimulation(new Airport(), new Airport(), type);
+        instance.getSimulation().getEcologicResultPath().setEnergyConsum(expResult);
+
+        double result = instance.getEnergyConsume(type);
+        assertEquals(expResult, result, 0.0);
+    }
+
+    /**
+     * Test of getSimulation method, of class FindBestPathController.
+     */
+    @Test
+    public void testGetSimulation() {
+        System.out.println("getSimulation");
+        FindBestPathController instance = new FindBestPathController(new Project());
+        Airport startAirport=new Airport();
+        Airport endAirport=new Airport();
+        
+        Simulation expResult = new Simulation(startAirport,endAirport);
+ 
+        expResult.createAllPathSimulation(startAirport, endAirport);
+        
+        instance.newSImulation();
+        instance.createBestPathSimulation(startAirport, endAirport, TypePath.ALL);
+        
+        Simulation result = instance.getSimulation();
         assertEquals(expResult, result);
     }
     

@@ -52,4 +52,13 @@ public class EcologicPathResult extends ResultPath{
         //alterar
         return super.getResult();
     }
+    
+    /**
+     * Sets the distance result
+     * @param res
+     */
+    @Override
+    public  void setDistance(double res){
+        super.setResult(res);
+    }
 }

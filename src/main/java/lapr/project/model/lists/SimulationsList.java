@@ -8,6 +8,7 @@ package lapr.project.model.lists;
 import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
+import javax.xml.bind.annotation.XmlTransient;
 import lapr.project.model.anaylsis.Simulation;
 
 /**
@@ -20,13 +21,21 @@ public class SimulationsList implements Serializable {
     /**
      * The list simulations
      */
-    private transient List<Simulation> simulationsList;
+    private transient LinkedList<Simulation> simulationsList;
   
     /**
      * The simulation created
      */   
     private transient Simulation simulation;
    
+    
+    /**
+     * Type of simulation
+     */
+    @XmlTransient
+    private enum Type{
+        SHORTEST_PATH, ECOLOGIC_PATH, FASTEST_PATH
+    }
     
     /**
      * Constructor
@@ -44,7 +53,7 @@ public class SimulationsList implements Serializable {
         this.simulationsList = list.getSimulationsList();
     }
     
-    public SimulationsList(List<Simulation> list){
+    public SimulationsList(LinkedList<Simulation> list){
         this.simulationsList=list;
     }
     
@@ -52,7 +61,7 @@ public class SimulationsList implements Serializable {
      * Gets the simulations list
      * @return the simulations list
      */
-    public List<Simulation> getSimulationsList(){
+    public LinkedList<Simulation> getSimulationsList(){
         return simulationsList;
     }
     
@@ -60,7 +69,7 @@ public class SimulationsList implements Serializable {
      * Sets the simulations list
      * @param list the simulations list to set
      */
-    public void setSimulationsList(List<Simulation> list){
+    public void setSimulationsList(LinkedList<Simulation> list){
         this.simulationsList=list;
     }
     
