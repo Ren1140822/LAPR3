@@ -137,8 +137,9 @@ public class Wind implements Serializable{
             return true;
         }
         Wind otherWind = (Wind) otherObject;
-        return this.windDirection == otherWind.windDirection &&
-                this.windIntensity == otherWind.windIntensity;
+        boolean windd = !(this.windDirection < otherWind.windDirection) && !(this.windDirection > otherWind.windDirection);
+        boolean windi = !(this.windIntensity < otherWind.windIntensity) && !(this.windIntensity > otherWind.windIntensity);
+        return windd && windi;
     }
 
     /**

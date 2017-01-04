@@ -175,7 +175,8 @@ public class Location implements Serializable{
         Location otherLocation = (Location) otherObject;
         boolean lat = !(this.latitude < otherLocation.latitude) && !(this.latitude > otherLocation.latitude);
         boolean lon = !(this.longitude < otherLocation.longitude) && !(this.longitude > otherLocation.longitude);
-        return  this.altitude == otherLocation.altitude && lat && lon;
+        boolean alt = !(this.altitude < otherLocation.altitude) && !(this.altitude > otherLocation.altitude);
+        return  alt && lat && lon;
     }
     
     @Override
