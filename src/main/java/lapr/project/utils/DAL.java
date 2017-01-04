@@ -15,8 +15,10 @@ import lapr.project.model.Aircraft;
 import lapr.project.model.AircraftModel;
 import lapr.project.model.Airport;
 import lapr.project.model.CabinConfiguration;
+import lapr.project.model.Iten;
 import lapr.project.model.Location;
 import lapr.project.model.Motorization;
+import lapr.project.model.Thrust_Function;
 
 /**
  *
@@ -191,8 +193,9 @@ public class DAL {
 
     /**
      * Gets a cabin configuration by ID.
+     *
      * @param cabinConfigID the cabin config ID
-     * @return  the cabin config object
+     * @return the cabin config object
      */
     private CabinConfiguration getCabinConfigByID(int cabinConfigID) {
         CabinConfiguration config = null;
@@ -236,6 +239,7 @@ public class DAL {
 
     /**
      * Gets the aircraftModel by ID.
+     *
      * @param aircraftModelD the aircraft model ID
      * @return the aircraft model object
      */
@@ -244,9 +248,9 @@ public class DAL {
         Connection con = null;
         PreparedStatement st = null;
         ResultSet rs = null;
+        List<Iten> itemList = new LinkedList<Iten>();
 
         try {
-
             String query = "placeholder query for aircraftmodel";
             con = connect();
             st = con.prepareStatement(query);
@@ -255,20 +259,22 @@ public class DAL {
                 String id = rs.getString("id");
                 String description = rs.getString("description");
                 String maker = rs.getString("maker");
+                String type = rs.getString("type");
                 int motorizationID = rs.getInt("motorization");
-                Motorization motorization =  getMotorizationByID(motorizationID);
+                Motorization motorization = getMotorizationByID(motorizationID);
                 double eWeight = rs.getDouble("eWeight");
-                double maxTakeOffWeight = rs.getDouble("maxTakeOffWeight");
-                double maxZeroFuelWeight = rs.getDouble("maxZeroFuelWeight");
-                double maxPayload = rs.getDouble("maxPayload");
+                double MTOW = rs.getDouble("MTOW");
+                double maxPayload = rs.getDouble("maxTakeOffWeight");
+                double VMO = rs.getDouble("VMO");
+                double MMO = rs.getDouble("MMO");
                 double fuelCapacity = rs.getDouble("fuelCapacity");
-                double maxSpeed = rs.getDouble("maxSpeed");
-                double matchOperating = rs.getDouble("matchOperating");
+                double aspectRatio = rs.getDouble("aspectRatio");
                 double wingArea = rs.getDouble("wingArea");
                 double wingSpan = rs.getDouble("wingSpan");
-                double cDrag = rs.getDouble("cDrag");
                 double e = rs.getDouble("e");
-//                model = new AircraftModel(id, description, maker, maker, motorization, eWeight, e, e, maxPayload, fuelCapacity, e, e, wingArea, wingSpan, cDrag, e);
+                int itemID = rs.getInt("item");
+                itemList.add(getItemByID(itemID));
+                model = new AircraftModel(id, description, maker, type, motorization, eWeight, MTOW, maxPayload, fuelCapacity, VMO, MMO, wingArea, wingSpan, aspectRatio, e, itemList);
             }
 
         } catch (SQLException ex) {
@@ -291,26 +297,78 @@ public class DAL {
         }
         return model;
     }
-    
+
     /**
-     * Gets the motorization by ID.
-     * @param motorizationConfigID the motorization id
-     * @return the motorization object
+     * Gets the item by ID.
+     *
+     * @param itemID the item  id
+     * @return the item object
      */
-      private Motorization getMotorizationByID(int motorizationConfigID) {
-        Motorization motorization = null;
+    private Iten getItemByID(int itemID) {
+        Iten item = null;
         Connection con = null;
         PreparedStatement st = null;
         ResultSet rs = null;
-       
         try {
-
-            String query = "placeholder query for cabin config";
+            String query = "placeholder query for item";
             con = connect();
             st = con.prepareStatement(query);
             rs = st.executeQuery();
             while (rs.next()) {
-                //check attributes
+                double speed = rs.getDouble("speed");
+                double Cdrag = rs.getDouble("cDrag");
+                item = new Iten(speed, Cdrag);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DAL.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (st != null) {
+                    st.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(DAL.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return item;
+    }
+
+    /**
+     * Gets the motorization by ID.
+     *
+     * @param motorizationConfigID the motorization id
+     * @return the motorization object
+     */
+    private Motorization getMotorizationByID(int motorizationConfigID) {
+        Motorization motorization = null;
+        Connection con = null;
+        PreparedStatement st = null;
+        ResultSet rs = null;
+
+        try {
+
+            String query = "placeholder query for motorizaton";
+            con = connect();
+            st = con.prepareStatement(query);
+            rs = st.executeQuery();
+            while (rs.next()) {
+                int numberMotors = rs.getInt("numberMotors");
+                String motor = rs.getString("motor");
+
+                String motorType = rs.getString("motorType");
+                double cruise_altitude = rs.getDouble("speed");
+                double cruise_speed = rs.getDouble("cruiseSpeed");
+                double TSFC = rs.getDouble("TSFC");
+                double lapse_rate_factor = rs.getDouble("lapseRateFactor");
+                int thrust_functionID = rs.getInt("thrustFunction");
+                Thrust_Function thrust_func = getThrustFunctionByID(thrust_functionID);
+                motorization = new Motorization(numberMotors, motor, motorType, cruise_altitude, cruise_speed, TSFC, lapse_rate_factor, thrust_func);
             }
         } catch (SQLException ex) {
             Logger.getLogger(DAL.class.getName()).log(Level.SEVERE, null, ex);
@@ -330,6 +388,54 @@ public class DAL {
             }
         }
         return motorization;
+    }
+    
+    /**
+     * Gets thrust function by ID.
+     * @param thrustFunctionID the thrust function id
+     * @return  the thrust function
+     */
+     private Thrust_Function getThrustFunctionByID(int thrustFunctionID) {
+       Thrust_Function thrust = null;
+        Connection con = null;
+        PreparedStatement st = null;
+        ResultSet rs = null;
+
+        try {
+
+            String query = "placeholder query for  thrust func";
+            con = connect();
+            st = con.prepareStatement(query);
+            rs = st.executeQuery();
+            while (rs.next()) {
+                int numberMotors = rs.getInt("numberMotors");
+                String motor = rs.getString("motor");
+                String motorType = rs.getString("motorType");
+                double cruise_altitude = rs.getDouble("speed");
+                double cruise_speed = rs.getDouble("cruiseSpeed");
+                double TSFC = rs.getDouble("TSFC");
+                double lapse_rate_factor = rs.getDouble("lapseRateFactor");
+                int thrust_functionID = rs.getInt("thrustFunction");
+                Thrust_Function thrust_func ;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DAL.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (st != null) {
+                    st.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(DAL.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return thrust;
     }
 
 }
