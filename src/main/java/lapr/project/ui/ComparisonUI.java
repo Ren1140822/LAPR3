@@ -21,8 +21,8 @@ import lapr.project.model.Project;
 public class ComparisonUI extends JDialog{
      private JDialog frame;
     
-    Project project;
-    ComparisonController controller;
+    private Project project;
+    private transient ComparisonController controller;
 
     private final int WINDOW_WIDTH = 850;
     private final int WINDOW_HEIGHT = 600;

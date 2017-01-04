@@ -199,15 +199,15 @@ public class ComparisonResult {
         int countTemp=0;
         double sum=0;
         
-        if(Double.doubleToLongBits(v1)!=DEFAULT_VALUE){
+        if(Double.doubleToLongBits(v1)!=Double.doubleToLongBits(DEFAULT_VALUE)){
                 sum+=v1;
                 countTemp++;              
         }
-        if(Double.doubleToLongBits(v2)!=DEFAULT_VALUE){
+        if(Double.doubleToLongBits(v2)!=Double.doubleToLongBits(DEFAULT_VALUE)){
             sum+=v2;
             countTemp++;            
         }
-        if(Double.doubleToLongBits(v3)!=DEFAULT_VALUE){
+        if(Double.doubleToLongBits(v3)!=Double.doubleToLongBits(DEFAULT_VALUE)){
             sum+=v3;
             countTemp++;                
         }
@@ -220,9 +220,9 @@ public class ComparisonResult {
      * @return true if all data is valid, false if not
      */
      public boolean validate() {
-        return Double.doubleToLongBits(getAvgDistance())!=DEFAULT_VALUE &&
-               Double.doubleToLongBits(getAvgTimeFlight())!=DEFAULT_VALUE &&
-                Double.doubleToLongBits(getAvgFuel())!=DEFAULT_VALUE;
+        return Double.doubleToLongBits(getAvgDistance())!=Double.doubleToLongBits(DEFAULT_VALUE) &&
+               Double.doubleToLongBits(getAvgTimeFlight())!=Double.doubleToLongBits(DEFAULT_VALUE) &&
+                Double.doubleToLongBits(getAvgFuel())!=Double.doubleToLongBits(DEFAULT_VALUE);
     }
      
     public String[] toStringCompare(Simulation sim){

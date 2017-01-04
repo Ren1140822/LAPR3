@@ -165,9 +165,10 @@ public class FindBestPathUI extends JDialog{
                 }
                 if(listStartAirports.getSelectedValue()!=null && 
                         listEndAirports.getSelectedValue()!=null && 
-                        validateData())
+                        validateData()){
                     btEco.setEnabled(true);
                     btAll.setEnabled(true);
+                }
             }
             
         });   
@@ -224,10 +225,12 @@ public class FindBestPathUI extends JDialog{
             if(!e.getValueIsAdjusting()){
                 btShort.setEnabled(true);
                 btFast.setEnabled(true);
+            }
                 
-             if(listAircrafts.getSelectedValue()!=null && validateData())
+             if(listAircrafts.getSelectedValue()!=null && validateData()){
                 btEco.setEnabled(true);
                 btAll.setEnabled(true);
+             
             }
         }); 
 
