@@ -168,15 +168,19 @@ public class DAL {
     private CabinConfiguration getCabinConfigByID(int cabinConfigID) {
         CabinConfiguration config = null;
         Connection con = null;
-        PreparedStatement st = null;
+     
         ResultSet rs = null;
         Map<String, Integer> map = new HashMap<>();
-        try {
+         con = connect();
+         String query = "placeholder query for cabin config";
+        try (PreparedStatement st2 = con.prepareStatement(query)){
 
-            String query = "placeholder query for cabin config";
-            con = connect();
-            st = con.prepareStatement(query);
-            rs = st.executeQuery();
+        
+           
+        
+          
+            
+            rs = st2.executeQuery();
             while (rs.next()) {
                 String className = rs.getString("class_name"); //going to have multiple results from the same cabin configuration
                 int classSeats = rs.getInt("class_seats");
@@ -187,7 +191,11 @@ public class DAL {
         } catch (SQLException ex) {
             Logger.getLogger(DAL.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
-            close(rs, st, con);
+            try {
+                con.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(DAL.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return config;
     }
