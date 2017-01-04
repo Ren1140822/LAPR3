@@ -43,9 +43,9 @@ public class Pattern implements Serializable{
     }
     
     public Pattern(double altitude, double vClimb, double vDesc){
-        this.altitude = DEFAULT_ALTITUDE;
-        this.vClimb = DEFAULT_V_CLIMB;
-        this.vDesc = DEFAULT_V_DESC;
+        this.altitude = altitude;
+        this.vClimb = vClimb;
+        this.vDesc = vDesc;
     }
 
     /**

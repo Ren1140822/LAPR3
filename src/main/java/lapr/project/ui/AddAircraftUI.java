@@ -120,8 +120,8 @@ public class AddAircraftUI extends JDialog {
     }
 
     public JLabel createLabels(String text) {
-        JLabel label = new JLabel();
-        label.setText(text);
+        JLabel label = UI.createJLabels(text);
+//        label.setText(text);
         return label;
     }
 
