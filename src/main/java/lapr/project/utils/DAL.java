@@ -57,16 +57,16 @@ public class DAL {
      * @return the list of airports
      */
     public List<Airport> getListOfAirports(String projectID) {
-        PreparedStatement st = null;
+
         List<Airport> airportList = new LinkedList<>();
         ResultSet rs = null;
 
         Connection con = null;
-        try {
+        String query = "placeholder query for location";
+        con = connect();
 
-            String query = "placeholder query";
-            con = connect();
-            st = con.prepareStatement(query);
+        try (PreparedStatement st = con.prepareStatement(query)) {
+
             rs = st.executeQuery();
             while (rs.next()) {
                 int locationID = rs.getInt("LocationID");
@@ -83,7 +83,7 @@ public class DAL {
         } catch (SQLException ex) {
             Logger.getLogger(DAL.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
-            close(rs, st, con);
+            close(con);
         }
         return airportList;
     }
@@ -97,13 +97,13 @@ public class DAL {
     private Location getLocationByID(int locationID) {
         Location location = null;
         Connection con = null;
-        PreparedStatement st = null;
-        ResultSet rs = null;
-        try {
 
-            String query = "placeholder query for location";
-            con = connect();
-            st = con.prepareStatement(query);
+        ResultSet rs = null;
+        String query = "placeholder query for location";
+        con = connect();
+
+        try (PreparedStatement st = con.prepareStatement(query)) {
+
             rs = st.executeQuery();
             while (rs.next()) {
                 double latitude = rs.getDouble("Latitude");
@@ -115,7 +115,7 @@ public class DAL {
         } catch (SQLException ex) {
             Logger.getLogger(DAL.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
-            close(rs, st, con);
+            close(con);
 
         }
         return location;
@@ -128,16 +128,16 @@ public class DAL {
      * @return the list of aircrafts
      */
     public List<Aircraft> getListOfAircrafts(String projectID) {
-        PreparedStatement st = null;
+
         List<Aircraft> aircraftList = new LinkedList<>();
         ResultSet rs = null;
 
         Connection con = null;
-        try {
+        String query = "placeholder query for aircraftmodel";
+        con = connect();
 
-            String query = "placeholder query";
-            con = connect();
-            st = con.prepareStatement(query);
+        try (PreparedStatement st = con.prepareStatement(query)) {
+
             rs = st.executeQuery();
             while (rs.next()) {
                 String registration = rs.getString("Registration");
@@ -153,7 +153,7 @@ public class DAL {
         } catch (SQLException ex) {
             Logger.getLogger(DAL.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
-            close(rs, st, con);
+            close(con);
 
         }
         return aircraftList;
@@ -168,18 +168,13 @@ public class DAL {
     private CabinConfiguration getCabinConfigByID(int cabinConfigID) {
         CabinConfiguration config = null;
         Connection con = null;
-     
+
         ResultSet rs = null;
         Map<String, Integer> map = new HashMap<>();
-         con = connect();
-         String query = "placeholder query for cabin config";
-        try (PreparedStatement st2 = con.prepareStatement(query)){
+        con = connect();
+        String query = "placeholder query for cabin config";
+        try (PreparedStatement st2 = con.prepareStatement(query)) {
 
-        
-           
-        
-          
-            
             rs = st2.executeQuery();
             while (rs.next()) {
                 String className = rs.getString("class_name"); //going to have multiple results from the same cabin configuration
@@ -209,15 +204,15 @@ public class DAL {
     private AircraftModel getAircraftModelByID(int aircraftModelD) {
         AircraftModel model = null;
         Connection con = null;
-        PreparedStatement st = null;
+
         ResultSet rs = null;
         List<Iten> itemList = new LinkedList<Iten>();
         List<Pattern> patternList = new LinkedList<Pattern>();
+        String query = "placeholder query for aircraftmodel";
+        con = connect();
 
-        try {
-            String query = "placeholder query for aircraftmodel";
-            con = connect();
-            st = con.prepareStatement(query);
+        try (PreparedStatement st = con.prepareStatement(query)) {
+
             rs = st.executeQuery();
             while (rs.next()) {
                 String id = rs.getString("id");
@@ -236,8 +231,8 @@ public class DAL {
                 double wingArea = rs.getDouble("wingArea");
                 double wingSpan = rs.getDouble("wingSpan");
                 double e = rs.getDouble("e");
-                int itemID = rs.getInt("item");
-                itemList = getItemByID(itemID);
+
+                itemList = getItemByID(id);
                 int patternID = rs.getInt("pattern");
 
                 model = new AircraftModel(id, description, maker, type, motorization, eWeight, MTOW, maxPayload, fuelCapacity, VMO, MMO, wingArea, wingSpan, aspectRatio, e, itemList, getPatternByID(patternID));
@@ -246,7 +241,7 @@ public class DAL {
         } catch (SQLException ex) {
             Logger.getLogger(DAL.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
-            close(rs, st, con);
+            close(con);
 
         }
         return model;
@@ -258,16 +253,15 @@ public class DAL {
      * @param itemID the item id
      * @return the item object
      */
-    private List<Iten> getItemByID(int itemID) {
+    private List<Iten> getItemByID(String aircraftModelID) {
         Iten item = null;
         List<Iten> itemList = new LinkedList<>();
         Connection con = null;
-        PreparedStatement st = null;
         ResultSet rs = null;
-        try {
-            String query = "placeholder query for item";
-            con = connect();
-            st = con.prepareStatement(query);
+        String query = "placeholder query for item";
+        con = connect();
+        try (PreparedStatement st = con.prepareStatement(query)) {
+
             rs = st.executeQuery();
             while (rs.next()) {
                 double speed = rs.getDouble("speed");
@@ -278,7 +272,7 @@ public class DAL {
         } catch (SQLException ex) {
             Logger.getLogger(DAL.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
-            close(rs, st, con);
+            close(con);
         }
         return itemList;
     }
@@ -293,12 +287,11 @@ public class DAL {
         Pattern pattern = null;
         List<Pattern> patternList = new LinkedList<>();
         Connection con = null;
-        PreparedStatement st = null;
+
         ResultSet rs = null;
-        try {
-            String query = "placeholder query for item";
-            con = connect();
-            st = con.prepareStatement(query);
+        String query = "placeholder query for item";
+        con = connect();
+        try (PreparedStatement st = con.prepareStatement(query)) {
             rs = st.executeQuery();
             while (rs.next()) {
 
@@ -311,7 +304,7 @@ public class DAL {
         } catch (SQLException ex) {
             Logger.getLogger(DAL.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
-            close(rs, st, con);
+            close(con);
         }
         return patternList;
     }
@@ -325,14 +318,12 @@ public class DAL {
     private Motorization getMotorizationByID(int motorizationConfigID) {
         Motorization motorization = null;
         Connection con = null;
-        PreparedStatement st = null;
+
         ResultSet rs = null;
+        String query = "placeholder query for  thrust func";
+        con = connect();
+        try (PreparedStatement st = con.prepareStatement(query)) {
 
-        try {
-
-            String query = "placeholder query for motorizaton";
-            con = connect();
-            st = con.prepareStatement(query);
             rs = st.executeQuery();
             while (rs.next()) {
                 int numberMotors = rs.getInt("numberMotors");
@@ -349,7 +340,7 @@ public class DAL {
         } catch (SQLException ex) {
             Logger.getLogger(DAL.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
-            close(rs, st, con);
+            close(con);
         }
         return motorization;
     }
@@ -363,23 +354,23 @@ public class DAL {
     private Thrust_Function getThrustFunctionByID(int thrustFunctionID) {
         Thrust_Function thrust = null;
         Connection con = null;
-        PreparedStatement st = null;
+
         ResultSet rs = null;
-        try {
-            String query = "placeholder query for  thrust func";
-            con = connect();
-            st = con.prepareStatement(query);
+        String query = "placeholder query for  thrust func";
+        con = connect();
+        try (PreparedStatement st = con.prepareStatement(query)) {
+
             rs = st.executeQuery();
             while (rs.next()) {
                 double thrustValue = rs.getDouble("thrust");
-                double thrustMaxSpeed  = rs.getDouble("thrustMaxSpeed");
-                double  maxSpeed = rs.getDouble("maxSpeed");
+                double thrustMaxSpeed = rs.getDouble("thrustMaxSpeed");
+                double maxSpeed = rs.getDouble("maxSpeed");
                 thrust = new Thrust_Function(thrustValue, thrustMaxSpeed, maxSpeed);
             }
         } catch (SQLException ex) {
             Logger.getLogger(DAL.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
-            close(rs, st, con);
+            close(con);
         }
         return thrust;
     }
@@ -391,16 +382,16 @@ public class DAL {
      * @return the air network
      */
     public AirNetwork getAirNetwork(String projectID) {
-        PreparedStatement st = null;
+
         AirNetwork airNetwork = new AirNetwork();
         ResultSet rs = null;
 
         Connection con = null;
-        try {
+        String query = "placeholder query";
+        con = connect();
 
-            String query = "placeholder query";
-            con = connect();
-            st = con.prepareStatement(query);
+        try (PreparedStatement st = con.prepareStatement(query)) {
+
             rs = st.executeQuery();
             while (rs.next()) {
                 String id = rs.getString("ID");
@@ -416,7 +407,7 @@ public class DAL {
         } catch (SQLException ex) {
             Logger.getLogger(DAL.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
-            close(rs, st, con);
+            close(con);
 
         }
         return airNetwork;
@@ -429,16 +420,15 @@ public class DAL {
      * @return the list of nodes
      */
     private List<Node> getNodesListByID(String airNetworkID) {
-        PreparedStatement st = null;
+
         List<Node> nodes = new LinkedList<Node>();
         ResultSet rs = null;
-
         Connection con = null;
-        try {
+        String query = "placeholder query (airnetworkID)";
+        con = connect();
 
-            String query = "placeholder query (airnetworkID)";
-            con = connect();
-            st = con.prepareStatement(query);
+        try (PreparedStatement st = con.prepareStatement(query)) {
+
             rs = st.executeQuery();
             while (rs.next()) {
                 String nodeID = rs.getString("ID");
@@ -451,7 +441,7 @@ public class DAL {
         } catch (SQLException ex) {
             Logger.getLogger(DAL.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
-            close(rs, st, con);
+            close(con);
 
         }
         return nodes;
@@ -464,15 +454,15 @@ public class DAL {
      * @return the segment list
      */
     private List<Segment> getSegmentsListByID(String airNetworkID) {
-        PreparedStatement st = null;
+
         List<Segment> segments = new LinkedList<Segment>();
         ResultSet rs = null;
 
         Connection con = null;
-        try {
-            String query = "placeholder query (airnetworkID)";
-            con = connect();
-            st = con.prepareStatement(query);
+        String query = "placeholder query (airnetworkID)";
+        con = connect();
+        try (PreparedStatement st = con.prepareStatement(query)) {
+
             rs = st.executeQuery();
             while (rs.next()) {
                 String id = rs.getString("ID");
@@ -488,7 +478,7 @@ public class DAL {
         } catch (SQLException ex) {
             Logger.getLogger(DAL.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
-            close(rs, st, con);
+            close(con);
 
         }
         return segments;
@@ -501,15 +491,15 @@ public class DAL {
      * @return the wind object
      */
     private Wind getWindByID(String segmentID) {
-        PreparedStatement st = null;
+
         Wind wind = null;
         ResultSet rs = null;
 
         Connection con = null;
-        try {
-            String query = "placeholder query (segmentID)";
-            con = connect();
-            st = con.prepareStatement(query);
+        String query = "placeholder query (segmentID)";
+        con = connect();
+        try (PreparedStatement st = con.prepareStatement(query)) {
+
             rs = st.executeQuery();
             while (rs.next()) {
 
@@ -520,7 +510,7 @@ public class DAL {
         } catch (SQLException ex) {
             Logger.getLogger(DAL.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
-            close(rs, st, con);
+            close(con);
 
         }
         return wind;
@@ -533,22 +523,8 @@ public class DAL {
      * @param ps prepared statement
      * @param conn connection
      */
-    private static void close(ResultSet rs, PreparedStatement ps, Connection conn) {
-        if (rs != null) {
-            try {
-                rs.close();
+    private static void close(Connection conn) {
 
-            } catch (SQLException e) {
-                Logger.getLogger(DAL.class.getName()).log(Level.SEVERE, null, e);
-            }
-        }
-        if (ps != null) {
-            try {
-                ps.close();
-            } catch (SQLException e) {
-                Logger.getLogger(DAL.class.getName()).log(Level.SEVERE, null, e);
-            }
-        }
         if (conn != null) {
             try {
                 conn.close();
