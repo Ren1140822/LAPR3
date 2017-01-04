@@ -45,10 +45,10 @@ public class importCSVFlightPattern {
             fInput.close();
             return true;
         } catch (FileNotFoundException ex) {
-            System.out.println("Não foi encontrado ficheiro");
+            System.err.println("Não foi encontrado ficheiro");
             return false;
         }catch (ArrayIndexOutOfBoundsException e){
-            System.out.println("Erro ao carregar ficheiro => ficheiro danificado");
+            System.err.println("Erro ao carregar ficheiro => ficheiro danificado");
             return false; 
          }
         
