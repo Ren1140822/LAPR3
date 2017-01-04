@@ -47,7 +47,7 @@ public class importCSVFlightPatternTest {
      */
     @Test
     public void testPattern() {    
-        System.out.println("caminhoA380");
+        System.out.println("A380");
         String ficheiro = caminhoA380;
         List<Pattern> list = new LinkedList<>();
         importCSVFlightPattern instance = new importCSVFlightPattern();
@@ -58,7 +58,7 @@ public class importCSVFlightPatternTest {
             System.out.println(p.toString());
         }
         
-        System.out.println("caminhoB777");
+        System.out.println("B777");
         String ficheiro2 = caminhoB777;
         List<Pattern> list2 = new LinkedList<>();
         importCSVFlightPattern instance2 = new importCSVFlightPattern();
