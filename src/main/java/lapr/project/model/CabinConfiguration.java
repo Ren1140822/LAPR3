@@ -19,7 +19,7 @@ public class CabinConfiguration implements Serializable {
     /**
      * Instance variables.
      */
-    Map<String, Integer> mapOfClasses;
+   private  Map<String, Integer> mapOfClasses;
 
     /**
      * Parameter constructor.

@@ -18,6 +18,7 @@ import lapr.project.model.CabinConfiguration;
 import lapr.project.model.Iten;
 import lapr.project.model.Location;
 import lapr.project.model.Motorization;
+import lapr.project.model.Pattern;
 import lapr.project.model.Thrust_Function;
 
 /**
@@ -40,7 +41,7 @@ public class DAL {
         try {
             conn = DriverManager.getConnection(url, user, passw);
         } catch (SQLException e) {
-            System.err.printf(e.toString());
+              Logger.getLogger(DAL.class.getName()).log(Level.SEVERE, null, e);
         }
         return conn;
     }
@@ -249,6 +250,7 @@ public class DAL {
         PreparedStatement st = null;
         ResultSet rs = null;
         List<Iten> itemList = new LinkedList<Iten>();
+        List<Pattern> patternList = new LinkedList<Pattern>();
 
         try {
             String query = "placeholder query for aircraftmodel";
@@ -273,8 +275,10 @@ public class DAL {
                 double wingSpan = rs.getDouble("wingSpan");
                 double e = rs.getDouble("e");
                 int itemID = rs.getInt("item");
-                itemList.add(getItemByID(itemID));
-                model = new AircraftModel(id, description, maker, type, motorization, eWeight, MTOW, maxPayload, fuelCapacity, VMO, MMO, wingArea, wingSpan, aspectRatio, e, itemList);
+                itemList = getItemByID(itemID);
+                int patternID = rs.getInt("pattern");
+
+                model = new AircraftModel(id, description, maker, type, motorization, eWeight, MTOW, maxPayload, fuelCapacity, VMO, MMO, wingArea, wingSpan, aspectRatio, e, itemList, getPatternByID(patternID));
             }
 
         } catch (SQLException ex) {
@@ -301,11 +305,12 @@ public class DAL {
     /**
      * Gets the item by ID.
      *
-     * @param itemID the item  id
+     * @param itemID the item id
      * @return the item object
      */
-    private Iten getItemByID(int itemID) {
+    private List<Iten> getItemByID(int itemID) {
         Iten item = null;
+        List<Iten> itemList = new LinkedList<>();
         Connection con = null;
         PreparedStatement st = null;
         ResultSet rs = null;
@@ -318,6 +323,7 @@ public class DAL {
                 double speed = rs.getDouble("speed");
                 double Cdrag = rs.getDouble("cDrag");
                 item = new Iten(speed, Cdrag);
+                itemList.add(item);
             }
         } catch (SQLException ex) {
             Logger.getLogger(DAL.class.getName()).log(Level.SEVERE, null, ex);
@@ -336,7 +342,52 @@ public class DAL {
                 Logger.getLogger(DAL.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        return item;
+        return itemList;
+    }
+
+    /**
+     * Gets the pattern by ID.
+     *
+     * @param patternID the pattern id
+     * @return the pattern object
+     */
+    private List<Pattern> getPatternByID(int patternID) {
+        Pattern pattern = null;
+        List<Pattern> patternList = new LinkedList<>();
+        Connection con = null;
+        PreparedStatement st = null;
+        ResultSet rs = null;
+        try {
+            String query = "placeholder query for item";
+            con = connect();
+            st = con.prepareStatement(query);
+            rs = st.executeQuery();
+            while (rs.next()) {
+
+                double altitude = rs.getDouble("altitude");
+                double vClimb = rs.getDouble("vClimb");
+                double vDesc = rs.getDouble("vDesc");
+                pattern = new Pattern(altitude, vClimb, vDesc);
+                patternList.add(pattern);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DAL.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (st != null) {
+                    st.close();
+                }
+                if (con != null) {
+                    con.close();
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(DAL.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return patternList;
     }
 
     /**
@@ -389,14 +440,15 @@ public class DAL {
         }
         return motorization;
     }
-    
+
     /**
      * Gets thrust function by ID.
+     *
      * @param thrustFunctionID the thrust function id
-     * @return  the thrust function
+     * @return the thrust function
      */
-     private Thrust_Function getThrustFunctionByID(int thrustFunctionID) {
-       Thrust_Function thrust = null;
+    private Thrust_Function getThrustFunctionByID(int thrustFunctionID) {
+        Thrust_Function thrust = null;
         Connection con = null;
         PreparedStatement st = null;
         ResultSet rs = null;
@@ -416,7 +468,7 @@ public class DAL {
                 double TSFC = rs.getDouble("TSFC");
                 double lapse_rate_factor = rs.getDouble("lapseRateFactor");
                 int thrust_functionID = rs.getInt("thrustFunction");
-                Thrust_Function thrust_func ;
+                Thrust_Function thrust_func;
             }
         } catch (SQLException ex) {
             Logger.getLogger(DAL.class.getName()).log(Level.SEVERE, null, ex);
