@@ -35,10 +35,12 @@ public class ImportNetworkUI extends JFileChooser{
                     fileChooser = new JFileChooser();
                     defineFilterExtXML(fileChooser);
                     fileChooser.setAcceptAllFileFilterUsed(false);
-                    int resposta = fileChooser.showOpenDialog(ImportNetworkUI.this);
+                    fileChooser.setCurrentDirectory(new File("src/main/resources"));
+                    int resposta = fileChooser.showOpenDialog(ImportNetworkUI.this);                    
 
                     if (resposta == JFileChooser.APPROVE_OPTION) {
-                        File file = fileChooser.getSelectedFile();              
+                        File file = fileChooser.getSelectedFile();    
+                        
                         if(controller.importXMLNetwork(file)){
                             JOptionPane.showMessageDialog(ImportNetworkUI.this,
                             "Network List imported successfully!",

@@ -35,6 +35,7 @@ public class ImportAircraftModelListUI extends JFileChooser{
                     fileChooser = new JFileChooser();
                     defineFilterExtXML(fileChooser);
                     fileChooser.setAcceptAllFileFilterUsed(false);
+                    fileChooser.setCurrentDirectory(new File("src/main/resources"));
                     int resposta = fileChooser.showOpenDialog(ImportAircraftModelListUI.this);
 
                     if (resposta == JFileChooser.APPROVE_OPTION) {

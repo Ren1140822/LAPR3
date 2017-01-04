@@ -35,6 +35,7 @@ public class ImportAirportUI extends JFileChooser{
                     fileChooser = new JFileChooser();
                     defineFilterExtXML(fileChooser);
                     fileChooser.setAcceptAllFileFilterUsed(false);
+                    fileChooser.setCurrentDirectory(new File("src/main/resources"));
                     int resposta = fileChooser.showOpenDialog(ImportAirportUI.this);
 
                     if (resposta == JFileChooser.APPROVE_OPTION) {
