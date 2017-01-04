@@ -5,6 +5,7 @@
  */
 package lapr.project.model;
 
+import java.io.Serializable;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -16,7 +17,7 @@ import lapr.project.utils.StringToSIUnitConverter;
  * @author Pedro Fernandes
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-public class Iten {
+public class Iten implements Serializable{
 
     @XmlTransient
     private double speed;
@@ -82,6 +83,11 @@ public class Iten {
 
     public boolean validate() {
         return speed > 0 && Cdrag_0 > 0;
+    }
+    
+    @Override
+    public String toString(){
+        return "Speed: " + speed + " Cdrag: " + Cdrag_0;
     }
 
 }

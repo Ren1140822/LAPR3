@@ -126,6 +126,12 @@ public class AircraftModel implements Serializable {
     @XmlElementWrapper(name = "Cdrag_function")
     @XmlElement(name = "iten")
     private List<Iten> listIten;
+    
+    /**
+     * List of Pattern
+     */
+    @XmlTransient
+    private List<Pattern> listPattern;
 
     /**
      * Default attributes
@@ -178,7 +184,8 @@ public class AircraftModel implements Serializable {
         wingSpan = DEFAULT_WINGSPAN;
         aspect_ratio = DEFAULT_ASPECT_RATIO;
         e = DEFAULT_E;
-        listIten = new LinkedList<>();        
+        listIten = new LinkedList<>();   
+        listPattern = new LinkedList<>();
     }
 
     /**
@@ -207,7 +214,7 @@ public class AircraftModel implements Serializable {
             Motorization motorization, double eWeight, double MTOW,
             double maxPayload, double fuelCapacity, double VMO, double MMO,
             double wingArea, double wingSpan, double aspect_ratio,
-            double e, List<Iten> listIten) {
+            double e, List<Iten> listIten, List<Pattern> listPattern) {
         this.id = id;
         this.description = description;
         this.maker = maker;
@@ -224,6 +231,7 @@ public class AircraftModel implements Serializable {
         this.aspect_ratio = aspect_ratio;
         this.e = e;
         this.listIten = listIten;
+        this.listPattern = listPattern;
     }
 
     /**
@@ -248,6 +256,7 @@ public class AircraftModel implements Serializable {
         this.aspect_ratio = model.aspect_ratio;
         this.e = model.e;
         this.listIten = model.listIten;
+        this.listPattern = model.listPattern;
     }
 
     public String getId() {
@@ -494,6 +503,20 @@ public class AircraftModel implements Serializable {
 
     public void setE(double e) {
         this.e = e;
+    }
+    
+    /**
+     * @return the listPattern
+     */
+    public List<Pattern> getListPattern() {
+        return listPattern;
+    }
+
+    /**
+     * @param listPattern the listPattern to set
+     */
+    public void setListPattern(List<Pattern> listPattern) {
+        this.listPattern = listPattern;
     }
 
     @Override

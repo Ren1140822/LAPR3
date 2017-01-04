@@ -129,5 +129,17 @@ public class ItenTest {
         boolean result3 = instance3.validate();
         assertEquals(expResult3, result3);
     }
+
+    /**
+     * Test of toString method, of class Iten.
+     */
+    @Test
+    public void testToString() {
+        System.out.println("toString");
+        Iten instance = new Iten();
+        String expResult = instance.toString();
+        String result = instance.toString();
+        assertEquals(expResult, result);
+    }
     
 }

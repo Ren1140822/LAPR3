@@ -66,7 +66,7 @@ public class AircraftModelTest {
         System.out.println("equals2");
         Object otherObject2 = new AircraftModel("Dummy 01", "Dummy aircraft 01", 
                 "Boeing", "passenger", new Motorization(), 
-                1, 1, 1, 1, 1, 1, 1, 1, 1, 1, new LinkedList<>());
+                1, 1, 1, 1, 1, 1, 1, 1, 1, 1, new LinkedList<>(), new LinkedList<>());
         AircraftModel instance2 = new AircraftModel();
         boolean expResult2 = true;
         boolean result2 = instance2.equals(otherObject2);
@@ -94,7 +94,7 @@ public class AircraftModelTest {
         System.out.println("validate1");
         AircraftModel instance = new AircraftModel("", "Dummy aircraft 01", 
                 "Boeing", "passenger", new Motorization(), 
-                1, 1, 1, 1, 1, 1, 1, 1, 1, 1, new  LinkedList<>());
+                1, 1, 1, 1, 1, 1, 1, 1, 1, 1, new  LinkedList<>(),new LinkedList<>());
         boolean expResult = false;
         boolean result = instance.validate();
         assertEquals(expResult, result);
@@ -102,7 +102,7 @@ public class AircraftModelTest {
         System.out.println("validate2");
         AircraftModel instance2 = new AircraftModel("Dummy 01", "", 
                 "Boeing", "passenger", new Motorization(10, "motor", "motor_type", 1,1,1,1, new Thrust_Function()), 
-                1, 1, 1, 1, 1, 1, 1, 1, 1, 1, new  LinkedList<>());
+                1, 1, 1, 1, 1, 1, 1, 1, 1, 1, new  LinkedList<>(),new LinkedList<>());
         boolean expResult2 = false;
         boolean result2 = instance2.validate();
         assertEquals(expResult2, result2);
@@ -110,7 +110,7 @@ public class AircraftModelTest {
         System.out.println("validate3");
         AircraftModel instance3 = new AircraftModel("Dummy 01", "Dummy aircraft 01", 
                 "", "passenger", new Motorization(10, "motor", "motor_type", 1,1,1,1, new Thrust_Function()), 
-                1, 1, 1, 1, 1, 1, 1, 1, 1, 1, new  LinkedList<>());
+                1, 1, 1, 1, 1, 1, 1, 1, 1, 1, new  LinkedList<>(),new LinkedList<>());
         boolean expResult3 = false;
         boolean result3 = instance3.validate();
         assertEquals(expResult3, result3);
@@ -118,7 +118,7 @@ public class AircraftModelTest {
         System.out.println("validate4");
         AircraftModel instance4 = new AircraftModel("Dummy 01", "Dummy aircraft 01", 
                 "Boeing", "", new Motorization(10, "motor", "motor_type", 1,1,1,1, new Thrust_Function()), 
-                1, 1, 1, 1, 1, 1, 1, 1, 1, 1, new  LinkedList<>());
+                1, 1, 1, 1, 1, 1, 1, 1, 1, 1, new  LinkedList<>(),new LinkedList<>());
         boolean expResult4 = false;
         boolean result4 = instance4.validate();
         assertEquals(expResult4, result4);
@@ -126,7 +126,7 @@ public class AircraftModelTest {
         System.out.println("validate5");
         AircraftModel instance5 = new AircraftModel("Dummy 01", "Dummy aircraft 01", 
                 "Boeing", "passenger", null, 
-                1, 1, 1, 1, 1, 1, 1, 1, 1, 1, new LinkedList<>());
+                1, 1, 1, 1, 1, 1, 1, 1, 1, 1, new LinkedList<>(),new LinkedList<>());
         boolean expResult5 = false;
         boolean result5 = instance5.validate();
         assertEquals(expResult5, result5);
@@ -134,7 +134,7 @@ public class AircraftModelTest {
         System.out.println("validate6");
         AircraftModel instance6 = new AircraftModel("Dummy 01", "Dummy aircraft 01", 
                 "Boeing", "passenger", new Motorization(10, "motor", "motor_type", 1,1,1,1, new Thrust_Function()), 
-                0, 1, 1, 1, 1, 1, 1, 1, 1, 1, new  LinkedList<>());
+                0, 1, 1, 1, 1, 1, 1, 1, 1, 1, new  LinkedList<>(),new LinkedList<>());
         boolean expResult6 = false;
         boolean result6 = instance6.validate();
         assertEquals(expResult6, result6);
@@ -142,7 +142,7 @@ public class AircraftModelTest {
         System.out.println("validate7");
         AircraftModel instance7 = new AircraftModel("Dummy 01", "Dummy aircraft 01", 
                 "Boeing", "passenger", new Motorization(10, "motor", "motor_type", 1,1,1,1, new Thrust_Function()), 
-                1, 0, 1, 1, 1, 1, 1, 1, 1, 1, new  LinkedList<>());
+                1, 0, 1, 1, 1, 1, 1, 1, 1, 1, new  LinkedList<>(),new LinkedList<>());
         boolean expResult7 = false;
         boolean result7 = instance7.validate();
         assertEquals(expResult7, result7);
@@ -150,7 +150,7 @@ public class AircraftModelTest {
         System.out.println("validate8");
         AircraftModel instance8 = new AircraftModel("Dummy 01", "Dummy aircraft 01", 
                 "Boeing", "passenger", new Motorization(10, "motor", "motor_type", 1,1,1,1, new Thrust_Function()), 
-                1, 1, 0, 1, 1, 1, 1, 1, 1, 1, new  LinkedList<>());
+                1, 1, 0, 1, 1, 1, 1, 1, 1, 1, new  LinkedList<>(),new LinkedList<>());
         boolean expResult8 = false;
         boolean result8 = instance8.validate();
         assertEquals(expResult8, result8);
@@ -158,7 +158,7 @@ public class AircraftModelTest {
         System.out.println("validate9");
         AircraftModel instance9 = new AircraftModel("Dummy 01", "Dummy aircraft 01", 
                 "Boeing", "passenger", new Motorization(10, "motor", "motor_type", 1,1,1,1, new Thrust_Function()), 
-                1, 1, 1, 0, 1, 1, 1, 1, 1, 1, new  LinkedList<>());
+                1, 1, 1, 0, 1, 1, 1, 1, 1, 1, new  LinkedList<>(),new LinkedList<>());
         boolean expResult9 = false;
         boolean result9 = instance9.validate();
         assertEquals(expResult9, result9);
@@ -166,7 +166,7 @@ public class AircraftModelTest {
         System.out.println("validate10");
         AircraftModel instance10 = new AircraftModel("Dummy 01", "Dummy aircraft 01", 
                 "Boeing", "passenger", new Motorization(10, "motor", "motor_type", 1,1,1,1, new Thrust_Function()), 
-                1, 1, 1, 1, 0, 1, 1, 1, 1, 1, new  LinkedList<>());
+                1, 1, 1, 1, 0, 1, 1, 1, 1, 1, new  LinkedList<>(),new LinkedList<>());
         boolean expResult10 = false;
         boolean result10 = instance10.validate();
         assertEquals(expResult10, result10);
@@ -174,7 +174,7 @@ public class AircraftModelTest {
         System.out.println("validate11");
         AircraftModel instance11 = new AircraftModel("Dummy 01", "Dummy aircraft 01", 
                 "Boeing", "passenger", new Motorization(10, "motor", "motor_type", 1,1,1,1, new Thrust_Function()), 
-                1, 1, 1, 1, 1, 0, 1, 1, 1, 1, new  LinkedList<>());
+                1, 1, 1, 1, 1, 0, 1, 1, 1, 1, new  LinkedList<>(),new LinkedList<>());
         boolean expResult11 = false;
         boolean result11 = instance11.validate();
         assertEquals(expResult11, result11);
@@ -182,7 +182,7 @@ public class AircraftModelTest {
         System.out.println("validate12");
         AircraftModel instance12 = new AircraftModel("Dummy 01", "Dummy aircraft 01", 
                 "Boeing", "passenger", new Motorization(10, "motor", "motor_type", 1,1,1,1, new Thrust_Function()), 
-                1, 1, 1, 1, 1, 1, 0, 1, 1, 1, new  LinkedList<>());
+                1, 1, 1, 1, 1, 1, 0, 1, 1, 1, new  LinkedList<>(),new LinkedList<>());
         boolean expResult12 = false;
         boolean result12 = instance12.validate();
         assertEquals(expResult12, result12);
@@ -190,7 +190,7 @@ public class AircraftModelTest {
         System.out.println("validate13");
         AircraftModel instance13 = new AircraftModel("Dummy 01", "Dummy aircraft 01", 
                 "Boeing", "passenger", new Motorization(10, "motor", "motor_type", 1,1,1,1, new Thrust_Function()), 
-                1, 1, 1, 1, 1, 1, 1, 0, 1, 1, new  LinkedList<>());
+                1, 1, 1, 1, 1, 1, 1, 0, 1, 1, new  LinkedList<>(),new LinkedList<>());
         boolean expResult13 = false;
         boolean result13 = instance13.validate();
         assertEquals(expResult13, result13);
@@ -198,7 +198,7 @@ public class AircraftModelTest {
         System.out.println("validate14");
         AircraftModel instance14 = new AircraftModel("Dummy 01", "Dummy aircraft 01", 
                 "Boeing", "passenger", new Motorization(10, "motor", "motor_type", 1,1,1,1, new Thrust_Function()), 
-                1, 1, 1, 1, 1, 1, 1, 1, 0, 1, new  LinkedList<>());
+                1, 1, 1, 1, 1, 1, 1, 1, 0, 1, new  LinkedList<>(),new LinkedList<>());
         boolean expResult14 = false;
         boolean result14 = instance14.validate();
         assertEquals(expResult14, result14);
@@ -206,7 +206,7 @@ public class AircraftModelTest {
         System.out.println("validate15");
         AircraftModel instance15 = new AircraftModel("Dummy 01", "Dummy aircraft 01", 
                 "Boeing", "passenger", new Motorization(10, "motor", "motor_type", 1,1,1,1, new Thrust_Function()), 
-                1, 1, 1, 1, 1, 1, 1, 1, 1, 0, new  LinkedList<>());
+                1, 1, 1, 1, 1, 1, 1, 1, 1, 0, new  LinkedList<>(),new LinkedList<>());
         boolean expResult15 = false;
         boolean result15 = instance15.validate();
         assertEquals(expResult15, result15);
@@ -217,7 +217,7 @@ public class AircraftModelTest {
         list.add(i);
         AircraftModel instance16 = new AircraftModel("Dummy 01", "Dummy aircraft 01", 
                 "Boeing", "passenger", new Motorization(10, "motor", "motor_type", 1,1,1,1, new Thrust_Function()), 
-                1, 1, 1, 1, 1, 1, 1, 1, 1, 1, list);
+                1, 1, 1, 1, 1, 1, 1, 1, 1, 1, list,new LinkedList<>());
         boolean expResult16 = true;
         boolean result16 = instance16.validate();
         assertEquals(expResult16, result16);
@@ -861,5 +861,29 @@ public class AircraftModelTest {
         List<Iten> listIten = new LinkedList<>();
         AircraftModel instance = new AircraftModel();
         instance.setListIten(listIten);
+    }
+
+    /**
+     * Test of getListPattern method, of class AircraftModel.
+     */
+    @Test
+    public void testGetListPattern() {
+        System.out.println("getListPattern");
+        AircraftModel instance = new AircraftModel();
+        List<Pattern> expResult = new LinkedList<>();
+        instance.setListPattern(expResult);
+        List<Pattern> result = instance.getListPattern();
+        assertEquals(expResult, result);
+    }
+
+    /**
+     * Test of setListPattern method, of class AircraftModel.
+     */
+    @Test
+    public void testSetListPattern() {
+        System.out.println("setListPattern");
+        List<Pattern> listPattern = new LinkedList<>();
+        AircraftModel instance = new AircraftModel();
+        instance.setListPattern(listPattern);
     }
 }
