@@ -16,7 +16,7 @@ import lapr.project.utils.StringToSIUnitConverter;
  */
 @XmlRootElement(name = "motorization")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class Motorization implements Serializable{
+public class Motorization implements Serializable {
 
     /**
      * Class attributes
@@ -34,7 +34,7 @@ public class Motorization implements Serializable{
     /**
      * thrust specific fuel consumption (fuel efficienty) - fuel consumption
      * (grams/second) per unit of thrust (kN) (SI units).
-     */    
+     */
     @XmlTransient
     private double TSFC;
     @XmlElement(name = "lapse_rate_factor")
@@ -154,7 +154,7 @@ public class Motorization implements Serializable{
     public void setCruise_altitude(double cruise_altitude) {
         this.cruise_altitude = cruise_altitude;
     }
-    
+
     /**
      * @return the cruise_altitude for JAXB
      */
@@ -183,6 +183,7 @@ public class Motorization implements Serializable{
     public void setCruise_speed(double cruise_speed) {
         this.cruise_speed = cruise_speed;
     }
+
     /**
      * @return the cruise_speed for JAXB
      */
@@ -211,7 +212,7 @@ public class Motorization implements Serializable{
     public void setTSFC(double TSFC) {
         this.TSFC = TSFC;
     }
-    
+
     /**
      * @return the TSFC for JAXB
      */
@@ -253,10 +254,10 @@ public class Motorization implements Serializable{
      */
     public void setThrust_function(Thrust_Function thrust_function) {
         this.thrust_function = thrust_function;
-    }    
-    
+    }
+
     /**
-     * 
+     *
      * @return
      */
     public boolean validate() {
