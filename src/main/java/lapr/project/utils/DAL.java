@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import lapr.project.model.AirNetwork;
 import lapr.project.model.Aircraft;
 import lapr.project.model.AircraftModel;
 import lapr.project.model.Airport;
@@ -18,8 +19,11 @@ import lapr.project.model.CabinConfiguration;
 import lapr.project.model.Iten;
 import lapr.project.model.Location;
 import lapr.project.model.Motorization;
+import lapr.project.model.Node;
 import lapr.project.model.Pattern;
+import lapr.project.model.Segment;
 import lapr.project.model.Thrust_Function;
+import lapr.project.model.Wind;
 
 /**
  *
@@ -325,7 +329,6 @@ public class DAL {
             while (rs.next()) {
                 int numberMotors = rs.getInt("numberMotors");
                 String motor = rs.getString("motor");
-
                 String motorType = rs.getString("motorType");
                 double cruise_altitude = rs.getDouble("speed");
                 double cruise_speed = rs.getDouble("cruiseSpeed");
@@ -354,23 +357,16 @@ public class DAL {
         Connection con = null;
         PreparedStatement st = null;
         ResultSet rs = null;
-
         try {
-
             String query = "placeholder query for  thrust func";
             con = connect();
             st = con.prepareStatement(query);
             rs = st.executeQuery();
             while (rs.next()) {
-                int numberMotors = rs.getInt("numberMotors");
-                String motor = rs.getString("motor");
-                String motorType = rs.getString("motorType");
-                double cruise_altitude = rs.getDouble("speed");
-                double cruise_speed = rs.getDouble("cruiseSpeed");
-                double TSFC = rs.getDouble("TSFC");
-                double lapse_rate_factor = rs.getDouble("lapseRateFactor");
-                int thrust_functionID = rs.getInt("thrustFunction");
-                Thrust_Function thrust_func;
+                double thrustValue = rs.getDouble("thrust");
+                double thrustMaxSpeed  = rs.getDouble("thrustMaxSpeed");
+                double  maxSpeed = rs.getDouble("maxSpeed");
+                thrust = new Thrust_Function(thrustValue, thrustMaxSpeed, maxSpeed);
             }
         } catch (SQLException ex) {
             Logger.getLogger(DAL.class.getName()).log(Level.SEVERE, null, ex);
@@ -381,9 +377,152 @@ public class DAL {
     }
 
     /**
-     * Closes all active objects.
+     * Gets the air network by project ID.
+     *
+     * @param projectID the id of the project
+     * @return the air network
+     */
+    public AirNetwork getAirNetwork(String projectID) {
+        PreparedStatement st = null;
+        AirNetwork airNetwork = new AirNetwork();
+        ResultSet rs = null;
+
+        Connection con = null;
+        try {
+
+            String query = "placeholder query";
+            con = connect();
+            st = con.prepareStatement(query);
+            rs = st.executeQuery();
+            while (rs.next()) {
+                String id = rs.getString("ID");
+                String description = rs.getString("description");
+                List<Node> nodes = getNodesListByID(id);
+                List<Segment> segments = getSegmentsListByID(id);
+                airNetwork.setId(id);
+                airNetwork.setDescription(description);
+                airNetwork.setNodeList(nodes);
+                airNetwork.setSegmentList(segments);
+                airNetwork.generateGraph();
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DAL.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            close(rs, st, con);
+
+        }
+        return airNetwork;
+    }
+
+    /**
+     * Gets a nodes list by airnetwork ID.
+     *
+     * @param airNetworkID the airnetwork id
+     * @return the list of nodes
+     */
+    private List<Node> getNodesListByID(String airNetworkID) {
+        PreparedStatement st = null;
+        List<Node> nodes = new LinkedList<Node>();
+        ResultSet rs = null;
+
+        Connection con = null;
+        try {
+
+            String query = "placeholder query (airnetworkID)";
+            con = connect();
+            st = con.prepareStatement(query);
+            rs = st.executeQuery();
+            while (rs.next()) {
+                String nodeID = rs.getString("ID");
+                double latitude = rs.getDouble("Latitude");
+                double longitude = rs.getDouble("Longitude");
+                Node n = new Node(url, latitude, longitude);
+                nodes.add(n);
+
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DAL.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            close(rs, st, con);
+
+        }
+        return nodes;
+    }
+
+    /**
+     * Gets segments list by airnetwork id.
+     *
+     * @param airNetworkID the airnetwork id
+     * @return the segment list
+     */
+    private List<Segment> getSegmentsListByID(String airNetworkID) {
+        PreparedStatement st = null;
+        List<Segment> segments = new LinkedList<Segment>();
+        ResultSet rs = null;
+
+        Connection con = null;
+        try {
+            String query = "placeholder query (airnetworkID)";
+            con = connect();
+            st = con.prepareStatement(query);
+            rs = st.executeQuery();
+            while (rs.next()) {
+                String id = rs.getString("ID");
+                String startNode = rs.getString("startNode");
+                String endNode = rs.getString("endNode");
+                String direction = rs.getString("direction");
+                Wind wind = getWindByID(id);
+                int minAltSlot = rs.getInt("minAltSlot");
+                int maxAltSlot = rs.getInt("maxAltSlot");
+                Segment segment = new Segment(id, startNode, endNode, direction, wind, minAltSlot, maxAltSlot);
+                segments.add(segment);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DAL.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            close(rs, st, con);
+
+        }
+        return segments;
+    }
+
+    /**
+     * Gets the wind of a segment.
+     *
+     * @param segmentID the id of the segment
+     * @return the wind object
+     */
+    private Wind getWindByID(String segmentID) {
+        PreparedStatement st = null;
+        Wind wind = null;
+        ResultSet rs = null;
+
+        Connection con = null;
+        try {
+            String query = "placeholder query (segmentID)";
+            con = connect();
+            st = con.prepareStatement(query);
+            rs = st.executeQuery();
+            while (rs.next()) {
+
+                double intensity = rs.getDouble("windIntensity");
+                double direction = rs.getDouble("windDirection");
+                wind = new Wind(intensity, direction);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DAL.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            close(rs, st, con);
+
+        }
+        return wind;
+    }
+
+    /**
+     * Closes all active database resources.
+     *
      * @param rs result set
-     * @param ps prepared statement 
+     * @param ps prepared statement
      * @param conn connection
      */
     private static void close(ResultSet rs, PreparedStatement ps, Connection conn) {
