@@ -41,7 +41,7 @@ public class DAL {
         try {
             conn = DriverManager.getConnection(url, user, passw);
         } catch (SQLException e) {
-              Logger.getLogger(DAL.class.getName()).log(Level.SEVERE, null, e);
+            Logger.getLogger(DAL.class.getName()).log(Level.SEVERE, null, e);
         }
         return conn;
     }
@@ -79,20 +79,7 @@ public class DAL {
         } catch (SQLException ex) {
             Logger.getLogger(DAL.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
-            try {
-                if (rs != null) {
-                    rs.close();
-                }
-                if (st != null) {
-                    st.close();
-                }
-                if (con != null) {
-                    con.close();
-                }
-            } catch (SQLException ex) {
-                Logger.getLogger(DAL.class.getName()).log(Level.SEVERE, null, ex);
-            }
-
+            close(rs, st, con);
         }
         return airportList;
     }
@@ -124,19 +111,7 @@ public class DAL {
         } catch (SQLException ex) {
             Logger.getLogger(DAL.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
-            try {
-                if (rs != null) {
-                    rs.close();
-                }
-                if (st != null) {
-                    st.close();
-                }
-                if (con != null) {
-                    con.close();
-                }
-            } catch (SQLException ex) {
-                Logger.getLogger(DAL.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            close(rs, st, con);
 
         }
         return location;
@@ -174,19 +149,7 @@ public class DAL {
         } catch (SQLException ex) {
             Logger.getLogger(DAL.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
-            try {
-                if (rs != null) {
-                    rs.close();
-                }
-                if (st != null) {
-                    st.close();
-                }
-                if (con != null) {
-                    con.close();
-                }
-            } catch (SQLException ex) {
-                Logger.getLogger(DAL.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            close(rs, st, con);
 
         }
         return aircraftList;
@@ -220,20 +183,7 @@ public class DAL {
         } catch (SQLException ex) {
             Logger.getLogger(DAL.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
-            try {
-                if (rs != null) {
-                    rs.close();
-                }
-                if (st != null) {
-                    st.close();
-                }
-                if (con != null) {
-                    con.close();
-                }
-            } catch (SQLException ex) {
-                Logger.getLogger(DAL.class.getName()).log(Level.SEVERE, null, ex);
-            }
-
+            close(rs, st, con);
         }
         return config;
     }
@@ -284,19 +234,7 @@ public class DAL {
         } catch (SQLException ex) {
             Logger.getLogger(DAL.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
-            try {
-                if (rs != null) {
-                    rs.close();
-                }
-                if (st != null) {
-                    st.close();
-                }
-                if (con != null) {
-                    con.close();
-                }
-            } catch (SQLException ex) {
-                Logger.getLogger(DAL.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            close(rs, st, con);
 
         }
         return model;
@@ -328,19 +266,7 @@ public class DAL {
         } catch (SQLException ex) {
             Logger.getLogger(DAL.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
-            try {
-                if (rs != null) {
-                    rs.close();
-                }
-                if (st != null) {
-                    st.close();
-                }
-                if (con != null) {
-                    con.close();
-                }
-            } catch (SQLException ex) {
-                Logger.getLogger(DAL.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            close(rs, st, con);
         }
         return itemList;
     }
@@ -373,19 +299,7 @@ public class DAL {
         } catch (SQLException ex) {
             Logger.getLogger(DAL.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
-            try {
-                if (rs != null) {
-                    rs.close();
-                }
-                if (st != null) {
-                    st.close();
-                }
-                if (con != null) {
-                    con.close();
-                }
-            } catch (SQLException ex) {
-                Logger.getLogger(DAL.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            close(rs, st, con);
         }
         return patternList;
     }
@@ -424,19 +338,7 @@ public class DAL {
         } catch (SQLException ex) {
             Logger.getLogger(DAL.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
-            try {
-                if (rs != null) {
-                    rs.close();
-                }
-                if (st != null) {
-                    st.close();
-                }
-                if (con != null) {
-                    con.close();
-                }
-            } catch (SQLException ex) {
-                Logger.getLogger(DAL.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            close(rs, st, con);
         }
         return motorization;
     }
@@ -473,21 +375,41 @@ public class DAL {
         } catch (SQLException ex) {
             Logger.getLogger(DAL.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
-            try {
-                if (rs != null) {
-                    rs.close();
-                }
-                if (st != null) {
-                    st.close();
-                }
-                if (con != null) {
-                    con.close();
-                }
-            } catch (SQLException ex) {
-                Logger.getLogger(DAL.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            close(rs, st, con);
         }
         return thrust;
+    }
+
+    /**
+     * Closes all active objects.
+     * @param rs result set
+     * @param ps prepared statement 
+     * @param conn connection
+     */
+    private static void close(ResultSet rs, PreparedStatement ps, Connection conn) {
+        if (rs != null) {
+            try {
+                rs.close();
+
+            } catch (SQLException e) {
+                Logger.getLogger(DAL.class.getName()).log(Level.SEVERE, null, e);
+            }
+        }
+        if (ps != null) {
+            try {
+                ps.close();
+            } catch (SQLException e) {
+                Logger.getLogger(DAL.class.getName()).log(Level.SEVERE, null, e);
+            }
+        }
+        if (conn != null) {
+            try {
+                conn.close();
+            } catch (SQLException e) {
+                Logger.getLogger(DAL.class.getName()).log(Level.SEVERE, null, e);
+            }
+        }
+
     }
 
 }
