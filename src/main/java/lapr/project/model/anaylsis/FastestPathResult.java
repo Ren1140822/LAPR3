@@ -11,7 +11,6 @@ import lapr.project.model.Airport;
 import lapr.project.model.Node;
 import lapr.project.model.Segment;
 import lapr.project.model.mapgraph.GraphAlgorithms;
-import lapr.project.model.physics.AircraftAlgorithms;
 
 
 /**
@@ -44,14 +43,16 @@ public class FastestPathResult extends ResultPath{
     public void calculateBestPath(AirNetwork airNetwork){
         LinkedList<Node> fastestPath=(LinkedList<Node>)super.getResultPath();
         AirNetwork clone=airNetwork;
+        Node start=new Node();
+        Node end=new Node();
                 
         for(Segment seg:clone.getSegmentList()){
-            Node start=clone.getNodeByString(seg.getStartNode());
-            Node end=clone.getNodeByString(seg.getEndNode());
-     
+            start=clone.getNodeByString(seg.getStartNode());
+            end=clone.getNodeByString(seg.getEndNode());
+    
         }
          double res=GraphAlgorithms.shortestPath(clone.getAirNetwork(), 
-                super.getStartNode(airNetwork), super.getEndNode(airNetwork), fastestPath);
+                start,end, fastestPath);
         //vento+cruiseSpeed
         super.setResultPath(fastestPath);
         super.setResult(res);

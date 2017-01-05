@@ -167,7 +167,7 @@ public class ComparisonResultTest {
         Simulation s=new Simulation();
         expResult.add(s);      
         instance.getSimulationsCompared().add(s);
-        LinkedList<Simulation> result = instance.getSimulationsCompared();
+        LinkedList<Simulation> result = (LinkedList<Simulation>) instance.getSimulationsCompared();
         
         assertEquals(expResult, result);
     }
@@ -183,7 +183,7 @@ public class ComparisonResultTest {
         Simulation s=new Simulation();
         expResult.add(s);      
         instance.setSimulationsCompared(expResult);
-        LinkedList<Simulation> result = instance.getSimulationsCompared();
+        LinkedList<Simulation> result = (LinkedList<Simulation>) instance.getSimulationsCompared();
         
         assertEquals(expResult, result);
     }
@@ -208,7 +208,7 @@ public class ComparisonResultTest {
     public void testCalculateTotalAverage() {
         System.out.println("calculateTotalAverage");
         ComparisonResult instance = new ComparisonResult();
-        LinkedList<Simulation> list=instance.getSimulationsCompared();
+        LinkedList<Simulation> list=(LinkedList<Simulation>) instance.getSimulationsCompared();
         Simulation s=new Simulation();
         s.createAllPathSimulation(new Airport(), new Airport());
         double dist1=200;

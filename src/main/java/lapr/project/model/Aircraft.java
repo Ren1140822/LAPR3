@@ -6,8 +6,6 @@
 package lapr.project.model;
 
 import java.io.Serializable;
-import java.util.Objects;
-
 /**
  *
  * @author Renato Oliveira 1140822@isep.ipp.pt

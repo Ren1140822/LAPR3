@@ -43,6 +43,13 @@ public class PhysicsAlgorithms {
     private static final double WEIGHT_DRY_AIR=28.9644;
     
     /**
+     * Ratio of specific heats for air at STP
+     */
+    private static final double RATIO_SPECIFIC_HEATS= 1.4;
+    
+    
+    private static final double SPEED_GAS_CONSTANT= 286.9;
+    /**
      * Return the absolute temperature based on altitude (K)
      * @param altitude altitude (m)
      * @return temperature (kelvin)
@@ -73,6 +80,18 @@ public class PhysicsAlgorithms {
     public static double calculateAirDensity(double pressure, double temperature){
 
         return (pressure*WEIGHT_DRY_AIR/(GAS_CONSTANT_AIR*temperature*1000));
+    }
+    
+    /**
+     * Calculates the air density receiving altitude (m) - (kg/m3)
+     * @param altitude altitude (m)
+     * @return air density (kg/m3)
+     */
+    public static double calculateAirdensity(double altitude){
+        double pressure=PhysicsAlgorithms.calculateAbsolutePressure(altitude);
+        double temperature=PhysicsAlgorithms.calculateAbsoluteTemperature(altitude);
+        
+        return calculateAirDensity(pressure, temperature);
     }
     
          
@@ -122,5 +141,14 @@ public class PhysicsAlgorithms {
      */
     public static double getGRAVITY_CONSTANT_SEA() {
         return GRAVITY_CONSTANT_SEA;
+    }
+    
+    /**
+     * Calculates speed of sound (m/s)
+     * @param temperature (kelvin)
+     * @return speed of sound (m/s)
+     */
+    public static double calculateSoundSpeed(double temperature){
+        return Math.sqrt(RATIO_SPECIFIC_HEATS*SPEED_GAS_CONSTANT*temperature);
     }
 }

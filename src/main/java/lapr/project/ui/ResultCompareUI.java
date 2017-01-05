@@ -28,8 +28,8 @@ import lapr.project.model.anaylsis.Simulation;
 public class ResultCompareUI extends JDialog{
      private JDialog frame;
     
-    Project project;
-    ComparisonController controller;
+    private Project project;
+    private transient ComparisonController controller;
 
     private final int WINDOW_WIDTH = 850;
     private final int WINDOW_HEIGHT = 600;

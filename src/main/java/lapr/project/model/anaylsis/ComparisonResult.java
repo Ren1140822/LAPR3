@@ -6,6 +6,7 @@
 package lapr.project.model.anaylsis;
 
 import java.util.LinkedList;
+import java.util.List;
 
 /**
  *
@@ -97,7 +98,7 @@ public class ComparisonResult {
      * Gets the simulations compared
      * @return simulations list compared
      */
-    public LinkedList<Simulation> getSimulationsCompared(){
+    public List<Simulation> getSimulationsCompared(){
         return list;
     }
     

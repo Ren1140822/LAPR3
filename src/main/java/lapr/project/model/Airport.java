@@ -11,6 +11,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlTransient;
+import lapr.project.model.physics.PhysicsAlgorithms;
 
 /**
  * Class that represents airport
@@ -231,5 +232,7 @@ public class Airport implements Serializable {
         return v1 && v2;                
     }
     
-    
+    public double getAirdensityAirport(){     
+        return PhysicsAlgorithms.calculateAirdensity(getLocation().getAltitude());
+    }
 }

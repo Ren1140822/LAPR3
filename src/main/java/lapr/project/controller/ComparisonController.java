@@ -6,6 +6,7 @@
 package lapr.project.controller;
 
 import java.util.LinkedList;
+import java.util.List;
 import lapr.project.model.Project;
 import lapr.project.model.anaylsis.Simulation;
 
@@ -29,21 +30,21 @@ public class ComparisonController {
         project.getCompareList().createComparison();
     }
     
-    public LinkedList<String> getAircraftsSimulated(){
+    public List<String> getAircraftsSimulated(){
         return project.getTypesAircraftSimulated();
     }
     
     public void setAircraft(String criteria){
         project.getCompareList().getCompareResult().setAircraftModel(criteria);
-        project.getCompareList().getCompareResult().setSimulationsCompared(project.getSimulationsAircraft(criteria));
+        project.getCompareList().getCompareResult().setSimulationsCompared((LinkedList<Simulation>) project.getSimulationsAircraft(criteria));
    }
     
      public void setEngine(String criteria){
         project.getCompareList().getCompareResult().setMotorization(criteria);
-        project.getCompareList().getCompareResult().setSimulationsCompared(project.getSimulationsAircraft(criteria));
+        project.getCompareList().getCompareResult().setSimulationsCompared((LinkedList<Simulation>) project.getSimulationsAircraft(criteria));
     }
     
-    public LinkedList<Simulation> getListSimulations(){
+    public List<Simulation> getListSimulations(){
         return project.getCompareList().getCompareResult().getSimulationsCompared();
     }
     

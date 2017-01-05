@@ -27,9 +27,10 @@ import lapr.project.model.Project;
  */
 public class AnalysisUI extends JDialog{
      private JDialog frame;
-     ComparisonUI comp;
+    private ComparisonUI comp;
+    private FindBestPathUI best;
     
-    Project project;
+    private Project project;
 
     private final int WINDOW_WIDTH = 400;
     private final int WINDOW_HEIGHT = 250;
@@ -75,7 +76,16 @@ public class AnalysisUI extends JDialog{
 
             @Override
             public void mouseClicked(MouseEvent me) {
-                FindBestPathUI best=new FindBestPathUI(project, frame);
+               if(project.getAircraftModelList().getModelList().isEmpty() ||
+                       project.getAirportList().getAirportList().isEmpty() ||
+                       project.getAirNetwork().getSegmentList().isEmpty())
+                   
+                   JOptionPane.showMessageDialog(frame,
+                "There aren´t aircrafts/airports/segments created", "Erro", JOptionPane.ERROR_MESSAGE);
+                else
+                   best=new FindBestPathUI(project, frame);
+               
+                
             }
 
         });

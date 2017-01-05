@@ -286,9 +286,9 @@ public class Project implements Serializable {
     public List<Airport> getPossibleEndAirports(Node startNode){
         LinkedList<Airport> listAirports=new LinkedList<>();
         List<Node> endNodes=getAirNetwork().getPossibleEndNodes(startNode);
-        endNodes.stream().forEach((nodeEnd) -> {
+        for(Node nodeEnd: endNodes){
             listAirports.add(getAirportList().getAirportNode(nodeEnd));
-        });
+        }
         return listAirports;
     }
     
@@ -297,7 +297,7 @@ public class Project implements Serializable {
         return name;
     }
 
-    public LinkedList<Simulation> getSimulationsAircraft(String type) {
+    public List<Simulation> getSimulationsAircraft(String type) {
        LinkedList<Simulation> results = new LinkedList<>();
        List<Simulation> sims = getSimulationsList().getSimulationsList();
        for (Simulation s : sims) {
@@ -308,7 +308,7 @@ public class Project implements Serializable {
         return results;
     }
     
-    public LinkedList<String> getTypesAircraftSimulated(){
+    public List<String> getTypesAircraftSimulated(){
         LinkedList<String> listSimulated=new LinkedList<>();
         LinkedList<Simulation> sims=getSimulationsList().getSimulationsList();
         for(Simulation s:sims){

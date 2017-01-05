@@ -287,9 +287,9 @@ public class Simulation{
      * @param passengers number of passengers
      * @param crew number of crew members
      * @param cargoLoad cargo load (kg)
-     * @param fuelLoad weight of fuel (kg)
+     * @param fuelWeight fuel weight (kg)
      */
-    public void setData(Aircraft aircraft, int passengers, int crew, double cargoLoad, double fuelLoad){
+    public void setData(Aircraft aircraft, int passengers, int crew, double cargoLoad, double fuelWeight){
         this.aircraft=aircraft;
         this.passengers=passengers;
         this.crew=crew;
@@ -327,8 +327,12 @@ public class Simulation{
      * @param airport
      * @return 
      */
-    public double getAirdensityNode(Airport airport){
-        return PhysicsAlgorithms.calculateAirDensity(1, 1);
+    public double getAirdensityAirport(Airport airport){
+        double altitude=airport.getLocation().getAltitude();
+        double pressure=PhysicsAlgorithms.calculateAbsolutePressure(altitude);
+        double temperature=PhysicsAlgorithms.calculateAbsoluteTemperature(altitude);
+        
+        return PhysicsAlgorithms.calculateAirDensity(pressure, temperature);
     }
     
     /**

@@ -209,7 +209,8 @@ public class FindBestPathUI extends JDialog{
                 
                 endAirports=controller.getPossibleEndAirports(startNode);
                 endAirports.remove(0);
-                listEndAirports.setListData(endAirports.toArray());
+                if(!endAirports.isEmpty())
+                    listEndAirports.setListData(endAirports.toArray());
             }
         });   
    
@@ -379,8 +380,10 @@ public class FindBestPathUI extends JDialog{
                     openResultWindow(TypePath.ECOLOGIC_PATH);
                     
                 }catch(java.lang.UnsupportedOperationException en){
-                        JOptionPane.showMessageDialog(frame,
+                    
+                    JOptionPane.showMessageDialog(frame,
                                 "It wasn´t possible to create simulation", "Erro", JOptionPane.ERROR_MESSAGE);
+                     throw new RuntimeException(en);
                 }
             }
         });
@@ -413,6 +416,7 @@ public class FindBestPathUI extends JDialog{
                 }catch(java.lang.UnsupportedOperationException en){
                         JOptionPane.showMessageDialog(frame,
                                 "It wasn´t possible to create simulation", "Erro", JOptionPane.ERROR_MESSAGE);
+                         throw new RuntimeException(en);
                 }
                 
             }
@@ -457,6 +461,7 @@ public class FindBestPathUI extends JDialog{
         }catch(java.lang.UnsupportedOperationException en){
             JOptionPane.showMessageDialog(frame,
                     "It wasn´t possible to create simulation", "Erro", JOptionPane.ERROR_MESSAGE);
+             throw new RuntimeException(en);
         }
     }
 }
