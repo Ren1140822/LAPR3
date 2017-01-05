@@ -76,7 +76,7 @@ public class AnalysisUI extends JDialog{
 
             @Override
             public void mouseClicked(MouseEvent me) {
-               if(project.getAircraftModelList().getModelList().isEmpty() ||
+               if(project.getAircraftList().getAircraftList().isEmpty() ||
                        project.getAirportList().getAirportList().isEmpty() ||
                        project.getAirNetwork().getSegmentList().isEmpty())
                    

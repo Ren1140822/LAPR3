@@ -177,7 +177,6 @@ public class ResultPath extends Simulation {
      * @param air AirNetwork of active project
      */
     public void calculateBestPath(AirNetwork air){
-        air.generateGraph();
         result=0;
     } 
 
