@@ -106,6 +106,7 @@ public class AddAirportUI extends JDialog {
             }
         });
         pack();
+        setResizable(false);
         setMinimumSize(new Dimension(800, 500));
         setLocationRelativeTo(null);        
         setVisible(true);

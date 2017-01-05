@@ -16,6 +16,7 @@ import lapr.project.model.lists.FlightList;
 public class AddFlightPlanController {
 
     private FlightList fl;
+    private FlightPlan flight;
     Project project;
     
     public AddFlightPlanController(Project project){
@@ -24,7 +25,10 @@ public class AddFlightPlanController {
         fl.newFlight();
     }
 
-    public void setData(FlightPlan flight, int minStopTime, String aircraft, String origin, String destination, LinkedList<String> technicalStops, LinkedList<String> mandatoryWaypoints) {
+    public void setData(String name, int minStopTime, String aircraft, String origin, 
+            String destination, List<String> technicalStops, List<String> mandatoryWaypoints) {
+        
+        flight.setFlightDesignator(name);
         flight.setMinStopTime(minStopTime);
         flight.setAircraft(aircraft);
         flight.setOrigin(origin);
@@ -33,13 +37,8 @@ public class AddFlightPlanController {
         flight.setMandatoryWaypoints(mandatoryWaypoints);
     }
 
-    public boolean setFlightDesignator(FlightPlan flight, String name) {
-        flight.setFlightDesignator(name);
-        return flight.validate();
-    }
-
-    public boolean saveFlightPlan(FlightPlan flight) {
-        return fl.saveFlight(flight);
+    public boolean saveFlightPlan() {
+        return flight.validate() && fl.saveFlight(flight);
     }
     
     /**

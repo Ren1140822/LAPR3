@@ -77,6 +77,7 @@ public class AddAircraftUI extends JDialog {
         createComponents();
         
         pack();
+        setResizable(false);
         setMinimumSize(new Dimension(WINDOW_WIDTH, WINDOW_HEIGHT));        
         setLocationRelativeTo(parentFrame);        
         this.setVisible(true);
@@ -175,7 +176,7 @@ public class AddAircraftUI extends JDialog {
                 try {
                     if (addAircraftController.setAircraftData(textRegistration.getText(), textCompany.getText(), mapConfig, Integer.parseInt(textNrOfCrewElements.getText())) && addAircraftController.hasModel() && !mapConfig.isEmpty()) {
                         JOptionPane.showMessageDialog(rootPane, "Aircraft added sucessfully.", "Sucess", JOptionPane.INFORMATION_MESSAGE);
-                        btnSubmit.setEnabled(false);
+                        dispose();
                     }
                 } catch (NumberFormatException | NullPointerException ex) {
                     System.err.print(ex);
@@ -227,7 +228,6 @@ public class AddAircraftUI extends JDialog {
                     JOptionPane.showMessageDialog(rootPane, "Invalid values submitted for number of seats, please try again.", "Error", JOptionPane.ERROR_MESSAGE);
                 }
                 if (addAircraftController.setAircraftModel(dialog.getSelectedItem())) {
-                    JOptionPane.showMessageDialog(rootPane, "Model set sucessfully.", "Sucess", JOptionPane.INFORMATION_MESSAGE);
                     btnSubmit.setEnabled(true);
                 }
             }
