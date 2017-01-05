@@ -553,7 +553,7 @@ public class DAL {
                     st2.setDouble("10", aircraft.getAircraftModel().getMMO());
                     st2.setDouble("11", aircraft.getAircraftModel().getWingArea());
                     st2.setDouble("12", aircraft.getAircraftModel().getWingSpan());
-                    st2.setDouble("13", aircraft.getAircraftModel().getAspect_ratio());
+                    st2.setDouble("13", aircraft.getAircraftModel().getAspectRatio());
                     st2.setDouble("14", aircraft.getAircraftModel().getE());
                     st2.setInt("15", aircraft.getAircraftModel().getMotorization().getNumberMotors());
                     st2.setString("16", aircraft.getAircraftModel().getMotorization().getMotor());
