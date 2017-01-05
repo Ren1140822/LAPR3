@@ -14,6 +14,7 @@ import lapr.project.model.lists.AircraftList;
 import lapr.project.model.lists.AircraftModelList;
 import lapr.project.model.lists.AirportList;
 import lapr.project.model.lists.CompareResultsList;
+import lapr.project.model.lists.FlightList;
 import lapr.project.model.lists.SimulationsList;
 
 /**
@@ -30,7 +31,7 @@ public class Project implements Serializable {
     private AirNetwork network;
     private AirportList airportList;
     private transient CompareResultsList compareList;
-//         public static FlightList flightList;
+    private transient FlightList flightList;
     private AircraftModelList modelList;
     private SimulationsList simulationsList;
 
@@ -53,13 +54,14 @@ public class Project implements Serializable {
         this.network = new AirNetwork();
         this.airportList = new AirportList();
         this.compareList = new CompareResultsList();
-//         this.flightList=new FlightList();
+        this.flightList = new FlightList();
         this.modelList = new AircraftModelList();
         this.simulationsList = new SimulationsList();
     }
-    
+
     /**
      * Constructor copy
+     *
      * @param proj project
      */
     public Project(Project proj) {
@@ -70,13 +72,14 @@ public class Project implements Serializable {
         this.network = proj.network;
         this.airportList = proj.airportList;
         this.compareList = proj.compareList;
-//         this.flightList=proj.flightList;
+        this.flightList = proj.flightList;
         this.modelList = proj.modelList;
         this.simulationsList = proj.simulationsList;
     }
-    
+
     /**
      * Constructor copy
+     *
      * @param idProject idProject
      * @param name name
      * @param description description
@@ -88,8 +91,8 @@ public class Project implements Serializable {
      * @param simulationsList simulationsList
      */
     public Project(int idProject, String name, String description, AircraftList aircraftList,
-        AirNetwork network, AirportList airportList, CompareResultsList compareList,
-        AircraftModelList modelList, SimulationsList simulationsList) {
+            AirNetwork network, AirportList airportList, CompareResultsList compareList, FlightList flightlist,
+            AircraftModelList modelList, SimulationsList simulationsList) {
         this.idProject = idProject;
         this.name = name;
         this.description = description;
@@ -97,7 +100,7 @@ public class Project implements Serializable {
         this.network = network;
         this.airportList = airportList;
         this.compareList = compareList;
-//         this.flightList = flightList;
+        this.flightList = flightList;
         this.modelList = modelList;
         this.simulationsList = simulationsList;
     }
@@ -227,17 +230,18 @@ public class Project implements Serializable {
     public void setDescription(String description) {
         this.description = description;
     }
-    
-        /**
+
+    /**
      * Gets the ecologic results.
      *
      * @return the ecologic results
      */
     public List<ResultPath> getEcologicPathResults() {
         LinkedList<ResultPath> list = new LinkedList<>();
-        for(Simulation s: getSimulationsList().getSimulationsList()) {
-            if(Double.doubleToLongBits(s.getEcologicResultPath().getResult())!=0)
+        for (Simulation s : getSimulationsList().getSimulationsList()) {
+            if (Double.doubleToLongBits(s.getEcologicResultPath().getResult()) != 0) {
                 list.add(s.getEcologicResultPath());
+            }
         }
         return list;
     }
@@ -249,9 +253,10 @@ public class Project implements Serializable {
      */
     public List<ResultPath> getShortestPathResults() {
         LinkedList<ResultPath> list = new LinkedList<>();
-        for(Simulation s: getSimulationsList().getSimulationsList()) {
-            if(Double.doubleToLongBits(s.getShortestResultPath().getResult())!=0)
+        for (Simulation s : getSimulationsList().getSimulationsList()) {
+            if (Double.doubleToLongBits(s.getShortestResultPath().getResult()) != 0) {
                 list.add(s.getShortestResultPath());
+            }
         }
         return list;
     }
@@ -263,61 +268,68 @@ public class Project implements Serializable {
      */
     public List<ResultPath> getFastestPathResults() {
         LinkedList<ResultPath> list = new LinkedList<>();
-        for(Simulation s: getSimulationsList().getSimulationsList()) {
-            if(Double.doubleToLongBits(s.getFastestResultPath().getResult())!=0)
+        for (Simulation s : getSimulationsList().getSimulationsList()) {
+            if (Double.doubleToLongBits(s.getFastestResultPath().getResult()) != 0) {
                 list.add(s.getFastestResultPath());
+            }
         }
         return list;
     }
-        
+
     /**
      * Validates the name and description
+     *
      * @return true if validates, false if not
      */
     public boolean validate() {
         return !this.name.isEmpty() && !this.description.isEmpty();
     }
-    
+
     /**
      * Gets the possible end airports linked to the origin node
+     *
      * @param startNode origin node of airnetwork
      * @return list airports linked to the start node
      */
-    public List<Airport> getPossibleEndAirports(Node startNode){
-        LinkedList<Airport> listAirports=new LinkedList<>();
-        List<Node> endNodes=getAirNetwork().getPossibleEndNodes(startNode);
-        for(Node nodeEnd: endNodes){
+    public List<Airport> getPossibleEndAirports(Node startNode) {
+        LinkedList<Airport> listAirports = new LinkedList<>();
+        List<Node> endNodes = getAirNetwork().getPossibleEndNodes(startNode);
+        for (Node nodeEnd : endNodes) {
             listAirports.add(getAirportList().getAirportNode(nodeEnd));
         }
         return listAirports;
     }
-    
+
     @Override
-    public String toString(){
+    public String toString() {
         return name;
     }
 
     public List<Simulation> getSimulationsAircraft(String type) {
-       LinkedList<Simulation> results = new LinkedList<>();
-       List<Simulation> sims = getSimulationsList().getSimulationsList();
-       for (Simulation s : sims) {
+        LinkedList<Simulation> results = new LinkedList<>();
+        List<Simulation> sims = getSimulationsList().getSimulationsList();
+        for (Simulation s : sims) {
             if (s.getAircraft().getAircraftModel().getType().equals(type)) {
                 results.add(s);
             }
         }
         return results;
     }
-    
-    public List<String> getTypesAircraftSimulated(){
-        LinkedList<String> listSimulated=new LinkedList<>();
-        LinkedList<Simulation> sims=getSimulationsList().getSimulationsList();
-        for(Simulation s:sims){
-           String a=s.getAircraft().getAircraftModel().getType();
-           if(!listSimulated.contains(a)){
+
+    public List<String> getTypesAircraftSimulated() {
+        LinkedList<String> listSimulated = new LinkedList<>();
+        LinkedList<Simulation> sims = getSimulationsList().getSimulationsList();
+        for (Simulation s : sims) {
+            String a = s.getAircraft().getAircraftModel().getType();
+            if (!listSimulated.contains(a)) {
                 listSimulated.add(a);
-           }
+            }
         }
         return listSimulated;
+    }
+
+    public FlightList getFlightList() {
+        return flightList;
     }
 
 }

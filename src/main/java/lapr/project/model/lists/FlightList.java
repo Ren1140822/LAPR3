@@ -3,26 +3,24 @@ package lapr.project.model.lists;
 import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
-import lapr.project.model.Flight;
-import lapr.project.model.FlightInstance;
-import lapr.project.model.RegularFlight;
+import lapr.project.model.FlightPlan;
 
 /**
  *
  * @author Flavio Relvas
  */
-public class FlightList implements Serializable{
+public class FlightList implements Serializable {
 
-    /** 
+    /**
      * List of existing Flights
      */
-    private List<Flight> flightList;
+    private List<FlightPlan> flightList;
 
     public FlightList() {
         flightList = new LinkedList<>();
     }
 
-    public FlightList(List<Flight> flightList) {
+    public FlightList(List<FlightPlan> flightList) {
         this.flightList = flightList;
     }
 
@@ -30,22 +28,16 @@ public class FlightList implements Serializable{
         this.flightList = flightList.flightList;
     }
 
-    public Flight newFlight(String type) {
-        if (type.equals("regular")) {
-            return new RegularFlight();
-        }
-        if (type.equals("instance")) {
-            return new FlightInstance();
-        }
-        return null;
+    public FlightPlan newFlight() {
+        return new FlightPlan();
     }
 
-    private boolean validate(Flight flight) {
+    public boolean validate(FlightPlan flight) {
         if (flight == null) {
             return false;
         }
 
-        for (Flight f : flightList) {
+        for (FlightPlan f : flightList) {
             if (flight.equals(f)) {
                 return false;
             }
@@ -53,11 +45,11 @@ public class FlightList implements Serializable{
         return true;
     }
 
-    private void add(Flight flight) {
+    private void add(FlightPlan flight) {
         flightList.add(flight);
     }
 
-    public boolean saveFlight(Flight flight) {
+    public boolean saveFlight(FlightPlan flight) {
         if (validate(flight)) {
             add(flight);
             return true;

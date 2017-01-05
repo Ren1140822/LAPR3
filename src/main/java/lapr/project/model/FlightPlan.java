@@ -1,36 +1,48 @@
 package lapr.project.model;
 
 import java.io.Serializable;
-import java.sql.Date;
+import java.util.LinkedList;
 import java.util.Objects;
 
 /**
  *
  * @author Flavio Relvas
  */
-public abstract class Flight implements Serializable {
+public class FlightPlan implements Serializable {
 
     /**
      * Class attributes
      */
-    String flightDesignator;
-    int minStopTime; // time in minutes
-    Date scheduledArrival;
+    private String flightDesignator;
+    private int minStopTime; // time in minutes
+    private String aircraft;
+    private String origin;
+    private String destination;
+    private LinkedList<String> technicalStops;
+    private LinkedList<String> mandatoryWaypoints;
 
     /**
      * Default attributes
      */
     private final String DEFAULT_FLIGHT_DESIGNATOR = "FF0001A";
     private final int DEFAULT_MIN_STOP_TIME = 0;
-    private final Date DEFAULT_SCHEDULED_ARRIVAL = null;
+    private final String DEFAULT_AIRCRAFT = "No Aircraft";
+    private final String DEFAULT_ORIGIN = "No Origin";
+    private final String DEFAULT_DESTINATION = "No Destination";
+    private final LinkedList<String> DEFAULT_TECHNICAL_STOPS = new LinkedList<>();
+    private final LinkedList<String> DEFAULT_MANDATORY_WAYPOINTS = new LinkedList<>();
 
     /**
      * Default constructor
      */
-    public Flight() {
+    public FlightPlan() {
         flightDesignator = DEFAULT_FLIGHT_DESIGNATOR;
         minStopTime = DEFAULT_MIN_STOP_TIME;
-        scheduledArrival = DEFAULT_SCHEDULED_ARRIVAL;
+        aircraft = DEFAULT_AIRCRAFT;
+        origin = DEFAULT_ORIGIN;
+        destination = DEFAULT_DESTINATION;
+        technicalStops = DEFAULT_TECHNICAL_STOPS;
+        mandatoryWaypoints = DEFAULT_MANDATORY_WAYPOINTS;
     }
 
     /**
@@ -38,12 +50,15 @@ public abstract class Flight implements Serializable {
      *
      * @param flightDesignator the flight designator
      * @param minStopTime the minimun stop time for the flight
-     * @param scheduledArrival the scheduled date of arrival for the flight
      */
-    public Flight(String flightDesignator, int minStopTime, Date scheduledArrival) {
+    public FlightPlan(String flightDesignator, int minStopTime, String aircraft, String origin, String destination, LinkedList<String> technicalStops, LinkedList<String> mandatoryWaypoints) {
         this.flightDesignator = flightDesignator;
         this.minStopTime = minStopTime;
-        this.scheduledArrival = scheduledArrival;
+        this.aircraft = aircraft;
+        this.origin = origin;
+        this.destination = destination;
+        this.technicalStops = technicalStops;
+        this.mandatoryWaypoints = mandatoryWaypoints;
     }
 
     /**
@@ -51,10 +66,14 @@ public abstract class Flight implements Serializable {
      *
      * @param flight the flight to copy
      */
-    public Flight(Flight flight) {
+    public FlightPlan(FlightPlan flight) {
         this.flightDesignator = flight.flightDesignator;
         this.minStopTime = flight.minStopTime;
-        this.scheduledArrival = flight.scheduledArrival;
+        this.aircraft = flight.aircraft;
+        this.origin = flight.origin;
+        this.destination = flight.destination;
+        this.technicalStops = flight.technicalStops;
+        this.mandatoryWaypoints = flight.mandatoryWaypoints;
     }
 
     @Override
@@ -70,7 +89,7 @@ public abstract class Flight implements Serializable {
         if (this == otherObject) {
             return true;
         }
-        Flight other = (Flight) otherObject;
+        FlightPlan other = (FlightPlan) otherObject;
         return this.flightDesignator.equals(other.flightDesignator);
     }
 
@@ -79,7 +98,6 @@ public abstract class Flight implements Serializable {
         int hash = 3;
         hash = 53 * hash + Objects.hashCode(this.flightDesignator);
         hash = 53 * hash + this.minStopTime;
-        hash = 53 * hash + Objects.hashCode(this.scheduledArrival);
         return hash;
     }
 
@@ -90,7 +108,8 @@ public abstract class Flight implements Serializable {
         if (minStopTime < 0) {
             return false;
         }
-        return !(scheduledArrival != null && scheduledArrival.before(new Date(System.currentTimeMillis())));
+
+        return !aircraft.isEmpty();
     }
 
     /**
@@ -129,22 +148,24 @@ public abstract class Flight implements Serializable {
         this.minStopTime = minStopTime;
     }
 
-    /**
-     * Gets the date of the scheduled arrival for the flight
-     *
-     * @return the date of the scheduled arrival of the flight
-     */
-    public Date getScheduledArrival() {
-        return scheduledArrival;
+    public void setAircraft(String aircraft) {
+        this.aircraft = aircraft;
     }
 
-    /**
-     * Sets the date of the scheduled arrival of the flight
-     *
-     * @param scheduledArrival the new date of the flight's arrival
-     */
-    public void setScheduledArrival(Date scheduledArrival) {
-        this.scheduledArrival = scheduledArrival;
+    public void setOrigin(String origin) {
+        this.origin = origin;
+    }
+
+    public void setDestination(String destination) {
+        this.destination = destination;
+    }
+
+    public void setTechnicalStops(LinkedList<String> technicalStops) {
+        this.technicalStops = technicalStops;
+    }
+
+    public void setMandatoryWaypoints(LinkedList<String> mandatoryWaypoints) {
+        this.mandatoryWaypoints = mandatoryWaypoints;
     }
 
 }
