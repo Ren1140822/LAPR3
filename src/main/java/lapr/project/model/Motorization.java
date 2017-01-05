@@ -41,6 +41,7 @@ public class Motorization implements Serializable {
     private double lapse_rate_factor;
     @XmlElement(name = "thrust_function")
     private Thrust_Function thrust_function;
+    
 
     /**
      * Default attributes

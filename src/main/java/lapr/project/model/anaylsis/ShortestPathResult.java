@@ -41,6 +41,7 @@ public class ShortestPathResult extends ResultPath {
         LinkedList<Node> shortPath=new LinkedList<>();
         double res=GraphAlgorithms.shortestPath(airNetwork.getAirNetwork(), 
                 super.getStartNode(airNetwork), super.getEndNode(airNetwork), shortPath);
+     
         super.setResult(res);
         super.setResultPath(shortPath);
     }
