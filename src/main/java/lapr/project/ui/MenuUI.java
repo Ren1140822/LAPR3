@@ -31,7 +31,6 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
-import lapr.project.model.Project;
 
 /**
  * Start Menu of the aplication
@@ -89,6 +88,7 @@ public class MenuUI extends JFrame{
         
         menu.add(createItemOpen());
         menu.add(createItemCreate());
+        menu.add(createItemCopy());
         menu.addSeparator();
         menu.add(createItemExit());
         
@@ -186,6 +186,18 @@ public class MenuUI extends JFrame{
 
         return item;
     }
+    private JMenuItem createItemCopy(){
+        JMenuItem item = new JMenuItem("Copy Project", KeyEvent.VK_Y);
+        item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Y, InputEvent.ALT_MASK));
+        item.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                copy();
+            }
+        });
+
+        return item;
+    }
     private JMenuItem createItemExit(){
         JMenuItem item = new JMenuItem("Exit", KeyEvent.VK_E);
         item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_E, InputEvent.ALT_MASK));
@@ -223,6 +235,7 @@ public class MenuUI extends JFrame{
         
         p.add(createButtonOpen());
         p.add(createButtonCreate());
+        p.add(createButtonCopy());
         p.add(createButtonClose());
         
         return p; 
@@ -249,6 +262,19 @@ public class MenuUI extends JFrame{
             @Override
             public void actionPerformed(ActionEvent e) {
                 create();
+            }
+        });
+        return create;
+    }
+    
+    public JButton createButtonCopy(){
+        create = new JButton("Copy Project"); 
+        create.setMnemonic(KeyEvent.VK_Y);
+        create.setToolTipText("Copy Project");
+        create.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                copy();
             }
         });
         return create;
@@ -286,6 +312,10 @@ public class MenuUI extends JFrame{
     
     private void create(){
          CreateProjectUI createproj = new CreateProjectUI(frame);
+    }
+    
+    private void copy(){
+         CopyProjectUI copyproj = new CopyProjectUI(frame);
     }
     
     private void finish() {
