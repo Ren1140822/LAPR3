@@ -12,6 +12,7 @@ import lapr.project.model.lists.AircraftList;
 import lapr.project.model.lists.AircraftModelList;
 import lapr.project.model.lists.AirportList;
 import lapr.project.model.lists.CompareResultsList;
+import lapr.project.model.lists.FlightList;
 import lapr.project.model.lists.SimulationsList;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -25,22 +26,22 @@ import static org.junit.Assert.*;
  * @author Pedro Fernandes
  */
 public class ProjectTest {
-    
+
     public ProjectTest() {
     }
-    
+
     @BeforeClass
     public static void setUpClass() {
     }
-    
+
     @AfterClass
     public static void tearDownClass() {
     }
-    
+
     @Before
     public void setUp() {
     }
-    
+
     @After
     public void tearDown() {
     }
@@ -66,8 +67,8 @@ public class ProjectTest {
     public void testSetAircraftList() {
         System.out.println("setAircraftList");
         AircraftList aircraftList = new AircraftList();
-        Project instance = new Project(99, "teste", "teste", new AircraftList(), 
-                new AirNetwork(), new AirportList(), new CompareResultsList(), 
+        Project instance = new Project(99, "teste", "teste", new AircraftList(),
+                new AirNetwork(), new AirportList(), new CompareResultsList(), new FlightList(),
                 new AircraftModelList(), new SimulationsList());
         instance.setAircraftList(aircraftList);
     }
@@ -321,7 +322,7 @@ public class ProjectTest {
         boolean expResult = false;
         boolean result = instance.validate();
         assertEquals(expResult, result);
-        
+
         System.out.println("validate2");
         String name2 = "abc";
         String desc2 = "";
@@ -331,7 +332,7 @@ public class ProjectTest {
         boolean expResult2 = false;
         boolean result2 = instance2.validate();
         assertEquals(expResult2, result2);
-        
+
         System.out.println("validate3");
         String name3 = "abc";
         String desc3 = "descr";
@@ -355,44 +356,43 @@ public class ProjectTest {
         assertEquals(expResult, result);
     }
 
-    
     /**
      * Test of getPossibleEndAirports method, of class Project.
      */
     @Test
     public void testGetPossibleEndAirports() {
         System.out.println("getPossibleEndAirports");
-        
-        Project instance=new Project();
-        Node startNode=new Node("test1", 40, 40);
-        Node intNode=new Node("test2", 50, 70);
-        Node endNode=new Node("test3", 40, 80);
-        
-        Wind windTest=new Wind(10,10);
-        String direction="BIDIRECTIONAL";
-        Segment segment1=new Segment("segmentTest1","test1", "test3", direction,windTest,0,0);       
-        Segment segment2=new Segment("segmentTest2", "test1", "test2", direction,windTest,0,0);
-        Segment segment3=new Segment("segmentTest3", "test2", "test3", direction, windTest,0,0);
-        
-        AirNetwork airnetwork=instance.getAirNetwork();
+
+        Project instance = new Project();
+        Node startNode = new Node("test1", 40, 40);
+        Node intNode = new Node("test2", 50, 70);
+        Node endNode = new Node("test3", 40, 80);
+
+        Wind windTest = new Wind(10, 10);
+        String direction = "BIDIRECTIONAL";
+        Segment segment1 = new Segment("segmentTest1", "test1", "test3", direction, windTest, 0, 0);
+        Segment segment2 = new Segment("segmentTest2", "test1", "test2", direction, windTest, 0, 0);
+        Segment segment3 = new Segment("segmentTest3", "test2", "test3", direction, windTest, 0, 0);
+
+        AirNetwork airnetwork = instance.getAirNetwork();
         airnetwork.getAirNetwork().insertVertex(startNode);
         airnetwork.getAirNetwork().insertVertex(intNode);
         airnetwork.getAirNetwork().insertVertex(endNode);
 
         airnetwork.getAirNetwork().insertEdge(startNode, intNode, segment2, 10);
         airnetwork.getAirNetwork().insertEdge(intNode, endNode, segment3, 30);
-        airnetwork.getAirNetwork().insertEdge(startNode, endNode, segment1, 20);  
-        
-        Airport airport1=new Airport("1", "", "", "", new Location(40,40,10));
-        Airport airport2=new Airport("2", "", "", "", new Location(50,70,10));
-        Airport airport3=new Airport("3", "", "", "", new Location(40,80,10));
-        
-        AirportList airportsList=instance.getAirportList();
+        airnetwork.getAirNetwork().insertEdge(startNode, endNode, segment1, 20);
+
+        Airport airport1 = new Airport("1", "", "", "", new Location(40, 40, 10));
+        Airport airport2 = new Airport("2", "", "", "", new Location(50, 70, 10));
+        Airport airport3 = new Airport("3", "", "", "", new Location(40, 80, 10));
+
+        AirportList airportsList = instance.getAirportList();
         airportsList.getAirportList().add(airport1);
         airportsList.getAirportList().add(airport2);
         airportsList.getAirportList().add(airport3);
-        
-        LinkedList<Airport> result=new LinkedList<>();
+
+        LinkedList<Airport> result = new LinkedList<>();
         result.add(airport1);
         result.add(airport2);
         result.add(airport3);
@@ -408,7 +408,7 @@ public class ProjectTest {
         AirNetwork expResult = new AirNetwork();
         Project instance = new Project();
         instance.setAirNetwork(expResult);
-       assertEquals(expResult, instance.getAirNetwork());
+        assertEquals(expResult, instance.getAirNetwork());
     }
 
     /**
@@ -422,5 +422,5 @@ public class ProjectTest {
         Project instance = new Project();
         instance.setAircraftModelList(expResult);
         assertEquals(expResult, instance.getAircraftModelList());
-    } 
+    }
 }

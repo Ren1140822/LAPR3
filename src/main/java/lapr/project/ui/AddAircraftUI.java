@@ -20,13 +20,18 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Pattern;
 import javax.swing.BorderFactory;
+import javax.swing.GroupLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.Border;
+import javax.swing.border.EmptyBorder;
+import javax.swing.border.TitledBorder;
 import lapr.project.controller.AddAircraftController;
 import lapr.project.model.Project;
 
@@ -40,18 +45,22 @@ public class AddAircraftUI extends JDialog {
     /**
      * Instance variables
      */
-    private final int WINDOW_WIDTH = 700;
+    private final int WINDOW_WIDTH = 800;
     private final int WINDOW_HEIGHT = 500;
     private final String WINDOW_TITLE = "Add aircraft";
     private transient AddAircraftController addAircraftController;
     private JTextField textRegistration;
     private JTextField textCompany;
+    private JTextField textAircraftModel;
     private JTextField textSeatsEcon;
     private JTextField textSeatsCommercial;
     private JTextField textNrOfCrewElements;
+    private JList listclasses;    
     private DialogSelectable dialog;
     private JButton btnSubmit;
     private JDialog parentFrame;
+    private static final Dimension LABEL_SIZE = new JLabel("Nr. of crew elements: ").
+                                                        getPreferredSize();
     private Map<String, Integer> mapConfig;
 
     public AddAircraftUI(Project project, JDialog parentFrame) {
@@ -66,19 +75,21 @@ public class AddAircraftUI extends JDialog {
         this.project = project;
         addAircraftController = new AddAircraftController(project);
         mapConfig = new HashMap<>();
-        this.setSize(new Dimension(WINDOW_WIDTH, WINDOW_HEIGHT));
+        
         this.setTitle(WINDOW_TITLE);
-        setLocationRelativeTo(parentFrame);
+        
         createComponents();
+        
+        pack();
+        setMinimumSize(new Dimension(WINDOW_WIDTH, WINDOW_HEIGHT));        
+        setLocationRelativeTo(parentFrame);        
         this.setVisible(true);
-
     }
 
     public void createComponents() {
-        JPanel panelLabels = createLabelsPanel();
-        JPanel panelText = createTxtFieldPanel();
-        add(panelLabels, BorderLayout.WEST);
-        add(panelText, BorderLayout.CENTER);
+        add(createPanelNorth(), BorderLayout.NORTH);
+        add(createPanelCenter(), BorderLayout.CENTER);
+
         JPanel buttons = new JPanel(new FlowLayout());
         btnSubmit = createSubmitButton();
         JButton btnClass = createAddClassButton();
@@ -90,50 +101,73 @@ public class AddAircraftUI extends JDialog {
         add(buttons, BorderLayout.SOUTH);
     }
 
-    public JPanel createLabelsPanel() {
-        GridLayout layout = new GridLayout(5, 1);
-        JPanel panel = new JPanel(layout);
-        JLabel labelRegistration = createLabels("Registration ID:");
-        JLabel labelCompany = createLabels("Company name:");
-        JLabel labelNrOfCrewElements = createLabels("Nr. of crew elements:");
-        panel.add(labelRegistration);
-        panel.add(labelCompany);
+    public JPanel createPanelNorth() {
+        ImageIcon background = new ImageIcon("src/main/resources/images/aircraft_large.jpg");
 
-        panel.add(labelNrOfCrewElements);
+        JLabel label = new JLabel();
+        label.setIcon(background);
 
-        return panel;
+        JPanel p = new JPanel();
+        p.setBorder(new EmptyBorder(5, 10, 5, 10));
+        p.add(label, BorderLayout.CENTER);
+
+        return p;
     }
 
-    public JPanel createTxtFieldPanel() {
-        GridLayout layout = new GridLayout(5, 1);
-        JPanel panel = new JPanel(layout);
-
-        textRegistration = createJTextField();
-        textCompany = createJTextField();
-
-        textNrOfCrewElements = createJTextField();
-        panel.add(textRegistration);
-        panel.add(textCompany);
-
-        panel.add(textNrOfCrewElements);
-        return panel;
+    public JPanel createPanelLabelText() {
+        JPanel p = new JPanel(new GridLayout(4, 1));
+        
+        p.setBorder(new TitledBorder("Aircarft Model:"));
+        
+        textRegistration = new JTextField(10);
+        textCompany = new JTextField(10);
+        textNrOfCrewElements = new JTextField(10);
+        textAircraftModel = new JTextField(10);        
+        
+        p.add(createPanelLabelText("Registration ID: ", textRegistration));
+        p.add(createPanelLabelText("Company name: ", textCompany));
+        p.add(createPanelLabelText("Nr. of crew elements: ", textNrOfCrewElements));
+        p.add(createPanelLabelText("Aircarft Model: ", textAircraftModel));
+        
+        textAircraftModel.setEnabled(false);
+        
+        return p;
     }
+    private JPanel createPanelLabelText(String label1, JTextField text) {
+        JLabel lb1 = new JLabel(label1, JLabel.RIGHT);
+        lb1.setPreferredSize(LABEL_SIZE);
+        
+        JPanel p = new JPanel(new FlowLayout(FlowLayout.CENTER));
 
-    public JLabel createLabels(String text) {
-        JLabel label = UI.createJLabels(text);
-//        label.setText(text);
-        return label;
+        p.add(lb1);
+        p.add(text);
+
+        return p;
     }
-
-    public JTextField createJTextField() {
-        JTextField text = new JTextField();
-        Border border = BorderFactory.createLineBorder(Color.BLACK);
-        text.setBorder(border);
-        text.setPreferredSize(new Dimension(10, 10));
-
-        return text;
+    
+    public JPanel createPanelClasses(){
+        JPanel p = new JPanel();
+        
+        p.setBorder(new TitledBorder("Classes:"));
+        
+        String[] teste = {"asd", "safs"};
+        
+        listclasses = new JList(teste);
+        
+        p.add(listclasses, BorderLayout.CENTER);        
+        
+        return p;
     }
-
+    
+    public JPanel createPanelCenter(){
+        JPanel p = new JPanel(new GridLayout(1,2));
+        
+        p.add(createPanelLabelText());
+        p.add(createPanelClasses());
+        
+        return p;
+    }
+    
     public JButton createSubmitButton() {
         JButton button = new JButton("Create aircraft");
         button.setPreferredSize(new Dimension(170, 30));
@@ -166,6 +200,7 @@ public class AddAircraftUI extends JDialog {
                 addAircraftController.createAircraft();
                 dialog = new DialogSelectable(AddAircraftUI.this, addAircraftController.getListOfAircraftModels(), "Select aircraft model");
                 if (addAircraftController.setAircraftModel(dialog.getSelectedItem())) {
+                    textAircraftModel.setText(dialog.getSelectedItem());
                     JOptionPane.showMessageDialog(rootPane, "Model set sucessfully.", "Sucess", JOptionPane.INFORMATION_MESSAGE);
                     btnSubmit.setEnabled(true);
                 }
@@ -187,9 +222,8 @@ public class AddAircraftUI extends JDialog {
                     if (!Pattern.matches("[0-9]+", className)) {
 
                         JOptionPane.showMessageDialog(rootPane, "Data saved to this aircraft sucessfully.", "Sucess", JOptionPane.INFORMATION_MESSAGE);
-                    }
-                    else{
-                         JOptionPane.showMessageDialog(rootPane, "Invalid values submitted for number of class name, please try again.", "Error", JOptionPane.ERROR_MESSAGE);
+                    } else {
+                        JOptionPane.showMessageDialog(rootPane, "Invalid values submitted for number of class name, please try again.", "Error", JOptionPane.ERROR_MESSAGE);
                     }
 
                 } catch (NumberFormatException ex) {

@@ -106,7 +106,7 @@ public class AircraftModelList implements Serializable{
         aircraftModel.setMMO(MMO);
         aircraftModel.setWingArea(wingArea);
         aircraftModel.setWingSpan(wingSpan);
-        aircraftModel.setAspect_ratio(aspect_ratio);
+        aircraftModel.setAspectRatio(aspect_ratio);
         aircraftModel.setE(e);        
     }
     
