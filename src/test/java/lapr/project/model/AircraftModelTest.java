@@ -810,7 +810,7 @@ public class AircraftModelTest {
         System.out.println("getAspect_ratio");
         AircraftModel instance = new AircraftModel();
         double expResult = 1.0;
-        double result = instance.getAspect_ratio();
+        double result = instance.getAspectRatio();
         assertEquals(expResult, result, 0.0);
     }
 
@@ -822,7 +822,7 @@ public class AircraftModelTest {
         System.out.println("setAspect_ratio");
         double aspect_ratio = 1.0;
         AircraftModel instance = new AircraftModel();
-        instance.setAspect_ratio(aspect_ratio);
+        instance.setAspectRatio(aspect_ratio);
     }
 
     /**

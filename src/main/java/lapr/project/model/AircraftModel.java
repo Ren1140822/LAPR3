@@ -112,7 +112,7 @@ public class AircraftModel implements Serializable {
     private double wingSpan;
     
     @XmlElement(name = "aspect_ratio")
-    private double aspect_ratio;
+    private double aspectRatio;
     
     /**
      * Constant e
@@ -182,7 +182,7 @@ public class AircraftModel implements Serializable {
         MMO = DEFAULT_MMO;
         wingArea = DEFAULT_WINGAREA;
         wingSpan = DEFAULT_WINGSPAN;
-        aspect_ratio = DEFAULT_ASPECT_RATIO;
+        aspectRatio = DEFAULT_ASPECT_RATIO;
         e = DEFAULT_E;
         listIten = new LinkedList<>();   
         listPattern = new LinkedList<>();
@@ -205,7 +205,7 @@ public class AircraftModel implements Serializable {
      * @param VMO
      * @param MMO
      * @param wingArea
-     * @param aspect_ratio
+     * @param aspectRatio
      * @param wingSpan
      * @param listIten
      * @param e
@@ -213,7 +213,7 @@ public class AircraftModel implements Serializable {
     public AircraftModel(String id, String description, String maker, String type,
             Motorization motorization, double eWeight, double MTOW,
             double maxPayload, double fuelCapacity, double VMO, double MMO,
-            double wingArea, double wingSpan, double aspect_ratio,
+            double wingArea, double wingSpan, double aspectRatio,
             double e, List<Iten> listIten, List<Pattern> listPattern) {
         this.id = id;
         this.description = description;
@@ -228,7 +228,7 @@ public class AircraftModel implements Serializable {
         this.MMO = MMO;
         this.wingArea = wingArea;
         this.wingSpan = wingSpan;
-        this.aspect_ratio = aspect_ratio;
+        this.aspectRatio = aspectRatio;
         this.e = e;
         this.listIten = listIten;
         this.listPattern = listPattern;
@@ -253,7 +253,7 @@ public class AircraftModel implements Serializable {
         this.MMO = model.MMO;
         this.wingArea = model.wingArea;
         this.wingSpan = model.wingSpan;
-        this.aspect_ratio = model.aspect_ratio;
+        this.aspectRatio = model.aspectRatio;
         this.e = model.e;
         this.listIten = model.listIten;
         this.listPattern = model.listPattern;
@@ -465,17 +465,17 @@ public class AircraftModel implements Serializable {
     }
 
     /**
-     * @return the aspect_ratio
+     * @return the aspectRatio
      */
-    public double getAspect_ratio() {
-        return aspect_ratio;
+    public double getAspectRatio() {
+        return aspectRatio;
     }
 
     /**
-     * @param aspect_ratio the aspect_ratio to set
+     * @param aspectRatio the aspectRatio to set
      */
-    public void setAspect_ratio(double aspect_ratio) {
-        this.aspect_ratio = aspect_ratio;
+    public void setAspectRatio(double aspectRatio) {
+        this.aspectRatio = aspectRatio;
     }
     
     public boolean addIten(double speed, double Cdrag_0){
@@ -547,7 +547,7 @@ public class AircraftModel implements Serializable {
     public boolean validate() {
         boolean v1 = !id.isEmpty() && !description.isEmpty() && !maker.isEmpty();
         v1 = v1 && motorization != null && eWeight > 0 && MTOW > 0;
-        v1 = v1 && maxPayload > 0 && fuelCapacity > 0 && aspect_ratio > 0;
+        v1 = v1 && maxPayload > 0 && fuelCapacity > 0 && aspectRatio > 0;
         v1 = v1 && VMO > 0 && MMO > 0 && wingArea > 0;
         v1 = v1 && wingSpan > 0  && e > 0;
         v1 = v1 && type != null && motorization.validate();
