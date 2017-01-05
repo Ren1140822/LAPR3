@@ -383,7 +383,7 @@ public class FindBestPathUI extends JDialog{
                     
                     JOptionPane.showMessageDialog(frame,
                                 "It wasn´t possible to create simulation", "Erro", JOptionPane.ERROR_MESSAGE);
-                     throw new RuntimeException(en);
+                    throw en;
                 }
             }
         });
@@ -416,7 +416,7 @@ public class FindBestPathUI extends JDialog{
                 }catch(java.lang.UnsupportedOperationException en){
                         JOptionPane.showMessageDialog(frame,
                                 "It wasn´t possible to create simulation", "Erro", JOptionPane.ERROR_MESSAGE);
-                         throw new RuntimeException(en);
+                         throw en;
                 }
                 
             }
@@ -461,7 +461,7 @@ public class FindBestPathUI extends JDialog{
         }catch(java.lang.UnsupportedOperationException en){
             JOptionPane.showMessageDialog(frame,
                     "It wasn´t possible to create simulation", "Erro", JOptionPane.ERROR_MESSAGE);
-             throw new RuntimeException(en);
+             throw en;
         }
     }
 }
