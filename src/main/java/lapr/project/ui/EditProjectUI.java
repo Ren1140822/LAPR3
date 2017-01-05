@@ -155,7 +155,7 @@ public class EditProjectUI extends JDialog{
         
         JPanel pFlight = new JPanel();
         pFlight.setBorder(BorderFactory.createCompoundBorder(new TitledBorder(
-                "Flight:"), new EmptyBorder(x, x, x, x)));
+                "Flight Plan:"), new EmptyBorder(x, x, x, x)));
         JPanel g3 = new JPanel(new GridLayout(2,1, x, x));
         g3.add(createButtonAddFlight());
         g3.add(createButtonEditFlight());
@@ -258,11 +258,11 @@ public class EditProjectUI extends JDialog{
     }
     public JButton createButtonAddFlight(){
         ImageIcon icon = new ImageIcon("src/main/resources/images/addbutton.png");
-        addFlightBtn = new JButton("Add Flight",icon); 
+        addFlightBtn = new JButton("Add Flight Plan",icon); 
         addFlightBtn.setPreferredSize(dim);
         addFlightBtn.setContentAreaFilled(false);
         addFlightBtn.setMnemonic(KeyEvent.VK_F);
-        addFlightBtn.setToolTipText("Add Flight");
+        addFlightBtn.setToolTipText("Add Flight Plan");
         addFlightBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -273,7 +273,7 @@ public class EditProjectUI extends JDialog{
     }
     public JButton createButtonEditFlight(){
         ImageIcon icon = new ImageIcon("src/main/resources/images/editbutton.png");
-        editFlightBtn = new JButton("Edit Flight",icon); 
+        editFlightBtn = new JButton("Edit Flight Plan",icon); 
         editFlightBtn.setPreferredSize(dim);
         editFlightBtn.setContentAreaFilled(false);
         editFlightBtn.setMnemonic(KeyEvent.VK_L);
@@ -415,7 +415,7 @@ public class EditProjectUI extends JDialog{
         return item;
     }
     private JMenuItem createItemAddFlight(){
-        JMenuItem item = new JMenuItem("Add Flight", KeyEvent.VK_F);
+        JMenuItem item = new JMenuItem("Add Flight Plan", KeyEvent.VK_F);
         item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_F, InputEvent.ALT_MASK));
         item.addActionListener(new ActionListener() {
             @Override
@@ -427,7 +427,7 @@ public class EditProjectUI extends JDialog{
         return item;
     }
     private JMenuItem createItemEditFlight(){
-        JMenuItem item = new JMenuItem("Edit Flight", KeyEvent.VK_L);
+        JMenuItem item = new JMenuItem("Edit Flight Plan", KeyEvent.VK_L);
         item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_L, InputEvent.ALT_MASK));
         item.addActionListener(new ActionListener() {
             @Override
@@ -465,7 +465,7 @@ public class EditProjectUI extends JDialog{
         // implement
     }
     private void addFlight(){
-        // implement
+        AddFlightPlanUI addflight = new AddFlightPlanUI(project,EditProjectUI.this);
     }
     private void editFlight(){
         // implement

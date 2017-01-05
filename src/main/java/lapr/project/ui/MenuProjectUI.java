@@ -69,7 +69,7 @@ public class MenuProjectUI extends JDialog {
 
     }
 
-    public void createComponents() {
+    private void createComponents() {
         JMenuBar menuBar = createBarMenu();
         setJMenuBar(menuBar);
 
@@ -82,7 +82,7 @@ public class MenuProjectUI extends JDialog {
         add(p, BorderLayout.SOUTH);
     }
 
-    public JPanel createPanelBack() {
+    private JPanel createPanelBack() {
         int aux = 10;
         JPanel pback = new JPanel(new BorderLayout());
         pback.setBorder(BorderFactory.createCompoundBorder(new TitledBorder(
@@ -106,7 +106,7 @@ public class MenuProjectUI extends JDialog {
         return panel;
     }
 
-    public JPanel createPanelButons() {
+    private JPanel createPanelButons() {
 
         int aux = 5;
 
@@ -136,7 +136,7 @@ public class MenuProjectUI extends JDialog {
         return grid;
     }
 
-    public JButton createButtonEdit() {
+    private JButton createButtonEdit() {
         Icon icone = new ImageIcon("src/main/resources/images/edit.png");
         edit = new JButton("Edit Project", icone);
         edit.setContentAreaFilled(false);
@@ -154,7 +154,7 @@ public class MenuProjectUI extends JDialog {
         return edit;
     }
 
-    public JButton createButtonImport() {
+    private JButton createButtonImport() {
         Icon icone = new ImageIcon("src/main/resources/images/importlogo.jpg");
         importxml = new JButton("Import Data", icone);
         importxml.setContentAreaFilled(false);
@@ -172,7 +172,7 @@ public class MenuProjectUI extends JDialog {
         return importxml;
     }
 
-    public JButton createButtonExport() {
+    private JButton createButtonExport() {
         Icon icone = new ImageIcon("src/main/resources/images/exportlogo.jpg");
         export = new JButton("Export Results", icone);
         export.setContentAreaFilled(false);
@@ -190,7 +190,7 @@ public class MenuProjectUI extends JDialog {
         return export;
     }
 
-    public JButton createButtonAnalysis() {
+    private JButton createButtonAnalysis() {
         Icon icone = new ImageIcon("src/main/resources/images/analysis.jpg");
         analyses = new JButton("View Analysis", icone);
         analyses.setContentAreaFilled(false);
@@ -208,7 +208,7 @@ public class MenuProjectUI extends JDialog {
         return analyses;
     }
 
-    public JButton createButtonBack() {
+    private JButton createButtonBack() {
         back = new JButton("Back");
         back.setMnemonic(KeyEvent.VK_B);
         back.setToolTipText("Back");

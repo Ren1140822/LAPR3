@@ -60,7 +60,7 @@ public class CopyProjectUI extends JDialog{
         });
     }
     
-    public void create() {
+    private void create() {
 
         List projs= new ArrayList(); //receber do controller
         projs.add("teste1"); // retirar
@@ -81,7 +81,7 @@ public class CopyProjectUI extends JDialog{
         add(createPanelButon(), BorderLayout.SOUTH);
     }
     
-    public JPanel createPanelButon() {
+    private JPanel createPanelButon() {
         int x = 10;
         JPanel pback = new JPanel();
         pback.setBorder(BorderFactory.createCompoundBorder(new TitledBorder(
@@ -92,7 +92,7 @@ public class CopyProjectUI extends JDialog{
         return pback;
     }
     
-     public JPanel createPanelProjects(String title, JList list) {
+     private JPanel createPanelProjects(String title, JList list) {
          
         list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         list.addListSelectionListener(new ListSelectionListener() {
@@ -117,7 +117,7 @@ public class CopyProjectUI extends JDialog{
         return p;
      }
     
-    public JButton createBtnBack() {
+    private JButton createBtnBack() {
         back = new JButton("Back");
         back.setMnemonic(KeyEvent.VK_B);
         back.setToolTipText("Back");
@@ -130,7 +130,7 @@ public class CopyProjectUI extends JDialog{
         return back;
     }
     
-    public JButton createBtnOk() {
+    private JButton createBtnOk() {
         ok = new JButton("Ok");
         ok.setMnemonic(KeyEvent.VK_O);
         ok.setToolTipText("Ok");
