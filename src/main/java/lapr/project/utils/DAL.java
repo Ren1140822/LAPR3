@@ -32,10 +32,9 @@ import lapr.project.model.Wind;
  */
 public class DAL {
 
-    private final String url = "jdbc:oracle:thin:@gandalf.dei.isep.ipp.pt:1521/pdborcl";
+    private final String url = "jdbc:oracle:thin://@gandalf.dei.isep.ipp.pt:1521/pdborcl";
     private final String user = "LAPR3_38";
     private final String passw = "grupo38";
-
     /**
      * Creates a connection to the database.
      *
@@ -44,6 +43,7 @@ public class DAL {
     private Connection connect() {
         Connection conn = null;
         try {
+            DriverManager.registerDriver(new oracle.jdbc.OracleDriver());
             conn = DriverManager.getConnection(url, user, passw);
         } catch (SQLException e) {
             Logger.getLogger(DAL.class.getName()).log(Level.SEVERE, null, e);
@@ -63,20 +63,20 @@ public class DAL {
         ResultSet rs = null;
 
         Connection con = null;
-        String query = "placeholder query for location";
+        String query = "select * from airport inner join project_airport on projectid=1";
         con = connect();
 
         try (PreparedStatement st = con.prepareStatement(query)) {
 
             rs = st.executeQuery();
             while (rs.next()) {
-                int locationID = rs.getInt("LocationID");
+                //int locationID = rs.getInt("LocationID");
                 String IATA = rs.getString("IATA");
                 String name = rs.getString("Name");
                 String country = rs.getString("Country");
                 String town = rs.getString("Town");
-                Location location = getLocationByID(locationID);
-                Airport airport = new Airport(IATA, name, town, country, location);
+                // Location location = getLocationByID(locationID);
+                Airport airport = new Airport(IATA, name, town, country, new Location());
                 if (airport.validate()) {
                     airportList.add(airport);
                 }
@@ -566,7 +566,7 @@ public class DAL {
                     st2.setDouble("23", aircraft.getAircraftModel().getMotorization().getThrust_function().getThrustMaxSpeed());
                     st2.setDouble("24", aircraft.getAircraftModel().getMotorization().getThrust_function().getMaxSpeed());
 
-                    ret= st2.execute();
+                    ret = st2.execute();
 
                 }
 
