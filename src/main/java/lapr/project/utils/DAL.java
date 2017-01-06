@@ -35,6 +35,7 @@ public class DAL {
     private final String url = "jdbc:oracle:thin://@gandalf.dei.isep.ipp.pt:1521/pdborcl";
     private final String user = "LAPR3_38";
     private final String passw = "grupo38";
+
     /**
      * Creates a connection to the database.
      *
@@ -63,12 +64,13 @@ public class DAL {
         ResultSet rs = null;
 
         Connection con = null;
-        String query = "select * from airport inner join project_airport on projectid=1";
+        String query = "getListOfAirports(?)";
         con = connect();
 
-        try (PreparedStatement st = con.prepareStatement(query)) {
-
-            rs = st.executeQuery();
+        try (CallableStatement st = con.prepareCall(query)) {
+            st.setString("1", projectID);
+            st.execute();
+            rs = st.getResultSet();
             while (rs.next()) {
                 //int locationID = rs.getInt("LocationID");
                 String IATA = rs.getString("IATA");
@@ -398,7 +400,7 @@ public class DAL {
                 String id = rs.getString("ID");
                 String description = rs.getString("description");
                 List<Node> nodes = getNodesListByID(id);
-                List<Segment> segments = getSegmentsListByID(id);
+                List<Segment> segments = getSegmentsListByID(id, nodes);
                 airNetwork.setId(id);
                 airNetwork.setDescription(description);
                 airNetwork.setNodeList(nodes);
@@ -454,7 +456,7 @@ public class DAL {
      * @param airNetworkID the airnetwork id
      * @return the segment list
      */
-    private List<Segment> getSegmentsListByID(String airNetworkID) {
+    private List<Segment> getSegmentsListByID(String airNetworkID, List<Node> nodes) {
 
         List<Segment> segments = new LinkedList<Segment>();
         ResultSet rs = null;
@@ -469,6 +471,16 @@ public class DAL {
                 String id = rs.getString("ID");
                 String startNode = rs.getString("startNode");
                 String endNode = rs.getString("endNode");
+                Node realStartNode=null;
+                Node realEndNode=null;
+                for (Node n : nodes) {
+                    if (startNode.equals(n.getId())) {
+                        realStartNode=n;
+                    }
+                    if (endNode.equals(n.getId())) {
+                            realEndNode=n;
+                    }
+                }               
                 String direction = rs.getString("direction");
                 Wind wind = getWindByID(id);
                 int minAltSlot = rs.getInt("minAltSlot");
@@ -484,6 +496,8 @@ public class DAL {
         }
         return segments;
     }
+
+ 
 
     /**
      * Gets the wind of a segment.
@@ -523,7 +537,7 @@ public class DAL {
         boolean ret = false;
 
         for (Aircraft aircraft : aircraftList) {
-            try (CallableStatement st = con.prepareCall("Call procedure with aircraft attributes as param(?,?,?,?,?,?)")) {
+            try (CallableStatement st = con.prepareCall("insert_aircraft(?,?,?,?)")) {
 
                 st.setString("1", aircraft.getRegistration());
 
@@ -531,7 +545,7 @@ public class DAL {
                 st.setString("3", aircraft.getAircraftModel().getId());
                 st.setInt("4", aircraft.getNrOfCrewElements());
                 ret = st.execute();
-                try (CallableStatement st2 = con.prepareCall("Call procedure with cabin config attributes as param(?,?,?,?,?,?)")) {
+                try (CallableStatement st2 = con.prepareCall("insert_cabin_config(?,?,?)")) {
                     for (String className : aircraft.getCabinConfig().getMapOfClasses().keySet()) {
                         st2.setString("1", aircraft.getRegistration());//cabin config pk
                         st2.setString("2", className);
@@ -539,8 +553,7 @@ public class DAL {
                         ret = st2.execute();
                     }
                 }
-                try (CallableStatement st2 = con.prepareCall("Call procedure with aircraftModel  as param(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)")) {
-
+                try (CallableStatement st2 = con.prepareCall("insert_aircraft_model(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)")) {
                     st2.setString("1", aircraft.getAircraftModel().getId());//id
                     st2.setString("2", aircraft.getAircraftModel().getType());
                     st2.setString("3", aircraft.getAircraftModel().getDescription());
@@ -570,6 +583,55 @@ public class DAL {
 
                 }
 
+            } catch (SQLException ex) {
+                Logger.getLogger(DAL.class.getName()).log(Level.SEVERE, null, ex);
+                System.out.println(ex.toString());
+            } finally {
+                close(con);
+            }
+        }
+        return true;
+    }
+
+    public boolean WriteAirportsToDatabase(List<Airport> airportList) {
+        Connection con = null;
+        con = connect();
+        boolean ret = false;
+
+        for (Airport airport : airportList) {
+            try (CallableStatement st = con.prepareCall("insert_airport(?,?,?,?,?,?)")) {
+
+                st.setString("1", airport.getIATA());
+
+                st.setString("2", airport.getName());
+                st.setString("3", airport.getTown());
+                st.setDouble("4", airport.getLocation().getLatitude());
+                st.setDouble("5", airport.getLocation().getLongitude());
+                st.setDouble("6", airport.getLocation().getAltitude());
+
+                ret = st.execute();
+
+            } catch (SQLException ex) {
+                Logger.getLogger(DAL.class.getName()).log(Level.SEVERE, null, ex);
+                System.out.println(ex.toString());
+            } finally {
+                close(con);
+            }
+        }
+        return true;
+    }
+
+    public boolean WriteNodesToDatabase(List<Node> nodeList) {
+        Connection con = null;
+        con = connect();
+        boolean ret = false;
+
+        for (Node node:nodeList) {
+            try (CallableStatement st = con.prepareCall("insert_node(?,?,?)")) {
+                 st.setString("1", node.getId());
+                st.setDouble("2", node.getLatitude());
+                st.setDouble("3", node.getLongitude());
+                ret = st.execute();
             } catch (SQLException ex) {
                 Logger.getLogger(DAL.class.getName()).log(Level.SEVERE, null, ex);
                 System.out.println(ex.toString());
