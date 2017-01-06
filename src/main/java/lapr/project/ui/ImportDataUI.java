@@ -80,7 +80,7 @@ public class ImportDataUI extends JDialog{
         setVisible(true);
     }
     
-    public JPanel createImportPanel(){
+    private JPanel createImportPanel(){
         panel = new JPanel(new BorderLayout());
         
         int aux= 10;
@@ -104,7 +104,7 @@ public class ImportDataUI extends JDialog{
     }
     
     
-    public JButton createButonImportAirport(){
+    private JButton createButonImportAirport(){
         Icon icone = new ImageIcon( "src/main/resources/images/airport_mini.jpg" );
         airport = new JButton("Import Airport", icone);
         airport.setContentAreaFilled(false);
@@ -125,7 +125,7 @@ public class ImportDataUI extends JDialog{
         });
         return airport;
     }
-    public JButton createButonImportAircraft(){
+    private JButton createButonImportAircraft(){
         Icon icone = new ImageIcon( "src/main/resources/images/aircraft.jpg" );
         aircraft = new JButton("Import Aircraft Model", icone);
         aircraft.setContentAreaFilled(false);
@@ -146,7 +146,7 @@ public class ImportDataUI extends JDialog{
         });
         return aircraft;
     }
-    public JButton createButonImportNetwork(){
+    private JButton createButonImportNetwork(){
         Icon icone = new ImageIcon( "src/main/resources/images/network.jpg" );
         network = new JButton("Import Network", icone);
         network.setContentAreaFilled(false);
@@ -167,7 +167,7 @@ public class ImportDataUI extends JDialog{
         });
         return network;
     }
-    public JButton createButonBack(){
+    private JButton createButonBack(){
         back = new JButton("Back");
         back.setMnemonic(KeyEvent.VK_B);
         back.setToolTipText("Cancel import and go to previous window");

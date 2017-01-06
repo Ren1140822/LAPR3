@@ -50,7 +50,7 @@ public class FlightList implements Serializable {
     }
 
     public boolean saveFlight(FlightPlan flight) {
-        if (validate(flight)) {
+        if (validate(flight) && !flightList.contains(flight)) {
             add(flight);
             return true;
         }

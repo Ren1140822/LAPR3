@@ -64,7 +64,7 @@ public class MenuUI extends JFrame{
         });
     }
     
-    public void createComponents(){
+    private void createComponents(){
         JMenuBar menuBar= createBarMenu();
         setJMenuBar(menuBar);
         
@@ -241,7 +241,7 @@ public class MenuUI extends JFrame{
         return p; 
     }
     
-    public JButton createButtonOpen(){
+    private JButton createButtonOpen(){
         open = new JButton("Open Project"); 
         open.setMnemonic(KeyEvent.VK_P);
         open.setToolTipText("Open Project");
@@ -254,7 +254,7 @@ public class MenuUI extends JFrame{
         return open;
     }
     
-    public JButton createButtonCreate(){
+    private JButton createButtonCreate(){
         create = new JButton("Create Project"); 
         create.setMnemonic(KeyEvent.VK_C);
         create.setToolTipText("Create Project");
@@ -267,7 +267,7 @@ public class MenuUI extends JFrame{
         return create;
     }
     
-    public JButton createButtonCopy(){
+    private JButton createButtonCopy(){
         create = new JButton("Copy Project"); 
         create.setMnemonic(KeyEvent.VK_Y);
         create.setToolTipText("Copy Project");
@@ -280,7 +280,7 @@ public class MenuUI extends JFrame{
         return create;
     }
     
-    public JButton createButtonClose(){
+    private JButton createButtonClose(){
         exit = new JButton("Exit"); 
         exit.setMnemonic(KeyEvent.VK_E);
         exit.setToolTipText("Create Project");
@@ -293,7 +293,7 @@ public class MenuUI extends JFrame{
         return exit;
     }
     
-    public void closeWindow(){
+    private void closeWindow(){
         String[] op = {"Yes", "No"};
         String question = "Close aplication?";
         int opcao = JOptionPane.showOptionDialog(frame, question,

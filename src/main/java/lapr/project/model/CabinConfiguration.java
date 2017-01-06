@@ -63,4 +63,8 @@ public class CabinConfiguration implements Serializable {
         return hash;
     }
 
+    public Map<String, Integer> getMapOfClasses() {
+        return mapOfClasses;
+    }
+
 }

@@ -2,6 +2,7 @@ package lapr.project.model;
 
 import java.io.Serializable;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -18,8 +19,8 @@ public class FlightPlan implements Serializable {
     private String aircraft;
     private String origin;
     private String destination;
-    private LinkedList<String> technicalStops;
-    private LinkedList<String> mandatoryWaypoints;
+    private List<String> technicalStops;
+    private List<String> mandatoryWaypoints;
 
     /**
      * Default attributes
@@ -160,11 +161,11 @@ public class FlightPlan implements Serializable {
         this.destination = destination;
     }
 
-    public void setTechnicalStops(LinkedList<String> technicalStops) {
+    public void setTechnicalStops(List<String> technicalStops) {
         this.technicalStops = technicalStops;
     }
 
-    public void setMandatoryWaypoints(LinkedList<String> mandatoryWaypoints) {
+    public void setMandatoryWaypoints(List<String> mandatoryWaypoints) {
         this.mandatoryWaypoints = mandatoryWaypoints;
     }
 

@@ -480,4 +480,10 @@ public class Simulation{
         hash = 67 * hash + Objects.hashCode(this.getEndAirport());
         return hash;
     }
+    
+    @Override
+    public String toString()
+    {
+        return String.valueOf(this.getCounterCode());
+    }
 }

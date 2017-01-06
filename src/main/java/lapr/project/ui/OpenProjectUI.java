@@ -59,7 +59,7 @@ public class OpenProjectUI extends JDialog{
             }
         });
     }
-    public void createComp() {
+    private void createComp() {
 
         List projs= new ArrayList(); //receber do controller
         projs.add("teste1"); // retirar
@@ -80,7 +80,7 @@ public class OpenProjectUI extends JDialog{
         add(createPanelButons(), BorderLayout.SOUTH);
     }
     
-    public JPanel createPanelButons() {
+    private JPanel createPanelButons() {
         int aux = 10;
         JPanel pback = new JPanel();
         pback.setBorder(BorderFactory.createCompoundBorder(new TitledBorder(
@@ -91,7 +91,7 @@ public class OpenProjectUI extends JDialog{
         return pback;
     }
     
-     public JPanel createPanelProjects(String title, JList list) {
+     private JPanel createPanelProjects(String title, JList list) {
          
         list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         list.addListSelectionListener(new ListSelectionListener() {
@@ -116,7 +116,7 @@ public class OpenProjectUI extends JDialog{
         return p;
      }
     
-    public JButton createButtonBack() {
+    private JButton createButtonBack() {
         backBtn = new JButton("Back");
         backBtn.setMnemonic(KeyEvent.VK_B);
         backBtn.setToolTipText("Back");
@@ -129,7 +129,7 @@ public class OpenProjectUI extends JDialog{
         return backBtn;
     }
     
-    public JButton createButtonOk() {
+    private JButton createButtonOk() {
         okBtn = new JButton("Ok");
         okBtn.setMnemonic(KeyEvent.VK_O);
         okBtn.setToolTipText("Ok");

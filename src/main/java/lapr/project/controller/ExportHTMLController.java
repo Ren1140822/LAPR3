@@ -44,7 +44,7 @@ public class ExportHTMLController {
             if (aux.equals(simulation)) {
                 results.put("Best consumption", simulation.getEcologicResultPath());
                 results.put("Fastest path",simulation.getFastestResultPath());
-                results.put("Shortest pth", simulation.getShortestResultPath());
+                results.put("ShortestPath", simulation.getShortestResultPath());
             }
         }
 

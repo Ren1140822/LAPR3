@@ -1,5 +1,6 @@
 package lapr.project.utils;
 
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -514,6 +515,69 @@ public class DAL {
 
         }
         return wind;
+    }
+
+    public boolean WriteAircraftsToDatabase(List<Aircraft> aircraftList) {
+        Connection con = null;
+        con = connect();
+        boolean ret = false;
+
+        for (Aircraft aircraft : aircraftList) {
+            try (CallableStatement st = con.prepareCall("Call procedure with aircraft attributes as param(?,?,?,?,?,?)")) {
+
+                st.setString("1", aircraft.getRegistration());
+
+                st.setString("2", aircraft.getCompany());
+                st.setString("3", aircraft.getAircraftModel().getId());
+                st.setInt("4", aircraft.getNrOfCrewElements());
+                ret = st.execute();
+                try (CallableStatement st2 = con.prepareCall("Call procedure with cabin config attributes as param(?,?,?,?,?,?)")) {
+                    for (String className : aircraft.getCabinConfig().getMapOfClasses().keySet()) {
+                        st2.setString("1", aircraft.getRegistration());//cabin config pk
+                        st2.setString("2", className);
+                        st2.setInt("3", aircraft.getCabinConfig().getMapOfClasses().get(className).intValue());
+                        ret = st2.execute();
+                    }
+                }
+                try (CallableStatement st2 = con.prepareCall("Call procedure with aircraftModel  as param(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)")) {
+
+                    st2.setString("1", aircraft.getAircraftModel().getId());//id
+                    st2.setString("2", aircraft.getAircraftModel().getType());
+                    st2.setString("3", aircraft.getAircraftModel().getDescription());
+                    st2.setString("4", aircraft.getAircraftModel().getMaker());
+                    st2.setDouble("5", aircraft.getAircraftModel().geteWeight());
+                    st2.setDouble("6", aircraft.getAircraftModel().getMTOW());
+                    st2.setDouble("7", aircraft.getAircraftModel().getMaxPayload());
+                    st2.setDouble("8", aircraft.getAircraftModel().getFuelCapacity());
+                    st2.setDouble("9", aircraft.getAircraftModel().getVMO());
+                    st2.setDouble("10", aircraft.getAircraftModel().getMMO());
+                    st2.setDouble("11", aircraft.getAircraftModel().getWingArea());
+                    st2.setDouble("12", aircraft.getAircraftModel().getWingSpan());
+                    st2.setDouble("13", aircraft.getAircraftModel().getAspectRatio());
+                    st2.setDouble("14", aircraft.getAircraftModel().getE());
+                    st2.setInt("15", aircraft.getAircraftModel().getMotorization().getNumberMotors());
+                    st2.setString("16", aircraft.getAircraftModel().getMotorization().getMotor());
+                    st2.setString("17", aircraft.getAircraftModel().getMotorization().getMotorType());
+                    st2.setDouble("18", aircraft.getAircraftModel().getMotorization().getCruise_altitude());
+                    st2.setDouble("19", aircraft.getAircraftModel().getMotorization().getCruise_speed());
+                    st2.setDouble("20", aircraft.getAircraftModel().getMotorization().getTSFC());
+                    st2.setDouble("21", aircraft.getAircraftModel().getMotorization().getLapse_rate_factor());
+                    st2.setDouble("22", aircraft.getAircraftModel().getMotorization().getThrust_function().getThrust_0());
+                    st2.setDouble("23", aircraft.getAircraftModel().getMotorization().getThrust_function().getThrustMaxSpeed());
+                    st2.setDouble("24", aircraft.getAircraftModel().getMotorization().getThrust_function().getMaxSpeed());
+
+                    ret= st2.execute();
+
+                }
+
+            } catch (SQLException ex) {
+                Logger.getLogger(DAL.class.getName()).log(Level.SEVERE, null, ex);
+                System.out.println(ex.toString());
+            } finally {
+                close(con);
+            }
+        }
+        return true;
     }
 
     /**
