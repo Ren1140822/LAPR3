@@ -6,6 +6,7 @@
 package lapr.project.model;
 
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Objects;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -91,32 +92,40 @@ public class FlightPlanTest {
     @Test
     public void testValidate() {
         System.out.println("validate1");
-        FlightPlan instance = new FlightPlan("FF0001A", 10, "ircraft", "OPO", "LIS",
+        Aircraft a1 = new Aircraft("dsfsdg", "fdh", new CabinConfiguration(), 2, new AircraftModel(
+                "id", "description", "maker", "passenger", new Motorization(), 10, 
+                10, 10, 10, 10, 10, 10, 10, 10, 10, new LinkedList<>(),new LinkedList<>()));
+        
+        Airport air1 = new Airport("opo", "porto", "porto", "portugal", new Location(10, 10, 10));
+        Airport air2 = new Airport("lis", "lisboa", "lisboa", "portugal", new Location(20, 20, 20));
+        
+        FlightPlan instance = new FlightPlan("FF0001A", 10, a1, air1, air2,
                 new LinkedList<>(), new LinkedList<>());
         boolean expResult = true;
         boolean result = instance.validate();
         assertEquals(expResult, result);
         
         System.out.println("validate2");
-        FlightPlan instance2 = new FlightPlan("FF0001A", -1, "ircraft", "OPO", "LIS",
+        FlightPlan instance2 = new FlightPlan("FF0001A", -1, a1, air1, air2,
                 new LinkedList<>(), new LinkedList<>());
         boolean expResult2 = false;
         boolean result2 = instance2.validate();
         assertEquals(expResult2, result2);
         
         System.out.println("validate3");
-        FlightPlan instance3 = new FlightPlan("FF0001A", 10, "", "OPO", "LIS",
+        FlightPlan instance3 = new FlightPlan("FF0001A", 10, new Aircraft(), air1, air2,
                 new LinkedList<>(), new LinkedList<>());
         boolean expResult3 = false;
         boolean result3 = instance3.validate();
         assertEquals(expResult3, result3);
         
-//        System.out.println("validate4");
-//        FlightPlan instance4 = new FlightPlan();
-//        boolean expResult4 = false;
-//        boolean result4 = instance4.validate();
-//        assertEquals(expResult4, result4);
-//        
+        System.out.println("validate4");
+        FlightPlan instance4 = new FlightPlan("FF0001A", 10, a1, air1, air1,
+                new LinkedList<>(), new LinkedList<>());
+        boolean expResult4 = false;
+        boolean result4 = instance4.validate();
+        assertEquals(expResult4, result4);
+        
 //        System.out.println("validate5");
 //        FlightPlan instance5 = new FlightPlan();
 //        boolean expResult5 = false;
@@ -195,7 +204,7 @@ public class FlightPlanTest {
     @Test
     public void testSetAircraft() {
         System.out.println("setAircraft");
-        String aircraft = "strxcg";
+        Aircraft aircraft = new Aircraft();
         FlightPlan instance = new FlightPlan();
         instance.setAircraft(aircraft);
     }
@@ -206,7 +215,7 @@ public class FlightPlanTest {
     @Test
     public void testSetOrigin() {
         System.out.println("setOrigin");
-        String origin = "ngf";
+        Airport origin = new Airport();
         FlightPlan instance = new FlightPlan();
         instance.setOrigin(origin);
     }
@@ -217,7 +226,7 @@ public class FlightPlanTest {
     @Test
     public void testSetDestination() {
         System.out.println("setDestination");
-        String destination = "easdzgf";
+        Airport destination = new Airport();
         FlightPlan instance = new FlightPlan();
         instance.setDestination(destination);
     }
@@ -228,7 +237,7 @@ public class FlightPlanTest {
     @Test
     public void testSetTechnicalStops() {
         System.out.println("setTechnicalStops");
-        LinkedList<String> technicalStops =  new LinkedList<>();
+        List<Airport> technicalStops =  new LinkedList<>();
         FlightPlan instance = new FlightPlan();
         instance.setTechnicalStops(technicalStops);
     }
@@ -239,9 +248,71 @@ public class FlightPlanTest {
     @Test
     public void testSetMandatoryWaypoints() {
         System.out.println("setMandatoryWaypoints");
-        LinkedList<String> mandatoryWaypoints = new LinkedList<>();
+        List<Node> mandatoryWaypoints = new LinkedList<>();
         FlightPlan instance = new FlightPlan();
         instance.setMandatoryWaypoints(mandatoryWaypoints);
+    }
+
+    /**
+     * Test of getAircraft method, of class FlightPlan.
+     */
+    @Test
+    public void testGetAircraft() {
+        System.out.println("getAircraft");
+        FlightPlan instance = new FlightPlan();
+        Aircraft expResult = new Aircraft();
+        Aircraft result = instance.getAircraft();
+        assertEquals(expResult, result);
+    }
+
+    /**
+     * Test of getOrigin method, of class FlightPlan.
+     */
+    @Test
+    public void testGetOrigin() {
+        System.out.println("getOrigin");
+        FlightPlan instance = new FlightPlan();
+        Airport expResult = new Airport();
+        Airport result = instance.getOrigin();
+        assertEquals(expResult, result);
+    }
+
+    /**
+     * Test of getDestination method, of class FlightPlan.
+     */
+    @Test
+    public void testGetDestination() {
+        System.out.println("getDestination");
+        FlightPlan instance = new FlightPlan();
+        Airport expResult = new Airport();
+        Airport result = instance.getDestination();
+        assertEquals(expResult, result);
+    }
+
+    /**
+     * Test of getTechnicalStops method, of class FlightPlan.
+     */
+    @Test
+    public void testGetTechnicalStops() {
+        System.out.println("getTechnicalStops");
+        FlightPlan instance = new FlightPlan();
+        List<Airport> expResult = new LinkedList<>();
+        instance.setTechnicalStops(expResult);
+        List<Airport> result = instance.getTechnicalStops();
+        assertEquals(expResult, result);
+    }
+
+    /**
+     * Test of getMandatoryWaypoints method, of class FlightPlan.
+     */
+    @Test
+    public void testGetMandatoryWaypoints() {
+        System.out.println("getMandatoryWaypoints");
+        FlightPlan instance = new FlightPlan();
+        List<Node> expResult = new LinkedList<>();
+        instance.setMandatoryWaypoints(expResult);
+        List<Node> result = instance.getMandatoryWaypoints();
+        assertEquals(expResult, result);
     }
     
 }

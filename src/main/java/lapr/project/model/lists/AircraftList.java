@@ -111,6 +111,22 @@ public class AircraftList implements Serializable{
         });
         return listString;
     }
+    
+    /**
+     * get Aircraft by id
+     *
+     * @param id the id of the Aircraft
+     * @return Aircraft by id
+     */
+    public Aircraft getAircraftByString(String id) {
+        Aircraft a = null;
+        for (Aircraft air : aircraftList) {
+            if (air.getRegistration().equalsIgnoreCase(id)) {
+                return air;
+            }
+        }
+        return a;
+    }
 
     private boolean validate() {
         return !this.aircraftList.contains(aircraft);

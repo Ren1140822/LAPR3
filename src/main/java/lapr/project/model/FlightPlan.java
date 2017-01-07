@@ -16,22 +16,17 @@ public class FlightPlan implements Serializable {
      */
     private String flightDesignator;
     private int minStopTime; // time in minutes
-    private String aircraft;
-    private String origin;
-    private String destination;
-    private List<String> technicalStops;
-    private List<String> mandatoryWaypoints;
+    private Aircraft aircraft;
+    private Airport origin;
+    private Airport destination;
+    private List<Airport> technicalStops;
+    private List<Node> mandatoryWaypoints;
 
     /**
      * Default attributes
      */
     private final String DEFAULT_FLIGHT_DESIGNATOR = "FF0001A";
     private final int DEFAULT_MIN_STOP_TIME = 0;
-    private final String DEFAULT_AIRCRAFT = "No Aircraft";
-    private final String DEFAULT_ORIGIN = "No Origin";
-    private final String DEFAULT_DESTINATION = "No Destination";
-    private final LinkedList<String> DEFAULT_TECHNICAL_STOPS = new LinkedList<>();
-    private final LinkedList<String> DEFAULT_MANDATORY_WAYPOINTS = new LinkedList<>();
 
     /**
      * Default constructor
@@ -39,11 +34,11 @@ public class FlightPlan implements Serializable {
     public FlightPlan() {
         flightDesignator = DEFAULT_FLIGHT_DESIGNATOR;
         minStopTime = DEFAULT_MIN_STOP_TIME;
-        aircraft = DEFAULT_AIRCRAFT;
-        origin = DEFAULT_ORIGIN;
-        destination = DEFAULT_DESTINATION;
-        technicalStops = DEFAULT_TECHNICAL_STOPS;
-        mandatoryWaypoints = DEFAULT_MANDATORY_WAYPOINTS;
+        aircraft = new Aircraft();
+        origin = new Airport();
+        destination =  new Airport();
+        technicalStops =  new LinkedList<>();
+        mandatoryWaypoints =  new LinkedList<>();
     }
 
     /**
@@ -51,8 +46,15 @@ public class FlightPlan implements Serializable {
      *
      * @param flightDesignator the flight designator
      * @param minStopTime the minimun stop time for the flight
+     * @param aircraft
+     * @param origin
+     * @param destination
+     * @param technicalStops
+     * @param mandatoryWaypoints
      */
-    public FlightPlan(String flightDesignator, int minStopTime, String aircraft, String origin, String destination, LinkedList<String> technicalStops, LinkedList<String> mandatoryWaypoints) {
+    public FlightPlan(String flightDesignator, int minStopTime, Aircraft aircraft, 
+            Airport origin, Airport destination, LinkedList<Airport> technicalStops, 
+            LinkedList<Node> mandatoryWaypoints) {
         this.flightDesignator = flightDesignator;
         this.minStopTime = minStopTime;
         this.aircraft = aircraft;
@@ -109,8 +111,14 @@ public class FlightPlan implements Serializable {
         if (minStopTime < 0) {
             return false;
         }
-
-        return !aircraft.isEmpty();
+        if (getOrigin().equals(getDestination())){
+            return false;
+        }
+        if(getTechnicalStops().contains(getOrigin()) || getTechnicalStops().contains(getDestination())){
+            return false;
+        }
+        
+        return getAircraft().validate();
     }
 
     /**
@@ -149,23 +157,73 @@ public class FlightPlan implements Serializable {
         this.minStopTime = minStopTime;
     }
 
-    public void setAircraft(String aircraft) {
+    /**
+     * @return the aircraft
+     */
+    public Aircraft getAircraft() {
+        return aircraft;
+    }
+
+    /**
+     * @param aircraft the aircraft to set
+     */
+    public void setAircraft(Aircraft aircraft) {
         this.aircraft = aircraft;
     }
 
-    public void setOrigin(String origin) {
+    /**
+     * @return the origin
+     */
+    public Airport getOrigin() {
+        return origin;
+    }
+
+    /**
+     * @param origin the origin to set
+     */
+    public void setOrigin(Airport origin) {
         this.origin = origin;
     }
 
-    public void setDestination(String destination) {
+    /**
+     * @return the destination
+     */
+    public Airport getDestination() {
+        return destination;
+    }
+
+    /**
+     * @param destination the destination to set
+     */
+    public void setDestination(Airport destination) {
         this.destination = destination;
     }
 
-    public void setTechnicalStops(List<String> technicalStops) {
+    /**
+     * @return the technicalStops
+     */
+    public List<Airport> getTechnicalStops() {
+        return technicalStops;
+    }
+
+    /**
+     * @param technicalStops the technicalStops to set
+     */
+    public void setTechnicalStops(List<Airport> technicalStops) {
         this.technicalStops = technicalStops;
     }
 
-    public void setMandatoryWaypoints(List<String> mandatoryWaypoints) {
+    /**
+     * @return the mandatoryWaypoints
+     */
+    public List<Node> getMandatoryWaypoints() {
+        return mandatoryWaypoints;
+    }
+
+    /**
+     * @param mandatoryWaypoints the mandatoryWaypoints to set
+     */
+    public void setMandatoryWaypoints(List<Node> mandatoryWaypoints) {
         this.mandatoryWaypoints = mandatoryWaypoints;
     }
 

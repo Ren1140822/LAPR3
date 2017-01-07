@@ -46,8 +46,7 @@ public class AddAircraftController {
      * Sets aircraft data.
      * @param registration the registration id
      * @param company the company
-     * @param nrOfSeatsEcon nr of seats economic
-     * @param nrOfSeatsCommercial nr of seats commercial
+     * @param mapConfig
      * @param NrOfElements nr of crew elements
      * @return  true if data is set, false otherwise
      */
