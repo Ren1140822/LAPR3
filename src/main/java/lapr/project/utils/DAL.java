@@ -535,53 +535,54 @@ public class DAL {
         boolean ret = false;
 
         for (Aircraft aircraft : aircraftList) {
-            try (CallableStatement st = con.prepareCall("insert_aircraft(?,?,?,?)")) {
 
-                st.setString("1", aircraft.getRegistration());
+            try (CallableStatement st2 = con.prepareCall("{call insert_aircraft_model(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}")) {
+                //MODEL PODE JÁ EXISTIR NA BD
+                st2.setString("1", aircraft.getAircraftModel().getId());//id
+                st2.setString("2", aircraft.getAircraftModel().getType());
+                st2.setString("3", aircraft.getAircraftModel().getDescription());
+                st2.setString("4", aircraft.getAircraftModel().getMaker());
+                st2.setDouble("5", aircraft.getAircraftModel().geteWeight());
+                st2.setDouble("6", aircraft.getAircraftModel().getMTOW());
+                st2.setDouble("7", aircraft.getAircraftModel().getMaxPayload());
+                st2.setDouble("8", aircraft.getAircraftModel().getFuelCapacity());
+                st2.setDouble("9", aircraft.getAircraftModel().getVMO());
+                st2.setDouble("10", aircraft.getAircraftModel().getMMO());
+                st2.setDouble("11", aircraft.getAircraftModel().getWingArea());
+                st2.setDouble("12", aircraft.getAircraftModel().getWingSpan());
+                st2.setDouble("13", aircraft.getAircraftModel().getAspectRatio());
+                st2.setDouble("14", aircraft.getAircraftModel().getE());
+                st2.setInt("15", aircraft.getAircraftModel().getMotorization().getNumberMotors());
+                st2.setString("16", aircraft.getAircraftModel().getMotorization().getMotor());
+                st2.setString("17", aircraft.getAircraftModel().getMotorization().getMotorType());
+                st2.setDouble("18", aircraft.getAircraftModel().getMotorization().getCruise_altitude());
+                st2.setDouble("19", aircraft.getAircraftModel().getMotorization().getCruise_speed());
+                st2.setDouble("20", aircraft.getAircraftModel().getMotorization().getTSFC());
+                st2.setDouble("21", aircraft.getAircraftModel().getMotorization().getLapse_rate_factor());
+                st2.setDouble("22", aircraft.getAircraftModel().getMotorization().getThrust_function().getThrust_0());
+                st2.setDouble("23", aircraft.getAircraftModel().getMotorization().getThrust_function().getThrustMaxSpeed());
+                st2.setDouble("24", aircraft.getAircraftModel().getMotorization().getThrust_function().getMaxSpeed());
 
-                st.setString("2", aircraft.getCompany());
-                st.setString("3", aircraft.getAircraftModel().getId());
-                st.setInt("4", aircraft.getNrOfCrewElements());
-                ret = st.execute();
-                try (CallableStatement st2 = con.prepareCall("insert_cabin_config(?,?,?)")) {
+                ret = st2.execute();
+                WriteItensToDatabase(con, aircraft.getAircraftModel().getListIten(), aircraft.getAircraftModel().getId());
+                WritePatternsToDatabase(con, aircraft.getAircraftModel().getListPattern(), aircraft.getAircraftModel().getId());
+                try (CallableStatement st = con.prepareCall("insert_aircraft(?,?,?,?)")) {
+
+                    st.setString("1", aircraft.getRegistration());
+
+                    st.setString("2", aircraft.getCompany());
+                    st.setString("3", aircraft.getAircraftModel().getId());
+                    st.setInt("4", aircraft.getNrOfCrewElements());
+                    ret = st.execute();
+                }
+                try (CallableStatement st = con.prepareCall("insert_cabin_config(?,?,?)")) {
                     for (String className : aircraft.getCabinConfig().getMapOfClasses().keySet()) {
-                        st2.setString("1", aircraft.getRegistration());//cabin config pk
-                        st2.setString("2", className);
-                        st2.setInt("3", aircraft.getCabinConfig().getMapOfClasses().get(className).intValue());
-                        ret = st2.execute();
+                        st.setString("1", aircraft.getRegistration());//cabin config pk
+                        st.setString("2", className);
+                        st.setInt("3", aircraft.getCabinConfig().getMapOfClasses().get(className).intValue());
+                        ret = st.execute();
                     }
                 }
-                try (CallableStatement st2 = con.prepareCall("insert_aircraft_model(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)")) {
-                    //MODEL PODE JÁ EXISTIR NA BD
-                    st2.setString("1", aircraft.getAircraftModel().getId());//id
-                    st2.setString("2", aircraft.getAircraftModel().getType());
-                    st2.setString("3", aircraft.getAircraftModel().getDescription());
-                    st2.setString("4", aircraft.getAircraftModel().getMaker());
-                    st2.setDouble("5", aircraft.getAircraftModel().geteWeight());
-                    st2.setDouble("6", aircraft.getAircraftModel().getMTOW());
-                    st2.setDouble("7", aircraft.getAircraftModel().getMaxPayload());
-                    st2.setDouble("8", aircraft.getAircraftModel().getFuelCapacity());
-                    st2.setDouble("9", aircraft.getAircraftModel().getVMO());
-                    st2.setDouble("10", aircraft.getAircraftModel().getMMO());
-                    st2.setDouble("11", aircraft.getAircraftModel().getWingArea());
-                    st2.setDouble("12", aircraft.getAircraftModel().getWingSpan());
-                    st2.setDouble("13", aircraft.getAircraftModel().getAspectRatio());
-                    st2.setDouble("14", aircraft.getAircraftModel().getE());
-                    st2.setInt("15", aircraft.getAircraftModel().getMotorization().getNumberMotors());
-                    st2.setString("16", aircraft.getAircraftModel().getMotorization().getMotor());
-                    st2.setString("17", aircraft.getAircraftModel().getMotorization().getMotorType());
-                    st2.setDouble("18", aircraft.getAircraftModel().getMotorization().getCruise_altitude());
-                    st2.setDouble("19", aircraft.getAircraftModel().getMotorization().getCruise_speed());
-                    st2.setDouble("20", aircraft.getAircraftModel().getMotorization().getTSFC());
-                    st2.setDouble("21", aircraft.getAircraftModel().getMotorization().getLapse_rate_factor());
-                    st2.setDouble("22", aircraft.getAircraftModel().getMotorization().getThrust_function().getThrust_0());
-                    st2.setDouble("23", aircraft.getAircraftModel().getMotorization().getThrust_function().getThrustMaxSpeed());
-                    st2.setDouble("24", aircraft.getAircraftModel().getMotorization().getThrust_function().getMaxSpeed());
-
-                    ret = st2.execute();
-
-                }
-
             } catch (SQLException ex) {
                 Logger.getLogger(DAL.class.getName()).log(Level.SEVERE, null, ex);
                 System.out.println(ex.toString());
@@ -591,43 +592,82 @@ public class DAL {
         }
         return true;
     }
-    
-     public boolean WriteAircraftModelsToDatabase(List<AircraftModel> aircraftModelList) {
+
+    public boolean WriteAircraftModelsToDatabase(List<AircraftModel> aircraftModelList) {
         Connection con = null;
         con = connect();
         boolean ret = false;
-        for (AircraftModel  aircraftModel : aircraftModelList) {
-                try (CallableStatement st2 = con.prepareCall("insert_aircraft_model(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)")) {
-                    st2.setString("1", aircraftModel.getId());//id
-                    st2.setString("2", aircraftModel.getType());
-                    st2.setString("3", aircraftModel.getDescription());
-                    st2.setString("4", aircraftModel.getMaker());
-                    st2.setDouble("5", aircraftModel.geteWeight());
-                    st2.setDouble("6", aircraftModel.getMTOW());
-                    st2.setDouble("7", aircraftModel.getMaxPayload());
-                    st2.setDouble("8", aircraftModel.getFuelCapacity());
-                    st2.setDouble("9", aircraftModel.getVMO());
-                    st2.setDouble("10", aircraftModel.getMMO());
-                    st2.setDouble("11", aircraftModel.getWingArea());
-                    st2.setDouble("12", aircraftModel.getWingSpan());
-                    st2.setDouble("13", aircraftModel.getAspectRatio());
-                    st2.setDouble("14", aircraftModel.getE());
-                    st2.setInt("15", aircraftModel.getMotorization().getNumberMotors());
-                    st2.setString("16", aircraftModel.getMotorization().getMotor());
-                    st2.setString("17", aircraftModel.getMotorization().getMotorType());
-                    st2.setDouble("18", aircraftModel.getMotorization().getCruise_altitude());
-                    st2.setDouble("19", aircraftModel.getMotorization().getCruise_speed());
-                    st2.setDouble("20", aircraftModel.getMotorization().getTSFC());
-                    st2.setDouble("21", aircraftModel.getMotorization().getLapse_rate_factor());
-                    st2.setDouble("22", aircraftModel.getMotorization().getThrust_function().getThrust_0());
-                    st2.setDouble("23", aircraftModel.getMotorization().getThrust_function().getThrustMaxSpeed());
-                    st2.setDouble("24", aircraftModel.getMotorization().getThrust_function().getMaxSpeed());
-                    ret = st2.execute();
+
+        try (CallableStatement st2 = con.prepareCall("{call insert_aircraft_model(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)}")) {
+            for (AircraftModel aircraftModel : aircraftModelList) {
+                st2.setString(1, aircraftModel.getId());//id
+                st2.setString(2, aircraftModel.getType());
+                st2.setString(3, aircraftModel.getDescription());
+                st2.setString(4, aircraftModel.getMaker());
+                st2.setDouble(5, aircraftModel.geteWeight());
+                st2.setDouble(6, aircraftModel.getMTOW());
+                st2.setDouble(7, aircraftModel.getMaxPayload());
+                st2.setDouble(8, aircraftModel.getFuelCapacity());
+                st2.setDouble(9, aircraftModel.getVMO());
+                st2.setDouble(10, aircraftModel.getMMO());
+                st2.setDouble(11, aircraftModel.getWingArea());
+                st2.setDouble(12, aircraftModel.getWingSpan());
+                st2.setDouble(13, aircraftModel.getAspectRatio());
+                st2.setDouble(14, aircraftModel.getE());
+                st2.setInt(15, aircraftModel.getMotorization().getNumberMotors());
+                st2.setString(16, aircraftModel.getMotorization().getMotor());
+                st2.setString(17, aircraftModel.getMotorization().getMotorType());
+                st2.setDouble(18, aircraftModel.getMotorization().getCruise_altitude());
+                st2.setDouble(19, aircraftModel.getMotorization().getCruise_speed());
+                st2.setDouble(20, aircraftModel.getMotorization().getTSFC());
+                st2.setDouble(21, aircraftModel.getMotorization().getLapse_rate_factor());
+                st2.setDouble(22, aircraftModel.getMotorization().getThrust_function().getThrust_0());
+                st2.setDouble(23, aircraftModel.getMotorization().getThrust_function().getThrustMaxSpeed());
+                st2.setDouble(24, aircraftModel.getMotorization().getThrust_function().getMaxSpeed());
+                ret = st2.execute();
+                WriteItensToDatabase(con, aircraftModel.getListIten(), aircraftModel.getId());
+                WritePatternsToDatabase(con, aircraftModel.getListPattern(), aircraftModel.getId());
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DAL.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println(ex.toString());
+        } finally {
+            close(con);
+        }
+
+        return true;
+    }
+
+    private boolean WriteItensToDatabase(Connection con, List<Iten> itenList, String modelid) {
+
+        boolean ret = false;
+        for (Iten item : itenList) {
+            try (CallableStatement st = con.prepareCall("{call insert_iten(?,?,?)}")) {
+                st.setDouble(1, item.getCdrag_0());
+                st.setDouble(2, item.getSpeed());
+                st.setString(3, modelid);
+                ret = st.execute();
             } catch (SQLException ex) {
                 Logger.getLogger(DAL.class.getName()).log(Level.SEVERE, null, ex);
                 System.out.println(ex.toString());
-            } finally {
-                close(con);
+            }
+        }
+        return true;
+    }
+
+    private boolean WritePatternsToDatabase(Connection con, List<Pattern> plist, String modelid) {
+
+        boolean ret = false;
+        for (Pattern p : plist) {
+            try (CallableStatement st = con.prepareCall("{call insert_pattern(?,?,?)}")) {
+                st.setDouble(1, p.getAltitude());
+                st.setDouble(2, p.getvClimb());
+                st.setDouble(3, p.getvDesc());
+                st.setString(4, modelid);
+                ret = st.execute();
+            } catch (SQLException ex) {
+                Logger.getLogger(DAL.class.getName()).log(Level.SEVERE, null, ex);
+                System.out.println(ex.toString());
             }
         }
         return true;
@@ -637,20 +677,16 @@ public class DAL {
         Connection con = null;
         con = connect();
         boolean ret = false;
-
         for (Airport airport : airportList) {
-            try (CallableStatement st = con.prepareCall("insert_airport(?,?,?,?,?,?)")) {
-
-                st.setString("1", airport.getIATA());
-
-                st.setString("2", airport.getName());
-                st.setString("3", airport.getTown());
-                st.setDouble("4", airport.getLocation().getLatitude());
-                st.setDouble("5", airport.getLocation().getLongitude());
-                st.setDouble("6", airport.getLocation().getAltitude());
-
+            try (CallableStatement st = con.prepareCall("{call insert_airport(?,?,?,?,?,?,?)}")) {
+                st.setString(1, airport.getIATA());
+                st.setString(2, airport.getName());
+                st.setString(3, airport.getTown());
+                  st.setString(4, airport.getCountry());
+                st.setDouble(5, airport.getLocation().getLatitude());
+                st.setDouble(6, airport.getLocation().getLongitude());
+                st.setDouble(7, airport.getLocation().getAltitude());
                 ret = st.execute();
-
             } catch (SQLException ex) {
                 Logger.getLogger(DAL.class.getName()).log(Level.SEVERE, null, ex);
                 System.out.println(ex.toString());
@@ -667,7 +703,7 @@ public class DAL {
         boolean ret = false;
 
         for (Node node : nodeList) {
-            try (CallableStatement st = con.prepareCall("insert_node(?,?,?)")) {
+            try (CallableStatement st = con.prepareCall("{call insert_node(?,?,?)}")) {
                 st.setString("1", node.getId());
                 st.setDouble("2", node.getLatitude());
                 st.setDouble("3", node.getLongitude());
