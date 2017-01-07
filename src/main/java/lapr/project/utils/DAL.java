@@ -201,8 +201,8 @@ public class DAL {
     /**
      * Gets the aircraftModel by ID.
      *
-     * @param aircraftModelD the aircraft model ID
-     * @return the aircraft model object
+     * @param aircraftModelD the aircraftModel model ID
+     * @return the aircraftModel model object
      */
     private AircraftModel getAircraftModelByID(int aircraftModelD) {
         AircraftModel model = null;
@@ -471,16 +471,16 @@ public class DAL {
                 String id = rs.getString("ID");
                 String startNode = rs.getString("startNode");
                 String endNode = rs.getString("endNode");
-                Node realStartNode=null;
-                Node realEndNode=null;
+                Node realStartNode = null;
+                Node realEndNode = null;
                 for (Node n : nodes) {
                     if (startNode.equals(n.getId())) {
-                        realStartNode=n;
+                        realStartNode = n;
                     }
                     if (endNode.equals(n.getId())) {
-                            realEndNode=n;
+                        realEndNode = n;
                     }
-                }               
+                }
                 String direction = rs.getString("direction");
                 Wind wind = getWindByID(id);
                 int minAltSlot = rs.getInt("minAltSlot");
@@ -496,8 +496,6 @@ public class DAL {
         }
         return segments;
     }
-
- 
 
     /**
      * Gets the wind of a segment.
@@ -554,6 +552,7 @@ public class DAL {
                     }
                 }
                 try (CallableStatement st2 = con.prepareCall("insert_aircraft_model(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)")) {
+                    //MODEL PODE JÁ EXISTIR NA BD
                     st2.setString("1", aircraft.getAircraftModel().getId());//id
                     st2.setString("2", aircraft.getAircraftModel().getType());
                     st2.setString("3", aircraft.getAircraftModel().getDescription());
@@ -583,6 +582,47 @@ public class DAL {
 
                 }
 
+            } catch (SQLException ex) {
+                Logger.getLogger(DAL.class.getName()).log(Level.SEVERE, null, ex);
+                System.out.println(ex.toString());
+            } finally {
+                close(con);
+            }
+        }
+        return true;
+    }
+    
+     public boolean WriteAircraftModelsToDatabase(List<AircraftModel> aircraftModelList) {
+        Connection con = null;
+        con = connect();
+        boolean ret = false;
+        for (AircraftModel  aircraftModel : aircraftModelList) {
+                try (CallableStatement st2 = con.prepareCall("insert_aircraft_model(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)")) {
+                    st2.setString("1", aircraftModel.getId());//id
+                    st2.setString("2", aircraftModel.getType());
+                    st2.setString("3", aircraftModel.getDescription());
+                    st2.setString("4", aircraftModel.getMaker());
+                    st2.setDouble("5", aircraftModel.geteWeight());
+                    st2.setDouble("6", aircraftModel.getMTOW());
+                    st2.setDouble("7", aircraftModel.getMaxPayload());
+                    st2.setDouble("8", aircraftModel.getFuelCapacity());
+                    st2.setDouble("9", aircraftModel.getVMO());
+                    st2.setDouble("10", aircraftModel.getMMO());
+                    st2.setDouble("11", aircraftModel.getWingArea());
+                    st2.setDouble("12", aircraftModel.getWingSpan());
+                    st2.setDouble("13", aircraftModel.getAspectRatio());
+                    st2.setDouble("14", aircraftModel.getE());
+                    st2.setInt("15", aircraftModel.getMotorization().getNumberMotors());
+                    st2.setString("16", aircraftModel.getMotorization().getMotor());
+                    st2.setString("17", aircraftModel.getMotorization().getMotorType());
+                    st2.setDouble("18", aircraftModel.getMotorization().getCruise_altitude());
+                    st2.setDouble("19", aircraftModel.getMotorization().getCruise_speed());
+                    st2.setDouble("20", aircraftModel.getMotorization().getTSFC());
+                    st2.setDouble("21", aircraftModel.getMotorization().getLapse_rate_factor());
+                    st2.setDouble("22", aircraftModel.getMotorization().getThrust_function().getThrust_0());
+                    st2.setDouble("23", aircraftModel.getMotorization().getThrust_function().getThrustMaxSpeed());
+                    st2.setDouble("24", aircraftModel.getMotorization().getThrust_function().getMaxSpeed());
+                    ret = st2.execute();
             } catch (SQLException ex) {
                 Logger.getLogger(DAL.class.getName()).log(Level.SEVERE, null, ex);
                 System.out.println(ex.toString());
@@ -626,11 +666,37 @@ public class DAL {
         con = connect();
         boolean ret = false;
 
-        for (Node node:nodeList) {
+        for (Node node : nodeList) {
             try (CallableStatement st = con.prepareCall("insert_node(?,?,?)")) {
-                 st.setString("1", node.getId());
+                st.setString("1", node.getId());
                 st.setDouble("2", node.getLatitude());
                 st.setDouble("3", node.getLongitude());
+                ret = st.execute();
+            } catch (SQLException ex) {
+                Logger.getLogger(DAL.class.getName()).log(Level.SEVERE, null, ex);
+                System.out.println(ex.toString());
+            } finally {
+                close(con);
+            }
+        }
+        return true;
+    }
+
+    public boolean WriteSegmentsToDatabase(List<Segment> segmentList, int airNetworkID) {
+        Connection con = null;
+        con = connect();
+        boolean ret = false;
+
+        for (Segment seg : segmentList) {
+            try (CallableStatement st = con.prepareCall("insert_node(?,?,?)")) {
+                st.setString("1", seg.getId());
+                st.setString("2", seg.getStartNode().getId());
+                st.setString("3", seg.getEndNode().getId());
+                st.setString("4", seg.getDirection().name());
+                st.setDouble("5", seg.getMinAltSlot());
+                st.setDouble("6", seg.getMaxAltSlot());
+                st.setInt("7", airNetworkID);
+                //need wind as well
                 ret = st.execute();
             } catch (SQLException ex) {
                 Logger.getLogger(DAL.class.getName()).log(Level.SEVERE, null, ex);
