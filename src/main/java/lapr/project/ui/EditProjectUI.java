@@ -145,10 +145,10 @@ public class EditProjectUI extends JDialog{
         
         JPanel pAircraft = new JPanel();
         pAircraft.setBorder(BorderFactory.createCompoundBorder(new TitledBorder(
-                "Aircraft Model:"), new EmptyBorder(x, x, x, x)));
+                "Aircrafts:"), new EmptyBorder(x, x, x, x)));
         JPanel g2 = new JPanel(new GridLayout(2,1, x, x));
-        g2.add(createButtonAddAircraftModel());
-        g2.add(createButtonEditAircraftModel());
+        g2.add(createButtonAddAircraft());
+        g2.add(createButtonEditAircraft());
         
         pAircraft.add(l2);
         pAircraft.add(g2);
@@ -226,32 +226,32 @@ public class EditProjectUI extends JDialog{
         });
         return editAirportBtn;
     }
-    public JButton createButtonAddAircraftModel(){
+    public JButton createButtonAddAircraft(){
         ImageIcon icon = new ImageIcon("src/main/resources/images/addbutton.png");
-        addAircraftModelBtn = new JButton("Add Aircraft Model",icon); 
+        addAircraftModelBtn = new JButton("Add Aircraft",icon); 
         addAircraftModelBtn.setPreferredSize(dim);
         addAircraftModelBtn.setContentAreaFilled(false);
         addAircraftModelBtn.setMnemonic(KeyEvent.VK_M);
-        addAircraftModelBtn.setToolTipText("Add Aircraft Model");
+        addAircraftModelBtn.setToolTipText("Add Aircraft");
         addAircraftModelBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                addAircraftModel();
+                addAircraft();
             }
         });
         return addAircraftModelBtn;
     }
-    public JButton createButtonEditAircraftModel(){
+    public JButton createButtonEditAircraft(){
         ImageIcon icon = new ImageIcon("src/main/resources/images/editbutton.png");
-        editAircraftModelBtn = new JButton("Edit Aircraft Model",icon); 
+        editAircraftModelBtn = new JButton("Edit Aircraft",icon); 
         editAircraftModelBtn.setPreferredSize(dim);
         editAircraftModelBtn.setContentAreaFilled(false);
         editAircraftModelBtn.setMnemonic(KeyEvent.VK_D);
-        editAircraftModelBtn.setToolTipText("Edit Aircraft Model");
+        editAircraftModelBtn.setToolTipText("Edit Aircraft");
         editAircraftModelBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                editAircraftModel();
+                editAircraft();
             }
         });
         return editAircraftModelBtn;
@@ -345,11 +345,11 @@ public class EditProjectUI extends JDialog{
     }
     
     private JMenu createSubMenuAircraftModel(){
-         JMenu menu = new JMenu("Aircraft Model");
+         JMenu menu = new JMenu("Aircraft");
         menu.setMnemonic(KeyEvent.VK_M);
 
-        menu.add(createItemAddAircraftModel());
-        menu.add(createItemEditAircraftModel());
+        menu.add(createItemAddAircraft());
+        menu.add(createItemEditAircraft());
 
 
         return menu;
@@ -390,25 +390,25 @@ public class EditProjectUI extends JDialog{
 
         return item;
     }
-    private JMenuItem createItemAddAircraftModel(){
-        JMenuItem item = new JMenuItem("Add Aircraft Model", KeyEvent.VK_M);
+    private JMenuItem createItemAddAircraft(){
+        JMenuItem item = new JMenuItem("Add Aircraft", KeyEvent.VK_M);
         item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_M, InputEvent.ALT_MASK));
         item.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                addAircraftModel();
+                addAircraft();
             }
         });
 
         return item;
     }
-    private JMenuItem createItemEditAircraftModel(){
-        JMenuItem item = new JMenuItem("Edit Aircraft Model", KeyEvent.VK_D);
+    private JMenuItem createItemEditAircraft(){
+        JMenuItem item = new JMenuItem("Edit Aircraft", KeyEvent.VK_D);
         item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_D, InputEvent.ALT_MASK));
         item.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                editAircraftModel();
+                editAircraft();
             }
         });
 
@@ -458,10 +458,10 @@ public class EditProjectUI extends JDialog{
     private void editAirport(){
         // implement
     }
-    private void addAircraftModel(){
+    private void addAircraft(){
         AddAircraftUI aircraft = new AddAircraftUI(project,EditProjectUI.this);
     }
-    private void editAircraftModel(){
+    private void editAircraft(){
         // implement
     }
     private void addFlight(){

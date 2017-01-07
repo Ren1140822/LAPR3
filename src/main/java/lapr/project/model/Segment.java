@@ -21,18 +21,18 @@ public class Segment implements Serializable{
     
     /**
      * Class atributes.
-     */
-    @XmlAttribute(name="id")
+     */    
+    @XmlTransient 
     private String id;
-    @XmlElement(name="start_node")
-    private String startNode;
-    @XmlElement(name="end_node")
-    private String endNode;
+    @XmlTransient    
+    private Node startNode;
+    @XmlTransient    
+    private Node endNode;
     @XmlTransient
     public enum Direction {BIDIRECTIONAL, DIRECT};
     @XmlTransient
-    private Direction direction;
-    @XmlElement
+    private Direction direction;    
+    @XmlTransient
     private Wind wind;
     @XmlTransient
     private int minAltSlot;
@@ -45,10 +45,6 @@ public class Segment implements Serializable{
     @XmlTransient
     private static final String DEFAULT_ID = "NOID";
     @XmlTransient
-    private static final String DEFAULT_START_NODE = "STARTNODE";
-    @XmlTransient
-    private static final String DEFAULT_END_NODE = "ENDNODE";
-    @XmlTransient
     private static final Direction DEFAULT_DIRECTION = Direction.BIDIRECTIONAL;
     @XmlTransient
     private static final int DEFAULT_MIN_ALT_SLOT = 0;
@@ -60,8 +56,8 @@ public class Segment implements Serializable{
      */
     public Segment(){
         this.id = DEFAULT_ID;
-        this.startNode = DEFAULT_START_NODE;
-        this.endNode = DEFAULT_END_NODE;
+        this.startNode = new Node();
+        this.endNode = new Node();
         this.direction = DEFAULT_DIRECTION;
         this.wind = new Wind();
         this.minAltSlot = DEFAULT_MIN_ALT_SLOT;
@@ -74,8 +70,10 @@ public class Segment implements Serializable{
      * @param endNode the end node of the segment
      * @param direction the Direction of the segment
      * @param wind the wind of the segment
+     * @param minAltSlot
+     * @param maxAltSlot
      */
-    public Segment(String id, String startNode, String endNode, String direction, 
+    public Segment(String id, Node startNode, Node endNode, String direction, 
             Wind wind, int minAltSlot, int maxAltSlot){
         this.id = id;
         this.startNode = startNode;
@@ -104,6 +102,7 @@ public class Segment implements Serializable{
      * gets the id of the segment
      * @return the id
      */
+    @XmlAttribute(name="id")
     public String getId() {
         return id;
     }
@@ -115,12 +114,30 @@ public class Segment implements Serializable{
     public void setId(String id) {
         this.id = id;
     }
+    
+    /**
+     * gets the start node of the segment
+     * @return the startNode
+     */
+    @XmlElement(name="start_node")
+    public String getStartNode_() {
+        return String.valueOf(startNode);
+    }
+
+    /**
+     * sets the start node of the segment
+     * @param startNodeid the startNode to set
+     */
+    public void setStartNode_(String startNodeid) {
+        this.startNode.setId(startNodeid);
+    }
+
 
     /**
      * gets the start node of the segment
      * @return the startNode
      */
-    public String getStartNode() {
+    public Node getStartNode() {
         return startNode;
     }
 
@@ -128,15 +145,15 @@ public class Segment implements Serializable{
      * sets the start node of the segment
      * @param startNode the startNode to set
      */
-    public void setStartNode(String startNode) {
+    public void setStartNode(Node startNode) {
         this.startNode = startNode;
     }
-
+    
     /**
      * gets the end node of the segment
      * @return the endNode
      */
-    public String getEndNode() {
+    public Node getEndNode() {
         return endNode;
     }
 
@@ -144,8 +161,24 @@ public class Segment implements Serializable{
      * sets the end node of the segment
      * @param endNode the endNode to set
      */
-    public void setEndNode(String endNode) {
+    public void setEndNode(Node endNode) {
         this.endNode = endNode;
+    }
+    /**
+     * gets the end node of the segment
+     * @return the endNode
+     */
+    @XmlElement(name="end_node")
+    public String getEndNode_() {
+        return String.valueOf(endNode);
+    }
+
+    /**
+     * sets the end node of the segment
+     * @param endNodeid the endNode to set
+     */
+    public void setEndNode_(String endNodeid) {
+        this.endNode.setId(endNodeid);
     }
 
     /**
@@ -190,6 +223,7 @@ public class Segment implements Serializable{
      * gets the wind of the segment
      * @return the wind
      */
+    @XmlElement
     public Wind getWind() {
         return wind;
     }
@@ -290,10 +324,8 @@ public class Segment implements Serializable{
     public boolean validate(){
         //to remove major error from sonarqube
         boolean v1 =!this.id.isEmpty()
-                && this.direction != null
-                && !this.startNode.isEmpty();
-        boolean v2 = !this.endNode.isEmpty()
-                && !this.startNode.equals(this.endNode)
+                && this.direction != null;
+        boolean v2 = !this.startNode.equals(this.endNode)
                 && this.wind.validate();
         return v1 && v2;                
     }

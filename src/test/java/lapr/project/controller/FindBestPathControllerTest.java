@@ -171,10 +171,10 @@ public class FindBestPathControllerTest {
         
         Wind windTest=new Wind(10,10);
         String direction="BIDIRECTIONAL";
-        Segment segment1=new Segment("segmentTest1","test1", "test3", direction,windTest,0,0);       
-        Segment segment2=new Segment("segmentTest2", "test1", "test2", direction,windTest,0,0);
-        Segment segment3=new Segment("segmentTest3", "test2", "test3", direction, windTest,0,0);
-        Segment segment4=new Segment("segmentTest4", "test4", "test5", direction, windTest,0,0);
+        Segment segment1=new Segment("segmentTest1",startNode, endNode, direction,windTest,0,0);       
+        Segment segment2=new Segment("segmentTest2", startNode, intNode, direction,windTest,0,0);
+        Segment segment3=new Segment("segmentTest3", intNode, endNode, direction, windTest,0,0);
+        Segment segment4=new Segment("segmentTest4", testNode1, testNode, direction, windTest,0,0);
         
         AirNetwork airTest=new AirNetwork();
         airTest.getAirNetwork().insertVertex(startNode);
@@ -285,9 +285,9 @@ public class FindBestPathControllerTest {
         
         Wind windTest=new Wind(10,10);
         String direction="BIDIRECTIONAL";
-        Segment segment1=new Segment("segmentTest1","test1", "test3", direction,windTest,0,0);       
-        Segment segment2=new Segment("segmentTest2", "test1", "test2", direction,windTest,0,0);
-        Segment segment3=new Segment("segmentTest3", "test2", "test3", direction, windTest,0,0);
+        Segment segment1=new Segment("segmentTest1",startNode, endNode, direction,windTest,0,0);       
+        Segment segment2=new Segment("segmentTest2", startNode, intNode, direction,windTest,0,0);
+        Segment segment3=new Segment("segmentTest3", intNode, endNode, direction, windTest,0,0);
         
         Project p=new Project();
         AirNetwork airnetwork=p.getAirNetwork();

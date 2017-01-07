@@ -70,6 +70,11 @@ public class AirNetworkTest {
         System.out.println("generateGraph2");
         AirNetwork instance2 = new AirNetwork();
         
+        Node n1= new Node("id1",-40,90);
+        Node n2= new Node("id2", -50, 90);
+        Node n3= new Node("id3", -90, 40);
+        Node n4= new Node("id4", -90, 50);
+        
         instance2.setNode("id1",-40,90);
         instance2.saveNode();        
         instance2.setNode("id2", -50, 90);
@@ -79,11 +84,11 @@ public class AirNetworkTest {
         instance2.setNode("id4", -90, 50);
         instance2.saveNode();
         
-        instance2.setSegment("seg01", "id1", 
-                "id2", "bidirectional", 15, 40);
+        instance2.setSegment("seg01", n1, 
+                n2, "bidirectional", 15, 40);
         instance2.saveSegment();
-        instance2.setSegment("seg02", "id1", 
-                "id3", "bidirectional", 15, 40);
+        instance2.setSegment("seg02", n1, 
+                n3, "bidirectional", 15, 40);
         instance2.saveSegment();
 
         boolean expResult2 = true;
@@ -191,7 +196,7 @@ public class AirNetworkTest {
         int windIntensity = 0;
         int windDirection = 0;
         AirNetwork instance = new AirNetwork();
-        instance.setSegment(id, startNode.getId(), endNode.getId(), direction, windIntensity, windDirection);
+        instance.setSegment(id, startNode, endNode, direction, windIntensity, windDirection);
     }
 
     /**
@@ -204,10 +209,12 @@ public class AirNetworkTest {
         String id = "a";
         Node startNode = new Node("a", 0, 0);
         Node endNode = new Node("b",1,1);
+        instance.getNodeList().add(startNode);
+        instance.getNodeList().add(endNode);
         String direction = "bidirectional";
         int windIntensity = 10;
         int windDirection = 10;
-        instance.setSegment(id, startNode.getId(), endNode.getId(), direction, windIntensity, windDirection);
+        instance.setSegment(id, startNode, endNode, direction, windIntensity, windDirection);
         boolean expResult = true;
         boolean result = instance.saveSegment();
         assertEquals(expResult, result);
@@ -297,10 +304,10 @@ public class AirNetworkTest {
         
         Wind windTest=new Wind(10,10);
         String direction="BIDIRECTIONAL";
-        Segment segment1=new Segment("segmentTest1","test1", "test3", direction,windTest,0,0);       
-        Segment segment2=new Segment("segmentTest2", "test1", "test2", direction,windTest,0,0);
-        Segment segment3=new Segment("segmentTest3", "test2", "test3", direction, windTest,0,0);
-        Segment segment4=new Segment("segmentTest4", "test4", "test5", direction, windTest,0,0);
+        Segment segment1=new Segment("segmentTest1",startNode, endNode, direction,windTest,0,0);       
+        Segment segment2=new Segment("segmentTest2", startNode, intNode, direction,windTest,0,0);
+        Segment segment3=new Segment("segmentTest3", intNode, endNode, direction, windTest,0,0);
+        Segment segment4=new Segment("segmentTest4", testNode1, testNode, direction, windTest,0,0);
         
         AirNetwork instance=new AirNetwork();
         instance.getAirNetwork().insertVertex(startNode);
@@ -344,6 +351,30 @@ public class AirNetworkTest {
         Node expResult = nodeTest2;
         Node result = instance.getAirportNode(airportTest);
         assertEquals(expResult, result);
+    }
+
+    /**
+     * Test of getNode method, of class AirNetwork.
+     */
+    @Test
+    public void testGetNode() {
+        System.out.println("getNode");
+        Node n = new Node();
+        AirNetwork instance = new AirNetwork();
+        instance.getNodeList().add(n);
+        Node expResult = n;
+        Node result = instance.getNode(n);
+        assertEquals(expResult, result);
+    }
+
+    /**
+     * Test of setSegmentsForJAXB method, of class AirNetwork.
+     */
+    @Test
+    public void testSetSegmentsForJAXB() {
+        System.out.println("setSegmentsForJAXB");
+        AirNetwork instance = new AirNetwork();
+        instance.setSegmentsForJAXB();
     }
 
 

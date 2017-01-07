@@ -54,6 +54,7 @@ public class AddAircraftUI extends JDialog {
     private JList listclasses;    
     private DialogSelectable dialog;
     private JButton btnSubmit;
+    private JButton btnClass;
     private JDialog parentFrame;
     private static final Dimension LABEL_SIZE = new JLabel("Nr. of crew elements: ").
                                                         getPreferredSize();
@@ -89,7 +90,7 @@ public class AddAircraftUI extends JDialog {
 
         JPanel buttons = new JPanel(new FlowLayout());
         btnSubmit = createSubmitButton();
-        JButton btnClass = createAddClassButton();
+        btnClass = createAddClassButton();
         JButton btnModel = createAddAircraftModelButton();
         buttons.add(btnModel);
         buttons.add(btnClass);
@@ -114,7 +115,7 @@ public class AddAircraftUI extends JDialog {
     private JPanel createPanelLabelText() {
         JPanel p = new JPanel(new GridLayout(4, 1));
         
-        p.setBorder(new TitledBorder("Aircarft Model:"));
+        p.setBorder(new TitledBorder("Aircarft:"));
         
         textRegistration = new JTextField(10);
         textCompany = new JTextField(10);
@@ -144,17 +145,17 @@ public class AddAircraftUI extends JDialog {
     }
     
     private JPanel createPanelClasses(){
-        JPanel p = new JPanel();
+        JPanel pClasses = new JPanel();
         
-        p.setBorder(new TitledBorder("Classes:"));
+        pClasses.setBorder(new TitledBorder("Classes:"));
         
-        String[] teste = {"asd", "safs"};
+        String[] classes = (String[]) mapConfig.keySet().toArray(new String[mapConfig.size()]);
         
-        listclasses = new JList(teste);
+        listclasses = new JList(classes);
         
-        p.add(listclasses, BorderLayout.CENTER);        
+        pClasses.add(listclasses, BorderLayout.CENTER);        
         
-        return p;
+        return pClasses;
     }
     
     private JPanel createPanelCenter(){
@@ -200,10 +201,11 @@ public class AddAircraftUI extends JDialog {
                 if (addAircraftController.setAircraftModel(dialog.getSelectedItem())) {
                     textAircraftModel.setText(dialog.getSelectedItem());
                     JOptionPane.showMessageDialog(rootPane, "Model set sucessfully.", "Sucess", JOptionPane.INFORMATION_MESSAGE);
-                    btnSubmit.setEnabled(true);
+                    btnClass.setEnabled(true);
                 }
             }
         });
+        button.setEnabled(false);
         return button;
     }
 
@@ -218,17 +220,14 @@ public class AddAircraftUI extends JDialog {
                     int classSeats = Integer.parseInt(JOptionPane.showInputDialog("Please insert the number of seats for this class."));
                     mapConfig.put(className, classSeats);
                     if (!Pattern.matches("[0-9]+", className)) {
-
                         JOptionPane.showMessageDialog(rootPane, "Data saved to this aircraft sucessfully.", "Sucess", JOptionPane.INFORMATION_MESSAGE);
+                        btnSubmit.setEnabled(true);
                     } else {
                         JOptionPane.showMessageDialog(rootPane, "Invalid values submitted for number of class name, please try again.", "Error", JOptionPane.ERROR_MESSAGE);
                     }
 
                 } catch (NumberFormatException ex) {
                     JOptionPane.showMessageDialog(rootPane, "Invalid values submitted for number of seats, please try again.", "Error", JOptionPane.ERROR_MESSAGE);
-                }
-                if (addAircraftController.setAircraftModel(dialog.getSelectedItem())) {
-                    btnSubmit.setEnabled(true);
                 }
             }
         });

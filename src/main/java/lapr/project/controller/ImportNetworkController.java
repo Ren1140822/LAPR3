@@ -11,7 +11,10 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 import lapr.project.model.AirNetwork;
+import lapr.project.model.Node;
 import lapr.project.model.Project;
+import lapr.project.model.Segment;
+import lapr.project.model.mapgraph.Graph;
 
 
 /**
@@ -22,12 +25,14 @@ public class ImportNetworkController {
     
     Project project;
     AirNetwork network;
+    private transient Graph<Node, Segment> airNetworkGraph;
     
     JAXBContext jaxbContext;
     
     public ImportNetworkController(Project project){
         this.project = project;
         network = project.getAirNetwork();
+        airNetworkGraph = project.getAirNetwork().getAirNetwork();
     }
     
     /**
@@ -41,9 +46,10 @@ public class ImportNetworkController {
             jaxbContext = JAXBContext.newInstance(AirNetwork.class);
             Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
             network = (AirNetwork) jaxbUnmarshaller.unmarshal(file);
+            network.setSegmentsForJAXB();
             boolean a = !network.getNodeList().isEmpty() && !network.getSegmentList().isEmpty();
-            if(a) 
-                project.setAirNetwork(network);
+            if(a && network.generateGraph()) 
+                project.setAirNetwork(network);                    
             return a;
         } catch (JAXBException ex) { 
             System.err.println(ex);

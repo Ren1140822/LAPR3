@@ -87,11 +87,12 @@ public class Project implements Serializable {
      * @param network network
      * @param airportList airportList
      * @param compareList compareList
+     * @param flightList flightList
      * @param modelList modelList
      * @param simulationsList simulationsList
      */
     public Project(int idProject, String name, String description, AircraftList aircraftList,
-            AirNetwork network, AirportList airportList, CompareResultsList compareList, FlightList flightlist,
+            AirNetwork network, AirportList airportList, CompareResultsList compareList, FlightList flightList,
             AircraftModelList modelList, SimulationsList simulationsList) {
         this.idProject = idProject;
         this.name = name;

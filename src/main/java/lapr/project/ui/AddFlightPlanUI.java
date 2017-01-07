@@ -13,6 +13,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.LinkedList;
 import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -230,10 +231,16 @@ public class AddFlightPlanUI extends JDialog {
                 String desig = txtDesignator.getText();
                 int minstop = Integer.parseInt(txtMinStop.getText());
                 String aircraft = listAircraft.getSelectedValue().toString();
-                String airOr = listAircraft.getSelectedValue().toString();
-                String airDes = listAircraft.getSelectedValue().toString();
-                List<String> stops = listAircraft.getSelectedValuesList();
-                List<String> waypoints = listAircraft.getSelectedValuesList();
+                String airOr = listAirOri.getSelectedValue().toString();
+                String airDes = listAirDest.getSelectedValue().toString();
+                
+
+                System.out.println(listAirStop.getSelectedValuesList());
+                System.out.println(listNodes.getSelectedValuesList());
+                int stopind[] = listAirStop.getSelectedIndices();
+                int nodeind[] = listNodes.getSelectedIndices();
+                Object stops[] = (Object[]) listAirStop.getSelectedValuesList().toArray(new Object[stopind.length]);
+                Object waypoints[] = (Object[]) listNodes.getSelectedValuesList().toArray(new Object[nodeind.length]);
                 
                 controller.setData(desig, minstop, aircraft, airOr, airDes, stops, waypoints);
                 
@@ -259,6 +266,7 @@ public class AddFlightPlanUI extends JDialog {
                     "Check all flight plan data, please!",
                     "Error",
                     JOptionPane.ERROR_MESSAGE);
+            throw ex;
         }
     }
 

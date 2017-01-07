@@ -485,8 +485,8 @@ public class DAL {
                 Wind wind = getWindByID(id);
                 int minAltSlot = rs.getInt("minAltSlot");
                 int maxAltSlot = rs.getInt("maxAltSlot");
-                Segment segment = new Segment(id, startNode, endNode, direction, wind, minAltSlot, maxAltSlot);
-                segments.add(segment);
+//                Segment segment = new Segment(id, startNode, endNode, direction, wind, minAltSlot, maxAltSlot);
+//                segments.add(segment);
             }
         } catch (SQLException ex) {
             Logger.getLogger(DAL.class.getName()).log(Level.SEVERE, null, ex);

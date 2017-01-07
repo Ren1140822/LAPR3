@@ -56,8 +56,9 @@ public class ImportNetworkControllerTest {
         //show in the screen imported file
         JAXBContext context = JAXBContext.newInstance(AirNetwork.class);
         Marshaller marshaller = context.createMarshaller();
-        marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+        marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);        
         marshaller.marshal(instance.network, System.out);
+        System.out.println(instance.network.getAirNetwork().toString());
         //end
         assertEquals(expResult, result);
         

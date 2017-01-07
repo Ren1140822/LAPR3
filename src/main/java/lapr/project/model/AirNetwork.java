@@ -200,6 +200,16 @@ public class AirNetwork implements Serializable {
         }
         return n;
     }
+    
+    public Node getNode(Node n){
+        for (Node nod : nodeList) {
+            if (nod.equals(n)) {
+                return nod;
+            }
+        }
+        return n;
+    }
+            
 //*************************** end Node List *******************************
 
 //****************************** Segment List *********************************     
@@ -213,7 +223,7 @@ public class AirNetwork implements Serializable {
      * @param windIntensity the wind Intensity of the segment
      * @param windDirection the wind Direction of the segment
      */
-    public void setSegment(String id, String startNode, String endNode,
+    public void setSegment(String id, Node startNode, Node endNode,
             String direction, int windIntensity, int windDirection) {
         segment = new Segment();
         segment.setId(id);
@@ -221,6 +231,21 @@ public class AirNetwork implements Serializable {
         segment.setEndNode(endNode);
         segment.setDirection(direction);
         segment.setWind(windIntensity, windDirection);
+    }
+    /**
+     * method that subtitute corretely the StartNode and End Node of segment
+     * because when import xml, start and end nodes are created only with Id
+     */
+    public void setSegmentsForJAXB(){
+        for (Segment s : segmentList){
+            String s1 = s.getStartNode().getId();
+            Node n1 = getNodeByString(s1);
+            s.setStartNode(n1);
+            
+            String s2 = s.getEndNode().getId();
+            Node n2 = getNodeByString(s2);
+            s.setEndNode(n2);            
+        }
     }
 
     /**
@@ -308,12 +333,12 @@ public class AirNetwork implements Serializable {
      */
     private boolean insertSegments() {
         for (Segment seg : segmentList) {
-            airNetworkGraph.insertEdge(getNodeByString(seg.getStartNode()),
-                    getNodeByString(seg.getEndNode()), seg, 
-                    DistanceCalculator.calculateDistance(getNodeByString(seg.getStartNode()).getLatitude(), 
-                            getNodeByString(seg.getStartNode()).getLongitude(), 
-                            getNodeByString(seg.getEndNode()).getLatitude(), 
-                            getNodeByString(seg.getEndNode()).getLongitude()));
+            airNetworkGraph.insertEdge(getNode(seg.getStartNode()),
+                    getNode(seg.getEndNode()), seg, 
+                    DistanceCalculator.calculateDistance(getNode(seg.getStartNode()).getLatitude(), 
+                            getNode(seg.getStartNode()).getLongitude(), 
+                            getNode(seg.getEndNode()).getLatitude(), 
+                            getNode(seg.getEndNode()).getLongitude()));
         }
         return airNetworkGraph.numEdges() == segmentList.size() && airNetworkGraph.numEdges() > 0;
     }

@@ -1,5 +1,6 @@
 package lapr.project.controller;
 
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import lapr.project.model.Aircraft;
@@ -22,19 +23,30 @@ public class AddFlightPlanController {
     public AddFlightPlanController(Project project){
         this.project = project;     
         fl = project.getFlightList();
-        fl.newFlight();
+        flight = fl.newFlight();
     }
 
     public void setData(String name, int minStopTime, String aircraft, String origin, 
-            String destination, List<String> technicalStops, List<String> mandatoryWaypoints) {
-        
+            String destination, Object[] technicalStops, Object[] mandatoryWaypoints) {
+        List<Object> stops = Arrays.asList(technicalStops);
+        List<Object> mand = Arrays.asList(mandatoryWaypoints);
+        List<String> stopfinal = new LinkedList<>();
+        List<String> mandinal = new LinkedList<>();
+        for (Object o : stops){
+            Airport a = (Airport) o;
+            stopfinal.add(a.getName());
+        }
+        for (Object o : mand){
+            Node n = (Node) o;
+            mandinal.add(n.getId());
+        }
         flight.setFlightDesignator(name);
         flight.setMinStopTime(minStopTime);
         flight.setAircraft(aircraft);
         flight.setOrigin(origin);
         flight.setDestination(destination);
-        flight.setTechnicalStops(technicalStops);
-        flight.setMandatoryWaypoints(mandatoryWaypoints);
+        flight.setTechnicalStops(stopfinal);
+        flight.setMandatoryWaypoints(mandinal);
     }
 
     public boolean saveFlightPlan() {
