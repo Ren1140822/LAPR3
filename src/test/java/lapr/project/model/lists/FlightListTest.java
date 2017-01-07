@@ -6,7 +6,13 @@
 package lapr.project.model.lists;
 
 import java.util.LinkedList;
+import lapr.project.model.Aircraft;
+import lapr.project.model.AircraftModel;
+import lapr.project.model.Airport;
+import lapr.project.model.CabinConfiguration;
 import lapr.project.model.FlightPlan;
+import lapr.project.model.Location;
+import lapr.project.model.Motorization;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -57,7 +63,13 @@ public class FlightListTest {
     @Test
     public void testValidate() {
         System.out.println("validate");
-        FlightPlan flight = new FlightPlan("FF0001A", 10, "ircraft", "OPO", "LIS",
+        Aircraft a1 = new Aircraft("dsfsdg", "fdh", new CabinConfiguration(), 2, new AircraftModel(
+                "id", "description", "maker", "passenger", new Motorization(), 10, 
+                10, 10, 10, 10, 10, 10, 10, 10, 10, new LinkedList<>(),new LinkedList<>()));
+        
+        Airport air1 = new Airport("opo", "porto", "porto", "portugal", new Location(10, 10, 10));
+        Airport air2 = new Airport("lis", "lisboa", "lisboa", "portugal", new Location(20, 20, 20));
+        FlightPlan flight = new FlightPlan("FF0001A", 10, a1, air1, air2,
                 new LinkedList<>(), new LinkedList<>());
         FlightList instance = new FlightList();
         boolean expResult = true;
@@ -71,7 +83,13 @@ public class FlightListTest {
     @Test
     public void testSaveFlight() {
         System.out.println("saveFlight");
-        FlightPlan flight = new FlightPlan("FF0001A", 10, "ircraft", "OPO", "LIS",
+        Aircraft a1 = new Aircraft("dsfsdg", "fdh", new CabinConfiguration(), 2, new AircraftModel(
+                "id", "description", "maker", "passenger", new Motorization(), 10, 
+                10, 10, 10, 10, 10, 10, 10, 10, 10, new LinkedList<>(),new LinkedList<>()));
+        
+        Airport air1 = new Airport("opo", "porto", "porto", "portugal", new Location(10, 10, 10));
+        Airport air2 = new Airport("lis", "lisboa", "lisboa", "portugal", new Location(20, 20, 20));
+        FlightPlan flight = new FlightPlan("FF0001A", 10, a1, air1, air2,
                 new LinkedList<>(), new LinkedList<>());
         FlightList instance = new FlightList();
         instance.validate(flight);

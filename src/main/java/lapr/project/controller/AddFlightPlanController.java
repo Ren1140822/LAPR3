@@ -30,21 +30,21 @@ public class AddFlightPlanController {
             String destination, Object[] technicalStops, Object[] mandatoryWaypoints) {
         List<Object> stops = Arrays.asList(technicalStops);
         List<Object> mand = Arrays.asList(mandatoryWaypoints);
-        List<String> stopfinal = new LinkedList<>();
-        List<String> mandinal = new LinkedList<>();
+        List<Airport> stopfinal = new LinkedList<>();
+        List<Node> mandinal = new LinkedList<>();
         for (Object o : stops){
             Airport a = (Airport) o;
-            stopfinal.add(a.getName());
+            stopfinal.add(getAirportByString(a.getName()));
         }
         for (Object o : mand){
             Node n = (Node) o;
-            mandinal.add(n.getId());
+            mandinal.add(getNodeByString(n.getId()));
         }
         flight.setFlightDesignator(name);
         flight.setMinStopTime(minStopTime);
-        flight.setAircraft(aircraft);
-        flight.setOrigin(origin);
-        flight.setDestination(destination);
+        flight.setAircraft(getAircraftByString(aircraft));
+        flight.setOrigin(getAirportByString(origin));
+        flight.setDestination(getAirportByString(destination));
         flight.setTechnicalStops(stopfinal);
         flight.setMandatoryWaypoints(mandinal);
     }
@@ -75,5 +75,17 @@ public class AddFlightPlanController {
      */
     public List<Node> getNodeList(){
         return project.getAirNetwork().getNodeList();
+    }
+    
+    private Aircraft getAircraftByString(String id){
+        return project.getAircraftList().getAircraftByString(id);
+    }
+    
+    private Airport getAirportByString(String id){
+        return project.getAirportList().getAirportByString(id);
+    }
+    
+    private Node getNodeByString(String id){
+        return project.getAirNetwork().getNodeByString(id);
     }
 }

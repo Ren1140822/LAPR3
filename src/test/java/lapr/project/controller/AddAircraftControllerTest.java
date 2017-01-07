@@ -6,8 +6,13 @@
 package lapr.project.controller;
 
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
+import lapr.project.model.AircraftModel;
+import lapr.project.model.Motorization;
 import lapr.project.model.Project;
+import lapr.project.model.Thrust_Function;
 import org.junit.After;
 import org.junit.AfterClass;
 import static org.junit.Assert.*;
@@ -21,8 +26,9 @@ import org.junit.Test;
  */
 public class AddAircraftControllerTest {
     Project p = new Project();
+    
 
-    AddAircraftController instance = new AddAircraftController(p);
+    AddAircraftController instanc = new AddAircraftController(p);
 
     public AddAircraftControllerTest() {
     }
@@ -50,7 +56,7 @@ public class AddAircraftControllerTest {
     public void testCreateAircraft() {
         System.out.println("createAircraft");
 
-        assertEquals(instance.createAircraft(), true);
+        assertEquals(instanc.createAircraft(), true);
     }
 
     /**
@@ -64,13 +70,63 @@ public class AddAircraftControllerTest {
         int nrOfSeatsEcon = 10;
         int nrOfSeatsCommercial = 10;
         int NrOfElements = 10;
-        AddAircraftController instance =this.instance;
+        AddAircraftController instance =this.instanc;
         Map<String,Integer> map = new HashMap<>();
         boolean expResult = true;
         instance.createAircraft();
         boolean result = instance.setAircraftData(registration, company,map, NrOfElements);
         assertEquals(expResult, result);
    
+    }
+
+    /**
+     * Test of hasModel method, of class AddAircraftController.
+     */
+    @Test
+    public void testHasModel() {
+        System.out.println("hasModel");
+        AddAircraftController instance = instanc;
+        instance.model = new AircraftModel();
+        boolean expResult = true;
+        boolean result = instance.hasModel();
+        assertEquals(expResult, result);
+    }
+
+    /**
+     * Test of setAircraftModel method, of class AddAircraftController.
+     */
+    @Test
+    public void testSetAircraftModel() {
+        System.out.println("setAircraftModel");
+        String aircraftModelID = "id";
+        p.getAircraftModelList().setAircraftModelData("id", "efd", 
+                "dfh", "passenger", 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10);
+        p.getAircraftModelList().setCdrag_function(1, 10);
+        p.getAircraftModelList().setMotorization(3, "adsvzcx", "df", 10, 10, 10, 10, new Thrust_Function(1, 10, 10));
+        p.getAircraftModelList().saveAircrcaftModel();
+        
+        AddAircraftController instance = instanc;
+        boolean expResult = true;
+        instance.createAircraft();
+        boolean result = instance.setAircraftModel(aircraftModelID);
+        assertEquals(expResult, result);
+    }
+
+    /**
+     * Test of getListOfAircraftModels method, of class AddAircraftController.
+     */
+    @Test
+    public void testGetListOfAircraftModels() {
+        System.out.println("getListOfAircraftModels");
+        AddAircraftController instance = instanc;
+        List<AircraftModel> list = instance.project.getAircraftModelList().getModelList();
+        LinkedList<String> expResult = new LinkedList<>();
+        for (AircraftModel model : list) {
+            expResult.add(model.getId());
+        }
+        
+        List<String> result = instance.getListOfAircraftModels();
+        assertEquals(expResult, result);
     }
 
 }

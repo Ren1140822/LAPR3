@@ -13,8 +13,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.util.LinkedList;
-import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -229,14 +227,14 @@ public class AddFlightPlanUI extends JDialog {
         try {
             if (!txtDesignator.getText().isEmpty()) {
                 String desig = txtDesignator.getText();
-                int minstop = Integer.parseInt(txtMinStop.getText());
+                int minstop =0;
+                if(!txtMinStop.getText().isEmpty()){
+                    minstop = Integer.parseInt(txtMinStop.getText());
+                }
                 String aircraft = listAircraft.getSelectedValue().toString();
                 String airOr = listAirOri.getSelectedValue().toString();
                 String airDes = listAirDest.getSelectedValue().toString();
-                
 
-                System.out.println(listAirStop.getSelectedValuesList());
-                System.out.println(listNodes.getSelectedValuesList());
                 int stopind[] = listAirStop.getSelectedIndices();
                 int nodeind[] = listNodes.getSelectedIndices();
                 Object stops[] = (Object[]) listAirStop.getSelectedValuesList().toArray(new Object[stopind.length]);

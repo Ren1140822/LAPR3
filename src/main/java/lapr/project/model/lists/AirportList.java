@@ -155,4 +155,20 @@ public class AirportList implements Serializable{
         return null;
     }
     
+    /**
+     * get Airport by id
+     *
+     * @param id the id of the Airport
+     * @return Airport by id
+     */
+    public Airport getAirportByString(String id) {
+        Airport a = null;
+        for (Airport air : airportsList) {
+            if (air.getIATA().equalsIgnoreCase(id)) {
+                return air;
+            }
+        }
+        return a;
+    }
+    
 }
