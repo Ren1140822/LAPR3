@@ -15,9 +15,12 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Vector;
 import java.util.regex.Pattern;
+import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -25,7 +28,9 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 import lapr.project.controller.AddAircraftController;
@@ -56,6 +61,7 @@ public class AddAircraftUI extends JDialog {
     private JButton btnSubmit;
     private JButton btnClass;
     private JDialog parentFrame;
+    DefaultListModel model;
     private static final Dimension LABEL_SIZE = new JLabel("Nr. of crew elements: ").
                                                         getPreferredSize();
     private Map<String, Integer> mapConfig;
@@ -149,11 +155,10 @@ public class AddAircraftUI extends JDialog {
         
         pClasses.setBorder(new TitledBorder("Classes:"));
         
-        String[] classes = (String[]) mapConfig.keySet().toArray(new String[mapConfig.size()]);
+        listclasses = new JList();
+        JScrollPane scrPane = new JScrollPane(listclasses);
         
-        listclasses = new JList(classes);
-        
-        pClasses.add(listclasses, BorderLayout.CENTER);        
+        pClasses.add(scrPane, BorderLayout.CENTER);        
         
         return pClasses;
     }
@@ -217,7 +222,8 @@ public class AddAircraftUI extends JDialog {
                 String className = JOptionPane.showInputDialog("Please insert a name for the class.");
                 try {
                     int classSeats = Integer.parseInt(JOptionPane.showInputDialog("Please insert the number of seats for this class."));
-                    mapConfig.put(className, classSeats);
+                    mapConfig.put(className, classSeats);                                     
+                    listclasses.setListData(mapConfig.keySet().toArray());
                     if (!Pattern.matches("[0-9]+", className)) {
                         JOptionPane.showMessageDialog(rootPane, "Data saved to this aircraft sucessfully.", "Sucess", JOptionPane.INFORMATION_MESSAGE);
                         btnSubmit.setEnabled(true);

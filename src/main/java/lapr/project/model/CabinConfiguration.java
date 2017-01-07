@@ -66,5 +66,10 @@ public class CabinConfiguration implements Serializable {
     public Map<String, Integer> getMapOfClasses() {
         return mapOfClasses;
     }
+    
+    @Override
+    public String toString(){
+        return String.format("%s", mapOfClasses.keySet());
+    }
 
 }
