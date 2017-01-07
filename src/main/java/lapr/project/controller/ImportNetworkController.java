@@ -25,14 +25,12 @@ public class ImportNetworkController {
     
     Project project;
     AirNetwork network;
-    private transient Graph<Node, Segment> airNetworkGraph;
     
     JAXBContext jaxbContext;
     
     public ImportNetworkController(Project project){
         this.project = project;
         network = project.getAirNetwork();
-        airNetworkGraph = project.getAirNetwork().getAirNetwork();
     }
     
     /**
@@ -47,9 +45,15 @@ public class ImportNetworkController {
             Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
             network = (AirNetwork) jaxbUnmarshaller.unmarshal(file);
             network.setSegmentsForJAXB();
-            boolean a = !network.getNodeList().isEmpty() && !network.getSegmentList().isEmpty();
-            if(a && network.generateGraph()) 
-                project.setAirNetwork(network);                    
+            boolean a = !network.getNodeList().isEmpty() 
+                    && !network.getSegmentList().isEmpty()
+                    && network.generateGraph();
+            if(a){ 
+                project.setAirNetwork(network); 
+            }
+            System.out.println(network.toString());
+            System.out.println(project.getAirNetwork().getAirNetwork().toString());
+            
             return a;
         } catch (JAXBException ex) { 
             System.err.println(ex);

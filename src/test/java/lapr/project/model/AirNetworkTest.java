@@ -354,7 +354,7 @@ public class AirNetworkTest {
     }
 
     /**
-     * Test of getNode method, of class AirNetwork.
+     * Test of getNodeFromList method, of class AirNetwork.
      */
     @Test
     public void testGetNode() {
@@ -363,7 +363,7 @@ public class AirNetworkTest {
         AirNetwork instance = new AirNetwork();
         instance.getNodeList().add(n);
         Node expResult = n;
-        Node result = instance.getNode(n);
+        Node result = instance.getNodeFromList(n);
         assertEquals(expResult, result);
     }
 

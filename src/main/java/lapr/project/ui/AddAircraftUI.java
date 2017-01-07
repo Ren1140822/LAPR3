@@ -193,9 +193,9 @@ public class AddAircraftUI extends JDialog {
     private JButton createAddAircraftModelButton() {
         JButton button = new JButton("Insert aicraft model");
         button.setPreferredSize(new Dimension(170, 30));
-        button.addMouseListener(new MouseAdapter() {
+        button.addActionListener(new ActionListener() {
             @Override
-            public void mouseClicked(MouseEvent me) {
+            public void actionPerformed(ActionEvent e) {
                 addAircraftController.createAircraft();
                 dialog = new DialogSelectable(AddAircraftUI.this, addAircraftController.getListOfAircraftModels(), "Select aircraft model");
                 if (addAircraftController.setAircraftModel(dialog.getSelectedItem())) {
@@ -204,17 +204,16 @@ public class AddAircraftUI extends JDialog {
                     btnClass.setEnabled(true);
                 }
             }
-        });
-        button.setEnabled(false);
+        });        
         return button;
     }
 
     private JButton createAddClassButton() {
         JButton button = new JButton("Insert class info");
         button.setPreferredSize(new Dimension(170, 30));
-        button.addMouseListener(new MouseAdapter() {
+        button.addActionListener(new ActionListener() {
             @Override
-            public void mouseClicked(MouseEvent me) {
+            public void actionPerformed(ActionEvent e) {
                 String className = JOptionPane.showInputDialog("Please insert a name for the class.");
                 try {
                     int classSeats = Integer.parseInt(JOptionPane.showInputDialog("Please insert the number of seats for this class."));
@@ -231,6 +230,7 @@ public class AddAircraftUI extends JDialog {
                 }
             }
         });
+        button.setEnabled(false);
         return button;
     }
 

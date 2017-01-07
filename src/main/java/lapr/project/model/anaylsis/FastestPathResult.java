@@ -47,8 +47,8 @@ public class FastestPathResult extends ResultPath{
         Node end=new Node();
                 
         for(Segment seg:clone.getSegmentList()){
-            start=clone.getNode(seg.getStartNode());
-            end=clone.getNode(seg.getEndNode());
+            start=clone.getNodeFromList(seg.getStartNode());
+            end=clone.getNodeFromList(seg.getEndNode());
     
         }
          double res=GraphAlgorithms.shortestPath(clone.getAirNetwork(), 

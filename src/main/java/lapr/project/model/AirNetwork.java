@@ -6,6 +6,7 @@
 package lapr.project.model;
 
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
@@ -201,13 +202,14 @@ public class AirNetwork implements Serializable {
         return n;
     }
     
-    public Node getNode(Node n){
+    public Node getNodeFromList(Node n){
+        Node node = null;
         for (Node nod : nodeList) {
             if (nod.equals(n)) {
                 return nod;
             }
         }
-        return n;
+        return node;
     }
             
 //*************************** end Node List *******************************
@@ -322,7 +324,7 @@ public class AirNetwork implements Serializable {
         for (Node node : nodeList) {
             airNetworkGraph.insertVertex(node);
         }
-        return airNetworkGraph.numVertices() == nodeList.size() && airNetworkGraph.numVertices() > 0;
+        return airNetworkGraph.numVertices() > 0;
     }
 
     /**
@@ -333,14 +335,15 @@ public class AirNetwork implements Serializable {
      */
     private boolean insertSegments() {
         for (Segment seg : segmentList) {
-            airNetworkGraph.insertEdge(getNode(seg.getStartNode()),
-                    getNode(seg.getEndNode()), seg, 
-                    DistanceCalculator.calculateDistance(getNode(seg.getStartNode()).getLatitude(), 
-                            getNode(seg.getStartNode()).getLongitude(), 
-                            getNode(seg.getEndNode()).getLatitude(), 
-                            getNode(seg.getEndNode()).getLongitude()));
+            airNetworkGraph.insertEdge(getNodeFromList(seg.getStartNode()),
+                    getNodeFromList(seg.getEndNode()), seg, 
+                    DistanceCalculator.calculateDistance(getNodeFromList(seg.getStartNode()).getLatitude(), 
+                            getNodeFromList(seg.getStartNode()).getLongitude(), 
+                            getNodeFromList(seg.getEndNode()).getLatitude(), 
+                            getNodeFromList(seg.getEndNode()).getLongitude()));
+            
         }
-        return airNetworkGraph.numEdges() == segmentList.size() && airNetworkGraph.numEdges() > 0;
+        return airNetworkGraph.numEdges() > 0;
     }
 
     /**
