@@ -3,55 +3,68 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package lapr.project.model.anaylsis;
+package lapr.project.model.analysis;
 
 import java.util.LinkedList;
 import lapr.project.model.AirNetwork;
 import lapr.project.model.Airport;
 import lapr.project.model.Node;
+import lapr.project.model.Segment;
 import lapr.project.model.mapgraph.GraphAlgorithms;
 
+
 /**
- * The class to store and manage result data of shortest path analysis
+ *
  * @author DianaSilva
  */
-public class ShortestPathResult extends ResultPath {
+public class FastestPathResult extends ResultPath{
+    
     /**
      * Constructor
      */
-    public ShortestPathResult(){
+    public FastestPathResult() {
         super();
     }
     
     /**
      * Constructor
      * @param startAirport
-     * @param endAirport 
+     * @param endAirport
      */
-    public ShortestPathResult(Airport startAirport, Airport endAirport){
-        super(startAirport, endAirport);
+    public FastestPathResult(Airport startAirport, Airport endAirport) {
+        super(startAirport,endAirport);
     }
     
-     /**
-     * Calculates the shortest path
+    /**
+     * Calculates the fastest path
      * @param airNetwork airnetwork of active project
      */
     @Override
     public void calculateBestPath(AirNetwork airNetwork){
-        LinkedList<Node> shortPath=new LinkedList<>();
-        double res=GraphAlgorithms.shortestPath(airNetwork.getAirNetwork(), 
-                super.getStartNode(airNetwork), super.getEndNode(airNetwork), shortPath);
-     
+        LinkedList<Node> fastestPath=(LinkedList<Node>)super.getResultPath();
+        AirNetwork clone=airNetwork;
+        Node start=new Node();
+        Node end=new Node();
+                
+        for(Segment seg:clone.getSegmentList()){
+            start=clone.getNodeFromList(seg.getStartNode());
+            end=clone.getNodeFromList(seg.getEndNode());
+    
+        }
+         double res=GraphAlgorithms.shortestPath(clone.getAirNetwork(), 
+                start,end, fastestPath);
+        //vento+cruiseSpeed
+        super.setResultPath(fastestPath);
         super.setResult(res);
-        super.setResultPath(shortPath);
     }
     
-    /**
+       /**
      * Get distance of result path (m)
      * @return distance (m)
      */
     @Override
     public double getDistance(){
+        //alterar
         return super.getResult();
     }
     

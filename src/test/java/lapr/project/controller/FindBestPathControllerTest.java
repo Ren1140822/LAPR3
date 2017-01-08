@@ -18,8 +18,8 @@ import lapr.project.model.Node;
 import lapr.project.model.Project;
 import lapr.project.model.Segment;
 import lapr.project.model.Wind;
-import lapr.project.model.anaylsis.Simulation;
-import lapr.project.model.anaylsis.TypePath;
+import lapr.project.model.analysis.Simulation;
+import lapr.project.model.analysis.TypePath;
 import lapr.project.model.lists.AirportList;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -312,7 +312,7 @@ public class FindBestPathControllerTest {
         
         instance.newSImulation();
         instance.createBestPathSimulation(startAirport, endAirport, TypePath.ALL);
-        instance.calculateShortesPath();
+        instance.calculatePath(TypePath.ALL);
         LinkedList<Node> result=new LinkedList<>();
         result.add(startNode);
         result.add(intNode);

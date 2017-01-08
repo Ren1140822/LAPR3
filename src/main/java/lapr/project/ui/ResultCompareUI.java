@@ -19,7 +19,7 @@ import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 import lapr.project.controller.ComparisonController;
 import lapr.project.model.Project;
-import lapr.project.model.anaylsis.Simulation;
+import lapr.project.model.analysis.Simulation;
 
 /**
  *

@@ -11,8 +11,8 @@ import java.util.List;
 import java.util.Map;
 import lapr.project.model.Project;
 
-import lapr.project.model.anaylsis.ResultPath;
-import lapr.project.model.anaylsis.Simulation;
+import lapr.project.model.analysis.ResultPath;
+import lapr.project.model.analysis.Simulation;
 import lapr.project.model.lists.AirportList;
 import lapr.project.utils.HTMLExporter;
 
