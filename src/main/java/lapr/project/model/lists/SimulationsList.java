@@ -9,7 +9,7 @@ import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
 import javax.xml.bind.annotation.XmlTransient;
-import lapr.project.model.anaylsis.Simulation;
+import lapr.project.model.analysis.Simulation;
 
 /**
  *

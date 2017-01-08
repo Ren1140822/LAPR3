@@ -3,8 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package lapr.project.model.anaylsis;
+package lapr.project.model.analysis;
 
+import lapr.project.model.analysis.EcologicPathResult;
+import lapr.project.model.analysis.ComparisonResult;
+import lapr.project.model.analysis.FastestPathResult;
+import lapr.project.model.analysis.ShortestPathResult;
+import lapr.project.model.analysis.Simulation;
 import java.util.LinkedList;
 import lapr.project.model.Airport;
 import org.junit.After;

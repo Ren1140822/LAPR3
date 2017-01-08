@@ -7,7 +7,7 @@ package lapr.project.model;
 
 import java.util.LinkedList;
 import java.util.List;
-import lapr.project.model.anaylsis.ResultPath;
+import lapr.project.model.analysis.ResultPath;
 import lapr.project.model.lists.AircraftList;
 import lapr.project.model.lists.AircraftModelList;
 import lapr.project.model.lists.AirportList;

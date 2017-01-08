@@ -11,9 +11,9 @@ import lapr.project.model.Aircraft;
 import lapr.project.model.Airport;
 import lapr.project.model.Node;
 import lapr.project.model.Project;
-import lapr.project.model.anaylsis.ResultPath;
-import lapr.project.model.anaylsis.Simulation;
-import lapr.project.model.anaylsis.TypePath;
+import lapr.project.model.analysis.ResultPath;
+import lapr.project.model.analysis.Simulation;
+import lapr.project.model.analysis.TypePath;
 
 /**
  *
@@ -112,42 +112,18 @@ public class FindBestPathController {
     
     /**
      * Calculates the ecologic best path
+     * @param type type of path simulated
      */
-    public void calculateEcologicPath(){
-        project.getSimulationsList().getSimulation().getEcologicResultPath().calculateBestPath(project.getAirNetwork());
+    public void calculatePath(TypePath type){
+        project.getSimulationsList().getSimulation().calculateBestPath(type, project.getAirNetwork());
     }
-    
-     /**
-     * Calculates the fastest best path
-     */
-     public void calculateFastestPath(){
-        project.getSimulationsList().getSimulation().getFastestResultPath().calculateBestPath(project.getAirNetwork());
-    }
-     
-    /**
-     * Calculates the shortest best path
-     */
-      public void calculateShortesPath(){
-        project.getSimulationsList().getSimulation().getShortestResultPath().calculateBestPath(project.getAirNetwork());
-    }
-      
       /**
        * Get the simulation resulte receiving the type of simulation by parameter
        * @param type type of simulation (shortest, fastest, ecologic
        * @return the result of simulation´s type
        */
       public ResultPath getResult(TypePath type){
-          TypePath p=type;
-          switch (p){
-              case SHORTEST_PATH:
-                  return project.getSimulationsList().getSimulation().getShortestResultPath();
-              case FASTEST_PATH:
-                  return project.getSimulationsList().getSimulation().getFastestResultPath();
-              case ECOLOGIC_PATH:
-                  return project.getSimulationsList().getSimulation().getEcologicResultPath();
-              default:
-                  return null;
-          }
+          return project.getSimulationsList().getSimulation().getResult(type);
       }
       
       /**

@@ -8,7 +8,7 @@ package lapr.project.controller;
 import java.util.LinkedList;
 import java.util.List;
 import lapr.project.model.Project;
-import lapr.project.model.anaylsis.Simulation;
+import lapr.project.model.analysis.Simulation;
 
 /**
  *

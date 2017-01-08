@@ -96,5 +96,29 @@ public class ConversionAlgorithmsTest {
         double result = ConversionAlgorithms.convertLbfGram(lbf);
         assertEquals(expResult, result, 0.01);
     }
+
+    /**
+     * Test of convertGallonsLit method, of class ConversionAlgorithms.
+     */
+    @Test
+    public void testConvertGallonsLit() {
+        System.out.println("convertGallonsLit");
+        double gal = 5.0;
+        double expResult = 18.9271;
+        double result = ConversionAlgorithms.convertGallonsLit(gal);
+        assertEquals(expResult, result, 0.5);
+    }
+
+    /**
+     * Test of convertLtoKg method, of class ConversionAlgorithms.
+     */
+    @Test
+    public void testConvertLtoKg() {
+        System.out.println("convertLtoKg");
+        double l = 180000.0;
+        double expResult = 144720.0;
+        double result = ConversionAlgorithms.convertLtoKg(l);
+        assertEquals(expResult, result, 0.0);
+    }
     
 }

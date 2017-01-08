@@ -10,7 +10,7 @@ import java.util.LinkedList;
 import java.util.List;
 import javax.xml.bind.annotation.XmlTransient;
 import lapr.project.model.AircraftModel;
-import lapr.project.model.anaylsis.ComparisonResult;
+import lapr.project.model.analysis.ComparisonResult;
 
 /**
  *

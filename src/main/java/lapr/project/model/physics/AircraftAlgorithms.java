@@ -13,24 +13,32 @@ import lapr.project.model.Wind;
  */
 public class AircraftAlgorithms {    
     /**
-     * Fuel density (g/L)
+     * Fuel density (kg/L)
      */
-    private static final double FUEL_DENSITY=8040;
+    private static final double FUEL_DENSITY=8.040;
     /**
-     * Default weight per person (g)
+     * Default weight per person (kg)
      */
-    private static final double WEIGHT_PER_PERSON=88450.5;
+    private static final double WEIGHT_PER_PERSON=88.4505;
     
     /**
-     * Sea level static thrust at takeoff (g)
+     * Sea level static thrust at takeoff (kg)
      */
-    private static final double THRUST_SEA_LEVEL=7711.07029*1000;
+    private static final double THRUST_SEA_LEVEL=7.71107029;
     /**
-     * Density at sea level standart - g/m3
+     * Density at sea level standart - kg/m3
      */
-    private static final double AIR_DENSITY_SEA=1.225*1000;
+    private static final double AIR_DENSITY_SEA=1.225;
+        
+    /**
+     * Speed of sound at sea level (m/s)
+     */
+    private static final double SPEED_SOUND_SEA=340.3;
     
-    private static final double mEmpiricalCoefficient=0.90;
+    /**
+     * Ratio of specific heat at constant volume
+     */
+    private static final double GAMMA_RATIO=1.4;
     
       /**
      * Calculates the velocity of aircraft based on aircraft mass
@@ -55,20 +63,21 @@ public class AircraftAlgorithms {
      */
     public double calculateLiftForce(double coefLift, double airDensity, 
             double velocity, double area){
-           return coefLift * ((airDensity * Math.pow(velocity, 2)) / 2) * area;
+           return coefLift * ((airDensity * velocity*velocity) / 2) * area;
         }
     
     /**
      * Calculate the drag force acting on the aircraft (N)
      * @param coefDrag drag coefficient
      * @param airDensity air density (kg/m3)
-     * @param velocity velocity of aircraft (m/s)
-     * @param area area of the wings
+     * @param velocity velocity at indicated air speed (m/s)
+     * @param wingArea wingArea of the wings
      * @return drag force
      */
-    public double calculateDragForce(double coefDrag, double airDensity, 
-            double velocity, double area){
-           return coefDrag * ((airDensity * Math.pow(velocity, 2)) / 2) * area;    
+    public static double calculateDragForce(double coefDrag, double airDensity, 
+            double velocity, double wingArea){
+         //  return coefDrag * ((airDensity * Math.pow(velocity, 2)) / 2) * wingArea;             
+         return  0.5*airDensity*velocity*velocity*wingArea*coefDrag;
     }
      
     /**
@@ -76,88 +85,31 @@ public class AircraftAlgorithms {
      * @param mass total mass of aircraft
      * @param airDensity density of air (kg/m3)
      * @param areaWings area of wings (m2)
-     * @param velocity velocity of aircraft (m/s)
+     * @param velocity true air speed (m/s)
      * @return lift coefficient
      */
     public static double calculateLiftCoefficient(double mass, double airDensity, 
             double areaWings,double velocity){
-        return (2*mass)/(airDensity*areaWings*Math.pow(velocity,2));
+        double gravity=PhysicsAlgorithms.getGRAVITY_CONSTANT_SEA();
+        return (2*mass*gravity)/(airDensity*areaWings*Math.pow(velocity,2));
     }
    
      /**
      * Calculates the drag coefficient of aircraft
      * @param cDrag0 drag coefficient
      * @param liftCoef lift coefficient
-     * @param wingArea wing area (m2)
-     * @param wingSpan wing span (m)
+     * @param aRatio wing span (m)
      * @param e
      * @return lift coefficient
      */
     public static double calculateDragCoefficient(double cDrag0, double liftCoef, 
-            double wingArea, double wingSpan, double e){
-       //R=287.06J/KgK  
-        return cDrag0 + (Math.pow(liftCoef,2)/ Math.PI*(Math.pow(wingSpan, 2)/wingArea)*e);
-    }
-    
-    /**
-     * Calculate the maximum climb and take-off thrust at standard conditions (N)
-     * @param coef1 (N)
-     * @param altitude altitude (m)
-     * @param coef2 feet
-     * @param coef3 1/(feet^2)
-     * @return maximum climb thrust (N)
-     */
-    public static double calculateClimbThrustJet(double altitude, double coef1, 
-            double coef2, double coef3){
-        double altitudeFeets=ConversionAlgorithms.convertMetersFeet(altitude);
-        return coef1* ( 1- (altitudeFeets/coef2) + coef3*Math.pow(altitude,2));
+    double aRatio, double e){
+    //R=287.06J/KgK  
+    //return cDrag0 + (Math.pow(liftCoef,2)/ Math.PI*(Math.pow(wingSpan, 2)/wingArea)*e);
+       
+      return Math.pow(liftCoef,2)/(Math.PI*aRatio*e +cDrag0);
     }
 
-    
-    /**
-     * Calculate the maximum climb and take-off thrust at standard conditions (N)
-     * @param coef1 (knot-N)
-     * @param tas true air speed (kt)
-     * @param altitude altitutde (m)
-     * @param coef2 feet
-     * @param coef3 N
-     * @return maximum climb thrust (N)
-     */
-    public static double calculateClimbThrustTurboProp(double altitude, double tas,
-            double coef1,  double coef2, double coef3){
-        double altitudeFeets=ConversionAlgorithms.convertMetersFeet(altitude);
-        return coef1/tas * (1- (altitudeFeets/coef2)) + coef3 ;
-    }
-    
-       /**
-     * Calculate the maximum climb and take-off thrust at standard conditions (N)
-     * @param coef1 (N)
-     * @param tas true air speed (kt)
-     * @param altitude altitutde (ft)
-     * @param coef2 feet
-     * @param coef3 knot-N
-     * @return maximum climb thrust (N)
-     */
-    public static double calculateClimbThrustPiston(double altitude, double tas, 
-            double coef1,  double coef2, double coef3){
-        double altitudeFeets=ConversionAlgorithms.convertMetersFeet(altitude);
-        return coef1 * (1- (altitudeFeets/coef2)) + coef3/tas ;
-    }
-    
-    /**
-     * Calculates thrust (kN)
-     * @param dragCoef coefficient of draf
-     * @param airDensity air density (kg/m3)
-     * @param groundSpeed aircraft speed relative to ground
-     * @param wind wind 
-     * @return thrust (knots)
-     */
-    public static double calculateThrust(double dragCoef, double airDensity,
-            double groundSpeed, Wind wind){
-        double trueSpeed=calculateTrueForceSpeed(wind, groundSpeed);
-        return  dragCoef*airDensity*Math.pow(trueSpeed, 2);
-    }
-    
     /**
      * Calculate true air speed based on cruise velocity and altitude (knot)
      * @param velocity velocity (m/s)
@@ -257,9 +209,118 @@ public class AircraftAlgorithms {
             double weightZeroFuel){
         return finalWeight-initialWeight-weightZeroFuel;
     }
+     
+    /**
+     * Calculates thrust (kN)
+     * @param thrustMa thrust (N)
+     * @param lambda lambda (thrust)
+     * @param mTrue true mass (kg)
+     * @param airDensity air density (kg/m3)
+     * @param thrustLapseRate thrust lapse rate
+     * @return thrust (kN)
+     */
+    public static double calculateThrust(double thrustMa, double lambda,
+            double mTrue, double airDensity, double thrustLapseRate){
+        //return  dragCoef*airDensity*Math.pow(tas, 2);
+        return (thrustMa-lambda*mTrue)*Math.pow(airDensity/AIR_DENSITY_SEA,
+                thrustLapseRate);
+    } 
+  
+    public static double calculateDhDt(double totalThrust, double
+            drag, double tas, double mass){
+        double gravity=PhysicsAlgorithms.getGRAVITY_CONSTANT_SEA();
+        return (totalThrust-drag)*tas/mass/gravity;
+    }
     
-    public static double calculateThrust(double airDensity){
-        return THRUST_SEA_LEVEL*Math.pow((airDensity/AIR_DENSITY_SEA),
-                mEmpiricalCoefficient);   
+    /**
+     * Calculates lambda (thrust)
+     * @param velThrustMa velocity thrust (M)
+     * @param thrustMa thrust (N)
+     * @param thrustMi thrust (N)
+     * @return lambda
+     */
+    public static double calculateLambda(double velThrustMa, double thrustMa, 
+            double thrustMi){
+        return (thrustMa-thrustMi)/velThrustMa;
+    }
+    
+    /**
+     * Calculates the mass true of aircraft based on airdensity and indicated
+     * air speed
+     * @param airDensity air desnisty (kg/m3)
+     * @param vIas velocity at indicated air speed (m/s)
+     * @return true mass (kg)
+     */
+    public static double calculateMTrue(double airDensity, double vIas){
+        double c1=AIR_DENSITY_SEA/airDensity;
+        double c2=vIas/661.5;
+        double exp1= 3.5;
+        double exp2= 0.286;
+        
+        return Math.sqrt(5*(Math.pow(c1*(Math.pow(1+0.2*(c2*c2),exp1)-1)+1,exp2)-1));
+    }
+    
+    /**
+     * Calculates the true air speed based on altitude and indicated air speed 
+     * @param airDensity air density (kg/m3)
+     * @param temperature absolute temperatue (K)
+     * @param vIas indicated air speed (m/s)
+     * @return true air speed (m/s)
+     */
+    public static double calculateTAS(double airDensity, double temperature, double vIas){
+        double mTrue=calculateMTrue(airDensity, vIas);
+        double spSound=PhysicsAlgorithms.calculateSoundSpeed(temperature);
+        
+        return mTrue*spSound;    
+    }
+    
+    /**
+     * Calculates the angle of aircraft related to the ground in climbing
+     * @param tas true air speed (m/s)
+     * @param dhDT acc
+     * @return angle (radians)
+     */
+    public static double calculateClimbingAng(double tas, double dhDT){
+        return Math.asin(dhDT/tas);
+    }
+   
+    public static double calculateDwDt(double totalThrust, double
+            timeStep, double tsfc){
+        double gravity=PhysicsAlgorithms.getGRAVITY_CONSTANT_SEA();
+        return totalThrust*timeStep*tsfc/gravity;
+    }
+    
+    /**
+     * Calculates the distance gained based on true air speed, climbing angle of
+     * aircraft and time step 
+     * @param tas true air speed (m/s)
+     * @param angle angle (radians)
+     * @param timeStep time step (s)
+     * @return distance (m)
+     */
+    public static double calculateDistanceGained(double tas, double angle, double 
+            timeStep){
+        return tas*Math.cos(angle)*timeStep;
+    }
+    
+    /**
+     * Calculates the altitude gained based on timeStep, previous altitude and dhDT
+     * @param prevAlt previous altitude
+     * @param dhDT 
+     * @param timeStep time step (s)
+     * @return altitude (m)
+     */
+    public static double calculateAltitudeGained(double prevAlt,double dhDT, double timeStep){
+        return prevAlt+(dhDT*timeStep);
+    }
+  
+    /**
+     * Calculates the new mass based on previous mass and dwDt
+     * @param prevMass
+     * @param dwDt
+     * @return mass (kg)
+     */
+    public static double calculateNewMass(double prevMass, double dwDt){
+        return prevMass-dwDt;
     }
 }

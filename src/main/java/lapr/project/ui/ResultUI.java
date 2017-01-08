@@ -24,8 +24,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import static javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE;
 import lapr.project.controller.FindBestPathController;
-import lapr.project.model.anaylsis.ResultPath;
-import lapr.project.model.anaylsis.TypePath;
+import lapr.project.model.analysis.ResultPath;
+import lapr.project.model.analysis.TypePath;
 
 /**
  *

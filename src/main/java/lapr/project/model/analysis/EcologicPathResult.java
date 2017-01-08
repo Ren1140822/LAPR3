@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package lapr.project.model.anaylsis;
+package lapr.project.model.analysis;
 
 import java.util.LinkedList;
 import lapr.project.model.AirNetwork;

@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package lapr.project.model.anaylsis;
+package lapr.project.model.analysis;
 
 import java.util.Objects;
 import lapr.project.model.AirNetwork;
@@ -408,6 +408,34 @@ public class Simulation{
     }
     
     /**
+     * Calculates the ecologic best path
+     * @param type type of path simulated
+     * @param air airnetwork of active project
+     * @return true if calculates the pretended path, false if not
+     */
+    public boolean calculateBestPath(TypePath type, AirNetwork air){
+        TypePath p=type;
+          switch (p){
+              case SHORTEST_PATH:
+                  shortestResultPath.calculateBestPath(air);
+                  return true;
+              case FASTEST_PATH:
+                   fastestResultPath.calculateBestPath(air);
+                   return true;
+              case ECOLOGIC_PATH:
+                  ecologicResultPath.calculateBestPath(air);
+                  return true;
+              case ALL:
+                   shortestResultPath.calculateBestPath(air);
+                   fastestResultPath.calculateBestPath(air);
+                  ecologicResultPath.calculateBestPath(air);
+                  return true;
+              default:
+                  return false;
+          }
+    }
+    
+    /**
      * Validates simulation 
      * @return true if all data is valid, false if not
      */
@@ -437,6 +465,20 @@ public class Simulation{
     public int getNumberSimulationsCreated() {
         return getCounterCode();
     }
+    
+     public ResultPath getResult(TypePath type){
+          TypePath p=type;
+          switch (p){
+              case SHORTEST_PATH:
+                    return shortestResultPath;
+              case FASTEST_PATH:
+                  return fastestResultPath;
+              case ECOLOGIC_PATH:
+                  return ecologicResultPath;
+              default:
+                  return shortestResultPath;
+          }
+      }
     
      /**
      * Checks if two object are equal.

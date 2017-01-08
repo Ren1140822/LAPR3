@@ -45,9 +45,9 @@ public class PhysicsAlgorithmsTest {
     public void testCalculateAbsoluteTemperature() {
         System.out.println("calculateAbsoluteTemperature");
         double altitude = 5000.0;
-        double expResult = 255.150;
+        double expResult = 255.650;
         double result = PhysicsAlgorithms.calculateAbsoluteTemperature(altitude);
-        assertEquals(expResult, result, 0.5);
+        assertEquals(expResult, result, 0.01);
     }
 
     /**
@@ -60,7 +60,7 @@ public class PhysicsAlgorithmsTest {
         double expResult = 54019.9;
         
         double result = PhysicsAlgorithms.calculateAbsolutePressure(altitude);
-        assertEquals(expResult, result, 0.5);
+        assertEquals(expResult, result, 0.05);
     }
 
     /**
@@ -73,7 +73,7 @@ public class PhysicsAlgorithmsTest {
         double temperature = 281.650;
         double expResult = 1.11164;
         double result = PhysicsAlgorithms.calculateAirDensity(pressure, temperature);
-        assertEquals(expResult, result, 0.5);
+        assertEquals(expResult, result, 0.01);
     }
 
     /**
@@ -111,9 +111,21 @@ public class PhysicsAlgorithmsTest {
         double altitude = 1000.0;
         double expResult = 1.11164;
         double result = PhysicsAlgorithms.calculateAirdensity(altitude);
+        assertEquals(expResult, result, 0.01);
+    }
+    
+    /**
+     * Test of calculateSoundSpeed method, of class PhysicsAlgorithms.
+     */
+    @Test
+    public void testCalculateSoundSpeed() {
+        System.out.println("calculateSoundSpeed");
+        double temperature = 288.2;
+        double expResult = 340.3;
+        double result = PhysicsAlgorithms.calculateSoundSpeed(temperature);
         assertEquals(expResult, result, 0.5);
     }
-
+    
     /**
      * Test of getPRESSURE_SEA method, of class PhysicsAlgorithms.
      */
@@ -158,15 +170,5 @@ public class PhysicsAlgorithmsTest {
         assertEquals(expResult, result, 0.0);
     }
 
-    /**
-     * Test of calculateSoundSpeed method, of class PhysicsAlgorithms.
-     */
-    @Test
-    public void testCalculateSoundSpeed() {
-        System.out.println("calculateSoundSpeed");
-        double temperature = 273.15;
-        double expResult = 331.2;
-        double result = PhysicsAlgorithms.calculateSoundSpeed(temperature);
-        assertEquals(expResult, result, 0.5);
-    }
+  
 }

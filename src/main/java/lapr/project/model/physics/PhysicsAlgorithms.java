@@ -13,7 +13,7 @@ public class PhysicsAlgorithms {
     //source: https://wahiduddin.net/calc/density_altitude.htm
     
     /**
-     * static pressure (pressure at sea level (Pa)
+     * static pressure (pressure at sea level (N-m/K)
      */
     private static final double PRESSURE_SEA=101325;
     

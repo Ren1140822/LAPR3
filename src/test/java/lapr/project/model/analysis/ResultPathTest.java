@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package lapr.project.model.anaylsis;
+package lapr.project.model.analysis;
 
+import lapr.project.model.analysis.ResultPath;
 import java.util.LinkedList;
 import lapr.project.model.AirNetwork;
 import lapr.project.model.Airport;

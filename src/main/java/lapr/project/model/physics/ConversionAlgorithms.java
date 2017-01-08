@@ -36,6 +36,11 @@ public class ConversionAlgorithms {
     private static final double GAL_L=3.785411784;
     
     /**
+     * Liters to Kg (1L=0.804kg)
+     */
+    private static final double L_KG=0.804;
+    
+    /**
      * Converts meters to feets
      * @param meters value in meters
      * @return converted value (feets)
@@ -75,7 +80,16 @@ public class ConversionAlgorithms {
         return lbf*LBF_G_CONSTANT;
     }
     
+    /**
+     * Converts gallons to liters
+     * @param gal galon
+     * @return converted value (L)
+     */
     public static double convertGallonsLit(double gal){
         return gal*GAL_L;
+    }
+    
+    public static double convertLtoKg(double l){
+        return l*L_KG;
     }
 }

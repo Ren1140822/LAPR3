@@ -36,7 +36,7 @@ import lapr.project.model.Aircraft;
 import lapr.project.model.Airport;
 import lapr.project.model.Node;
 import lapr.project.model.Project;
-import lapr.project.model.anaylsis.TypePath;
+import lapr.project.model.analysis.TypePath;
 
 /**
  *
@@ -99,7 +99,7 @@ public class FindBestPathUI extends JDialog{
         aircrafts= controller.getAircraftsList();
         startAirports=controller.getAirportList();
         endAirports=new LinkedList();
-         
+     
         add(createComponents()); 
         
         addWindowListener(new WindowAdapter() {
@@ -206,9 +206,11 @@ public class FindBestPathUI extends JDialog{
             if(!e.getValueIsAdjusting()){
                 Airport selected=(Airport) listStartAirports.getSelectedValue();
                 Node startNode=controller.convertAirportToNode(selected);
-                
+                 
                 endAirports=controller.getPossibleEndAirports(startNode);
-                endAirports.remove(0);
+                for(Airport a: endAirports){
+                    System.out.println("end airport" + a);
+                }
                 if(!endAirports.isEmpty())
                     listEndAirports.setListData(endAirports.toArray());
             }
@@ -352,8 +354,8 @@ public class FindBestPathUI extends JDialog{
         btFast.setEnabled(false);
         btFast.setToolTipText("Please insert origin and destination airports");
         btFast.addActionListener((ActionEvent e) -> {
-             createSimulation(TypePath.FASTEST_PATH);
-                openResultWindow(TypePath.FASTEST_PATH);
+            createSimulation(TypePath.FASTEST_PATH);
+            openResultWindow(TypePath.FASTEST_PATH);
         });
         return btFast;
     }
@@ -376,7 +378,7 @@ public class FindBestPathUI extends JDialog{
                     Airport endAirportSelected=(Airport) listEndAirports.getSelectedValue();
                     controller.createBestPathSimulation(startAirportSelected, endAirportSelected, TypePath.ECOLOGIC_PATH);
                     setData();
-                    controller.calculateEcologicPath();
+                    controller.calculatePath(TypePath.ECOLOGIC_PATH);
                     openResultWindow(TypePath.ECOLOGIC_PATH);
                     
                 }catch(java.lang.UnsupportedOperationException en){
@@ -408,10 +410,7 @@ public class FindBestPathUI extends JDialog{
                     Airport endAirportSelected=(Airport) listEndAirports.getSelectedValue();
                     controller.createBestPathSimulation(startAirportSelected, endAirportSelected,TypePath.ALL);
                     setData();
-                    controller.calculateShortesPath();
-                    controller.calculateFastestPath();
-                    controller.calculateEcologicPath();
-
+                    controller.calculatePath(TypePath.ALL);
                     
                 }catch(java.lang.UnsupportedOperationException en){
                         JOptionPane.showMessageDialog(frame,
@@ -435,6 +434,13 @@ public class FindBestPathUI extends JDialog{
                 !txtFuelLoad.getText().equals("");
     }
     
+    private boolean validatePassCrew(){
+        Aircraft aircraft=(Aircraft) listAircrafts.getSelectedValue();
+        boolean b1=aircraft.getCabinConfig().getTotalSeats()<=Integer.parseInt(txtPassenger.getText());
+        boolean b2=aircraft.getNrOfCrewElements()<=Integer.parseInt(txtCrew.getText());
+        return b1&&b2;
+    }
+    
     private void setData(){
         Aircraft aircraft=(Aircraft) listAircrafts.getSelectedValue();
         int passenger=Integer.parseInt(txtPassenger.getText());
@@ -452,16 +458,22 @@ public class FindBestPathUI extends JDialog{
         controller.createBestPathSimulation(startAirportSelected, endAirportSelected, type);
         if(listAircrafts.getSelectedValue()==null || !validateData()){
             int dialogButton=JOptionPane.YES_NO_OPTION;
-            dialogResult = JOptionPane.showConfirmDialog (frame,"You didn´t insert all data. Would you like to proceed?","Warning",dialogButton);
+            dialogResult = JOptionPane.showConfirmDialog (frame,"You didn´t "
+                    + "insert all data. Would you like to proceed?","Warning",dialogButton);
+        }if(!validatePassCrew()){
+            JOptionPane.showMessageDialog(frame,
+                    "Please verify the nr of passengers/crew members allowed in"
+                            + " the selected aircraft", "Erro", JOptionPane.ERROR_MESSAGE);           
         }else{
             setData();
-        }
-        try{   
-            controller.calculateShortesPath();
-        }catch(java.lang.UnsupportedOperationException en){
-            JOptionPane.showMessageDialog(frame,
-                    "It wasn´t possible to create simulation", "Erro", JOptionPane.ERROR_MESSAGE);
-             throw en;
+        
+            try{   
+                controller.calculatePath(type);
+            }catch(java.lang.UnsupportedOperationException en){
+                JOptionPane.showMessageDialog(frame,
+                        "It wasn´t possible to create simulation", "Erro", JOptionPane.ERROR_MESSAGE);
+                 throw en;
+            }
         }
     }
 }
