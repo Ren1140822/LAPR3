@@ -25,7 +25,7 @@ import lapr.project.model.Pattern;
 import lapr.project.model.Segment;
 import lapr.project.model.Thrust_Function;
 import lapr.project.model.Wind;
-import lapr.project.model.anaylsis.Simulation;
+import lapr.project.model.analysis.Simulation;
 
 /**
  *
