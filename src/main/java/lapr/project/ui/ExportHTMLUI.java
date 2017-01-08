@@ -54,7 +54,7 @@ public class ExportHTMLUI extends JDialog {
     public ExportHTMLUI(Project project, JDialog parentFrame) {
         super(parentFrame, "Export HTML", true);
         this.project = project;
-        
+
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
@@ -64,14 +64,14 @@ public class ExportHTMLUI extends JDialog {
         controller = new ExportHTMLController(project);
         //dialogSimulation= new DialogSelectable(this, controller.getSimulationsList());
         results = controller.getSimulationsList();
-        
+
         createComponents();
         pack();
         this.setSize(new Dimension(WINDOW_WIDTH, WINDOW_HEIGHT));
         this.setTitle(WINDOW_TITLE);
         this.setLocationRelativeTo(null);
         this.setResizable(false);
-        this.setVisible(true);        
+        this.setVisible(true);
     }
 
     private void createComponents() {
@@ -171,9 +171,9 @@ public class ExportHTMLUI extends JDialog {
                     if (nrOfSelectedIndexes > 4) {
                         JOptionPane.showMessageDialog(rootPane, "Select less than four items to export..", "Error", JOptionPane.ERROR_MESSAGE);
                     } else {
-                        String[] buttons = {"Export shortest path calculations", "Export most ecologic path calculations", "Cancel"};
+                        String[] buttons = {"Export shortest path calculations", "Export most ecologic path calculations", "Export fastest path calculations", "Cancel"};
                         int rc = JOptionPane.showOptionDialog(null, "What to export?", "Export HTML", JOptionPane.PLAIN_MESSAGE, JOptionPane.QUESTION_MESSAGE, null, buttons, buttons[0]);
-                        if (rc != 2) {
+                        if (rc != 3) {
                             int selectedIndexes[] = listSimulations.getSelectedIndices();
                             JFileChooser chooser = new JFileChooser();
                             chooser.showSaveDialog(null);
@@ -181,12 +181,19 @@ public class ExportHTMLUI extends JDialog {
 
                             String allSims[] = (String[]) listSimulations.getSelectedValuesList().toArray(new String[selectedIndexes.length]);
                             if (rc == 0) {
-                               if(controller.exportResults(allSims, path + "\\simulation_results.html", "short"))
-                                JOptionPane.showMessageDialog(rootPane, "Data exported sucessfully.", "Sucess", JOptionPane.INFORMATION_MESSAGE);
+                                if (controller.exportResults(allSims, path + "\\simulation_results.html", "short")) {
+                                    JOptionPane.showMessageDialog(rootPane, "Data exported sucessfully.", "Sucess", JOptionPane.INFORMATION_MESSAGE);
+                                }
                             }
                             if (rc == 1) {
-                                if(controller.exportResults(allSims, path + "\\simulation_results.html", "eco"))
-                                JOptionPane.showMessageDialog(rootPane, "Data exported sucessfully.", "Sucess", JOptionPane.INFORMATION_MESSAGE);
+                                if (controller.exportResults(allSims, path + "\\simulation_results.html", "eco")) {
+                                    JOptionPane.showMessageDialog(rootPane, "Data exported sucessfully.", "Sucess", JOptionPane.INFORMATION_MESSAGE);
+                                }
+                            }
+                            if (rc == 2) {
+                                if (controller.exportResults(allSims, path + "\\simulation_results.html", "fastest")) {
+                                    JOptionPane.showMessageDialog(rootPane, "Data exported sucessfully.", "Sucess", JOptionPane.INFORMATION_MESSAGE);
+                                }
                             }
                         }
                     }

@@ -25,6 +25,7 @@ import lapr.project.model.Pattern;
 import lapr.project.model.Segment;
 import lapr.project.model.Thrust_Function;
 import lapr.project.model.Wind;
+import lapr.project.model.anaylsis.Simulation;
 
 /**
  *
@@ -744,6 +745,27 @@ public class DAL {
         return true;
     }
 
+     public boolean WriteSimulationsToDatabase(List<Simulation> simList, int airNetworkID) {
+        Connection con = null;
+        con = connect();
+        boolean ret = false;
+
+        for (Simulation sim : simList) {
+            try (CallableStatement st = con.prepareCall("insert_simulation(?,?,?)")) {
+              
+             
+                ret = st.execute();
+            } catch (SQLException ex) {
+                Logger.getLogger(DAL.class.getName()).log(Level.SEVERE, null, ex);
+                System.out.println(ex.toString());
+            } finally {
+                close(con);
+            }
+        }
+        return true;
+    }
+    
+    
     /**
      * Closes all active database resources.
      *

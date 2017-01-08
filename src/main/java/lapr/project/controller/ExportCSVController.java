@@ -20,14 +20,15 @@ import lapr.project.utils.CSVExporter;
  * @author Renato Oliveira 1140822@isep.ipp.pt
  */
 public class ExportCSVController {
-    
+
     Project project;
-    
-    public ExportCSVController(Project project){
+
+    public ExportCSVController(Project project) {
         this.project = project;
     }
 
     String currentSim;
+
     /**
      * Gets all available results.
      *
@@ -41,7 +42,7 @@ public class ExportCSVController {
         for (Simulation simulation : list) {
             if (aux.equals(simulation)) {
                 results.put("Best consumption", simulation.getEcologicResultPath());
-                results.put("Fastest path",simulation.getFastestResultPath());
+                results.put("Fastest path", simulation.getFastestResultPath());
                 results.put("Shortest pth", simulation.getShortestResultPath());
             }
         }
@@ -159,11 +160,8 @@ public class ExportCSVController {
         return results;
     }
 
-    
-
-     
     /**
-     * Exports  results  to csv.
+     * Exports results to csv.
      *
      * @param s
      * @param r the result
@@ -178,7 +176,7 @@ public class ExportCSVController {
             int i = 0;
             for (int j = 0; j < results.length; j++) {
                 Simulation sim = getSimulationByString(s[i]);
-               
+
                 results[j][0] = "Shortest path result: " + String.valueOf(sim.getShortestResultPath());
                 results[j][1] = "Origin node latitude: " + sim.getStartAirport().getLocation().getLatitude();
                 results[j][2] = "Origin node longitude: " + sim.getStartAirport().getLocation().getLongitude();
@@ -188,13 +186,40 @@ public class ExportCSVController {
                 i++;
             }
         }
+        if (whatToExport.equals("eco")) {
+            int i = 0;
+            for (int j = 0; j < results.length; j++) {
+                Simulation sim = getSimulationByString(s[i]);
 
-       return CSVExporter.exportMultipleStringsToCSV(filePath, "Results", "Title", results, filePath);
+                results[j][0] = "Shortest path result: " + String.valueOf(sim.getEcologicResultPath());
+                results[j][1] = "Origin airport latitude: " + sim.getEcologicResultPath().getStartAirport().getLocation().getLatitude();
+                results[j][2] = "Origin airport longitude: " + sim.getEcologicResultPath().getStartAirport().getLocation().getLongitude();
+                results[j][3] = "Destination airport latitude: " + sim.getEcologicResultPath().getEndAirport().getLocation().getLatitude();
+                results[j][4] = "Destination airport longitude: " + sim.getEcologicResultPath().getEndAirport().getLocation().getLongitude();
+                results[j][5] = "Total distance calculated: " + sim.getEcologicResultPath().getResult();
+                i++;
+            }
+        }
+        if (whatToExport.equals("fastest")) {
+            int i = 0;
+            for (int j = 0; j < results.length; j++) {
+                Simulation sim = getSimulationByString(s[i]);
+
+                results[j][0] = "Shortest path result: " + String.valueOf(sim.getFastestResultPath());
+                results[j][1] = "Origin airport latitude: " + sim.getFastestResultPath().getStartAirport().getLocation().getLatitude();
+                results[j][2] = "Origin airport longitude: " + sim.getFastestResultPath().getStartAirport().getLocation().getLongitude();
+                results[j][3] = "Destination airport latitude: " + sim.getFastestResultPath().getEndAirport().getLocation().getLatitude();
+                results[j][4] = "Destination airport longitude: " + sim.getFastestResultPath().getEndAirport().getLocation().getLongitude();
+                results[j][5] = "Total distance calculated: " + sim.getFastestResultPath().getResult();
+                i++;
+            }
+        }
+        return CSVExporter.exportMultipleStringsToCSV(filePath, "Results", "Title", results, filePath);
     }
+
     public boolean exportResult(ResultPath r, String filePath) {
         String results[] = new String[10];
         return CSVExporter.exportStringsToCSV("Results", "", "", results, filePath);
     }
-    
- 
+
 }

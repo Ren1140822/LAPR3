@@ -200,6 +200,34 @@ public class ExportHTMLController {
                 i++;
             }
         }
+          if (whatToExport.equals("eco")) {
+            int i = 0;
+            for (int j = 0; j < results.length; j++) {
+                Simulation sim = getSimulationByString(s[i]);
+
+                results[j][0] = "Shortest path result: " + String.valueOf(sim.getEcologicResultPath());
+                results[j][1] = "Origin airport latitude: " + sim.getEcologicResultPath().getStartAirport().getLocation().getLatitude();
+                results[j][2] = "Origin airport longitude: " + sim.getEcologicResultPath().getStartAirport().getLocation().getLongitude();
+                results[j][3] = "Destination airport latitude: " + sim.getEcologicResultPath().getEndAirport().getLocation().getLatitude();
+                results[j][4] = "Destination airport longitude: " + sim.getEcologicResultPath().getEndAirport().getLocation().getLongitude();
+                results[j][5] = "Total distance calculated: " + sim.getEcologicResultPath().getResult();
+                i++;
+            }
+        }
+        if (whatToExport.equals("fastest")) {
+            int i = 0;
+            for (int j = 0; j < results.length; j++) {
+                Simulation sim = getSimulationByString(s[i]);
+
+                results[j][0] = "Shortest path result: " + String.valueOf(sim.getFastestResultPath());
+                results[j][1] = "Origin airport latitude: " + sim.getFastestResultPath().getStartAirport().getLocation().getLatitude();
+                results[j][2] = "Origin airport longitude: " + sim.getFastestResultPath().getStartAirport().getLocation().getLongitude();
+                results[j][3] = "Destination airport latitude: " + sim.getFastestResultPath().getEndAirport().getLocation().getLatitude();
+                results[j][4] = "Destination airport longitude: " + sim.getFastestResultPath().getEndAirport().getLocation().getLongitude();
+                results[j][5] = "Total distance calculated: " + sim.getFastestResultPath().getResult();
+                i++;
+            }
+        }
 
         return HTMLExporter.exportMultipleStringsToHTML("Results", "", "", results, filePath);
     }
