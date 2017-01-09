@@ -13,13 +13,13 @@ import lapr.project.model.Project;
  */
 public class CreateProjectController {
     
-    Project project;
+    private Project project;
     
     public CreateProjectController(){
-        project = new Project();
     }
     
     public boolean setProject(String name, String description){
+        project = new Project();
         //project.setIdProject(0); check in db and add 1 to count of projects
         project.setName(name);
         project.setDescription(description);
