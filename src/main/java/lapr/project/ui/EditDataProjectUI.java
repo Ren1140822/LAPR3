@@ -37,9 +37,9 @@ public class EditDataProjectUI extends JDialog {
     private Project project;
     private transient EditDataProjectController controller;
     private JDialog dialog;
-    private JTextField txtId;
-    private JTextField txtName;
-    private JTextField txtDescription;
+    private JTextField txtIdProj;
+    private JTextField txtNameProj;
+    private JTextField txtDescProj;
     private static final Dimension LABEL_SIZE = new JLabel("DESCRIPTION: ", JLabel.RIGHT).getPreferredSize();
     private JButton save;
     private JButton edit;
@@ -57,15 +57,15 @@ public class EditDataProjectUI extends JDialog {
 
         createComponents();
 
-        pack();
-        setResizable(false);
+        pack();        
         setMinimumSize(new Dimension(800, 600));
+        setResizable(false);
         setLocationRelativeTo(null);
         setVisible(true);
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
-                closeWindow();
+                closeWind();
             }
         });
 
@@ -73,12 +73,12 @@ public class EditDataProjectUI extends JDialog {
 
     private void createComponents() {
 
-        add(createPanelImage(), BorderLayout.NORTH);
-        add(createPanel(), BorderLayout.CENTER);
-        add(createPanelOp(), BorderLayout.SOUTH);
+        add(createPanelNorth(), BorderLayout.NORTH);
+        add(createPanelCenter(), BorderLayout.CENTER);
+        add(createPanelSouth(), BorderLayout.SOUTH);
     }
 
-    private JPanel createPanelImage() {
+    private JPanel createPanelNorth() {
         ImageIcon im = new ImageIcon("src/main/resources/images/projectfolder.png");
 
         JLabel l = new JLabel();
@@ -91,19 +91,19 @@ public class EditDataProjectUI extends JDialog {
         return p;
     }
 
-    private JPanel createPanel() {
-        txtId = new JTextField(String.valueOf(controller.getIdProject()), 30);
-        txtId.setEditable(false);
-        txtName = new JTextField(controller.getNameProject(), 30);
-        txtName.setEditable(false);
-        txtDescription = new JTextField(controller.getDescriptionProject(), 30);
-        txtDescription.setEditable(false);
+    private JPanel createPanelCenter() {
+        txtIdProj = new JTextField(String.valueOf(controller.getIdProject()), 30);
+        txtIdProj.setEditable(false);
+        txtNameProj = new JTextField(controller.getNameProject(), 30);
+        txtNameProj.setEditable(false);
+        txtDescProj = new JTextField(controller.getDescriptionProject(), 30);
+        txtDescProj.setEditable(false);
 
         JPanel p = new JPanel(new GridLayout(3, 1, 20, 20));
 
-        p.add(createPanelLabelText("ID:", txtId));
-        p.add(createPanelLabelText("Name:", txtName));
-        p.add(createPanelLabelText("Description:", txtDescription));
+        p.add(createPanelLabelText("ID:", txtIdProj));
+        p.add(createPanelLabelText("Name:", txtNameProj));
+        p.add(createPanelLabelText("Description:", txtDescProj));
 
         return p;
     }
@@ -111,22 +111,22 @@ public class EditDataProjectUI extends JDialog {
     /**
      * create panel to label1, text and label2
      *
-     * @param label1 label1
+     * @param lab label1
      * @param texto text
      * @return painel
      */
-    private JPanel createPanelLabelText(String label1, JTextField text) {
-        JLabel lb1 = new JLabel(label1, JLabel.RIGHT);
-        lb1.setPreferredSize(LABEL_SIZE);
+    private JPanel createPanelLabelText(String lab, JTextField text) {
+        JLabel l = new JLabel(lab, JLabel.RIGHT);
+        l.setPreferredSize(LABEL_SIZE);
         JPanel p = new JPanel(new FlowLayout(FlowLayout.CENTER));
 
-        p.add(lb1);
+        p.add(l);
         p.add(text);
 
         return p;
     }
 
-    private JPanel createPanelOp() {
+    private JPanel createPanelSouth() {
 
         JPanel p = new JPanel();
 
@@ -164,8 +164,8 @@ public class EditDataProjectUI extends JDialog {
         edit.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                txtName.setEditable(true);
-                txtDescription.setEditable(true);
+                txtNameProj.setEditable(true);
+                txtDescProj.setEditable(true);
                 save.setEnabled(true);
                 edit.setEnabled(false);
             }
@@ -187,32 +187,32 @@ public class EditDataProjectUI extends JDialog {
     }
 
     private JButton createButtonBack() {
-        back = new JButton("Back");
-        back.setMnemonic(KeyEvent.VK_B);
+        back = new JButton("Back");        
         back.setToolTipText("Back and cancel new Project");
+        back.setMnemonic(KeyEvent.VK_B);
         back.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                closeWindow();
+                closeWind();
             }
         });
         return back;
     }
 
     private void save() {
-        if (txtName.getText().isEmpty() || txtDescription.getText().isEmpty()) {
+        if (txtNameProj.getText().isEmpty() || txtDescProj.getText().isEmpty()) {
             JOptionPane.showMessageDialog(
                     null,
                     "Check all data project, please!",
                     "Error",
                     JOptionPane.ERROR_MESSAGE);
         } else {
-            controller.setDataProject(txtName.getText(), txtDescription.getText());
+            controller.setDataProject(txtNameProj.getText(), txtDescProj.getText());
             dispose();            
         }
     }
 
-    private void closeWindow() {
+    private void closeWind() {
         String[] op = {"Yes", "No"};
         String question = "Cancel edit data project?";
         int opcao = JOptionPane.showOptionDialog(EditDataProjectUI.this, question,
@@ -226,8 +226,8 @@ public class EditDataProjectUI extends JDialog {
     }
 
     private void restore() {
-        txtName.setText(controller.getNameProject());
-        txtDescription.setText(controller.getDescriptionProject());
+        txtNameProj.setText(controller.getNameProject());
+        txtDescProj.setText(controller.getDescriptionProject());
     }
 
     private void back() {

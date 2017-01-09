@@ -26,6 +26,7 @@ import javax.swing.JTextField;
 import static javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
+import lapr.project.controller.CreateProjectController;
 import lapr.project.model.Project;
 
 /**
@@ -34,7 +35,8 @@ import lapr.project.model.Project;
  */
 public class CreateProjectUI extends JDialog {
     
-    Project project;
+    private Project project;
+    private CreateProjectController controller;
     private JTextField txtId;
     private JTextField txtName;
     private JTextField txtDescription;
@@ -44,10 +46,12 @@ public class CreateProjectUI extends JDialog {
     private JButton back;
     private JButton importdata;
     
-    public CreateProjectUI(JFrame dialog){
+    public CreateProjectUI(JFrame frame){
         
-        super(dialog, "Create Project", true);    
-
+        super(frame, "Create Project", true);    
+        
+        controller = new CreateProjectController();
+        
         createComponents(); 
 
         pack();
@@ -85,7 +89,7 @@ public class CreateProjectUI extends JDialog {
     }
     
     private JPanel createPanel(){
-        txtId = new JTextField("+1 do que os existentes",30);
+        txtId = new JTextField(30);
         txtId.setEditable(false);
         txtName = new JTextField(30);
         txtDescription = new JTextField(30);
@@ -180,27 +184,64 @@ public class CreateProjectUI extends JDialog {
         back.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                closeWindow();
+                if(controller.hasProjectCreated()){
+                    JOptionPane.showMessageDialog(
+                    null,
+                    "New Project created:\n\nName: \n"
+                            + project.getName()
+                            + "\nDescription: \n" 
+                            + project.getDescription(),
+                    "Create Project",
+                    JOptionPane.INFORMATION_MESSAGE);
+                    dispose();
+                }else{
+                    closeWindow();
+                }                
             }
         });
         return back;
     }
     private void closeWindow(){
-        String[] op = {"Yes", "No"};
-        String question = "Cancel create project?";
-        int opcao = JOptionPane.showOptionDialog(CreateProjectUI.this, question,
-                this.getTitle(), JOptionPane.YES_NO_OPTION,
-                JOptionPane.QUESTION_MESSAGE, null, op, op[0]);
-        if (opcao == JOptionPane.YES_OPTION) {
-            finish();
-        } else {
-            setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-        }
+            String[] op = {"Yes", "No"};
+            String question = "Cancel create project?";
+            int opcao = JOptionPane.showOptionDialog(CreateProjectUI.this, question,
+                    this.getTitle(), JOptionPane.YES_NO_OPTION,
+                    JOptionPane.QUESTION_MESSAGE, null, op, op[0]);
+            if (opcao == JOptionPane.YES_OPTION) {
+                finish();
+            } else {
+                setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+            }
     }
     
     private boolean create(){
-        // implements controller and validate
-        project = new Project();// retirar depois de concluido o controller
+        if (txtName.getText().isEmpty() || txtDescription.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(
+                    null,
+                    "Check all data project, please!",
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE);
+        } else {
+            if(controller.setProject(txtName.getText(), txtDescription.getText())){
+                project = controller.getProject();
+                importdata.setEnabled(true);
+                create.setEnabled(false);
+                clean.setEnabled(false);
+                txtName.setEditable(false);
+                txtDescription.setEditable(false);
+                JOptionPane.showMessageDialog(
+                    null,
+                    "Project created sucessfuly!",
+                    "Create Project",
+                    JOptionPane.INFORMATION_MESSAGE);
+            }else{
+                JOptionPane.showMessageDialog(
+                    null,
+                    "It was not possible create new project!",
+                    "Create Project",
+                    JOptionPane.ERROR_MESSAGE);                
+            }            
+        }
         
         return true;
     }
@@ -210,8 +251,8 @@ public class CreateProjectUI extends JDialog {
         txtDescription.setText("");
     }
     
-    private void importdata(){           
-            ImportDataUI imp = new ImportDataUI(project, CreateProjectUI.this);
+    private void importdata(){ 
+        ImportDataUI imp = new ImportDataUI(project, CreateProjectUI.this);        
     }
     
     private void finish() {
