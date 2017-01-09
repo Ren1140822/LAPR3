@@ -23,7 +23,7 @@ public class EditDataProjectController {
         project.setName(name);
         project.setDescription(desc);
         
-        return project.validate();        
+        return project.validate() && editProjectDataBase();        
     }
     
     public int getIdProject(){
@@ -36,6 +36,11 @@ public class EditDataProjectController {
     
     public String getDescriptionProject(){
         return project.getDescription();
+    }
+    
+    private boolean editProjectDataBase(){
+        // implement connect db
+        return true;
     }
     
 }

@@ -34,10 +34,10 @@ import lapr.project.model.Project;
  */
 public class OpenProjectUI extends JDialog{
     
-    Project project;
-    JButton backBtn;
-    JButton okBtn;
-    JList projectsList;
+    private Project project;
+    private JButton backBtn;
+    private JButton okBtn;
+    private JList projectsList;
     
     public OpenProjectUI(JFrame frame){
         
