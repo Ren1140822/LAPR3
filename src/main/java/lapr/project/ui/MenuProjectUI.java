@@ -47,7 +47,7 @@ public class MenuProjectUI extends JDialog {
 
     public MenuProjectUI(Project project, JDialog dialog) {
 
-        super(dialog, "Project: " + project.getName(), true);
+        super(dialog, "Menu Project", true);
 
         this.project = project;
 

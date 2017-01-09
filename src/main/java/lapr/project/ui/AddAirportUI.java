@@ -112,7 +112,7 @@ public class AddAirportUI extends JDialog {
         setVisible(true);
     }
     
-    public JPanel createComponents(){
+    private JPanel createComponents(){
         panel = new JPanel(new BorderLayout());
                 
         panel.add(createPanelNorth(), BorderLayout.NORTH);
@@ -122,7 +122,7 @@ public class AddAirportUI extends JDialog {
         return panel;
     }
     
-    public JPanel createPanelNorth(){
+    private JPanel createPanelNorth(){
         ImageIcon background = new ImageIcon("src/main/resources/images/airport.jpg");
         
         JLabel label = new JLabel();
@@ -135,7 +135,7 @@ public class AddAirportUI extends JDialog {
         return p;
     }
     
-    public JPanel createPanelData(){
+    private JPanel createPanelData(){
         
         JPanel p = new JPanel();
         
@@ -193,7 +193,7 @@ public class AddAirportUI extends JDialog {
         return p;
     }
 
-    public JPanel createPanelButons(){
+    private JPanel createPanelButons(){
         
         FlowLayout l = new FlowLayout();
 
@@ -219,7 +219,7 @@ public class AddAirportUI extends JDialog {
         
     }
     
-    public JButton createButonSave(){
+    private JButton createButonSave(){
         saveBtn = new JButton("Save Airport");
         saveBtn.setMnemonic(KeyEvent.VK_B);
         saveBtn.setToolTipText("Save the airport and go to previous window");
@@ -259,7 +259,7 @@ public class AddAirportUI extends JDialog {
         
     }
     
-    public JButton createButonClean(){
+    private JButton createButonClean(){
         cleanBtn = new JButton("Clean");
         cleanBtn.setMnemonic(KeyEvent.VK_C);
         cleanBtn.setToolTipText("Clean all data inserted");
@@ -278,7 +278,7 @@ public class AddAirportUI extends JDialog {
         return cleanBtn;        
     }
     
-    public JButton createButonBack(){
+    private JButton createButonBack(){
         backBtn = new JButton("Back");
         backBtn.setMnemonic(KeyEvent.VK_B);
         backBtn.setToolTipText("Cancel add airport and go to previous window");
@@ -291,7 +291,7 @@ public class AddAirportUI extends JDialog {
         return backBtn;
     }
     
-    public void closeWindow(){
+    private void closeWindow(){
         String[] op = {"Yes", "No"};
         String question = "Close window and discard Add Airport?";
         int opcao = JOptionPane.showOptionDialog(frame, question,

@@ -49,6 +49,9 @@ public class EditProjectUI extends JDialog{
     private JButton editFlightBtn;
     private JButton back;
     private JButton editDataBtn;
+    private JTextField txt1;
+    private JTextField txt2;
+    private JTextField txt3;
     private static final Dimension dim = new Dimension(250, 60);
     
     public EditProjectUI(Project project, JDialog frame){
@@ -74,7 +77,7 @@ public class EditProjectUI extends JDialog{
         
     }
     
-    public void createComponents(){
+    private void createComponents(){
         JMenuBar menuBar= createBarMenu();
         setJMenuBar(menuBar);
         
@@ -83,16 +86,16 @@ public class EditProjectUI extends JDialog{
         add(createPanelBtnBack(),BorderLayout.SOUTH);   
     }
     
-    public JPanel createPanelDataProject(){
+    private JPanel createPanelDataProject(){
         int z = 30;
         JLabel l1 = new JLabel("ID:", JLabel.RIGHT);
         JLabel l2 = new JLabel("Name:", JLabel.RIGHT);
         JLabel l3 = new JLabel("Description:", JLabel.RIGHT);
-        JTextField txt1 = new JTextField(""+project.getIdProject(),z);
+        txt1 = new JTextField(""+project.getIdProject(),z);
         txt1.setEditable(false);
-        JTextField txt2 = new JTextField(project.getName(),z);
+        txt2 = new JTextField(project.getName(),z);
         txt2.setEditable(false);
-        JTextField txt3 = new JTextField(project.getDescription(),z);
+        txt3 = new JTextField(project.getDescription(),z);
         txt3.setEditable(false);
         
         JPanel p1 = new JPanel(new FlowLayout(FlowLayout.RIGHT));
@@ -119,7 +122,7 @@ public class EditProjectUI extends JDialog{
 
         return pb;
     }
-    public JPanel createPanelCenter(){
+    private JPanel createPanelCenter(){
         int x = 10;
         JPanel p = new JPanel(new GridLayout(1,3, x, x));
         
@@ -170,7 +173,7 @@ public class EditProjectUI extends JDialog{
         return p;
     }
     
-    public JPanel createPanelBtnBack(){
+    private JPanel createPanelBtnBack(){
         int x = 10;
         JPanel pb = new JPanel(new BorderLayout());
         pb.setBorder(BorderFactory.createCompoundBorder(new TitledBorder(
@@ -180,7 +183,7 @@ public class EditProjectUI extends JDialog{
         return pb;
     }
     
-    public JButton createButtonEditDataProject(){
+    private JButton createButtonEditDataProject(){
         ImageIcon icon = new ImageIcon("src/main/resources/images/editbutton.png");
         editDataBtn = new JButton("Edit Data Project",icon); 
         editDataBtn.setPreferredSize(new Dimension(250, 80));
@@ -196,7 +199,7 @@ public class EditProjectUI extends JDialog{
         return editDataBtn;
     }
     
-    public JButton createButtonAddAirport(){
+    private JButton createButtonAddAirport(){
         ImageIcon icon = new ImageIcon("src/main/resources/images/addbutton.png");
         addAirportBtn = new JButton("Add Airport",icon); 
         addAirportBtn.setPreferredSize(dim);
@@ -211,7 +214,7 @@ public class EditProjectUI extends JDialog{
         });
         return addAirportBtn;
     }
-    public JButton createButtonEditAirport(){
+    private JButton createButtonEditAirport(){
         ImageIcon icon = new ImageIcon("src/main/resources/images/editbutton.png");
         editAirportBtn = new JButton("Edit Airport",icon); 
         editAirportBtn.setPreferredSize(dim);
@@ -226,7 +229,7 @@ public class EditProjectUI extends JDialog{
         });
         return editAirportBtn;
     }
-    public JButton createButtonAddAircraft(){
+    private JButton createButtonAddAircraft(){
         ImageIcon icon = new ImageIcon("src/main/resources/images/addbutton.png");
         addAircraftModelBtn = new JButton("Add Aircraft",icon); 
         addAircraftModelBtn.setPreferredSize(dim);
@@ -241,7 +244,7 @@ public class EditProjectUI extends JDialog{
         });
         return addAircraftModelBtn;
     }
-    public JButton createButtonEditAircraft(){
+    private JButton createButtonEditAircraft(){
         ImageIcon icon = new ImageIcon("src/main/resources/images/editbutton.png");
         editAircraftModelBtn = new JButton("Edit Aircraft",icon); 
         editAircraftModelBtn.setPreferredSize(dim);
@@ -256,7 +259,7 @@ public class EditProjectUI extends JDialog{
         });
         return editAircraftModelBtn;
     }
-    public JButton createButtonAddFlight(){
+    private JButton createButtonAddFlight(){
         ImageIcon icon = new ImageIcon("src/main/resources/images/addbutton.png");
         addFlightBtn = new JButton("Add Flight Plan",icon); 
         addFlightBtn.setPreferredSize(dim);
@@ -271,7 +274,7 @@ public class EditProjectUI extends JDialog{
         });
         return addFlightBtn;
     }
-    public JButton createButtonEditFlight(){
+    private JButton createButtonEditFlight(){
         ImageIcon icon = new ImageIcon("src/main/resources/images/editbutton.png");
         editFlightBtn = new JButton("Edit Flight Plan",icon); 
         editFlightBtn.setPreferredSize(dim);
@@ -286,7 +289,7 @@ public class EditProjectUI extends JDialog{
         });
         return editFlightBtn;
     }
-    public JButton createButtonBack(){
+    private JButton createButtonBack(){
         back = new JButton("Back"); 
         back.setMnemonic(KeyEvent.VK_B);
         back.setToolTipText("Back");
@@ -471,7 +474,8 @@ public class EditProjectUI extends JDialog{
         // implement
     }
     private void editDataProject(){
-        // implement
+        EditDataProjectUI editdata = new EditDataProjectUI(project, EditProjectUI.this);
+        dispose();
     }
     private void back(){
         dispose();
