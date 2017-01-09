@@ -22,6 +22,7 @@ import lapr.project.model.Location;
 import lapr.project.model.Motorization;
 import lapr.project.model.Node;
 import lapr.project.model.Pattern;
+import lapr.project.model.Project;
 import lapr.project.model.Segment;
 import lapr.project.model.Thrust_Function;
 import lapr.project.model.Wind;
@@ -53,6 +54,30 @@ public class DAL {
         return conn;
     }
 
+    public List<Project> getAllProjects() {
+        List<Project> projList = new LinkedList<>();
+        ResultSet rs = null;
+        Connection con = null;
+        String query = "{call getprojects()}";
+        con = connect();
+
+        try (CallableStatement st = con.prepareCall(query)) {
+
+            rs = st.getResultSet();
+            while (rs.next()) {
+
+                int projID = rs.getInt("ID");
+                String desc = rs.getString("description");
+
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DAL.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            close(con);
+        }
+        return projList;
+    }
+
     /**
      * Gets the list of airports by project ID.
      *
@@ -65,11 +90,11 @@ public class DAL {
         ResultSet rs = null;
 
         Connection con = null;
-        String query = "getListOfAirports(?)";
+        String query = "{call getListOfAirports(?)}";
         con = connect();
 
         try (CallableStatement st = con.prepareCall(query)) {
-            st.setString("1", projectID);
+            st.setString(1, projectID);
             st.execute();
             rs = st.getResultSet();
             while (rs.next()) {
@@ -78,6 +103,7 @@ public class DAL {
                 String name = rs.getString("Name");
                 String country = rs.getString("Country");
                 String town = rs.getString("Town");
+
                 // Location location = getLocationByID(locationID);
                 Airport airport = new Airport(IATA, name, town, country, new Location());
                 if (airport.validate()) {
@@ -683,7 +709,7 @@ public class DAL {
                 st.setString(1, airport.getIATA());
                 st.setString(2, airport.getName());
                 st.setString(3, airport.getTown());
-                  st.setString(4, airport.getCountry());
+                st.setString(4, airport.getCountry());
                 st.setDouble(5, airport.getLocation().getLatitude());
                 st.setDouble(6, airport.getLocation().getLongitude());
                 st.setDouble(7, airport.getLocation().getAltitude());
@@ -745,15 +771,14 @@ public class DAL {
         return true;
     }
 
-     public boolean WriteSimulationsToDatabase(List<Simulation> simList, int airNetworkID) {
+    public boolean WriteSimulationsToDatabase(List<Simulation> simList, int airNetworkID) {
         Connection con = null;
         con = connect();
         boolean ret = false;
 
         for (Simulation sim : simList) {
             try (CallableStatement st = con.prepareCall("insert_simulation(?,?,?)")) {
-              
-             
+
                 ret = st.execute();
             } catch (SQLException ex) {
                 Logger.getLogger(DAL.class.getName()).log(Level.SEVERE, null, ex);
@@ -764,8 +789,7 @@ public class DAL {
         }
         return true;
     }
-    
-    
+
     /**
      * Closes all active database resources.
      *
