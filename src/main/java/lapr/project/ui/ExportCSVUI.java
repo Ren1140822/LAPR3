@@ -84,12 +84,10 @@ public class ExportCSVUI extends JDialog {
 
         JPanel panelLists = new JPanel(fl);
         JPanel panelLabels = new JPanel(fl2);
-        JLabel labelBest = createJLabels("Best consumption");
-        JLabel labelComp = createJLabels("Comparison");
-        JLabel labelShort = createJLabels("Shortest Path");
+        JLabel labelBest = createJLabels("List of simulations");
+
         panelLabels.add(labelBest);
-        panelLabels.add(labelComp);
-        panelLabels.add(labelShort);
+
         JPanel panelUpdateBtn = new JPanel();
         listSimulations = createJList("List of simulations");
 

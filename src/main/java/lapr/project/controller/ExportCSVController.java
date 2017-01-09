@@ -176,13 +176,14 @@ public class ExportCSVController {
             int i = 0;
             for (int j = 0; j < results.length; j++) {
                 Simulation sim = getSimulationByString(s[i]);
-
-                results[j][0] = "Shortest path result: " + String.valueOf(sim.getShortestResultPath());
-                results[j][1] = "Origin node latitude: " + sim.getStartAirport().getLocation().getLatitude();
-                results[j][2] = "Origin node longitude: " + sim.getStartAirport().getLocation().getLongitude();
-                results[j][3] = "Destination node latitude: " + sim.getEndAirport().getLocation().getLatitude();
-                results[j][4] = "Destination node longitude: " + sim.getEndAirport().getLocation().getLongitude();
-                results[j][5] = "Total distance calculated: " + sim.getShortestResultPath().getDistance();
+                if (sim.getShortestResultPath() != null) {
+                    results[j][0] = "Shortest path result: " + String.valueOf(sim.getShortestResultPath());
+                    results[j][1] = "Origin node latitude: " + sim.getStartAirport().getLocation().getLatitude();
+                    results[j][2] = "Origin node longitude: " + sim.getStartAirport().getLocation().getLongitude();
+                    results[j][3] = "Destination node latitude: " + sim.getEndAirport().getLocation().getLatitude();
+                    results[j][4] = "Destination node longitude: " + sim.getEndAirport().getLocation().getLongitude();
+                    results[j][5] = "Total distance calculated: " + sim.getShortestResultPath().getDistance();
+                }
                 i++;
             }
         }
@@ -190,13 +191,14 @@ public class ExportCSVController {
             int i = 0;
             for (int j = 0; j < results.length; j++) {
                 Simulation sim = getSimulationByString(s[i]);
-
-                results[j][0] = "Shortest path result: " + String.valueOf(sim.getEcologicResultPath());
-                results[j][1] = "Origin airport latitude: " + sim.getEcologicResultPath().getStartAirport().getLocation().getLatitude();
-                results[j][2] = "Origin airport longitude: " + sim.getEcologicResultPath().getStartAirport().getLocation().getLongitude();
-                results[j][3] = "Destination airport latitude: " + sim.getEcologicResultPath().getEndAirport().getLocation().getLatitude();
-                results[j][4] = "Destination airport longitude: " + sim.getEcologicResultPath().getEndAirport().getLocation().getLongitude();
-                results[j][5] = "Total distance calculated: " + sim.getEcologicResultPath().getResult();
+                if (sim.getEcologicResultPath() != null) {
+                    results[j][0] = "Shortest path result: " + String.valueOf(sim.getEcologicResultPath());
+                    results[j][1] = "Origin airport latitude: " + sim.getEcologicResultPath().getStartAirport().getLocation().getLatitude();
+                    results[j][2] = "Origin airport longitude: " + sim.getEcologicResultPath().getStartAirport().getLocation().getLongitude();
+                    results[j][3] = "Destination airport latitude: " + sim.getEcologicResultPath().getEndAirport().getLocation().getLatitude();
+                    results[j][4] = "Destination airport longitude: " + sim.getEcologicResultPath().getEndAirport().getLocation().getLongitude();
+                    results[j][5] = "Total distance calculated: " + sim.getEcologicResultPath().getResult();
+                }
                 i++;
             }
         }
@@ -204,13 +206,14 @@ public class ExportCSVController {
             int i = 0;
             for (int j = 0; j < results.length; j++) {
                 Simulation sim = getSimulationByString(s[i]);
-
-                results[j][0] = "Shortest path result: " + String.valueOf(sim.getFastestResultPath());
-                results[j][1] = "Origin airport latitude: " + sim.getFastestResultPath().getStartAirport().getLocation().getLatitude();
-                results[j][2] = "Origin airport longitude: " + sim.getFastestResultPath().getStartAirport().getLocation().getLongitude();
-                results[j][3] = "Destination airport latitude: " + sim.getFastestResultPath().getEndAirport().getLocation().getLatitude();
-                results[j][4] = "Destination airport longitude: " + sim.getFastestResultPath().getEndAirport().getLocation().getLongitude();
-                results[j][5] = "Total distance calculated: " + sim.getFastestResultPath().getResult();
+                if (sim.getFastestResultPath() != null) {
+                    results[j][0] = "Shortest path result: " + String.valueOf(sim.getFastestResultPath());
+                    results[j][1] = "Origin airport latitude: " + sim.getFastestResultPath().getStartAirport().getLocation().getLatitude();
+                    results[j][2] = "Origin airport longitude: " + sim.getFastestResultPath().getStartAirport().getLocation().getLongitude();
+                    results[j][3] = "Destination airport latitude: " + sim.getFastestResultPath().getEndAirport().getLocation().getLatitude();
+                    results[j][4] = "Destination airport longitude: " + sim.getFastestResultPath().getEndAirport().getLocation().getLongitude();
+                    results[j][5] = "Total distance calculated: " + sim.getFastestResultPath().getResult();
+                }
                 i++;
             }
         }

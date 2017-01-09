@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import lapr.project.model.Airport;
 import lapr.project.model.Project;
 
 import lapr.project.model.analysis.ResultPath;
@@ -21,9 +22,9 @@ import lapr.project.utils.HTMLExporter;
  * @author Renato Oliveira 1140822@isep.ipp.pt
  */
 public class ExportHTMLController {
-    
+
     Project project;
-    
+
     String currentSim;
 
     public ExportHTMLController(Project project) {
@@ -43,7 +44,7 @@ public class ExportHTMLController {
         for (Simulation simulation : list) {
             if (aux.equals(simulation)) {
                 results.put("Best consumption", simulation.getEcologicResultPath());
-                results.put("Fastest path",simulation.getFastestResultPath());
+                results.put("Fastest path", simulation.getFastestResultPath());
                 results.put("ShortestPath", simulation.getShortestResultPath());
             }
         }
@@ -56,6 +57,7 @@ public class ExportHTMLController {
         List<String> simString = new LinkedList<>();
         List<Simulation> list = project.getSimulationsList().getSimulationsList();
         Simulation sim = new Simulation();
+        sim.createAllPathSimulation(new Airport(),new Airport());
         list.add(sim);
         sim = new Simulation();
         list.add(sim);
@@ -92,8 +94,8 @@ public class ExportHTMLController {
         if (startNode != null) {
             List<Simulation> list = project.getSimulationsList().getSimulationsList();
             for (Simulation simulation : list) {
-                String startIata= simulation.getStartAirport().getIATA();
-                String endIata= simulation.getEndAirport().getIATA();
+                String startIata = simulation.getStartAirport().getIATA();
+                String endIata = simulation.getEndAirport().getIATA();
                 if (endIata.equals(endNode) && startIata.equals(startNode)) {
                     results.add(simulation.toString());
                     //results.put("Comparison",sim.getComparison());
@@ -151,7 +153,7 @@ public class ExportHTMLController {
     public List<String> getListOfNodes() {
         List<String> results = new LinkedList<>();
         List<Simulation> sims = project.getSimulationsList().getSimulationsList();
-        AirportList list= project.getAirportList();
+        AirportList list = project.getAirportList();
         for (Simulation s : sims) {
             if (!results.contains(s.getStartAirport().getIATA())) {
                 results.add(s.getStartAirport().getIATA());
@@ -189,28 +191,33 @@ public class ExportHTMLController {
 
             int i = 0;
             for (int j = 0; j < results.length; j++) {
+
                 Simulation sim = getSimulationByString(s[i]);
-               
-                results[j][0] = "Shortest path result: " + String.valueOf(sim.getShortestResultPath());
-                results[j][1] = "Origin airport latitude: " + sim.getShortestResultPath().getStartAirport().getLocation().getLatitude();
-                results[j][2] = "Origin airport longitude: " + sim.getShortestResultPath().getStartAirport().getLocation().getLongitude();
-                results[j][3] = "Destination airport latitude: " + sim.getShortestResultPath().getEndAirport().getLocation().getLatitude();
-                results[j][4] = "Destination airport longitude: " + sim.getShortestResultPath().getEndAirport().getLocation().getLongitude();
-                results[j][5] = "Total distance calculated: " + sim.getShortestResultPath().getResult();
+                if (sim.getShortestResultPath() != null) {
+                    results[j][0] = "Shortest path result: " + String.valueOf(sim.getShortestResultPath());
+                    results[j][1] = "Origin airport latitude: " + sim.getShortestResultPath().getStartAirport().getLocation().getLatitude();
+                    results[j][2] = "Origin airport longitude: " + sim.getShortestResultPath().getStartAirport().getLocation().getLongitude();
+                    results[j][3] = "Destination airport latitude: " + sim.getShortestResultPath().getEndAirport().getLocation().getLatitude();
+                    results[j][4] = "Destination airport longitude: " + sim.getShortestResultPath().getEndAirport().getLocation().getLongitude();
+                    results[j][5] = "Total distance calculated: " + sim.getShortestResultPath().getResult();
+
+                }
                 i++;
             }
         }
-          if (whatToExport.equals("eco")) {
+        if (whatToExport.equals("eco")) {
             int i = 0;
             for (int j = 0; j < results.length; j++) {
                 Simulation sim = getSimulationByString(s[i]);
+                if (sim.getEcologicResultPath() != null) {
+                    results[j][0] = "Shortest path result: " + String.valueOf(sim.getEcologicResultPath());
+                    results[j][1] = "Origin airport latitude: " + sim.getEcologicResultPath().getStartAirport().getLocation().getLatitude();
+                    results[j][2] = "Origin airport longitude: " + sim.getEcologicResultPath().getStartAirport().getLocation().getLongitude();
+                    results[j][3] = "Destination airport latitude: " + sim.getEcologicResultPath().getEndAirport().getLocation().getLatitude();
+                    results[j][4] = "Destination airport longitude: " + sim.getEcologicResultPath().getEndAirport().getLocation().getLongitude();
+                    results[j][5] = "Total distance calculated: " + sim.getEcologicResultPath().getResult();
 
-                results[j][0] = "Shortest path result: " + String.valueOf(sim.getEcologicResultPath());
-                results[j][1] = "Origin airport latitude: " + sim.getEcologicResultPath().getStartAirport().getLocation().getLatitude();
-                results[j][2] = "Origin airport longitude: " + sim.getEcologicResultPath().getStartAirport().getLocation().getLongitude();
-                results[j][3] = "Destination airport latitude: " + sim.getEcologicResultPath().getEndAirport().getLocation().getLatitude();
-                results[j][4] = "Destination airport longitude: " + sim.getEcologicResultPath().getEndAirport().getLocation().getLongitude();
-                results[j][5] = "Total distance calculated: " + sim.getEcologicResultPath().getResult();
+                }
                 i++;
             }
         }
@@ -218,13 +225,15 @@ public class ExportHTMLController {
             int i = 0;
             for (int j = 0; j < results.length; j++) {
                 Simulation sim = getSimulationByString(s[i]);
+                if (sim.getFastestResultPath() != null) {
+                    results[j][0] = "Shortest path result: " + String.valueOf(sim.getFastestResultPath());
+                    results[j][1] = "Origin airport latitude: " + sim.getFastestResultPath().getStartAirport().getLocation().getLatitude();
+                    results[j][2] = "Origin airport longitude: " + sim.getFastestResultPath().getStartAirport().getLocation().getLongitude();
+                    results[j][3] = "Destination airport latitude: " + sim.getFastestResultPath().getEndAirport().getLocation().getLatitude();
+                    results[j][4] = "Destination airport longitude: " + sim.getFastestResultPath().getEndAirport().getLocation().getLongitude();
+                    results[j][5] = "Total distance calculated: " + sim.getFastestResultPath().getResult();
 
-                results[j][0] = "Shortest path result: " + String.valueOf(sim.getFastestResultPath());
-                results[j][1] = "Origin airport latitude: " + sim.getFastestResultPath().getStartAirport().getLocation().getLatitude();
-                results[j][2] = "Origin airport longitude: " + sim.getFastestResultPath().getStartAirport().getLocation().getLongitude();
-                results[j][3] = "Destination airport latitude: " + sim.getFastestResultPath().getEndAirport().getLocation().getLatitude();
-                results[j][4] = "Destination airport longitude: " + sim.getFastestResultPath().getEndAirport().getLocation().getLongitude();
-                results[j][5] = "Total distance calculated: " + sim.getFastestResultPath().getResult();
+                }
                 i++;
             }
         }
