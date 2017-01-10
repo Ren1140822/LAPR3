@@ -42,7 +42,6 @@ public class ExportCSVUI extends JDialog {
      */
     private final int WINDOW_WIDTH = 550;
     private final int WINDOW_HEIGHT = 500;
-    private final String WINDOW_TITLE = "Export data to HTML";
     private transient ExportCSVController controller;
     private transient List<String> results;
     private JList listSimulations;
@@ -71,7 +70,6 @@ public class ExportCSVUI extends JDialog {
         createComponents();
         pack();
         this.setSize(new Dimension(WINDOW_WIDTH, WINDOW_HEIGHT));
-        this.setTitle(WINDOW_TITLE);
         this.setLocationRelativeTo(null);
         this.setResizable(false);
         this.setVisible(true);

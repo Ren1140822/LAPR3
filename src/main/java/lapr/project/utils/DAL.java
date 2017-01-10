@@ -37,7 +37,10 @@ public class DAL {
     private final String url = "jdbc:oracle:thin://@gandalf.dei.isep.ipp.pt:1521/pdborcl";
     private final String user = "LAPR3_38";
     private final String passw = "grupo38";
-
+    
+    public DAL(){
+    
+    }
     /**
      * Creates a connection to the database.
      *
