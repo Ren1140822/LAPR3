@@ -38,100 +38,94 @@ public class AircraftModel implements Serializable {
 
         PASSENGER, CARGO, MIXED
     };
-    
+
     /**
      * Variable who stores the type
      */
     @XmlTransient
     private Type type;
-    
+
     /**
      * Description of aircraft model
      */
     @XmlAttribute(name = "description")
     private String description;
-    
+
     /**
      * Maker of aircraft model
      */
     @XmlElement(name = "maker")
     private String maker;
-    
+
     /**
      * Motorization of aircraft model
      */
     @XmlElement(name = "motorization")
     private Motorization motorization;
-    
+
     /**
      * Empty weight
      */
     @XmlTransient
     private double eWeight;
-    
+
     /**
      * Maximum take-off weight (MTOW) - kg
      */
     @XmlTransient
     private double MTOW;
-    
+
     /**
      * Maximum payload (kg)
      */
     @XmlTransient
     private double maxPayload;
-    
+
     /**
      * Maximum fuel capacity (L)
      */
     @XmlTransient
     private double fuelCapacity;
-    
+
     /**
      * VMO (knot)
      */
     @XmlTransient
     private double VMO;
-    
+
     /**
      * Maximum operating Match number - MMO - (relative to the speed of sound)
      */
     @XmlTransient
     private double MMO;
-    
+
     /**
      * Wing area (m2)
      */
     @XmlTransient
     private double wingArea;
-    
+
     /**
      * Wing span - distance from one wingtip to the other (m)
      */
     @XmlTransient
     private double wingSpan;
-    
+
     @XmlElement(name = "aspect_ratio")
     private double aspectRatio;
-    
+
     /**
      * Constant e
      */
     @XmlElement(name = "e")
     private double e;
-    
+
     /**
      * Coefficient of drag
      */
     @XmlElementWrapper(name = "Cdrag_function")
     @XmlElement(name = "iten")
     private List<Iten> listIten;
-    
-    /**
-     * List of Pattern
-     */
-    @XmlTransient
-    private List<Pattern> listPattern;
 
     /**
      * Default attributes
@@ -161,7 +155,7 @@ public class AircraftModel implements Serializable {
     @XmlTransient
     private final double DEFAULT_WINGAREA = 1;
     @XmlTransient
-    private final double DEFAULT_WINGSPAN = 1;    
+    private final double DEFAULT_WINGSPAN = 1;
     @XmlTransient
     private final double DEFAULT_E = 1;
 
@@ -184,8 +178,7 @@ public class AircraftModel implements Serializable {
         wingSpan = DEFAULT_WINGSPAN;
         aspectRatio = DEFAULT_ASPECT_RATIO;
         e = DEFAULT_E;
-        listIten = new LinkedList<>();   
-        listPattern = new LinkedList<>();
+        listIten = new LinkedList<>();
     }
 
     /**
@@ -214,7 +207,7 @@ public class AircraftModel implements Serializable {
             Motorization motorization, double eWeight, double MTOW,
             double maxPayload, double fuelCapacity, double VMO, double MMO,
             double wingArea, double wingSpan, double aspectRatio,
-            double e, List<Iten> listIten, List<Pattern> listPattern) {
+            double e, List<Iten> listIten) {
         this.id = id;
         this.description = description;
         this.maker = maker;
@@ -231,7 +224,7 @@ public class AircraftModel implements Serializable {
         this.aspectRatio = aspectRatio;
         this.e = e;
         this.listIten = listIten;
-        this.listPattern = listPattern;
+
     }
 
     /**
@@ -256,7 +249,6 @@ public class AircraftModel implements Serializable {
         this.aspectRatio = model.aspectRatio;
         this.e = model.e;
         this.listIten = model.listIten;
-        this.listPattern = model.listPattern;
     }
 
     public String getId() {
@@ -477,8 +469,8 @@ public class AircraftModel implements Serializable {
     public void setAspectRatio(double aspectRatio) {
         this.aspectRatio = aspectRatio;
     }
-    
-    public boolean addIten(double speed, double Cdrag_0){
+
+    public boolean addIten(double speed, double Cdrag_0) {
         Iten i = new Iten(speed, Cdrag_0);
         return listIten.add(i);
     }
@@ -503,20 +495,6 @@ public class AircraftModel implements Serializable {
 
     public void setE(double e) {
         this.e = e;
-    }
-    
-    /**
-     * @return the listPattern
-     */
-    public List<Pattern> getListPattern() {
-        return listPattern;
-    }
-
-    /**
-     * @param listPattern the listPattern to set
-     */
-    public void setListPattern(List<Pattern> listPattern) {
-        this.listPattern = listPattern;
     }
 
     @Override
@@ -549,7 +527,7 @@ public class AircraftModel implements Serializable {
         v1 = v1 && motorization != null && eWeight > 0 && MTOW > 0;
         v1 = v1 && maxPayload > 0 && fuelCapacity > 0 && aspectRatio > 0;
         v1 = v1 && VMO > 0 && MMO > 0 && wingArea > 0;
-        v1 = v1 && wingSpan > 0  && e > 0;
+        v1 = v1 && wingSpan > 0 && e > 0;
         v1 = v1 && type != null && motorization.validate();
 
         return v1;

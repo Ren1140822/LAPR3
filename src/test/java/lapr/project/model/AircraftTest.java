@@ -218,7 +218,7 @@ public class AircraftTest {
     public void testSetAircraftModel() {
         System.out.println("setAircraftModel");
         AircraftModel aircraftModel = new AircraftModel("id", "description", "maker", "passenger", 
-                new Motorization(), 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, new LinkedList<>(),new LinkedList<>());
+                new Motorization(), 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, new LinkedList<>());
         Aircraft instance = new Aircraft();
         instance.setAircraftModel(aircraftModel);
 
