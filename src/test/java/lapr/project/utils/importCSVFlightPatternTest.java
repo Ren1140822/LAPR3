@@ -20,8 +20,8 @@ import static org.junit.Assert.*;
  * @author Pedro Fernandes
  */
 public class importCSVFlightPatternTest {
-    private final String caminhoA380 = "src/main/resources/Flight_pattern_A380_v0.csv";
-    private final String caminhoB777 = "src/main/resources/Flight_pattern_B777-200_v0.csv";
+    private final String caminhoA380 = "src/main/resources/Flight_pattern_A380_v1a.csv";
+    private final String caminhoB777 = "src/main/resources/Flight_pattern_B777-200_v1a.csv";
     
     public importCSVFlightPatternTest() {
     }

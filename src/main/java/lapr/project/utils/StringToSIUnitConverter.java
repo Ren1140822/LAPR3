@@ -58,6 +58,8 @@ public class StringToSIUnitConverter {
             if (s.contains("US")) {
                 s = s.replace("US", "");
                 value = Double.parseDouble(s) * 0.3048;
+            }else{
+                value = Double.parseDouble(s) * 0.3048;
             }
         }
         return value;

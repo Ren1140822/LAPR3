@@ -17,8 +17,6 @@ import lapr.project.model.Pattern;
  */
 public class importCSVFlightPattern {
     
-    
-    
     public importCSVFlightPattern(){
 
     }
@@ -32,18 +30,35 @@ public class importCSVFlightPattern {
             String[] vdesc = fInput.nextLine().split(",");
             
             int count=2;
-            while (altitude.length > count){
-                double alt = Double.parseDouble(altitude[count].trim());
-                double vc = Double.parseDouble(vclimb[count].trim());
-                double vd = Double.parseDouble(vdesc[count].trim());
+            String s = altitude[1];
+            if(s.contains("ft")){
+                while (altitude.length > count){
+                    double alt = StringToSIUnitConverter.length(altitude[count].trim());
+                    double vc = Double.parseDouble(vclimb[count].trim());
+                    double vd = Double.parseDouble(vdesc[count].trim());
+
+                    Pattern p = new Pattern(alt, vc, vd);                
+                    list.add(p);            
+
+                    count++;
+                }
+                fInput.close();
+                return true;
                 
-                Pattern p = new Pattern(alt, vc, vd);                
-                list.add(p);            
-                
-                count++;
+            }else{
+                while (altitude.length > count){
+                    double alt = Double.parseDouble(altitude[count].trim());
+                    double vc = Double.parseDouble(vclimb[count].trim());
+                    double vd = Double.parseDouble(vdesc[count].trim());
+
+                    Pattern p = new Pattern(alt, vc, vd);                
+                    list.add(p);            
+
+                    count++;
+                }
+                fInput.close();
+                return true;
             }
-            fInput.close();
-            return true;
         } catch (FileNotFoundException ex) {
             System.err.println("Não foi encontrado ficheiro. Erro: " + ex);
             return false;

@@ -208,6 +208,11 @@ public class EditDataProjectUI extends JDialog {
                     JOptionPane.ERROR_MESSAGE);
         } else {
             controller.setDataProject(txtNameProj.getText(), txtDescProj.getText());
+            JOptionPane.showMessageDialog(
+                    null,
+                    "Project edited sucessfully!",
+                    "Edit Data Project",
+                    JOptionPane.INFORMATION_MESSAGE);
             dispose();            
         }
     }
