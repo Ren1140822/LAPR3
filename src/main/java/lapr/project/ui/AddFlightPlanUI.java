@@ -7,16 +7,20 @@ package lapr.project.ui;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.File;
+import java.io.FileNotFoundException;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
@@ -26,6 +30,7 @@ import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
+import javax.swing.filechooser.FileFilter;
 import lapr.project.controller.AddFlightPlanController;
 import lapr.project.model.Project;
 
@@ -36,6 +41,7 @@ import lapr.project.model.Project;
 public class AddFlightPlanUI extends JDialog {
 
     private Project project;
+    private JFileChooser fileChooser;
     private transient AddFlightPlanController controller;
     /**
      * Guarda a janela anterior
@@ -51,6 +57,8 @@ public class AddFlightPlanUI extends JDialog {
     private JButton backBtn;
     private JButton okBtn;
     private JButton cleanBtn;
+    private JButton addAircraftBtn;
+    private JButton importPatternBtn;
 
     public AddFlightPlanUI(Project project, JDialog dialog) {
         super(dialog, "Add Flight Plan: ", true);
@@ -97,7 +105,7 @@ public class AddFlightPlanUI extends JDialog {
     }
 
     private JPanel createPanelAircraftData() {
-        JPanel p = new JPanel(new GridLayout(1, 2));
+        JPanel p = new JPanel(new GridLayout(1, 3));
 
         p.setBorder(new TitledBorder("Aircarft Data: "));
 
@@ -106,6 +114,11 @@ public class AddFlightPlanUI extends JDialog {
 
         p.add(UI.createPanelLabelTextLabel("Flight Designator: ", txtDesignator, ""));
         p.add(UI.createPanelLabelTextLabel("Min Stop Time: ", txtMinStop, "(Optional)"));
+        
+        JPanel p2 = new JPanel(new FlowLayout());
+        p2.add(createButtonImportPattern());
+        
+        p.add(p2);
 
         return p;
     }
@@ -118,14 +131,14 @@ public class AddFlightPlanUI extends JDialog {
         String l3 = "Destination Airport";
         String l4 = "Technical Stops";
         String l5 = "Mandatory Nodes";
-
+        
         listAirOri = new JList(controller.getAirportList().toArray());
         listAirDest = new JList(controller.getAirportList().toArray());
-        listAirStop = new JList(controller.getAirportList().toArray());
-        listAircraft = new JList(controller.getAircraftsList().toArray());
+        listAirStop = new JList(controller.getAirportList().toArray());        
         listNodes = new JList(controller.getNodeList().toArray());
+        listAircraft = new JList(controller.getAircraftsList().toArray());
 
-        p.add(createPanelList(l1, listAircraft));
+        p.add(createPanelListButton(l1, listAircraft,createButtonAddAircraft()));
         p.add(createPanelList(l2, listAirOri));
         p.add(createPanelList(l3, listAirDest));
         p.add(createPanelList(l4, listAirStop));
@@ -149,6 +162,23 @@ public class AddFlightPlanUI extends JDialog {
                 new EmptyBorder(5, 5, 5, 5)));
 
         p.add(scrPane, BorderLayout.CENTER);
+
+        return p;
+    }
+    
+    private JPanel createPanelListButton(String title, JList jlist, JButton btn) {
+
+        jlist.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        JScrollPane scrPane = new JScrollPane(jlist);
+
+        JPanel p = new JPanel(new BorderLayout());
+
+        p.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createTitledBorder(title),
+                new EmptyBorder(5, 5, 5, 5)));
+
+        p.add(scrPane, BorderLayout.CENTER);
+        p.add(btn, BorderLayout.SOUTH);
 
         return p;
     }
@@ -176,6 +206,51 @@ public class AddFlightPlanUI extends JDialog {
             }
         });
         return backBtn;
+    }
+    
+    private JButton createButtonImportPattern() {
+        importPatternBtn = new JButton("Import Pattern");
+        importPatternBtn.setMnemonic(KeyEvent.VK_I);
+        importPatternBtn.setToolTipText("Import");
+        importPatternBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                fileChooser = new JFileChooser();
+                defineFilterExtCSV(fileChooser);
+                fileChooser.setAcceptAllFileFilterUsed(false);
+                fileChooser.setCurrentDirectory(new File("src/main/resources"));
+                int resposta = fileChooser.showOpenDialog(AddFlightPlanUI.this);
+                if (resposta == JFileChooser.APPROVE_OPTION) {
+                    File file = fileChooser.getSelectedFile();
+                    if(controller.pattern(file)){
+                        JOptionPane.showMessageDialog(AddFlightPlanUI.this,
+                                "Pattern List imported successfully!",
+                                "Import Pattern",
+                                JOptionPane.INFORMATION_MESSAGE);
+                        okBtn.setEnabled(true);
+                    }else{
+                        JOptionPane.showMessageDialog(AddFlightPlanUI.this,
+                                "Pattern List was not imported successfully",
+                                "Error",JOptionPane.WARNING_MESSAGE);
+                    }
+                }        
+            }
+        });
+        return importPatternBtn;
+    }
+    
+    private JButton createButtonAddAircraft() {
+        addAircraftBtn = new JButton("Add Aircraft");
+        addAircraftBtn.setMnemonic(KeyEvent.VK_A);
+        addAircraftBtn.setToolTipText("Add Aircraft");
+        addAircraftBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                AddAircraftUI addaircraft = new AddAircraftUI(project, AddFlightPlanUI.this);
+                listAircraft.setListData(controller.getAircraftsList().toArray());
+            }
+        });
+        return addAircraftBtn;
     }
 
     private JButton createButtonClean() {
@@ -207,6 +282,7 @@ public class AddFlightPlanUI extends JDialog {
                 confirm();
             }
         });
+        okBtn.setEnabled(false);
         return okBtn;
     }
 
@@ -261,10 +337,10 @@ public class AddFlightPlanUI extends JDialog {
         } catch (NullPointerException | NumberFormatException ex ) {
             JOptionPane.showMessageDialog(
                     null,
-                    "Check all flight plan data, please!",
+                    "Check all flight plan data, please!\n",
                     "Error",
                     JOptionPane.ERROR_MESSAGE);
-            throw ex;
+            System.err.println(ex);
         }
     }
 
@@ -276,6 +352,37 @@ public class AddFlightPlanUI extends JDialog {
                 "Add Flight Plan",
                 JOptionPane.INFORMATION_MESSAGE);
         dispose();
+    }
+    
+    private void defineFilterExtCSV(JFileChooser fileChooser) {
+        fileChooser.setFileFilter(new FileFilter() {
+            @Override
+            public boolean accept(File f) {
+                if (f.isDirectory()) {
+                    return true;
+                }
+                String ext = ext(f);
+                if (ext != null) {
+                    return ext.equals("csv");
+                }
+                return false;
+            }
+
+            @Override
+            public String getDescription() {
+                return "*.csv";
+            }
+
+            private String ext(File f) {
+                String ext = null;
+                String s = f.getName();
+                int i = s.lastIndexOf(".");
+                if (i != -1) {
+                    ext = s.substring(i + 1).toLowerCase();
+                }
+                return ext;
+            }
+        });
     }
 
 }

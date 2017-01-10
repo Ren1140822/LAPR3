@@ -54,7 +54,6 @@ public class ImportAirportUI extends JFileChooser{
                 }catch (FileNotFoundException ex){
                     JOptionPane.showMessageDialog(ImportAirportUI.this, 
                             ex.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
-                    throw ex;
                 }        
     }
     

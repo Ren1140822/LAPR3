@@ -55,7 +55,7 @@ public class ImportNetworkUI extends JFileChooser{
                 }catch (FileNotFoundException ex){
                     JOptionPane.showMessageDialog(ImportNetworkUI.this, 
                             ex.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
-                    throw ex;
+                    System.err.println(ex);
                 }        
     }
     

@@ -36,7 +36,7 @@ import lapr.project.model.Project;
 public class CreateProjectUI extends JDialog {
     
     private Project project;
-    private CreateProjectController controller;
+    private transient CreateProjectController controller;
     private JTextField txtId;
     private JTextField txtName;
     private JTextField txtDescription;
