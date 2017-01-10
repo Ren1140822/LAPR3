@@ -295,8 +295,12 @@ public class Project implements Serializable {
     public List<Airport> getPossibleEndAirports(Node startNode) {
         LinkedList<Airport> listAirports = new LinkedList<>();
         List<Node> endNodes = getAirNetwork().getPossibleEndNodes(startNode);
+        endNodes.remove(startNode);
         for (Node nodeEnd : endNodes) {
-            listAirports.add(getAirportList().getAirportNode(nodeEnd));
+            Airport a = getAirportList().getAirportNode(nodeEnd);
+            if(a != null){
+                listAirports.add(getAirportList().getAirportNode(nodeEnd));
+            }            
         }
         return listAirports;
     }

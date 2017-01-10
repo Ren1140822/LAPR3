@@ -74,6 +74,29 @@ public class AddFlightPlanController {
         return project.getAirportList().getAirportList();
     }
     
+    public List<Airport> getPossibleEndAirportsByAirportID(String startAir){
+        Airport a = project.getAirportList().getAirportByString(startAir); 
+        Node n = project.getAirNetwork().getAirportNode(a);
+        if(a!=null && n!=null){
+            return project.getPossibleEndAirports(n);
+        }
+        return new LinkedList<>();
+    }
+    
+    /**
+     * Gets the possible end airports linked to the origin node
+     * @param startNode origin node of airnetwork
+     * @return list airports linked to the start node
+     */
+    public List<Node> getPossibleEndAirportsByNode(String startAir){
+        Airport a = project.getAirportList().getAirportByString(startAir);
+        Node n = project.getAirNetwork().getAirportNode(a);
+        if(a!=null && n!=null){
+            return project.getAirNetwork().getPossibleEndNodes(n);
+        }
+        return new LinkedList<>();
+    }
+    
     /**
      * Gets the node list of active project
      * @return list of nodes

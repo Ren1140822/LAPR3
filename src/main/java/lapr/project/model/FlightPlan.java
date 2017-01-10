@@ -126,6 +126,25 @@ public class FlightPlan implements Serializable {
         if (getTechnicalStops().contains(getOrigin()) || getTechnicalStops().contains(getDestination())) {
             return false;
         }
+        for(Node n: getMandatoryWaypoints()){
+            if (Double.doubleToLongBits(n.getLatitude())==
+                    Double.doubleToLongBits(getOrigin().getLocation().getLatitude()) &&
+                Double.doubleToLongBits(n.getLongitude())==
+                    Double.doubleToLongBits(getOrigin().getLocation().getLongitude()))
+                return false;
+            if (Double.doubleToLongBits(n.getLatitude())==
+                    Double.doubleToLongBits(getDestination().getLocation().getLatitude()) &&
+                Double.doubleToLongBits(n.getLongitude())==
+                    Double.doubleToLongBits(getDestination().getLocation().getLongitude()))
+                return false;
+            for (Airport a : getTechnicalStops()){
+                if (Double.doubleToLongBits(n.getLatitude())==
+                        Double.doubleToLongBits(a.getLocation().getLatitude()) &&
+                    Double.doubleToLongBits(n.getLongitude())==
+                        Double.doubleToLongBits(a.getLocation().getLongitude()))
+                    return false;
+            }
+        }
 
         return getAircraft().validate();
     }

@@ -198,7 +198,6 @@ public class FindBestPathControllerTest {
         FindBestPathController instance=new FindBestPathController(p);
         
         LinkedList<Airport> result=new LinkedList<>();
-        result.add(p.getAirportList().getAirportNode(startNode));
         result.add(p.getAirportList().getAirportNode(intNode));
         result.add(p.getAirportList().getAirportNode(endNode));
        

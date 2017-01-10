@@ -21,6 +21,7 @@ import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
@@ -83,8 +84,19 @@ public class ImportDataUI extends JDialog{
     private JPanel createImportPanel(){
         panel = new JPanel(new BorderLayout());
         
+        ImageIcon im = new ImageIcon("src/main/resources/images/import.jpg");
+        
+        JLabel label = new JLabel();
+        label.setIcon(im);
+
+        JPanel north = new JPanel();
+        north.setBorder(new EmptyBorder(10, 10, 10, 10));
+        north.add(label, BorderLayout.CENTER);
+        
+        panel.add(north, BorderLayout.NORTH);
+        
         int aux= 10;
-        JPanel imports = new JPanel(new GridLayout(2,2, aux,aux));          
+        JPanel imports = new JPanel(new GridLayout(1,3, aux,aux));          
         imports.setBorder(BorderFactory.createCompoundBorder(new TitledBorder(
                 "Import:"), new EmptyBorder(aux, aux, aux, aux)));        
         imports.add(createButonImportAircraft());
