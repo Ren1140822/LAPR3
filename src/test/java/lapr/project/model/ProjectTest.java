@@ -393,7 +393,6 @@ public class ProjectTest {
         airportsList.getAirportList().add(airport3);
 
         LinkedList<Airport> result = new LinkedList<>();
-        result.add(airport1);
         result.add(airport2);
         result.add(airport3);
         assertEquals(result, instance.getPossibleEndAirports(startNode));

@@ -97,7 +97,7 @@ public class AddFlightPlanControllerTest {
         System.out.println("setData");
         Aircraft a1 = new Aircraft("aircraft", "fdh", new CabinConfiguration(), 2, new AircraftModel(
                 "id", "description", "maker", "passenger", new Motorization(), 10, 
-                10, 10, 10, 10, 10, 10, 10, 10, 10, new LinkedList<>(),new LinkedList<>()));
+                10, 10, 10, 10, 10, 10, 10, 10, 10, new LinkedList<>()));
         
         Airport air1 = new Airport("opo", "porto", "porto", "portugal", new Location(10, 10, 10));
         Airport air2 = new Airport("lis", "lisboa", "lisboa", "portugal", new Location(20, 20, 20));

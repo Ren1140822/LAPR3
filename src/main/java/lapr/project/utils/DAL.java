@@ -297,9 +297,9 @@ public class DAL {
                 double e = rs.getDouble("e");
 
                 itemList = getItemByID(id);
-                int patternID = rs.getInt("pattern");
+                //int patternID = rs.getInt("pattern");
 
-                model = new AircraftModel(id, description, maker, type, motorization, eWeight, MTOW, maxPayload, fuelCapacity, VMO, MMO, wingArea, wingSpan, aspectRatio, e, itemList, getPatternByID(patternID));
+                model = new AircraftModel(id, description, maker, type, motorization, eWeight, MTOW, maxPayload, fuelCapacity, VMO, MMO, wingArea, wingSpan, aspectRatio, e, itemList);
             }
 
         } catch (SQLException ex) {
@@ -671,7 +671,6 @@ public class DAL {
                 st2.setInt(25, projectID);
                 ret = st2.execute();
                 WriteItensToDatabase(con, aircraftModel.getListIten(), aircraftModel.getId());
-                WritePatternsToDatabase(con, aircraftModel.getListPattern(), aircraftModel.getId());
             }
         } catch (SQLException ex) {
             Logger.getLogger(DAL.class.getName()).log(Level.SEVERE, null, ex);

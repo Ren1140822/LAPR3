@@ -1,14 +1,19 @@
 package lapr.project.controller;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Scanner;
 import lapr.project.model.Aircraft;
 import lapr.project.model.Airport;
 import lapr.project.model.FlightPlan;
 import lapr.project.model.Node;
+import lapr.project.model.Pattern;
 import lapr.project.model.Project;
 import lapr.project.model.lists.FlightList;
+import lapr.project.utils.StringToSIUnitConverter;
 
 /**
  *
@@ -18,7 +23,7 @@ public class AddFlightPlanController {
 
     private FlightList fl;
     private FlightPlan flight;
-    Project project;
+    private Project project;
     
     public AddFlightPlanController(Project project){
         this.project = project;     
@@ -34,11 +39,11 @@ public class AddFlightPlanController {
         List<Node> mandinal = new LinkedList<>();
         for (Object o : stops){
             Airport a = (Airport) o;
-            stopfinal.add(getAirportByString(a.getName()));
+            stopfinal.add(a);
         }
         for (Object o : mand){
             Node n = (Node) o;
-            mandinal.add(getNodeByString(n.getId()));
+            mandinal.add(n);
         }
         flight.setFlightDesignator(name);
         flight.setMinStopTime(minStopTime);
@@ -69,6 +74,29 @@ public class AddFlightPlanController {
         return project.getAirportList().getAirportList();
     }
     
+    public List<Airport> getPossibleEndAirportsByAirportID(String startAir){
+        Airport a = project.getAirportList().getAirportByString(startAir); 
+        Node n = project.getAirNetwork().getAirportNode(a);
+        if(a!=null && n!=null){
+            return project.getPossibleEndAirports(n);
+        }
+        return new LinkedList<>();
+    }
+    
+    /**
+     * Gets the possible end airports linked to the origin node
+     * @param startNode origin node of airnetwork
+     * @return list airports linked to the start node
+     */
+    public List<Node> getPossibleEndNodesByAirportId(String startAir){
+        Airport a = project.getAirportList().getAirportByString(startAir);
+        Node n = project.getAirNetwork().getAirportNode(a);
+        if(a!=null && n!=null){
+            return project.getPossibleEndNodes(n);
+        }
+        return new LinkedList<>();
+    }
+    
     /**
      * Gets the node list of active project
      * @return list of nodes
@@ -87,5 +115,53 @@ public class AddFlightPlanController {
     
     private Node getNodeByString(String id){
         return project.getAirNetwork().getNodeByString(id);
+    }
+    
+    public boolean pattern(File ficheiro){
+        try {
+            Scanner fInput = new Scanner(ficheiro);  
+            
+            String[] altitude= fInput.nextLine().split(","); 
+            String[] vclimb = fInput.nextLine().split(",");              
+            String[] vdesc = fInput.nextLine().split(",");
+            
+            int count=2;
+            String s = altitude[1];
+            if(s.contains("ft")){
+                while (altitude.length > count){
+                    double alt = StringToSIUnitConverter.length(altitude[count].trim());
+                    double vc = Double.parseDouble(vclimb[count].trim());
+                    double vd = Double.parseDouble(vdesc[count].trim());
+
+                    Pattern p = new Pattern(alt, vc, vd);                
+                    flight.getListPattern().add(p);            
+
+                    count++;
+                }
+                fInput.close();
+                return true;
+                
+            }else{
+                while (altitude.length > count){
+                    double alt = Double.parseDouble(altitude[count].trim());
+                    double vc = Double.parseDouble(vclimb[count].trim());
+                    double vd = Double.parseDouble(vdesc[count].trim());
+
+                    Pattern p = new Pattern(alt, vc, vd);                
+                    flight.getListPattern().add(p);            
+
+                    count++;
+                }
+                fInput.close();
+                return true;
+            }
+        } catch (FileNotFoundException ex) {
+            System.err.println("Não foi encontrado ficheiro. Erro: " + ex);
+            return false;
+        }catch (ArrayIndexOutOfBoundsException e){
+            System.err.println("Erro ao carregar ficheiro => ficheiro danificado. Erro: " + e);
+            return false; 
+         }
+        
     }
 }

@@ -54,7 +54,7 @@ public class ImportAircraftModelListUI extends JFileChooser{
                 }catch (FileNotFoundException ex){
                     JOptionPane.showMessageDialog(ImportAircraftModelListUI.this, 
                             ex.getMessage(),"Error",JOptionPane.ERROR_MESSAGE);
-                    throw ex;
+                    System.err.println(ex);
                 }        
     }
     

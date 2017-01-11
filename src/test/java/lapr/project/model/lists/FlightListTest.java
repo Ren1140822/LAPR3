@@ -65,12 +65,12 @@ public class FlightListTest {
         System.out.println("validate");
         Aircraft a1 = new Aircraft("dsfsdg", "fdh", new CabinConfiguration(), 2, new AircraftModel(
                 "id", "description", "maker", "passenger", new Motorization(), 10, 
-                10, 10, 10, 10, 10, 10, 10, 10, 10, new LinkedList<>(),new LinkedList<>()));
+                10, 10, 10, 10, 10, 10, 10, 10, 10, new LinkedList<>()));
         
         Airport air1 = new Airport("opo", "porto", "porto", "portugal", new Location(10, 10, 10));
         Airport air2 = new Airport("lis", "lisboa", "lisboa", "portugal", new Location(20, 20, 20));
         FlightPlan flight = new FlightPlan("FF0001A", 10, a1, air1, air2,
-                new LinkedList<>(), new LinkedList<>());
+                new LinkedList<>(), new LinkedList<>(),new LinkedList<>());
         FlightList instance = new FlightList();
         boolean expResult = true;
         boolean result = instance.validate(flight);
@@ -85,12 +85,12 @@ public class FlightListTest {
         System.out.println("saveFlight");
         Aircraft a1 = new Aircraft("dsfsdg", "fdh", new CabinConfiguration(), 2, new AircraftModel(
                 "id", "description", "maker", "passenger", new Motorization(), 10, 
-                10, 10, 10, 10, 10, 10, 10, 10, 10, new LinkedList<>(),new LinkedList<>()));
+                10, 10, 10, 10, 10, 10, 10, 10, 10, new LinkedList<>()));
         
         Airport air1 = new Airport("opo", "porto", "porto", "portugal", new Location(10, 10, 10));
         Airport air2 = new Airport("lis", "lisboa", "lisboa", "portugal", new Location(20, 20, 20));
         FlightPlan flight = new FlightPlan("FF0001A", 10, a1, air1, air2,
-                new LinkedList<>(), new LinkedList<>());
+                new LinkedList<>(), new LinkedList<>(),new LinkedList<>());
         FlightList instance = new FlightList();
         instance.validate(flight);
         boolean expResult = true;

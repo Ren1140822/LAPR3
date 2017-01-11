@@ -94,34 +94,34 @@ public class FlightPlanTest {
         System.out.println("validate1");
         Aircraft a1 = new Aircraft("dsfsdg", "fdh", new CabinConfiguration(), 2, new AircraftModel(
                 "id", "description", "maker", "passenger", new Motorization(), 10, 
-                10, 10, 10, 10, 10, 10, 10, 10, 10, new LinkedList<>(),new LinkedList<>()));
+                10, 10, 10, 10, 10, 10, 10, 10, 10, new LinkedList<>()));
         
         Airport air1 = new Airport("opo", "porto", "porto", "portugal", new Location(10, 10, 10));
         Airport air2 = new Airport("lis", "lisboa", "lisboa", "portugal", new Location(20, 20, 20));
         
         FlightPlan instance = new FlightPlan("FF0001A", 10, a1, air1, air2,
-                new LinkedList<>(), new LinkedList<>());
+                new LinkedList<>(), new LinkedList<>(),new LinkedList<>());
         boolean expResult = true;
         boolean result = instance.validate();
         assertEquals(expResult, result);
         
         System.out.println("validate2");
         FlightPlan instance2 = new FlightPlan("FF0001A", -1, a1, air1, air2,
-                new LinkedList<>(), new LinkedList<>());
+                new LinkedList<>(), new LinkedList<>(),new LinkedList<>());
         boolean expResult2 = false;
         boolean result2 = instance2.validate();
         assertEquals(expResult2, result2);
         
         System.out.println("validate3");
         FlightPlan instance3 = new FlightPlan("FF0001A", 10, new Aircraft(), air1, air2,
-                new LinkedList<>(), new LinkedList<>());
+                new LinkedList<>(), new LinkedList<>(),new LinkedList<>());
         boolean expResult3 = false;
         boolean result3 = instance3.validate();
         assertEquals(expResult3, result3);
         
         System.out.println("validate4");
         FlightPlan instance4 = new FlightPlan("FF0001A", 10, a1, air1, air1,
-                new LinkedList<>(), new LinkedList<>());
+                new LinkedList<>(), new LinkedList<>(),new LinkedList<>());
         boolean expResult4 = false;
         boolean result4 = instance4.validate();
         assertEquals(expResult4, result4);

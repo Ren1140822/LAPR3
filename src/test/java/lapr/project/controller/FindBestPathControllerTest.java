@@ -198,7 +198,6 @@ public class FindBestPathControllerTest {
         FindBestPathController instance=new FindBestPathController(p);
         
         LinkedList<Airport> result=new LinkedList<>();
-        result.add(p.getAirportList().getAirportNode(startNode));
         result.add(p.getAirportList().getAirportNode(intNode));
         result.add(p.getAirportList().getAirportNode(endNode));
        
@@ -375,7 +374,7 @@ public class FindBestPathControllerTest {
         instance.createBestPathSimulation(startAirport, endAirport,TypePath.ALL);
         CabinConfiguration cc=new CabinConfiguration();
         AircraftModel am=new AircraftModel("", "", "", "", new Motorization(), 
-                1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, new LinkedList<>(),new LinkedList<>());
+                1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, new LinkedList<>());
        
         instance.setData(new Aircraft("", "", cc,3, am), 50, 10, 100,1);
         

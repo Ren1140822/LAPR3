@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -21,6 +22,11 @@ public class FlightPlan implements Serializable {
     private Airport destination;
     private List<Airport> technicalStops;
     private List<Node> mandatoryWaypoints;
+    /**
+     * List of Pattern
+     */
+    @XmlTransient
+    private List<Pattern> listPattern;
 
     /**
      * Default attributes
@@ -36,9 +42,10 @@ public class FlightPlan implements Serializable {
         minStopTime = DEFAULT_MIN_STOP_TIME;
         aircraft = new Aircraft();
         origin = new Airport();
-        destination =  new Airport();
-        technicalStops =  new LinkedList<>();
-        mandatoryWaypoints =  new LinkedList<>();
+        destination = new Airport();
+        technicalStops = new LinkedList<>();
+        mandatoryWaypoints = new LinkedList<>();
+        listPattern = new LinkedList<>();
     }
 
     /**
@@ -52,9 +59,9 @@ public class FlightPlan implements Serializable {
      * @param technicalStops
      * @param mandatoryWaypoints
      */
-    public FlightPlan(String flightDesignator, int minStopTime, Aircraft aircraft, 
-            Airport origin, Airport destination, LinkedList<Airport> technicalStops, 
-            LinkedList<Node> mandatoryWaypoints) {
+    public FlightPlan(String flightDesignator, int minStopTime, Aircraft aircraft,
+            Airport origin, Airport destination, LinkedList<Airport> technicalStops,
+            LinkedList<Node> mandatoryWaypoints, List<Pattern> listPattern) {
         this.flightDesignator = flightDesignator;
         this.minStopTime = minStopTime;
         this.aircraft = aircraft;
@@ -62,6 +69,7 @@ public class FlightPlan implements Serializable {
         this.destination = destination;
         this.technicalStops = technicalStops;
         this.mandatoryWaypoints = mandatoryWaypoints;
+        this.listPattern = listPattern;
     }
 
     /**
@@ -77,6 +85,7 @@ public class FlightPlan implements Serializable {
         this.destination = flight.destination;
         this.technicalStops = flight.technicalStops;
         this.mandatoryWaypoints = flight.mandatoryWaypoints;
+        this.listPattern = flight.listPattern;
     }
 
     @Override
@@ -111,13 +120,32 @@ public class FlightPlan implements Serializable {
         if (minStopTime < 0) {
             return false;
         }
-        if (getOrigin().equals(getDestination())){
+        if (getOrigin().equals(getDestination())) {
             return false;
         }
-        if(getTechnicalStops().contains(getOrigin()) || getTechnicalStops().contains(getDestination())){
+        if (getTechnicalStops().contains(getOrigin()) || getTechnicalStops().contains(getDestination())) {
             return false;
         }
-        
+        for(Node n: getMandatoryWaypoints()){
+            if (Double.doubleToLongBits(n.getLatitude())==
+                    Double.doubleToLongBits(getOrigin().getLocation().getLatitude()) &&
+                Double.doubleToLongBits(n.getLongitude())==
+                    Double.doubleToLongBits(getOrigin().getLocation().getLongitude()))
+                return false;
+            if (Double.doubleToLongBits(n.getLatitude())==
+                    Double.doubleToLongBits(getDestination().getLocation().getLatitude()) &&
+                Double.doubleToLongBits(n.getLongitude())==
+                    Double.doubleToLongBits(getDestination().getLocation().getLongitude()))
+                return false;
+            for (Airport a : getTechnicalStops()){
+                if (Double.doubleToLongBits(n.getLatitude())==
+                        Double.doubleToLongBits(a.getLocation().getLatitude()) &&
+                    Double.doubleToLongBits(n.getLongitude())==
+                        Double.doubleToLongBits(a.getLocation().getLongitude()))
+                    return false;
+            }
+        }
+
         return getAircraft().validate();
     }
 
@@ -203,7 +231,7 @@ public class FlightPlan implements Serializable {
      * @return the technicalStops
      */
     public List<Airport> getTechnicalStops() {
-        return technicalStops;
+        return this.technicalStops;
     }
 
     /**
@@ -227,4 +255,17 @@ public class FlightPlan implements Serializable {
         this.mandatoryWaypoints = mandatoryWaypoints;
     }
 
+    /**
+     * @return the listPattern
+     */
+    public List<Pattern> getListPattern() {
+        return listPattern;
+    }
+
+    /**
+     * @param listPattern the listPattern to set
+     */
+    public void setListPattern(List<Pattern> listPattern) {
+        this.listPattern = listPattern;
+    }
 }
