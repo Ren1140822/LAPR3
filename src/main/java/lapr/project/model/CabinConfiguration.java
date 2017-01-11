@@ -72,4 +72,11 @@ public class CabinConfiguration implements Serializable {
         return String.format("%s", mapOfClasses.keySet());
     }
 
+    /**
+     * @param mapOfClasses the mapOfClasses to set
+     */
+    public void setMapOfClasses(Map<String, Integer> mapOfClasses) {
+        this.mapOfClasses = mapOfClasses;
+    }
+
 }

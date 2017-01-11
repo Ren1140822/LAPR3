@@ -235,4 +235,17 @@ public class AirportTest {
         double result = instance.getAirdensityAirport();
         assertEquals(expResult, result, 0.5);
     }
+
+    /**
+     * Test of getAirdensity method, of class Airport.
+     */
+    @Test
+    public void testGetAirdensity() {
+        System.out.println("getAirdensity");
+        Airport instance = new Airport("OPO", "porto", "porto", "portugal", 
+                new Location(41.2481003, -8.6813898, 69));        
+        double expResult = 1.216;
+        double result = instance.getAirdensity();
+        assertEquals(expResult, result, 0.001);
+    }
 }

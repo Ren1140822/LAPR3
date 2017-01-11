@@ -37,7 +37,7 @@ public class FlightList implements Serializable {
             return false;
         }
 
-        for (FlightPlan f : flightList) {
+        for (FlightPlan f : getFlightList()) {
             if (flight.equals(f)) {
                 return false;
             }
@@ -46,7 +46,7 @@ public class FlightList implements Serializable {
     }
 
     private void add(FlightPlan flight) {
-        flightList.add(flight);
+        getFlightList().add(flight);
     }
 
     public boolean saveFlight(FlightPlan flight) {
@@ -55,5 +55,19 @@ public class FlightList implements Serializable {
             return true;
         }
         return false;
+    }
+
+    /**
+     * @return the flightList
+     */
+    public List<FlightPlan> getFlightList() {
+        return flightList;
+    }
+
+    /**
+     * @param flightList the flightList to set
+     */
+    public void setFlightList(List<FlightPlan> flightList) {
+        this.flightList = flightList;
     }
 }

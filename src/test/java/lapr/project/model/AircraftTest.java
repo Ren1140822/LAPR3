@@ -71,7 +71,7 @@ public class AircraftTest {
     @Test
     public void testGetRegistration() {
         System.out.println("getRegistration");
-        Aircraft instance =this.instance2;
+        Aircraft instance = new Aircraft(instance2);
         String expResult = "No Registration ID.";
         String result = instance.getRegistration();
         assertEquals(expResult, result);

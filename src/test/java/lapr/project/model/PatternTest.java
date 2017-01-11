@@ -89,7 +89,7 @@ public class PatternTest {
     @Test
     public void testGetvDesc() {
         System.out.println("getvDesc");
-        Pattern instance = new Pattern();
+        Pattern instance = new Pattern(new Pattern());
         double expResult = 0.0;
         double result = instance.getvDesc();
         assertEquals(expResult, result, 0.0);
