@@ -231,7 +231,7 @@ public class FlightPlan implements Serializable {
      * @return the technicalStops
      */
     public List<Airport> getTechnicalStops() {
-        return technicalStops;
+        return this.technicalStops;
     }
 
     /**

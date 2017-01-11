@@ -39,11 +39,11 @@ public class AddFlightPlanController {
         List<Node> mandinal = new LinkedList<>();
         for (Object o : stops){
             Airport a = (Airport) o;
-            stopfinal.add(getAirportByString(a.getName()));
+            stopfinal.add(a);
         }
         for (Object o : mand){
             Node n = (Node) o;
-            mandinal.add(getNodeByString(n.getId()));
+            mandinal.add(n);
         }
         flight.setFlightDesignator(name);
         flight.setMinStopTime(minStopTime);
@@ -88,11 +88,11 @@ public class AddFlightPlanController {
      * @param startNode origin node of airnetwork
      * @return list airports linked to the start node
      */
-    public List<Node> getPossibleEndAirportsByNode(String startAir){
+    public List<Node> getPossibleEndNodesByAirportId(String startAir){
         Airport a = project.getAirportList().getAirportByString(startAir);
         Node n = project.getAirNetwork().getAirportNode(a);
         if(a!=null && n!=null){
-            return project.getAirNetwork().getPossibleEndNodes(n);
+            return project.getPossibleEndNodes(n);
         }
         return new LinkedList<>();
     }

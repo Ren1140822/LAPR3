@@ -136,9 +136,9 @@ public class AddFlightPlanUI extends JDialog {
         String l5 = "Mandatory Nodes";
 
         listAirOri = new JList(controller.getAirportList().toArray());
-        listAirDest = new JList();
-        listAirStop = new JList();
-        listNodes = new JList();
+        listAirDest = new JList(new LinkedList().toArray());
+        listAirStop = new JList(new LinkedList().toArray());
+        listNodes = new JList(new LinkedList().toArray());
         listAircraft = new JList(controller.getAircraftsList().toArray());
 
         p.add(createPanelListButton(l1, listAircraft, createButtonAddAircraft()));
@@ -155,7 +155,7 @@ public class AddFlightPlanUI extends JDialog {
                         String s = listAirOri.getSelectedValue().toString();
                         listAirDest.setListData(controller.getPossibleEndAirportsByAirportID(s).toArray());
                         listAirStop.setListData(controller.getPossibleEndAirportsByAirportID(s).toArray());
-                        listNodes.setListData(controller.getPossibleEndAirportsByNode(s).toArray());
+                        listNodes.setListData(controller.getPossibleEndNodesByAirportId(s).toArray());
                     }
                 } catch (NullPointerException ex) {
                     System.err.println(ex);
@@ -353,13 +353,20 @@ public class AddFlightPlanUI extends JDialog {
                         "Error",
                         JOptionPane.ERROR_MESSAGE);
             }
-        } catch (NullPointerException | NumberFormatException ex) {
+        } catch (NumberFormatException ex) {
             JOptionPane.showMessageDialog(
                     null,
                     "Check all flight plan data, please!\n",
                     "Error",
                     JOptionPane.ERROR_MESSAGE);
             System.err.println(ex);
+        } catch (NullPointerException exx){
+            JOptionPane.showMessageDialog(
+                    null,
+                    "Check if you have selected aircraft, origin or destiantion, please!\n",
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE);
+            System.err.println(exx);
         }
     }
 
