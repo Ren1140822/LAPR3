@@ -7,6 +7,8 @@ package lapr.project.controller;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.LinkedList;
+import java.util.List;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
@@ -14,7 +16,6 @@ import lapr.project.model.AirNetwork;
 import lapr.project.model.Node;
 import lapr.project.model.Project;
 import lapr.project.model.Segment;
-import lapr.project.model.mapgraph.Graph;
 
 
 /**
@@ -49,11 +50,10 @@ public class ImportNetworkController {
                     && !network.getSegmentList().isEmpty()
                     && network.generateGraph();
             if(a){ 
+                network.setNodeList(removeDuplicatesNodes(network.getNodeList()));
+                network.setSegmentList(removeDuplicatesSegments(network.getSegmentList()));
                 project.setAirNetwork(network); 
-            }
-            System.out.println(network.toString());
-            System.out.println(project.getAirNetwork().getAirNetwork().toString());
-            
+            }            
             return a;
         } catch (JAXBException ex) { 
             System.err.println(ex);
@@ -61,4 +61,24 @@ public class ImportNetworkController {
         }
     }
     
+    
+    private List<Node> removeDuplicatesNodes(List<Node> list){
+        List<Node> listAux = new LinkedList<>();
+        for (Node n : list){
+            if(!listAux.contains(n)){
+                listAux.add(n);
+            }            
+        }
+        return listAux;
+    }
+    
+    private List<Segment> removeDuplicatesSegments(List<Segment> list){
+        List<Segment> listAux = new LinkedList<>();
+        for (Segment s : list){
+            if(!listAux.contains(s)){
+                listAux.add(s);
+            }            
+        }
+        return listAux;
+    }
 }
