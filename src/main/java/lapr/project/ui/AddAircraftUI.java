@@ -11,14 +11,10 @@ import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Vector;
 import java.util.regex.Pattern;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
@@ -30,7 +26,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
-import javax.swing.ListSelectionModel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 import lapr.project.controller.AddAircraftController;
@@ -218,13 +213,13 @@ public class AddAircraftUI extends JDialog {
         button.setPreferredSize(new Dimension(170, 30));
         button.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {
-                String className = JOptionPane.showInputDialog("Please insert a name for the class.");
+            public void actionPerformed(ActionEvent e) {                
                 try {
-                    int classSeats = Integer.parseInt(JOptionPane.showInputDialog("Please insert the number of seats for this class."));
-                    mapConfig.put(className, classSeats);                                     
-                    listclasses.setListData(mapConfig.keySet().toArray());
+                    String className = JOptionPane.showInputDialog("Please insert a name for the class.");
+                    int classSeats = Integer.parseInt(JOptionPane.showInputDialog("Please insert the number of seats for this class."));                    
                     if (!Pattern.matches("[0-9]+", className)) {
+                        mapConfig.put(className, classSeats);                                     
+                        listclasses.setListData(mapConfig.keySet().toArray());
                         JOptionPane.showMessageDialog(rootPane, "Data saved to this aircraft sucessfully.", "Sucess", JOptionPane.INFORMATION_MESSAGE);
                         btnSubmit.setEnabled(true);
                     } else {
