@@ -9,6 +9,9 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import lapr.project.model.Aircraft;
+import lapr.project.model.AircraftModel;
+import lapr.project.model.Motorization;
+import lapr.project.model.Thrust_Function;
 import org.junit.After;
 import org.junit.AfterClass;
 import static org.junit.Assert.*;
@@ -87,15 +90,54 @@ public class AircraftListTest {
         System.out.println("setAircraftData");
         String registration = "reg1";
         String company = "cmp1";
-        int nrOfSeatsEcon = 10;
-        int nrOfSeatsCommercial = 10;
         int NrOfElements = 10;
-        AircraftList instance = this.instance2;
+        AircraftList instance = new AircraftList(new LinkedList<>());
         instance.createAircraft();
         boolean expResult = true;
         boolean result = instance.setAircraftData(registration, company, new HashMap<String,Integer>(), NrOfElements);
         assertEquals(expResult, result);
         
+    }
+
+    /**
+     * Test of setAircraftModel method, of class AircraftList.
+     */
+    @Test
+    public void testSetAircraftModel() {
+        System.out.println("setAircraftModel");
+        AircraftModel model = new AircraftModel("id", "description", "maker", "passenger", 
+                new Motorization(4, "fd", "dsffv", 4, 4, 4, 4, new Thrust_Function()),
+                10, 10, 10, 10, 10, 10, 10, 10, 10, 10, new LinkedList<>());
+        AircraftList instance = new AircraftList(new AircraftList());
+        boolean expResult = true;
+        instance.createAircraft();
+        boolean result = instance.setAircraftModel(model);
+        assertEquals(expResult, result);
+    }
+
+    /**
+     * Test of getAircraftsListString method, of class AircraftList.
+     */
+    @Test
+    public void testGetAircraftsListString() {
+        System.out.println("getAircraftsListString");
+        AircraftList instance = new AircraftList();
+        List<String> expResult = new LinkedList<>();
+        List<String> result = instance.getAircraftsListString();
+        assertEquals(expResult, result);
+    }
+
+    /**
+     * Test of getAircraftByString method, of class AircraftList.
+     */
+    @Test
+    public void testGetAircraftByString() {
+        System.out.println("getAircraftByString");
+        String id = "";
+        AircraftList instance = new AircraftList();
+        Aircraft expResult = null;
+        Aircraft result = instance.getAircraftByString(id);
+        assertEquals(expResult, result);
     }
     
 }

@@ -6,7 +6,6 @@
 package lapr.project.controller;
 
 import java.io.File;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import lapr.project.model.AirNetwork;

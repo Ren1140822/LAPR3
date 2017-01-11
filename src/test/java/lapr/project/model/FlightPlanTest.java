@@ -98,6 +98,7 @@ public class FlightPlanTest {
         
         Airport air1 = new Airport("opo", "porto", "porto", "portugal", new Location(10, 10, 10));
         Airport air2 = new Airport("lis", "lisboa", "lisboa", "portugal", new Location(20, 20, 20));
+        Airport air3 = new Airport("fcl", "funchal", "funchal", "portugal", new Location(30, 30, 30));
         
         FlightPlan instance = new FlightPlan("FF0001A", 10, a1, air1, air2,
                 new LinkedList<>(), new LinkedList<>(),new LinkedList<>());
@@ -126,29 +127,38 @@ public class FlightPlanTest {
         boolean result4 = instance4.validate();
         assertEquals(expResult4, result4);
         
-//        System.out.println("validate5");
-//        FlightPlan instance5 = new FlightPlan();
-//        boolean expResult5 = false;
-//        boolean result5 = instance5.validate();
-//        assertEquals(expResult5, result5);
-//        
-//        System.out.println("validate6");
-//        FlightPlan instance6 = new FlightPlan();
-//        boolean expResult6 = false;
-//        boolean result6 = instance6.validate();
-//        assertEquals(expResult6, result6);
-//        
-//        System.out.println("validate7");
-//        FlightPlan instance7 = new FlightPlan();
-//        boolean expResult7 = false;
-//        boolean result7 = instance7.validate();
-//        assertEquals(expResult7, result7);
-//        
-//        System.out.println("validate8");
-//        FlightPlan instance8 = new FlightPlan();
-//        boolean expResult8 = false;
-//        boolean result8 = instance8.validate();
-//        assertEquals(expResult8, result8);
+        Node n1 = new Node("node1", 10, 10);
+        Node n2 = new Node("node1", 20, 20);
+        Node n3 = new Node("node1", 30, 30);
+        
+        System.out.println("validate5");
+        LinkedList<Airport> listairport = new LinkedList<>();
+        listairport.add(air1);
+        FlightPlan instance5 = new FlightPlan("FF0001A", 10, a1, air1, air2,
+                listairport, new LinkedList<>(),new LinkedList<>());
+        boolean expResult5 = false;
+        boolean result5 = instance5.validate();
+        assertEquals(expResult5, result5);
+        
+        System.out.println("validate6");
+        LinkedList<Node> listnodes = new LinkedList<>();
+        listnodes.add(n1);
+        FlightPlan instance6 = new FlightPlan("FF0001A", 10, a1, air1, air2,
+                new LinkedList<>(), listnodes,new LinkedList<>());
+        boolean expResult6 = false;
+        boolean result6 = instance6.validate();
+        assertEquals(expResult6, result6);
+        
+        System.out.println("validate7");
+        LinkedList<Airport> listairport2 = new LinkedList<>();
+        listairport2.add(air3);
+        LinkedList<Node> listnodes2 = new LinkedList<>();
+        listnodes2.add(n1);
+        FlightPlan instance7 = new FlightPlan("FF0001A", 10, a1, air1, air2,
+                listairport2, listnodes2,new LinkedList<>());
+        boolean expResult7 = false;
+        boolean result7 = instance7.validate();
+        assertEquals(expResult7, result7);
     }
 
     /**

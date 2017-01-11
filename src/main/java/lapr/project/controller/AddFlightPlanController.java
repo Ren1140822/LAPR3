@@ -113,10 +113,6 @@ public class AddFlightPlanController {
         return project.getAirportList().getAirportByString(id);
     }
     
-    private Node getNodeByString(String id){
-        return project.getAirNetwork().getNodeByString(id);
-    }
-    
     public boolean pattern(File ficheiro){
         try {
             Scanner fInput = new Scanner(ficheiro);  
