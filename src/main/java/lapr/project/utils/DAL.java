@@ -461,12 +461,14 @@ public class DAL {
         ResultSet rs = null;
 
         Connection con = null;
-        String query = "placeholder query";
+        String query = "{?= call get_air_network(?)}";
         con = connect();
 
-        try (PreparedStatement st = con.prepareStatement(query)) {
-
-            rs = st.executeQuery();
+        try (CallableStatement st = con.prepareCall(query)) {
+            st.setString(2, projectID);
+            st.registerOutParameter(1, OracleTypes.CURSOR);
+            st.execute();
+            rs = (ResultSet) st.getObject(1);
             while (rs.next()) {
                 String id = rs.getString("ID");
                 String description = rs.getString("description");
@@ -498,12 +500,14 @@ public class DAL {
         List<Node> nodes = new LinkedList<Node>();
         ResultSet rs = null;
         Connection con = null;
-        String query = "placeholder query (airnetworkID)";
+        String query = "{?= call get_nodes(?)}";
         con = connect();
 
-        try (PreparedStatement st = con.prepareStatement(query)) {
-
-            rs = st.executeQuery();
+        try (CallableStatement st = con.prepareCall(query)) {
+            st.setString(2, airNetworkID);
+            st.registerOutParameter(1, OracleTypes.CURSOR);
+            st.execute();
+            rs = (ResultSet) st.getObject(1);
             while (rs.next()) {
                 String nodeID = rs.getString("ID");
                 double latitude = rs.getDouble("Latitude");
@@ -533,11 +537,13 @@ public class DAL {
         ResultSet rs = null;
 
         Connection con = null;
-        String query = "placeholder query (airnetworkID)";
+          String query = "{?= call get_nodes(?)}";
         con = connect();
-        try (PreparedStatement st = con.prepareStatement(query)) {
-
-            rs = st.executeQuery();
+        try (CallableStatement st = con.prepareCall(query)) {
+            st.setString(2, airNetworkID);
+            st.registerOutParameter(1, OracleTypes.CURSOR);
+            st.execute();
+            rs = (ResultSet) st.getObject(1);
             while (rs.next()) {
                 String id = rs.getString("ID");
                 String startNode = rs.getString("startNode");
@@ -556,7 +562,7 @@ public class DAL {
                 Wind wind = getWindByID(id);
                 int minAltSlot = rs.getInt("minAltSlot");
                 int maxAltSlot = rs.getInt("maxAltSlot");
-//                Segment segment = new Segment(id, startNode, endNode, direction, wind, minAltSlot, maxAltSlot);
+//               Segment segment = new Segment(id, startNode, endNode, direction, wind, minAltSlot, maxAltSlot);
 //                segments.add(segment);
             }
         } catch (SQLException ex) {
