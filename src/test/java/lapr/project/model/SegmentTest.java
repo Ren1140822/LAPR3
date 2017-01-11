@@ -160,8 +160,8 @@ public class SegmentTest {
         
         System.out.println("equals2");
         Object otherObject2 = new Segment();
-        Segment instance2 =new Segment("", new Node(), new Node(), "direct", 
-                new Wind(15, 40),0,0);
+        Segment instance2 =new Segment("", new Node("a", 10, 0), new Node(), "direct", 
+                new Wind(15, 40),10,0);
         boolean expResult2 = false;
         boolean result2 = instance2.equals(otherObject2);
         assertEquals(expResult2, result2);

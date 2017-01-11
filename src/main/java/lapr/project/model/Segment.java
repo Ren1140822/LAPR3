@@ -293,12 +293,9 @@ public class Segment implements Serializable{
         Segment otherSegment = (Segment) otherObject;
         
         //to remove major error from sonarqube
-        boolean v1 = this.id.equals(otherSegment.id) &&
-                this.startNode.equals(otherSegment.startNode) &&
+        boolean v1 = this.startNode.equals(otherSegment.startNode) &&
                 this.endNode.equals(otherSegment.endNode);
-        boolean v2 = this.direction.equals(otherSegment.direction) &&
-                this.wind.equals(otherSegment.wind);
-        return v1 && v2;
+        return v1;
                 
     }
     
