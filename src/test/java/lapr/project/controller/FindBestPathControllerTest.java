@@ -323,10 +323,10 @@ public class FindBestPathControllerTest {
         instance.createBestPathSimulation(TypePath.SHORTEST_PATH);
         
         instance.calculatePath(TypePath.SHORTEST_PATH);
-        LinkedList<Node> result=new LinkedList<>();
-//        result.add(startNode);
-//        result.add(intNode);
-        assertEquals(instance.getSimulation().getShortestResultPath().getResultPath(), result);
+        LinkedList<Node> expResult=new LinkedList<>();
+        expResult.add(startNode);
+        expResult.add(intNode);
+        assertEquals(expResult,instance.getSimulation().getShortestResultPath().getResultPath());
     }
 
     /**

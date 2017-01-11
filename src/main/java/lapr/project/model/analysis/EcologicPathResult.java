@@ -7,32 +7,31 @@ package lapr.project.model.analysis;
 
 import java.util.LinkedList;
 import lapr.project.model.AirNetwork;
-import lapr.project.model.Aircraft;
-import lapr.project.model.Airport;
 import lapr.project.model.FlightPlan;
 import lapr.project.model.Node;
-
-import lapr.project.model.mapgraph.GraphAlgorithms;
 
 /**
  *
  * @author DianaSilva
  */
 public class EcologicPathResult extends ResultPath implements BestPathInterface{
+    private FlightPlan flightPlan;
+    
     /**
      * Constructor
+     * @param flightPlan
      */
-    public EcologicPathResult(){
+    public EcologicPathResult(FlightPlan flightPlan){
         super();
+        this.flightPlan=flightPlan;
     }
     
     @Override
-    public void calculateBestPath(AirNetwork airNetwork, Node start, Node end) {
+    public void calculateBestPath(AirNetwork airNetwork) {
         LinkedList<Node> ecologicPath=(LinkedList<Node>)super.getResultPath();
         /**corrigir**/
-        double res=GraphAlgorithms.shortestPath(airNetwork.getAirNetwork(), 
-                start, end, ecologicPath);
-        super.setResult(res);
+        
+        super.setResult(0);
         super.setResultPath(ecologicPath);
     }
 }
