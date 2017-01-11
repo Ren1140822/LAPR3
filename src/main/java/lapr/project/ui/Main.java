@@ -1,7 +1,5 @@
 package lapr.project.ui;
 
-import lapr.project.model.Project;
-
 /**
  * @author Nuno Bettencourt <nmb@isep.ipp.pt> on 24/05/16.
  */
@@ -20,7 +18,8 @@ class Main {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        MenuUI ui = new MenuUI();
-       
+       MenuUI ui = new MenuUI();
+//         DALController dalc= new DALController();
+//    dalc.test();
     }
 }

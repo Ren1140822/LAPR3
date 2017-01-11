@@ -17,6 +17,7 @@ import lapr.project.model.Aircraft;
 import lapr.project.model.AircraftModel;
 import lapr.project.model.Airport;
 import lapr.project.model.CabinConfiguration;
+import lapr.project.model.FlightPlan;
 import lapr.project.model.Iten;
 import lapr.project.model.Location;
 import lapr.project.model.Motorization;
@@ -119,7 +120,7 @@ public class DAL {
 
             st.setString(2, projectID);
             st.registerOutParameter(1, OracleTypes.CURSOR);
-            st.execute();
+            st.executeQuery();
             rs = (ResultSet) st.getObject(1);
             while (rs.next()) {
                 int locationID = rs.getInt("LocationID");
@@ -127,12 +128,9 @@ public class DAL {
                 String name = rs.getString("Name");
                 String country = rs.getString("Country");
                 String town = rs.getString("Town");
-
-                Location location = getLocationByID(locationID);
+                Location location = getLocationByID(con,locationID);
                 Airport airport = new Airport(IATA, name, town, country, location);
-
                 airportList.add(airport);
-
             }
         } catch (SQLException ex) {
             Logger.getLogger(DAL.class.getName()).log(Level.SEVERE, null, ex);
@@ -148,9 +146,9 @@ public class DAL {
      * @param locationID the location ID
      * @return the location object
      */
-    private Location getLocationByID(int locationID) {
+    private Location getLocationByID(Connection con ,int locationID) {
         Location location = null;
-        Connection con = null;
+       
 
         ResultSet rs = null;
         String query = "{ ?= call get_location(?)}";
@@ -256,6 +254,42 @@ public class DAL {
         return config;
     }
 
+    private Airport getAirportByID(int airportID) {
+        Airport ap = null;
+        Connection con = null;
+
+        ResultSet rs = null;
+        Map<String, Integer> map = new HashMap<>();
+        con = connect();
+        String query = "{ ?= call get_airport(?)}";
+        try (CallableStatement st2 = con.prepareCall(query)) {
+            st2.setInt(2, airportID);
+            st2.registerOutParameter(1, OracleTypes.CURSOR);
+            st2.execute();
+            rs = (ResultSet) st2.getObject(1);
+            while (rs.next()) {
+                int locationID = rs.getInt("LocationID");
+                String IATA = rs.getString("IATA");
+                String name = rs.getString("Name");
+                String country = rs.getString("Country");
+                String town = rs.getString("Town");
+
+                Location location = getLocationByID(con,locationID);
+                ap = new Airport(IATA, name, town, country, location);
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(DAL.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                con.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(DAL.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return ap;
+    }
+
     /**
      * Gets the aircraftModel by ID.
      *
@@ -312,6 +346,172 @@ public class DAL {
     }
 
     /**
+     * Gets the aircraftModel by ID.
+     *
+     * @param aircraftModelD the aircraftModel model ID
+     * @return the aircraftModel model object
+     */
+    public List<AircraftModel> getAircraftModelList(int projectlD) {
+        List<AircraftModel> modelList = new LinkedList<>();
+        AircraftModel model = null;
+        Connection con = null;
+
+        ResultSet rs = null;
+        List<Iten> itemList = new LinkedList<Iten>();
+        List<Pattern> patternList = new LinkedList<Pattern>();
+        String query = "{?= call get_aircraft_model(?)}";
+        con = connect();
+
+        try (CallableStatement st = con.prepareCall(query)) {
+            st.setInt(2, projectlD);
+            st.registerOutParameter(1, OracleTypes.CURSOR);
+            st.execute();
+            rs = (ResultSet) st.getObject(1);
+
+            while (rs.next()) {
+                String id = rs.getString("id");
+                String description = rs.getString("description");
+                String maker = rs.getString("maker");
+                String type = rs.getString("type");
+                int motorizationID = rs.getInt("motorizationid");
+                Motorization motorization = getMotorizationByID(motorizationID);
+                double eWeight = rs.getDouble("eWeight");
+                double MTOW = rs.getDouble("MTOW");
+                double maxPayload = rs.getDouble("maxpayload");
+                double VMO = rs.getDouble("VMO");
+                double MMO = rs.getDouble("MMO");
+                double fuelCapacity = rs.getDouble("fuelCapacity");
+                double aspectRatio = rs.getDouble("aspect_rate");
+                double wingArea = rs.getDouble("wingArea");
+                double wingSpan = rs.getDouble("wingSpan");
+                double e = rs.getDouble("e");
+
+                itemList = getItemByID(id);
+                //int patternID = rs.getInt("pattern");
+
+                model = new AircraftModel(id, description, maker, type, motorization, eWeight, MTOW, maxPayload, fuelCapacity, VMO, MMO, wingArea, wingSpan, aspectRatio, e, itemList);
+                modelList.add(model);
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(DAL.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            close(con);
+
+        }
+        return modelList;
+    }
+
+    public List<FlightPlan> getFlightPlanList(int projectlD, List<Airport> apList) {
+        List<FlightPlan> planList = new LinkedList<>();
+        FlightPlan plan = null;
+        Connection con = null;
+
+        ResultSet rs = null;
+
+        String query = "{?= call get_flightplans(?)}";
+        con = connect();
+
+        try (CallableStatement st = con.prepareCall(query)) {
+            st.setInt(2, projectlD);
+            st.registerOutParameter(1, OracleTypes.CURSOR);
+            st.execute();
+            rs = (ResultSet) st.getObject(1);
+
+            while (rs.next()) {
+                String designator = rs.getString("flightdesignator");
+                int minStopTime = rs.getInt("minstoptime");
+                Airport origin = getAirportByID(rs.getInt("origin"));
+                Airport dest = getAirportByID(rs.getInt("destination"));
+                LinkedList<Airport> stops = getStopsList(designator);
+                LinkedList<Node> waypoints = getWaypointsList(designator);
+                LinkedList<Pattern> patterns = getPatternByID(designator);
+                plan = new FlightPlan(designator, minStopTime, new Aircraft(), origin, dest, stops, waypoints, patterns);
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(DAL.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            close(con);
+
+        }
+        return planList;
+    }
+
+    public LinkedList<Airport> getStopsList(String fpID) {
+        LinkedList<Airport> airportList = new LinkedList<Airport>();
+        FlightPlan plan = null;
+        Connection con = null;
+
+        ResultSet rs = null;
+
+        String query = "{?= call get_techicalstops(?)}";
+        con = connect();
+
+        try (CallableStatement st = con.prepareCall(query)) {
+            st.setString(2, fpID);
+            st.registerOutParameter(1, OracleTypes.CURSOR);
+            st.execute();
+            rs = (ResultSet) st.getObject(1);
+
+            while (rs.next()) {
+                int locationID = rs.getInt("LocationID");
+                String IATA = rs.getString("IATA");
+                String name = rs.getString("Name");
+                String country = rs.getString("Country");
+                String town = rs.getString("Town");
+
+                Location location = getLocationByID(con,locationID);
+                Airport airport = new Airport(IATA, name, town, country, location);
+
+                airportList.add(airport);
+
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(DAL.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            close(con);
+
+        }
+        return airportList;
+    }
+
+    public LinkedList<Node> getWaypointsList(String fpID) {
+        LinkedList<Node> nodes = new LinkedList<>();
+        FlightPlan plan = null;
+        Connection con = null;
+
+        ResultSet rs = null;
+
+        String query = "{?= call get_mandatorywaypoints(?)}";
+        con = connect();
+
+        try (CallableStatement st = con.prepareCall(query)) {
+            st.setString(2, fpID);
+            st.registerOutParameter(1, OracleTypes.CURSOR);
+            st.execute();
+            rs = (ResultSet) st.getObject(1);
+
+            while (rs.next()) {
+                String nodeID = rs.getString("ID");
+                double latitude = rs.getDouble("Latitude");
+                double longitude = rs.getDouble("Longitude");
+                Node n = new Node(nodeID, latitude, longitude);
+                nodes.add(n);
+
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(DAL.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            close(con);
+
+        }
+        return nodes;
+    }
+
+    /**
      * Gets the item by ID.
      *
      * @param itemID the item id
@@ -350,16 +550,16 @@ public class DAL {
      * @param patternID the pattern id
      * @return the pattern object
      */
-    private List<Pattern> getPatternByID(int patternID) {
+    private LinkedList<Pattern> getPatternByID(String flightDesignator) {
         Pattern pattern = null;
-        List<Pattern> patternList = new LinkedList<>();
+        LinkedList<Pattern> patternList = new LinkedList<>();
         Connection con = null;
 
         ResultSet rs = null;
-        String query = "{?= call get_itens(?)}";
+        String query = "{?= call get_patterns(?)}";
         con = connect();
         try (CallableStatement st = con.prepareCall(query)) {
-            st.setInt(2, patternID);
+            st.setString(2, flightDesignator);
             st.registerOutParameter(1, OracleTypes.CURSOR);
             st.execute();
             rs = (ResultSet) st.getObject(1);
@@ -449,6 +649,32 @@ public class DAL {
         return thrust;
     }
 
+    private Node getNodeByID(String nodeID) {
+        Node node = null;
+        Connection con = null;
+
+        ResultSet rs = null;
+        String query = "{?= call get_node(?)}";
+        con = connect();
+        try (CallableStatement st = con.prepareCall(query)) {
+            st.setString(2, nodeID);
+            st.registerOutParameter(1, OracleTypes.CURSOR);
+            st.execute();
+            rs = (ResultSet) st.getObject(1);
+            while (rs.next()) {
+                double lat = rs.getDouble("latitude");
+                double longitude = rs.getDouble("longitude");
+                String id = rs.getString("id");
+                node = new Node(id, longitude, longitude);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DAL.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            close(con);
+        }
+        return node;
+    }
+
     /**
      * Gets the air network by project ID.
      *
@@ -470,11 +696,11 @@ public class DAL {
             st.execute();
             rs = (ResultSet) st.getObject(1);
             while (rs.next()) {
-                String id = rs.getString("ID");
+                int id = rs.getInt("ID");
                 String description = rs.getString("description");
                 List<Node> nodes = getNodesListByID(id);
                 List<Segment> segments = getSegmentsListByID(id, nodes);
-                airNetwork.setId(id);
+                airNetwork.setId(String.valueOf(id));
                 airNetwork.setDescription(description);
                 airNetwork.setNodeList(nodes);
                 airNetwork.setSegmentList(segments);
@@ -495,7 +721,7 @@ public class DAL {
      * @param airNetworkID the airnetwork id
      * @return the list of nodes
      */
-    private List<Node> getNodesListByID(String airNetworkID) {
+    private List<Node> getNodesListByID(int airNetworkID) {
 
         List<Node> nodes = new LinkedList<Node>();
         ResultSet rs = null;
@@ -504,7 +730,7 @@ public class DAL {
         con = connect();
 
         try (CallableStatement st = con.prepareCall(query)) {
-            st.setString(2, airNetworkID);
+            st.setInt(2, airNetworkID);
             st.registerOutParameter(1, OracleTypes.CURSOR);
             st.execute();
             rs = (ResultSet) st.getObject(1);
@@ -512,7 +738,7 @@ public class DAL {
                 String nodeID = rs.getString("ID");
                 double latitude = rs.getDouble("Latitude");
                 double longitude = rs.getDouble("Longitude");
-                Node n = new Node(url, latitude, longitude);
+                Node n = new Node(nodeID, latitude, longitude);
                 nodes.add(n);
 
             }
@@ -531,23 +757,23 @@ public class DAL {
      * @param airNetworkID the airnetwork id
      * @return the segment list
      */
-    private List<Segment> getSegmentsListByID(String airNetworkID, List<Node> nodes) {
+    private List<Segment> getSegmentsListByID(int airNetworkID, List<Node> nodes) {
 
         List<Segment> segments = new LinkedList<Segment>();
         ResultSet rs = null;
 
         Connection con = null;
-        String query = "{?= call get_nodes(?)}";
+        String query = "{?= call get_segments(?)}";
         con = connect();
         try (CallableStatement st = con.prepareCall(query)) {
-            st.setString(2, airNetworkID);
+            st.setInt(2, airNetworkID);
             st.registerOutParameter(1, OracleTypes.CURSOR);
             st.execute();
             rs = (ResultSet) st.getObject(1);
             while (rs.next()) {
                 String id = rs.getString("ID");
-                String startNode = rs.getString("startNode");
-                String endNode = rs.getString("endNode");
+                String startNode = rs.getString("startnode");
+                String endNode = rs.getString("ENDNODE");
                 Node realStartNode = null;
                 Node realEndNode = null;
                 for (Node n : nodes) {
@@ -558,12 +784,13 @@ public class DAL {
                         realEndNode = n;
                     }
                 }
+                int windID = rs.getInt("windid");
                 String direction = rs.getString("direction");
-                Wind wind = getWindByID(id);
+                Wind wind = getWindByID(windID);
                 int minAltSlot = rs.getInt("minAltSlot");
                 int maxAltSlot = rs.getInt("maxAltSlot");
-//               Segment segment = new Segment(id, startNode, endNode, direction, wind, minAltSlot, maxAltSlot);
-//                segments.add(segment);
+                Segment segment = new Segment(id, realStartNode, realEndNode, direction, wind, minAltSlot, maxAltSlot);
+                segments.add(segment);
             }
         } catch (SQLException ex) {
             Logger.getLogger(DAL.class.getName()).log(Level.SEVERE, null, ex);
@@ -580,21 +807,23 @@ public class DAL {
      * @param segmentID the id of the segment
      * @return the wind object
      */
-    private Wind getWindByID(String segmentID) {
+    private Wind getWindByID(int windID) {
 
         Wind wind = null;
         ResultSet rs = null;
 
         Connection con = null;
-        String query = "placeholder query (segmentID)";
+        String query = "{?= call get_wind(?)}";
         con = connect();
-        try (PreparedStatement st = con.prepareStatement(query)) {
-
-            rs = st.executeQuery();
+        try (CallableStatement st = con.prepareCall(query)) {
+            st.setInt(2, windID);
+            st.registerOutParameter(1, OracleTypes.CURSOR);
+            st.execute();
+            rs = (ResultSet) st.getObject(1);
             while (rs.next()) {
 
-                double intensity = rs.getDouble("windIntensity");
-                double direction = rs.getDouble("windDirection");
+                double intensity = rs.getDouble("Intensity");
+                double direction = rs.getDouble("Direction");
                 wind = new Wind(intensity, direction);
             }
         } catch (SQLException ex) {
@@ -691,21 +920,23 @@ public class DAL {
     private boolean WriteItensToDatabase(Connection con, List<Iten> itenList, String modelid) {
 
         boolean ret = false;
-        for (Iten item : itenList) {
-            try (CallableStatement st = con.prepareCall("{call insert_iten(?,?,?)}")) {
+
+        try (CallableStatement st = con.prepareCall("{call insert_iten(?,?,?)}")) {
+            for (Iten item : itenList) {
                 st.setDouble(1, item.getCdrag_0());
                 st.setDouble(2, item.getSpeed());
                 st.setString(3, modelid);
                 ret = st.execute();
-            } catch (SQLException ex) {
-                Logger.getLogger(DAL.class.getName()).log(Level.SEVERE, null, ex);
-                System.out.println(ex.toString());
             }
+        } catch (SQLException ex) {
+            Logger.getLogger(DAL.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println(ex.toString());
         }
+
         return true;
     }
 
-    private boolean WritePatternsToDatabase(Connection con, List<Pattern> plist, String modelid) {
+    private boolean WritePatternsToDatabase(Connection con, List<Pattern> plist, String fpid) {
 
         boolean ret = false;
         for (Pattern p : plist) {
@@ -713,7 +944,7 @@ public class DAL {
                 st.setDouble(1, p.getAltitude());
                 st.setDouble(2, p.getvClimb());
                 st.setDouble(3, p.getvDesc());
-                st.setString(4, modelid);
+                st.setString(4, fpid);
                 ret = st.execute();
             } catch (SQLException ex) {
                 Logger.getLogger(DAL.class.getName()).log(Level.SEVERE, null, ex);
@@ -835,6 +1066,75 @@ public class DAL {
             } finally {
                 close(con);
             }
+        }
+        return true;
+    }
+
+    public boolean WriteFlightPlansToDatabase(List<FlightPlan> plans, int projectID) {
+        Connection con = null;
+        con = connect();
+        boolean ret = false;
+
+        try (CallableStatement st = con.prepareCall("{call insert_flightplan(?,?,?,?,?,?)}")) {
+            for (FlightPlan plan : plans) {
+
+                st.setInt(1, projectID);
+                st.setString(2, plan.getFlightDesignator());
+                st.setInt(3, plan.getMinStopTime());
+                st.setString(4, plan.getOrigin().getIATA());
+                st.setString(5, plan.getDestination().getIATA());
+                 st.setString(6, plan.getAircraft().getRegistration());
+                 ret = st.execute();
+                WriteStopsToDatabase(plan.getTechnicalStops(), plan.getFlightDesignator());
+                WritePatternsToDatabase(con, plan.getListPattern(), plan.getFlightDesignator());
+                WriteWaypointsToDatabase(plan.getMandatoryWaypoints(),  plan.getFlightDesignator());
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DAL.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println(ex.toString());
+        } finally {
+            close(con);
+        }
+        return true;
+    }
+
+    public boolean WriteStopsToDatabase(List<Airport> stops, String fpID) {
+        Connection con = null;
+        con = connect();
+        boolean ret = false;
+
+        try (CallableStatement st = con.prepareCall("{call insert_stops(?,?)}")) {
+            for (Airport ap : stops) {
+                st.setString(1, fpID);
+                st.setString(2, ap.getIATA());
+
+                ret = st.execute();
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DAL.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println(ex.toString());
+        } finally {
+            close(con);
+        }
+        return true;
+    }
+
+    public boolean WriteWaypointsToDatabase(List<Node> nodes, String fpID) {
+        Connection con = null;
+        con = connect();
+        boolean ret = false;
+
+        try (CallableStatement st = con.prepareCall("{call insert_waypoint(?,?)}")) {
+            for (Node n : nodes) {
+                st.setString(1, fpID);
+                st.setString(2, n.getId());
+                ret = st.execute();
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DAL.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println(ex.toString());
+        } finally {
+            close(con);
         }
         return true;
     }
