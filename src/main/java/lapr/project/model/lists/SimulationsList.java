@@ -7,8 +7,6 @@ package lapr.project.model.lists;
 
 import java.io.Serializable;
 import java.util.LinkedList;
-import java.util.List;
-import javax.xml.bind.annotation.XmlTransient;
 import lapr.project.model.analysis.Simulation;
 
 /**
@@ -27,15 +25,6 @@ public class SimulationsList implements Serializable {
      * The simulation created
      */   
     private transient Simulation simulation;
-   
-    
-    /**
-     * Type of simulation
-     */
-    @XmlTransient
-    private enum Type{
-        SHORTEST_PATH, ECOLOGIC_PATH, FASTEST_PATH
-    }
     
     /**
      * Constructor

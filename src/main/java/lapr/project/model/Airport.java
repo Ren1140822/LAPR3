@@ -180,6 +180,18 @@ public class Airport implements Serializable {
         location.setLongitude(longitude);
     }
     
+     /**
+     * Get air density of airport
+     * @return 
+     */
+    public double getAirdensity(){
+        double altitude=getLocation().getAltitude();
+        double pressure=PhysicsAlgorithms.calculateAbsolutePressure(altitude);
+        double temperature=PhysicsAlgorithms.calculateAbsoluteTemperature(altitude);
+        
+        return PhysicsAlgorithms.calculateAirDensity(pressure, temperature);
+    }
+    
     /**
      * Returns a string description of this object.
      *

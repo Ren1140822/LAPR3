@@ -7,6 +7,7 @@ package lapr.project.model.analysis;
 
 import java.util.LinkedList;
 import lapr.project.model.AirNetwork;
+import lapr.project.model.Aircraft;
 import lapr.project.model.Airport;
 import lapr.project.model.Node;
 import lapr.project.model.mapgraph.GraphAlgorithms;
@@ -15,53 +16,27 @@ import lapr.project.model.mapgraph.GraphAlgorithms;
  * The class to store and manage result data of shortest path analysis
  * @author DianaSilva
  */
-public class ShortestPathResult extends ResultPath {
+public class ShortestPathResult extends ResultPath implements BestPathInterface {
     /**
      * Constructor
      */
     public ShortestPathResult(){
         super();
     }
-    
-    /**
-     * Constructor
-     * @param startAirport
-     * @param endAirport 
-     */
-    public ShortestPathResult(Airport startAirport, Airport endAirport){
-        super(startAirport, endAirport);
-    }
-    
+  
      /**
      * Calculates the shortest path
      * @param airNetwork airnetwork of active project
+     * @param start
+     * @param end
      */
     @Override
-    public void calculateBestPath(AirNetwork airNetwork){
+    public void calculateBestPath(AirNetwork airNetwork, Node start, Node end){
         LinkedList<Node> shortPath=new LinkedList<>();
         double res=GraphAlgorithms.shortestPath(airNetwork.getAirNetwork(), 
-                super.getStartNode(airNetwork), super.getEndNode(airNetwork), shortPath);
+                start, end, shortPath);
      
         super.setResult(res);
         super.setResultPath(shortPath);
-    }
-    
-    /**
-     * Get distance of result path (m)
-     * @return distance (m)
-     */
-    @Override
-    public double getDistance(){
-        return super.getResult();
-    }
-    
-      
-    /**
-     * Sets the distance result
-     * @param res
-     */
-    @Override
-    public  void setDistance(double res){
-        super.setResult(res);
     }
 }

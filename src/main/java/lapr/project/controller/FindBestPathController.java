@@ -9,6 +9,7 @@ import java.util.LinkedList;
 import java.util.List;
 import lapr.project.model.Aircraft;
 import lapr.project.model.Airport;
+import lapr.project.model.FlightPlan;
 import lapr.project.model.Node;
 import lapr.project.model.Project;
 import lapr.project.model.analysis.ResultPath;
@@ -92,35 +93,41 @@ public class FindBestPathController {
      * @param startNode origin of flight simulation
      * @param endNode destination of flight simulation
      * @return true if creates new simulation, false if start airport or
-    end airport doesn´t exists
+    end airport doesnÂ´t exists
     */
-    public void createBestPathSimulation(Airport startAirport, Airport endAirport, TypePath type){   
-       project.getSimulationsList().getSimulation().createPathSimulation(startAirport, endAirport, type);
+    public void createBestPathSimulation(TypePath type){   
+       project.getSimulationsList().getSimulation().createPathSimulation(type);
     }   
     
     /**
      * Set the data introduced by the user 
+     * @param startAirport
+     * @param endAirport
      * @param aircraft
      * @param passengers
      * @param crew
      * @param cargoLoad 
      * @param fuelLoad 
      */
-    public void setData(Aircraft aircraft, int passengers, int crew, double cargoLoad, double fuelLoad){
-        project.getSimulationsList().getSimulation().setData(aircraft, passengers, crew, cargoLoad, fuelLoad);
+    public void setData(Airport startAirport, Airport endAirport,
+            Aircraft aircraft, int passengers, int crew, 
+            double cargoLoad, double fuelLoad){
+        project.getSimulationsList().getSimulation().setData(passengers, 
+                crew, cargoLoad, fuelLoad, startAirport, endAirport, aircraft);
     }
     
     /**
      * Calculates the ecologic best path
-     * @param type type of path simulated
+     * @param type
+     * @return 
      */
-    public void calculatePath(TypePath type){
-        project.getSimulationsList().getSimulation().calculateBestPath(type, project.getAirNetwork());
+    public boolean calculatePath(TypePath type){
+        return project.getSimulationsList().getSimulation().calculateBestPath( type, project.getAirNetwork());
     }
       /**
        * Get the simulation resulte receiving the type of simulation by parameter
        * @param type type of simulation (shortest, fastest, ecologic
-       * @return the result of simulation´s type
+       * @return the result of simulationÂ´s type
        */
       public ResultPath getResult(TypePath type){
           return project.getSimulationsList().getSimulation().getResult(type);
@@ -132,7 +139,7 @@ public class FindBestPathController {
        * @return the travelling time result (min)
        */
       public double getTravellingTime(TypePath type) {
-        return getResult(type).getTravellingTime()/60;
+        return getResult(type).getTravellingTime();
       }
       
        /**
@@ -141,7 +148,7 @@ public class FindBestPathController {
        * @return the distance (km)
        */
       public double getDistance(TypePath type) {
-        return getResult(type).getDistance()/1000;
+        return getResult(type).getDistance();
       }
       
       /**

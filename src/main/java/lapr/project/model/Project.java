@@ -331,7 +331,7 @@ public class Project implements Serializable {
         LinkedList<Simulation> results = new LinkedList<>();
         List<Simulation> sims = getSimulationsList().getSimulationsList();
         for (Simulation s : sims) {
-            if (s.getAircraft().getAircraftModel().getType().equals(type)) {
+            if (s.getFlightPlan().getAircraft().getAircraftModel().getType().equals(type)) {
                 results.add(s);
             }
         }
@@ -342,7 +342,7 @@ public class Project implements Serializable {
         LinkedList<String> listSimulated = new LinkedList<>();
         LinkedList<Simulation> sims = getSimulationsList().getSimulationsList();
         for (Simulation s : sims) {
-            String a = s.getAircraft().getAircraftModel().getType();
+            String a = s.getFlightPlan().getAircraft().getAircraftModel().getType();
             if (!listSimulated.contains(a)) {
                 listSimulated.add(a);
             }

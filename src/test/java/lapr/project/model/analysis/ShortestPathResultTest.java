@@ -82,12 +82,12 @@ public class ShortestPathResultTest {
         p.getAirportList().getAirportList().add(endAirport);
         
         Simulation instance=new Simulation();
-        instance.createAllPathSimulation(startAirport, endAirport);
-        instance.getShortestResultPath().calculateBestPath(airnetwork);
+        instance.createPathSimulation(TypePath.SHORTEST_PATH);
+        instance.getShortestResultPath().calculateBestPath(airnetwork, startNode, endNode);
 
         LinkedList<Node> result=new LinkedList<>();
         result.add(startNode);
-        result.add(intNode);
+        result.add(endNode);
         assertEquals(instance.getShortestResultPath().getResultPath(), result);
     }
     

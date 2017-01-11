@@ -376,7 +376,7 @@ public class FindBestPathUI extends JDialog{
                 try{
                     Airport startAirportSelected=(Airport)listStartAirports.getSelectedValue();
                     Airport endAirportSelected=(Airport) listEndAirports.getSelectedValue();
-                    controller.createBestPathSimulation(startAirportSelected, endAirportSelected, TypePath.ECOLOGIC_PATH);
+                    controller.createBestPathSimulation( TypePath.ECOLOGIC_PATH);
                     setData();
                     controller.calculatePath(TypePath.ECOLOGIC_PATH);
                     openResultWindow(TypePath.ECOLOGIC_PATH);
@@ -408,7 +408,7 @@ public class FindBestPathUI extends JDialog{
                 try{
                     Airport startAirportSelected=(Airport)listStartAirports.getSelectedValue();
                     Airport endAirportSelected=(Airport) listEndAirports.getSelectedValue();
-                    controller.createBestPathSimulation(startAirportSelected, endAirportSelected,TypePath.ALL);
+                    controller.createBestPathSimulation(TypePath.ALL);
                     setData();
                     controller.calculatePath(TypePath.ALL);
                     
@@ -443,19 +443,22 @@ public class FindBestPathUI extends JDialog{
     
     private void setData(){
         Aircraft aircraft=(Aircraft) listAircrafts.getSelectedValue();
+        Airport startAirportSelected=(Airport)listStartAirports.getSelectedValue();
+        Airport endAirportSelected=(Airport) listEndAirports.getSelectedValue();
         int passenger=Integer.parseInt(txtPassenger.getText());
         int crew= Integer.parseInt(txtCrew.getText());
         double cargo= Double.parseDouble(txtCargoLoad.getText());
         double fuel=Double.parseDouble(txtFuelLoad.getText());
         
-        controller.setData(aircraft,passenger, crew,cargo,fuel);    
+        controller.setData(startAirportSelected, endAirportSelected,aircraft,
+                passenger, crew,cargo,fuel);    
     }
  
     private void createSimulation(TypePath type){
         
         Airport startAirportSelected=(Airport)listStartAirports.getSelectedValue();
         Airport endAirportSelected=(Airport) listEndAirports.getSelectedValue();
-        controller.createBestPathSimulation(startAirportSelected, endAirportSelected, type);
+        controller.createBestPathSimulation(type);
         if(listAircrafts.getSelectedValue()==null || !validateData()){
             int dialogButton=JOptionPane.YES_NO_OPTION;
             dialogResult = JOptionPane.showConfirmDialog (frame,"You didn´t "

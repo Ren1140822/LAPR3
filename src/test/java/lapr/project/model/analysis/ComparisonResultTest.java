@@ -5,11 +5,6 @@
  */
 package lapr.project.model.analysis;
 
-import lapr.project.model.analysis.EcologicPathResult;
-import lapr.project.model.analysis.ComparisonResult;
-import lapr.project.model.analysis.FastestPathResult;
-import lapr.project.model.analysis.ShortestPathResult;
-import lapr.project.model.analysis.Simulation;
 import java.util.LinkedList;
 import lapr.project.model.Airport;
 import org.junit.After;
@@ -21,7 +16,7 @@ import static org.junit.Assert.*;
 
 /**
  *
- * @author NANA
+ * @author Diana Silva
  */
 public class ComparisonResultTest {
     
@@ -215,14 +210,20 @@ public class ComparisonResultTest {
         ComparisonResult instance = new ComparisonResult();
         LinkedList<Simulation> list=(LinkedList<Simulation>) instance.getSimulationsCompared();
         Simulation s=new Simulation();
-        s.createAllPathSimulation(new Airport(), new Airport());
+        s.createPathSimulation(TypePath.ALL);
         double dist1=200;
         double dist2=300;
        
-        s.getEcologicResultPath().setDistance(dist1);
-        s.getFastestResultPath().setDistance(dist2);
+        SegmentResult seg=new SegmentResult();
+        seg.setDistance(dist1);
+        
+        SegmentResult seg2=new SegmentResult();
+        seg2.setDistance(dist2);
+        s.getEcologicResultPath().getSegments().add(0, seg);
+        s.getFastestResultPath().getSegments().add(0, seg2);
         
         list.add(s);
+ 
         double expResult=250;
         
         instance.calculateTotalAverage();
@@ -253,11 +254,25 @@ public class ComparisonResultTest {
     public void testToStringCompare() {
         System.out.println("toStringCompare");
         Simulation sim= new Simulation();
-        sim.createAllPathSimulation(new Airport(), new Airport());
+        sim.createPathSimulation(TypePath.ALL);
         ComparisonResult instance = new ComparisonResult();
-        sim.getEcologicResultPath().setDistance(100);
-        sim.getShortestResultPath().setDistance(200);
-        sim.getFastestResultPath().setDistance(300);
+        double dist1=100;
+        double dist2=200;
+        double dist3=300;
+        
+        
+        SegmentResult seg=new SegmentResult();
+        seg.setDistance(dist1);
+        
+        SegmentResult seg2=new SegmentResult();
+        seg2.setDistance(dist2);
+        
+        SegmentResult seg3=new SegmentResult();
+        seg3.setDistance(dist3);
+        
+        sim.getEcologicResultPath().getSegments().add(0, seg);
+        sim.getFastestResultPath().getSegments().add(0, seg2);
+        sim.getFastestResultPath().getSegments().add(0,seg3);
         
         instance.getSimulationsCompared().add(sim);
         

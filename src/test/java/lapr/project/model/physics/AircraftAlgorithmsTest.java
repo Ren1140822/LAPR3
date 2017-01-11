@@ -5,7 +5,6 @@
  */
 package lapr.project.model.physics;
 
-import lapr.project.model.Wind;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -15,7 +14,7 @@ import static org.junit.Assert.*;
 
 /**
  *
- * @author NANA
+ * @author Diana Silva
  */
 public class AircraftAlgorithmsTest {
     

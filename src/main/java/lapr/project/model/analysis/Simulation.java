@@ -5,14 +5,14 @@
  */
 package lapr.project.model.analysis;
 
-import java.util.Objects;
+import java.util.LinkedList;
 import lapr.project.model.AirNetwork;
 import lapr.project.model.Aircraft;
 import lapr.project.model.Airport;
+import lapr.project.model.FlightPlan;
 import lapr.project.model.Node;
-import lapr.project.model.lists.AirportList;
 import lapr.project.model.physics.AircraftAlgorithms;
-import lapr.project.model.physics.PhysicsAlgorithms;
+import lapr.project.model.physics.ConversionAlgorithms;
 
 /**
  *
@@ -39,9 +39,20 @@ public class Simulation{
     private double totalWeight;
     
     /**
-     * aircraft of simulation flight
+     * path of simulation
      */
-    private Aircraft aircraft;
+    private ResultPath resultPath;
+    
+    /**
+     * default value
+     */
+    private static final double DEFAULT_VALUE=0;  
+    
+    /**
+     * Id of simulation
+     */
+    private static int counterCode=0;
+    
     /**
      * result of the most ecological path
      */
@@ -54,78 +65,51 @@ public class Simulation{
      * result of the shortest path
      */
     private ShortestPathResult shortestResultPath;
+     
     /**
-     * default value
+     * flight plan to be simulated
      */
-    private static final double DEFAULT_VALUE=0;  
-    
-    /**
-     * Start airport of simulation flight
-     */
-    private Airport startAirport;
-    
-    /**
-     * End airport of simulation flight
-     */
-    private Airport endAirport;
-    
-    /**
-     * Id of simulation
-     */
-    private int counterCode=0;
+    private FlightPlan flightPlan;
     
     /**
      * Constructor
      */
     public Simulation(){
-        this.startAirport=new Airport();
-        this.endAirport=new Airport();
         this.passengers=(int) DEFAULT_VALUE;
         this.crew=(int) DEFAULT_VALUE;
         this.cargoLoad=DEFAULT_VALUE;
         this.totalWeight=DEFAULT_VALUE;
-        this.fuelWeight=DEFAULT_VALUE;
-        this.aircraft=new Aircraft();  
-        counterCode++;
+        this.fuelWeight=DEFAULT_VALUE;  
+        this.flightPlan=new FlightPlan();
+        Simulation.counterCode++;
     }
-    
-    /**
-     * Constructor
-     * @param startAirport the origin of flight simulated
-     * @param endAirport the destination of flight simulated
-     */
-    public Simulation(Airport startAirport, Airport endAirport){
-        this.startAirport=startAirport;
-        this.endAirport=endAirport;
-        this.passengers=(int) DEFAULT_VALUE;
-        this.crew=(int) DEFAULT_VALUE;
-        this.cargoLoad=DEFAULT_VALUE;
-        this.totalWeight=DEFAULT_VALUE;
-        this.fuelWeight=DEFAULT_VALUE;
-        this.aircraft=new Aircraft();  
-        counterCode++;
-    }  
     
      /**
      * constructor
      * @param passengers number of passengers
      * @param crew number of crew members
      * @param cargoLoad cargo load (kg)
-     * @param totalWeight total weight (kg)
-     * @param fuelWeight fuel weight (kg)
-     * @param aircraft aircraft 
+     * @param fuelLoad fuel weight (kg)
      */
-    public Simulation(int passengers, int crew, double cargoLoad, double totalWeight, double fuelWeight, Aircraft aircraft){
-        this.startAirport=new Airport();
-        this.endAirport=new Airport();
+    public Simulation(int passengers, int crew, double cargoLoad, double fuelLoad){
         this.passengers=passengers;
         this.crew=crew;
-        this.cargoLoad=cargoLoad*1000;
-        this.totalWeight=totalWeight*1000;
-        this.fuelWeight=fuelWeight*1000;
-        this.aircraft=aircraft; 
-        counterCode++;
- }
+        this.cargoLoad=cargoLoad;
+        this.fuelWeight=ConversionAlgorithms.convertLtoKg(fuelLoad);
+        this.totalWeight=this.passengers+this.crew+this.cargoLoad+this.fuelWeight;
+        this.flightPlan=new FlightPlan();
+        Simulation.counterCode++;
+    }
+    
+    public Simulation(Airport startAirport, Airport endAirport,
+            Aircraft aircraft){
+        
+        
+         this.flightPlan=new FlightPlan("si"+counterCode, 0, aircraft,
+                startAirport, endAirport, new LinkedList<>(), new LinkedList<>(),
+                new LinkedList<>()); 
+    }
+            
 
     /** Gets the number of passengers
      * @return the passengers
@@ -174,21 +158,6 @@ public class Simulation{
         this.cargoLoad = cargoLoad;
     }
 
-    /**
-     * Gets the aircraft of flight
-     * @return the aircraft
-     */
-    public Aircraft getAircraft() {
-        return aircraft;
-    }
-
-    /**
-     * Sets the aircraft of flight
-     * @param aircraft the aircraft to set
-     */
-    public void setAircraft(Aircraft aircraft) {
-        this.aircraft = aircraft;
-    }
 
     /**
      * @return the totalWeight
@@ -203,8 +172,114 @@ public class Simulation{
     public void setTotalWeight(double totalWeight) {
         this.totalWeight = totalWeight;
     }
+    
+        /**
+     * @return the flightPlan
+     */
+    public FlightPlan getFlightPlan() {
+        return flightPlan;
+    }
+    
+    /**
+     * @param flightPlan the flightPlan to set
+     */
+    public void setFlightPlan(FlightPlan flightPlan) {
+        this.flightPlan = flightPlan;
+    }
+    
+    /**
+     * Sets data needed to the simulation 
+     * @param passengers number of passengers
+     * @param crew number of crew members
+     * @param cargoLoad cargo load (kg)
+     * @param fuelLoad fuel weight (kg)
+     */
+    public void setData(int passengers, int crew, double cargoLoad, double fuelLoad,
+            Airport startAirport, Airport endAirport, Aircraft aircraft){
+        this.passengers=passengers;
+        this.crew=crew;
+        this.cargoLoad=cargoLoad;
+        this.fuelWeight=ConversionAlgorithms.convertLtoKg(fuelLoad);
+         this.flightPlan=new FlightPlan("si"+counterCode, 0, aircraft,
+                startAirport, endAirport, new LinkedList<>(), new LinkedList<>(),
+                new LinkedList<>()); 
+        this.totalWeight=AircraftAlgorithms.calculateInitialWeight(passengers,
+                crew, cargoLoad, aircraft.getAircraftModel().geteWeight(),fuelLoad);
+    }
 
     /**
+     * @return the fuelWeight
+     */
+    public double getFuelWeight() {
+        return fuelWeight;
+    }
+
+    /**
+     * @param fuelWeight the fuelWeight to set
+     */
+    public void setFuelWeight(double fuelWeight) {
+        this.fuelWeight = fuelWeight;
+    }
+    
+    
+     
+    /**
+     * Gets the start node of simulated flight
+     * @param net airnetwork of active project
+     * @return start node
+     */
+    public Node getStartNode(AirNetwork net){
+        return net.getAirportNode(flightPlan.getOrigin());
+    }
+      /**
+     * Gets the end node of simulated flight
+     * @param net airnetwork of active project
+     * @return end node
+     */
+    public Node getEndNode(AirNetwork net){
+        return net.getAirportNode(flightPlan.getDestination());
+    }
+    
+    public Airport getStartAirport(){
+        return flightPlan.getOrigin();
+    }
+    
+    public Airport getEndAirport(){
+        return flightPlan.getDestination();
+    }
+        
+        /*
+     * Validates simulation 
+     * @return true if all data is valid, false if not
+     */
+     public boolean validate() {
+        return validateAircraftRelatedData();
+    }
+     
+     /**
+      * Validates aircraft related data (nr passengers/crew, weight, fuel capacity)
+      * @return true if data related to the aircraft is valid, false if not
+      */
+     public boolean validateAircraftRelatedData(){
+         Aircraft aircraft=flightPlan.getAircraft();
+         if(aircraft==null)
+             return false;
+         else
+            return this.passengers<=aircraft.getCabinConfig().getTotalSeats() &&
+                this.crew<=aircraft.getNrOfCrewElements() && 
+                this.fuelWeight<=ConversionAlgorithms.convertLtoKg(aircraft.getAircraftModel().getFuelCapacity())
+                && Double.doubleToLongBits(totalWeight)<=aircraft.getAircraftModel().getMTOW() &&
+                aircraft.validate();
+     }
+    
+     /**
+     * @return the counterCode
+     */
+    public int getCounterCode() {
+        return counterCode;
+    }
+    
+      /**
      * @return the ecologicResultPath
      */
     public EcologicPathResult getEcologicResultPath() {
@@ -246,224 +321,29 @@ public class Simulation{
         this.shortestResultPath = shortestResultPath;
     }
     
-      /**
-     * @return the startAirport
-     */
-    public Airport getStartAirport() {
-        return startAirport;
-    }
-
-    /**
-     * @param startAirport the startAirport to set
-     */
-    public void setStartAirport(Airport startAirport) {
-        this.startAirport = startAirport;
-    }
-
-    /**
-     * @return the endAirport
-     */
-    public Airport getEndAirport() {
-        return endAirport;
-    }
-
-    /**
-     * @param endAirport the endAirport to set
-     */
-    public void setEndAirport(Airport endAirport) {
-        this.endAirport = endAirport;
-    }
-
-    /**
-     * @return the counterCode
-     */
-    public int getCounterCode() {
-        return counterCode;
-    }
-    
-    /**
-     * Sets data needed to the simulation 
-     * @param aircraft aircraft of flight
-     * @param passengers number of passengers
-     * @param crew number of crew members
-     * @param cargoLoad cargo load (kg)
-     * @param fuelWeight fuel weight (kg)
-     */
-    public void setData(Aircraft aircraft, int passengers, int crew, double cargoLoad, double fuelWeight){
-        this.aircraft=aircraft;
-        this.passengers=passengers;
-        this.crew=crew;
-        this.cargoLoad=cargoLoad*1000;
-        this.fuelWeight=fuelWeight*1000;
-        this.totalWeight=calculateInitialWeight();
-    }
-
-    /**
-     * Calculates the initial weight of aircraft
-     * @return the initial weight of aircraft (kg)
-     */
-    private double calculateInitialWeight(){
-       return AircraftAlgorithms.calculateInitialWeight(passengers, crew,
-               cargoLoad, fuelWeight, aircraft.getAircraftModel().geteWeight())
-               /1000;
-    }
-    
-    /**
-     * @return the fuelWeight
-     */
-    public double getFuelWeight() {
-        return fuelWeight;
-    }
-
-    /**
-     * @param fuelWeight the fuelWeight to set
-     */
-    public void setFuelWeight(double fuelWeight) {
-        this.fuelWeight = fuelWeight;
-    }
-  
-    /**
-     * Get air density node
-     * @param airport
-     * @return 
-     */
-    public double getAirdensityAirport(Airport airport){
-        double altitude=airport.getLocation().getAltitude();
-        double pressure=PhysicsAlgorithms.calculateAbsolutePressure(altitude);
-        double temperature=PhysicsAlgorithms.calculateAbsoluteTemperature(altitude);
-        
-        return PhysicsAlgorithms.calculateAirDensity(pressure, temperature);
-    }
-    
-    /**
-     * Gets the start node of simulated flight
-     * @param net airnetwork of active project
-     * @return start node
-     */
-    public Node getStartNode(AirNetwork net){
-        return net.getAirportNode(startAirport);
-    }
-
-      /**
-     * Gets the end node of simulated flight
-     * @param net airnetwork of active project
-     * @return end node
-     */
-    public Node getEndNode(AirNetwork net){
-        return net.getAirportNode(endAirport);
-    }
-    
-    /**
-     * Sets the start node of flight
-     * @param startNode origin of flight
-     * @param list airport list of active project
-     */
-    public void setStartNode(Node startNode, AirportList list){
-        this.startAirport=list.getAirportNode(startNode);
-    }
-    
-        /**
-     * Sets the start node of flight
-     * @param endNode destination of flight
-     * @param list airport list of active project
-     */
-    public void setEndNode(Node endNode, AirportList list){
-        this.endAirport=list.getAirportNode(endNode);
-    }
-    
-     /**
-     * Creates all best path simulation
-     * @param startAirport start airport of simulation
-     * @param endAirport end airport of simulation
-     */
-    public void createAllPathSimulation(Airport startAirport, Airport endAirport){
-        this.shortestResultPath=new ShortestPathResult(startAirport,endAirport);
-        this.fastestResultPath=new FastestPathResult(startAirport, endAirport);
-        this.ecologicResultPath=new EcologicPathResult(startAirport,endAirport);
-    }
-    
+     
     /**
      * Creates a best path simulation
      * @param startAirport start airport of simulation
      * @param endAirport end airport of simulation
      * @param type type of path to be simulated
      */
-    public void createPathSimulation(Airport startAirport, Airport endAirport, TypePath type){
-    
+    public void createPathSimulation(TypePath type){  
         TypePath p=type;
         switch(p){
             case ALL:
-                this.shortestResultPath=new ShortestPathResult(startAirport,endAirport);
-                this.fastestResultPath=new FastestPathResult(startAirport, endAirport);
-                this.ecologicResultPath=new EcologicPathResult(startAirport,endAirport);
+                this.shortestResultPath=new ShortestPathResult();
+                this.fastestResultPath=new FastestPathResult();
+                this.ecologicResultPath=new EcologicPathResult();
             case SHORTEST_PATH:
-                this.shortestResultPath=new ShortestPathResult(startAirport,endAirport);
+                this.shortestResultPath=new ShortestPathResult();
             case FASTEST_PATH:
-                this.fastestResultPath=new FastestPathResult(startAirport, endAirport);
+                this.fastestResultPath=new FastestPathResult();
             case ECOLOGIC_PATH:
-            this.ecologicResultPath=new EcologicPathResult(startAirport, endAirport);
+            this.ecologicResultPath=new EcologicPathResult();
             default:
-                this.shortestResultPath=new ShortestPathResult(startAirport,endAirport);
+                this.shortestResultPath=new ShortestPathResult();
         }
-    }
-    
-    /**
-     * Calculates the ecologic best path
-     * @param type type of path simulated
-     * @param air airnetwork of active project
-     * @return true if calculates the pretended path, false if not
-     */
-    public boolean calculateBestPath(TypePath type, AirNetwork air){
-        TypePath p=type;
-          switch (p){
-              case SHORTEST_PATH:
-                  shortestResultPath.calculateBestPath(air);
-                  return true;
-              case FASTEST_PATH:
-                   fastestResultPath.calculateBestPath(air);
-                   return true;
-              case ECOLOGIC_PATH:
-                  ecologicResultPath.calculateBestPath(air);
-                  return true;
-              case ALL:
-                   shortestResultPath.calculateBestPath(air);
-                   fastestResultPath.calculateBestPath(air);
-                  ecologicResultPath.calculateBestPath(air);
-                  return true;
-              default:
-                  return false;
-          }
-    }
-    
-    /**
-     * Validates simulation 
-     * @return true if all data is valid, false if not
-     */
-     public boolean validate() {
-        boolean v1= validateAircraftRelatedData();
-        boolean v2= ecologicResultPath.validate() || fastestResultPath.validate() 
-                || shortestResultPath.validate();
-        
-        return v1 && v2;
-    }
-     
-     /**
-      * Validates aircraft related data (nr passengers/crew, weight, fuel capacity)
-      * @return true if data related to the aircraft is valid, false if not
-      */
-     public boolean validateAircraftRelatedData(){
-         return this.passengers<=aircraft.getCabinConfig().getTotalSeats() &&
-                this.crew<=aircraft.getNrOfCrewElements() && 
-                this.fuelWeight<=aircraft.getAircraftModel().getFuelCapacity()
-                && Double.doubleToLongBits(totalWeight)<=aircraft.getAircraftModel().getMTOW() &&
-                aircraft.validate();
-     }
-
-    /**
-     * @return the number of simulations created
-     */
-    public int getNumberSimulationsCreated() {
-        return getCounterCode();
     }
     
      public ResultPath getResult(TypePath type){
@@ -479,7 +359,44 @@ public class Simulation{
                   return shortestResultPath;
           }
       }
-    
+     
+     
+     public boolean calculateBestPath(TypePath type, AirNetwork air){
+         if(validate()){ 
+         
+         TypePath p=type;
+          Node start=getStartNode(air);
+          Node end=getEndNode(air);
+          switch (p){
+              case SHORTEST_PATH:
+                   shortestResultPath.calculateBestPath(air, start, end);
+                   return true;
+              case FASTEST_PATH:
+                  fastestResultPath.calculateBestPath(air, start, end);
+                  return true;
+              case ECOLOGIC_PATH:
+                  ecologicResultPath.calculateBestPath(air, start, end);
+                  return true;
+             
+              case ALL:
+                shortestResultPath.calculateBestPath(air, start, end);
+                fastestResultPath.calculateBestPath(air, start, end);
+                ecologicResultPath.calculateBestPath(air, start, end);
+                return true;
+              default:
+                  return false;
+          }
+         }
+         return false;
+      }
+     
+      
+    @Override
+    public String toString()
+    {
+        return String.valueOf(this.getCounterCode());
+    }
+
      /**
      * Checks if two object are equal.
      *
@@ -495,19 +412,13 @@ public class Simulation{
             return true;
         }
         Simulation otherSimulation = (Simulation) otherObject;
-        boolean v1=this.aircraft.equals(otherSimulation.getAircraft()) &&
-                this.getStartAirport().equals(otherSimulation.getStartAirport()) &&
-                this.getEndAirport().equals(otherSimulation.getEndAirport()) &&
-                this.passengers==otherSimulation.getPassengers() &&
-                this.crew==otherSimulation.getCrew() &&
-                Double.doubleToLongBits(this.cargoLoad)==
+      
+        return this.passengers==otherSimulation.getPassengers() &&
+                this.crew==otherSimulation.getCrew() && Double.doubleToLongBits(this.cargoLoad)==
                 Double.doubleToLongBits(otherSimulation.getCargoLoad()) &&
                 Double.doubleToLongBits(this.fuelWeight)==
                 Double.doubleToLongBits(otherSimulation.getFuelWeight());
-       boolean v2=this.getEcologicResultPath().equals(otherSimulation.getEcologicResultPath()) &&
-               this.getShortestResultPath().equals(otherSimulation.getShortestResultPath()) 
-               && this.getFastestResultPath().equals(otherSimulation.getFastestResultPath());
-       return v1 && v2;
+
     }
 
     @Override
@@ -517,15 +428,6 @@ public class Simulation{
         hash = 67 * hash + this.crew;
         hash = 67 * hash + (int) (Double.doubleToLongBits(this.cargoLoad) ^ (Double.doubleToLongBits(this.cargoLoad) >>> 32));
         hash = 67 * hash + (int) (Double.doubleToLongBits(this.fuelWeight) ^ (Double.doubleToLongBits(this.fuelWeight) >>> 32));
-        hash = 67 * hash + Objects.hashCode(this.aircraft);
-        hash = 67 * hash + Objects.hashCode(this.getStartAirport());
-        hash = 67 * hash + Objects.hashCode(this.getEndAirport());
         return hash;
-    }
-    
-    @Override
-    public String toString()
-    {
-        return String.valueOf(this.getCounterCode());
     }
 }

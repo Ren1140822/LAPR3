@@ -7,6 +7,7 @@ package lapr.project.model.analysis;
 
 import java.util.LinkedList;
 import lapr.project.model.AirNetwork;
+import lapr.project.model.Aircraft;
 import lapr.project.model.Airport;
 import lapr.project.model.Node;
 import lapr.project.model.Segment;
@@ -17,7 +18,7 @@ import lapr.project.model.mapgraph.GraphAlgorithms;
  *
  * @author DianaSilva
  */
-public class FastestPathResult extends ResultPath{
+public class FastestPathResult extends ResultPath implements BestPathInterface{
     
     /**
      * Constructor
@@ -27,24 +28,15 @@ public class FastestPathResult extends ResultPath{
     }
     
     /**
-     * Constructor
-     * @param startAirport
-     * @param endAirport
-     */
-    public FastestPathResult(Airport startAirport, Airport endAirport) {
-        super(startAirport,endAirport);
-    }
-    
-    /**
      * Calculates the fastest path
      * @param airNetwork airnetwork of active project
+     * @param start
+     * @param end
      */
     @Override
-    public void calculateBestPath(AirNetwork airNetwork){
+    public void calculateBestPath(AirNetwork airNetwork, Node start, Node end){
         LinkedList<Node> fastestPath=(LinkedList<Node>)super.getResultPath();
         AirNetwork clone=airNetwork;
-        Node start=new Node();
-        Node end=new Node();
                 
         for(Segment seg:clone.getSegmentList()){
             start=clone.getNodeFromList(seg.getStartNode());
@@ -55,26 +47,6 @@ public class FastestPathResult extends ResultPath{
                 start,end, fastestPath);
         //vento+cruiseSpeed
         super.setResultPath(fastestPath);
-        super.setResult(res);
-    }
-    
-       /**
-     * Get distance of result path (m)
-     * @return distance (m)
-     */
-    @Override
-    public double getDistance(){
-        //alterar
-        return super.getResult();
-    }
-    
-      
-    /**
-     * Sets the distance result
-     * @param res
-     */
-    @Override
-    public  void setDistance(double res){
         super.setResult(res);
     }
 }
