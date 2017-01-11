@@ -129,10 +129,10 @@ public class DAL {
                 String town = rs.getString("Town");
 
                 Location location = getLocationByID(locationID);
-                Airport airport = new Airport(IATA, name, town, country, new Location());
-                if (airport.validate()) {
-                    airportList.add(airport);
-                }
+                Airport airport = new Airport(IATA, name, town, country, location);
+
+                airportList.add(airport);
+
             }
         } catch (SQLException ex) {
             Logger.getLogger(DAL.class.getName()).log(Level.SEVERE, null, ex);
@@ -201,9 +201,9 @@ public class DAL {
             while (rs.next()) {
                 String registration = rs.getString("Registration");
                 String company = rs.getString("Company");
-                CabinConfiguration cabinConfig = getCabinConfigByID(rs.getInt("cabinID"));
+                CabinConfiguration cabinConfig = getCabinConfigByID(rs.getString("registration"));
                 int nrOfCrewElements = rs.getInt("nrofcrewelements");
-                AircraftModel aircraftModel = getAircraftModelByID(rs.getInt("aircraft_modelID"));
+                AircraftModel aircraftModel = getAircraftModelByID(rs.getString("aircraft_modelID"));
                 Aircraft aircraft = new Aircraft(registration, company, cabinConfig, nrOfCrewElements, aircraftModel);
                 if (aircraft.validate()) {
                     aircraftList.add(aircraft);
@@ -224,7 +224,7 @@ public class DAL {
      * @param cabinConfigID the cabin config ID
      * @return the cabin config object
      */
-    private CabinConfiguration getCabinConfigByID(int aircraftID) {
+    private CabinConfiguration getCabinConfigByID(String aircraftID) {
         CabinConfiguration config = null;
         Connection con = null;
 
@@ -233,7 +233,7 @@ public class DAL {
         con = connect();
         String query = "{ ?= call get_cabins(?)}";
         try (CallableStatement st2 = con.prepareCall(query)) {
-            st2.setInt(2, aircraftID);
+            st2.setString(2, aircraftID);
             st2.registerOutParameter(1, OracleTypes.CURSOR);
             st2.execute();
             rs = (ResultSet) st2.getObject(1);
@@ -262,7 +262,7 @@ public class DAL {
      * @param aircraftModelD the aircraftModel model ID
      * @return the aircraftModel model object
      */
-    private AircraftModel getAircraftModelByID(int aircraftModelD) {
+    private AircraftModel getAircraftModelByID(String aircraftModelD) {
         AircraftModel model = null;
         Connection con = null;
 
@@ -273,7 +273,7 @@ public class DAL {
         con = connect();
 
         try (CallableStatement st = con.prepareCall(query)) {
-            st.setInt(2, aircraftModelD);
+            st.setString(2, aircraftModelD);
             st.registerOutParameter(1, OracleTypes.CURSOR);
             st.execute();
             rs = (ResultSet) st.getObject(1);
@@ -332,7 +332,7 @@ public class DAL {
 
             while (rs.next()) {
                 double speed = rs.getDouble("speed");
-                double Cdrag = rs.getDouble("cDrag");
+                double Cdrag = rs.getDouble("cDrag_0");
                 item = new Iten(speed, Cdrag);
                 itemList.add(item);
             }
@@ -398,14 +398,14 @@ public class DAL {
             st.execute();
             rs = (ResultSet) st.getObject(1);
             while (rs.next()) {
-                int numberMotors = rs.getInt("numberMotors");
+                int numberMotors = rs.getInt("number_motors");
                 String motor = rs.getString("motor");
-                String motorType = rs.getString("motorType");
-                double cruise_altitude = rs.getDouble("speed");
-                double cruise_speed = rs.getDouble("cruiseSpeed");
+                String motorType = rs.getString("motor_Type");
+                double cruise_altitude = rs.getDouble("cruise_altitude");
+                double cruise_speed = rs.getDouble("cruise_Speed");
                 double TSFC = rs.getDouble("TSFC");
-                double lapse_rate_factor = rs.getDouble("lapseRateFactor");
-                int thrust_functionID = rs.getInt("thrustFunction");
+                double lapse_rate_factor = rs.getDouble("lapse_Rate_Factor");
+                int thrust_functionID = rs.getInt("thrustID");
                 Thrust_Function thrust_func = getThrustFunctionByID(thrust_functionID);
                 motorization = new Motorization(numberMotors, motor, motorType, cruise_altitude, cruise_speed, TSFC, lapse_rate_factor, thrust_func);
             }
@@ -436,9 +436,9 @@ public class DAL {
             st.execute();
             rs = (ResultSet) st.getObject(1);
             while (rs.next()) {
-                double thrustValue = rs.getDouble("thrust");
-                double thrustMaxSpeed = rs.getDouble("thrustMaxSpeed");
-                double maxSpeed = rs.getDouble("maxSpeed");
+                double thrustValue = rs.getDouble("thrust_0");
+                double thrustMaxSpeed = rs.getDouble("thrust_Max_Speed");
+                double maxSpeed = rs.getDouble("max_Speed");
                 thrust = new Thrust_Function(thrustValue, thrustMaxSpeed, maxSpeed);
             }
         } catch (SQLException ex) {
@@ -461,7 +461,7 @@ public class DAL {
         ResultSet rs = null;
 
         Connection con = null;
-        String query = "{?= call get_air_network(?)}";
+        String query = "{?= call get_airnetwork(?)}";
         con = connect();
 
         try (CallableStatement st = con.prepareCall(query)) {
@@ -537,7 +537,7 @@ public class DAL {
         ResultSet rs = null;
 
         Connection con = null;
-          String query = "{?= call get_nodes(?)}";
+        String query = "{?= call get_nodes(?)}";
         con = connect();
         try (CallableStatement st = con.prepareCall(query)) {
             st.setString(2, airNetworkID);
@@ -727,8 +727,9 @@ public class DAL {
         Connection con = null;
         con = connect();
         boolean ret = false;
-        for (Airport airport : airportList) {
-            try (CallableStatement st = con.prepareCall("{call insert_airport(?,?,?,?,?,?,?,?)}")) {
+
+        try (CallableStatement st = con.prepareCall("{call insert_airport(?,?,?,?,?,?,?,?)}")) {
+            for (Airport airport : airportList) {
                 st.setInt(1, projectID);
                 st.setString(2, airport.getIATA());
                 st.setString(3, airport.getName());
@@ -738,13 +739,14 @@ public class DAL {
                 st.setDouble(7, airport.getLocation().getLongitude());
                 st.setDouble(8, airport.getLocation().getAltitude());
                 ret = st.execute();
-            } catch (SQLException ex) {
-                Logger.getLogger(DAL.class.getName()).log(Level.SEVERE, null, ex);
-                System.out.println(ex.toString());
-            } finally {
-                close(con);
             }
+        } catch (SQLException ex) {
+            Logger.getLogger(DAL.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println(ex.toString());
+        } finally {
+            close(con);
         }
+
         return true;
     }
 
@@ -753,20 +755,21 @@ public class DAL {
         con = connect();
         boolean ret = false;
 
-        for (Node node : nodeList) {
-            try (CallableStatement st = con.prepareCall("{call insert_node(?,?,?,?)}")) {
+        try (CallableStatement st = con.prepareCall("{call insert_node(?,?,?,?)}")) {
+            for (Node node : nodeList) {
                 st.setString(1, node.getId());
                 st.setDouble(2, node.getLatitude());
                 st.setDouble(3, node.getLongitude());
                 st.setInt(4, netID);
                 ret = st.execute();
-            } catch (SQLException ex) {
-                Logger.getLogger(DAL.class.getName()).log(Level.SEVERE, null, ex);
-                System.out.println(ex.toString());
-            } finally {
-                close(con);
             }
+        } catch (SQLException ex) {
+            Logger.getLogger(DAL.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println(ex.toString());
+        } finally {
+            close(con);
         }
+
         return true;
     }
 
@@ -775,23 +778,44 @@ public class DAL {
         con = connect();
         boolean ret = false;
 
-        for (Segment seg : segmentList) {
-            try (CallableStatement st = con.prepareCall("insert_node(?,?,?)")) {
-                st.setString("1", seg.getId());
-                st.setString("2", seg.getStartNode().getId());
-                st.setString("3", seg.getEndNode().getId());
-                st.setString("4", seg.getDirection().name());
-                st.setDouble("5", seg.getMinAltSlot());
-                st.setDouble("6", seg.getMaxAltSlot());
-                st.setInt("7", airNetworkID);
-                //need wind as well
+        try (CallableStatement st = con.prepareCall("{call insert_segment(?,?,?,?,?,?,?,?,?)}")) {
+            for (Segment seg : segmentList) {
+                st.setString(1, seg.getId());
+                st.setString(2, seg.getStartNode().getId());
+                st.setString(3, seg.getEndNode().getId());
+                st.setString(4, seg.getDirection().name());
+                st.setDouble(5, seg.getMinAltSlot());
+                st.setDouble(6, seg.getMaxAltSlot());
+                st.setInt(7, airNetworkID);
+                st.setDouble(8, seg.getWind().getWindIntensity());
+                st.setDouble(9, seg.getWind().getWindDirection());
                 ret = st.execute();
-            } catch (SQLException ex) {
-                Logger.getLogger(DAL.class.getName()).log(Level.SEVERE, null, ex);
-                System.out.println(ex.toString());
-            } finally {
-                close(con);
             }
+        } catch (SQLException ex) {
+            Logger.getLogger(DAL.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println(ex.toString());
+        } finally {
+            close(con);
+
+        }
+        return true;
+    }
+
+    public boolean WriteAirNetworkToDatabase(String projectID, String description) {
+        Connection con = null;
+        con = connect();
+        boolean ret = false;
+
+        try (CallableStatement st = con.prepareCall("{call insert_airnetwork(?,?)}")) {
+            st.setString(1, description);
+            st.setString(2, projectID);
+            ret = st.execute();
+        } catch (SQLException ex) {
+            Logger.getLogger(DAL.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println(ex.toString());
+        } finally {
+            close(con);
+
         }
         return true;
     }
