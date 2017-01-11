@@ -8,6 +8,7 @@ package lapr.project.model;
 import java.util.LinkedList;
 import java.util.List;
 import lapr.project.model.analysis.ResultPath;
+import lapr.project.model.analysis.Simulation;
 import lapr.project.model.lists.AircraftList;
 import lapr.project.model.lists.AircraftModelList;
 import lapr.project.model.lists.AirportList;
@@ -421,5 +422,76 @@ public class ProjectTest {
         Project instance = new Project();
         instance.setAircraftModelList(expResult);
         assertEquals(expResult, instance.getAircraftModelList());
+    }
+
+    /**
+     * Test of getPossibleEndNodes method, of class Project.
+     */
+    @Test
+    public void testGetPossibleEndNodes() {
+        System.out.println("getPossibleEndNodes");
+        Project instance = new Project();
+        
+        Node startNode = new Node("test1", 40, 40);
+        Node intNode = new Node("test2", 50, 70);
+        Node endNode = new Node("test3", 40, 80);
+
+        Wind windTest = new Wind(10, 10);
+        String direction = "BIDIRECTIONAL";
+        Segment segment1=new Segment("segmentTest1",startNode, endNode, direction,windTest,0,0);       
+        Segment segment2=new Segment("segmentTest2", startNode, intNode, direction,windTest,0,0);
+        Segment segment3=new Segment("segmentTest3", intNode, endNode, direction, windTest,0,0);
+
+        AirNetwork airnetwork = instance.getAirNetwork();
+        airnetwork.getAirNetwork().insertVertex(startNode);
+        airnetwork.getAirNetwork().insertVertex(intNode);
+        airnetwork.getAirNetwork().insertVertex(endNode);
+
+        airnetwork.getAirNetwork().insertEdge(startNode, intNode, segment2, 10);
+        airnetwork.getAirNetwork().insertEdge(intNode, endNode, segment3, 30);
+        airnetwork.getAirNetwork().insertEdge(startNode, endNode, segment1, 20);
+        
+        List<Node> expResult = new LinkedList<>();
+        expResult.add(intNode);
+        expResult.add(endNode);
+        List<Node> result = instance.getPossibleEndNodes(startNode);
+        assertEquals(expResult, result);
+    }
+
+    /**
+     * Test of getFlightList method, of class Project.
+     */
+    @Test
+    public void testGetFlightList() {
+        System.out.println("getFlightList");
+        Project instance = new Project();
+        FlightList expResult = new FlightList();
+        instance.setFlightList(expResult);
+        FlightList result = instance.getFlightList();
+        assertEquals(expResult, result);
+    }
+
+    /**
+     * Test of setFlightList method, of class Project.
+     */
+    @Test
+    public void testSetFlightList() {
+        System.out.println("setFlightList");
+        FlightList flightList = new FlightList();
+        Project instance = new Project();
+        instance.setFlightList(flightList);
+    }
+
+    /**
+     * Test of getModelList method, of class Project.
+     */
+    @Test
+    public void testGetModelList() {
+        System.out.println("getModelList");
+        Project instance = new Project();
+        AircraftModelList expResult = new AircraftModelList();
+        instance.setModelList(expResult);
+        AircraftModelList result = instance.getModelList();
+        assertEquals(expResult, result);
     }
 }

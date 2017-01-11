@@ -314,5 +314,29 @@ public class FlightPlanTest {
         List<Node> result = instance.getMandatoryWaypoints();
         assertEquals(expResult, result);
     }
+
+    /**
+     * Test of getListPattern method, of class FlightPlan.
+     */
+    @Test
+    public void testGetListPattern() {
+        System.out.println("getListPattern");
+        FlightPlan instance = new FlightPlan();
+        List<Pattern> expResult = new LinkedList<>();
+        instance.setListPattern(expResult);
+        List<Pattern> result = instance.getListPattern();
+        assertEquals(expResult, result);
+    }
+
+    /**
+     * Test of setListPattern method, of class FlightPlan.
+     */
+    @Test
+    public void testSetListPattern() {
+        System.out.println("setListPattern");
+        List<Pattern> listPattern = null;
+        FlightPlan instance = new FlightPlan();
+        instance.setListPattern(listPattern);
+    }
     
 }

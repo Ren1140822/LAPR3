@@ -166,14 +166,14 @@ public class Project implements Serializable {
      * @return the modelList
      */
     public AircraftModelList getAircraftModelList() {
-        return modelList;
+        return getModelList();
     }
 
     /**
      * @param modelList the modelList to set
      */
     public void setAircraftModelList(AircraftModelList modelList) {
-        this.modelList = modelList;
+        this.setModelList(modelList);
     }
 
     /**
@@ -349,9 +349,34 @@ public class Project implements Serializable {
         }
         return listSimulated;
     }
-
+    
+    /**
+     * 
+     * @return 
+     */
     public FlightList getFlightList() {
         return flightList;
+    }
+
+    /**
+     * @param flightList the flightList to set
+     */
+    public void setFlightList(FlightList flightList) {
+        this.flightList = flightList;
+    }
+
+    /**
+     * @return the modelList
+     */
+    public AircraftModelList getModelList() {
+        return modelList;
+    }
+
+    /**
+     * @param modelList the modelList to set
+     */
+    public void setModelList(AircraftModelList modelList) {
+        this.modelList = modelList;
     }
 
 }

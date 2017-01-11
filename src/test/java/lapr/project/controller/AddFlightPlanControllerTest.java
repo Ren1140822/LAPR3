@@ -5,9 +5,11 @@
  */
 package lapr.project.controller;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import lapr.project.model.AirNetwork;
 import lapr.project.model.Aircraft;
 import lapr.project.model.AircraftModel;
 import lapr.project.model.Airport;
@@ -16,7 +18,10 @@ import lapr.project.model.Location;
 import lapr.project.model.Motorization;
 import lapr.project.model.Node;
 import lapr.project.model.Project;
+import lapr.project.model.Segment;
 import lapr.project.model.Thrust_Function;
+import lapr.project.model.Wind;
+import lapr.project.model.lists.AirportList;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -146,6 +151,122 @@ public class AddFlightPlanControllerTest {
         boolean expResult = true;
         boolean result = instance.saveFlightPlan();
         assertEquals(expResult, result);
+    }
+
+    /**
+     * Test of getPossibleEndAirportsByAirportID method, of class AddFlightPlanController.
+     */
+    @Test
+    public void testGetPossibleEndAirportsByAirportID() {
+        System.out.println("getPossibleEndAirportsByAirportID");
+        Project proj = new Project();
+        Node startNode = new Node("test1", 40, 40);
+        Node intNode = new Node("test2", 50, 70);
+        Node endNode = new Node("test3", 40, 80);
+
+        Wind windTest = new Wind(10, 10);
+        String direction = "BIDIRECTIONAL";
+        Segment segment1=new Segment("segmentTest1",startNode, endNode, direction,windTest,0,0);       
+        Segment segment2=new Segment("segmentTest2", startNode, intNode, direction,windTest,0,0);
+        Segment segment3=new Segment("segmentTest3", intNode, endNode, direction, windTest,0,0);
+
+        AirNetwork airnetwork = proj.getAirNetwork();
+        airnetwork.getNodeList().add(startNode);
+        airnetwork.getNodeList().add(intNode);
+        airnetwork.getNodeList().add(endNode);
+        airnetwork.getAirNetwork().insertVertex(startNode);
+        airnetwork.getAirNetwork().insertVertex(intNode);
+        airnetwork.getAirNetwork().insertVertex(endNode);
+
+        airnetwork.getAirNetwork().insertEdge(startNode, intNode, segment2, 10);
+        airnetwork.getAirNetwork().insertEdge(intNode, endNode, segment3, 30);
+        airnetwork.getAirNetwork().insertEdge(startNode, endNode, segment1, 20);
+
+        Airport airport1 = new Airport("1", "", "", "", new Location(40, 40, 10));
+        Airport airport2 = new Airport("2", "", "", "", new Location(50, 70, 10));
+        Airport airport3 = new Airport("3", "", "", "", new Location(40, 80, 10));
+
+        AirportList airportsList = proj.getAirportList();
+        airportsList.getAirportList().add(airport1);
+        airportsList.getAirportList().add(airport2);
+        airportsList.getAirportList().add(airport3);
+
+        List<Airport> expResult = new LinkedList<>();
+        expResult.add(airport2);
+        expResult.add(airport3);
+        
+        String startAir = "1";
+        AddFlightPlanController instance = new AddFlightPlanController(proj);
+        List<Airport> result = instance.getPossibleEndAirportsByAirportID(startAir);
+        assertEquals(expResult, result);
+    }
+
+    /**
+     * Test of getPossibleEndNodesByAirportId method, of class AddFlightPlanController.
+     */
+    @Test
+    public void testGetPossibleEndNodesByAirportId() {
+        System.out.println("getPossibleEndNodesByAirportId");
+        Project proj = new Project();
+        Node startNode = new Node("test1", 40, 40);
+        Node intNode = new Node("test2", 50, 70);
+        Node endNode = new Node("test3", 40, 80);
+
+        Wind windTest = new Wind(10, 10);
+        String direction = "BIDIRECTIONAL";
+        Segment segment1=new Segment("segmentTest1",startNode, endNode, direction,windTest,0,0);       
+        Segment segment2=new Segment("segmentTest2", startNode, intNode, direction,windTest,0,0);
+        Segment segment3=new Segment("segmentTest3", intNode, endNode, direction, windTest,0,0);
+
+        AirNetwork airnetwork = proj.getAirNetwork();
+        airnetwork.getNodeList().add(startNode);
+        airnetwork.getNodeList().add(intNode);
+        airnetwork.getNodeList().add(endNode);
+        airnetwork.getAirNetwork().insertVertex(startNode);
+        airnetwork.getAirNetwork().insertVertex(intNode);
+        airnetwork.getAirNetwork().insertVertex(endNode);
+
+        airnetwork.getAirNetwork().insertEdge(startNode, intNode, segment2, 10);
+        airnetwork.getAirNetwork().insertEdge(intNode, endNode, segment3, 30);
+        airnetwork.getAirNetwork().insertEdge(startNode, endNode, segment1, 20);
+
+        Airport airport1 = new Airport("1", "", "", "", new Location(40, 40, 10));
+        Airport airport2 = new Airport("2", "", "", "", new Location(50, 70, 10));
+        Airport airport3 = new Airport("3", "", "", "", new Location(40, 80, 10));
+
+        AirportList airportsList = proj.getAirportList();
+        airportsList.getAirportList().add(airport1);
+        airportsList.getAirportList().add(airport2);
+        airportsList.getAirportList().add(airport3);
+
+        List<Node> expResult = new LinkedList<>();
+        expResult.add(intNode);
+        expResult.add(endNode);
+        
+        String startAir = "1";
+        AddFlightPlanController instance = new AddFlightPlanController(proj);
+        List<Node> result = instance.getPossibleEndNodesByAirportId(startAir);
+        assertEquals(expResult, result);
+    }
+
+    /**
+     * Test of pattern method, of class AddFlightPlanController.
+     */
+    @Test
+    public void testPattern() {
+        System.out.println("pattern1");
+        File ficheiro = new File("src/main/resources/Flight_pattern_A380_v1a.csv");
+        AddFlightPlanController instance = new AddFlightPlanController(project);        
+        boolean expResult = true;
+        boolean result = instance.pattern(ficheiro);
+        assertEquals(expResult, result);
+        
+        System.out.println("pattern2");
+        File ficheiro2 = new File("src/main/resources/Flight_pattern_B777-200_v1a.csv");
+        AddFlightPlanController instance2 = new AddFlightPlanController(project);        
+        boolean expResult2 = true;
+        boolean result2 = instance2.pattern(ficheiro2);
+        assertEquals(expResult2, result2);
     }
     
 }
