@@ -374,11 +374,7 @@ public class FindBestPathUI extends JDialog{
             @Override
             public void actionPerformed(ActionEvent e) {
                 try{
-                    Airport startAirportSelected=(Airport)listStartAirports.getSelectedValue();
-                    Airport endAirportSelected=(Airport) listEndAirports.getSelectedValue();
-                    controller.createBestPathSimulation( TypePath.ECOLOGIC_PATH);
-                    setData();
-                    controller.calculatePath(TypePath.ECOLOGIC_PATH);
+                    createSimulation(TypePath.ECOLOGIC_PATH);
                     openResultWindow(TypePath.ECOLOGIC_PATH);
                     
                 }catch(java.lang.UnsupportedOperationException en){
@@ -406,10 +402,7 @@ public class FindBestPathUI extends JDialog{
             @Override
             public void actionPerformed(ActionEvent e) {
                 try{
-                    Airport startAirportSelected=(Airport)listStartAirports.getSelectedValue();
-                    Airport endAirportSelected=(Airport) listEndAirports.getSelectedValue();
                     controller.createBestPathSimulation(TypePath.ALL);
-                    setData();
                     controller.calculatePath(TypePath.ALL);
                     
                 }catch(java.lang.UnsupportedOperationException en){
@@ -436,8 +429,8 @@ public class FindBestPathUI extends JDialog{
     
     private boolean validatePassCrew(){
         Aircraft aircraft=(Aircraft) listAircrafts.getSelectedValue();
-        boolean b1=aircraft.getCabinConfig().getTotalSeats()<=Integer.parseInt(txtPassenger.getText());
-        boolean b2=aircraft.getNrOfCrewElements()<=Integer.parseInt(txtCrew.getText());
+        boolean b1=aircraft.getCabinConfig().getTotalSeats()>=Integer.parseInt(txtPassenger.getText());
+        boolean b2=aircraft.getNrOfCrewElements()>=Integer.parseInt(txtCrew.getText());
         return b1&&b2;
     }
     
@@ -456,27 +449,29 @@ public class FindBestPathUI extends JDialog{
  
     private void createSimulation(TypePath type){
         
-        Airport startAirportSelected=(Airport)listStartAirports.getSelectedValue();
-        Airport endAirportSelected=(Airport) listEndAirports.getSelectedValue();
         controller.createBestPathSimulation(type);
-        if(listAircrafts.getSelectedValue()==null || !validateData()){
-            int dialogButton=JOptionPane.YES_NO_OPTION;
-            dialogResult = JOptionPane.showConfirmDialog (frame,"You didn´t "
-                    + "insert all data. Would you like to proceed?","Warning",dialogButton);
-        }if(!validatePassCrew()){
-            JOptionPane.showMessageDialog(frame,
-                    "Please verify the nr of passengers/crew members allowed in"
-                            + " the selected aircraft", "Erro", JOptionPane.ERROR_MESSAGE);           
-        }else{
-            setData();
+        if(listAircrafts.getSelectedValue()==null || !validateData())
+           
+            if(!validateData() || listAircrafts.getSelectedValue()==null)
+                JOptionPane.showMessageDialog(frame,
+                        "You didn´t insert all data. Please verify.", "Erro", 
+                        JOptionPane.ERROR_MESSAGE);
         
-            try{   
+        else if(!validatePassCrew())
+                JOptionPane.showMessageDialog(frame,
+                    "Please verify the nr of passengers/crew members"
+                            + " allowed in the selected aircraft","Erro",
+                            JOptionPane.ERROR_MESSAGE);
+        else{
+            try{ 
+                setData();  
                 controller.calculatePath(type);
             }catch(java.lang.UnsupportedOperationException en){
                 JOptionPane.showMessageDialog(frame,
                         "It wasn´t possible to create simulation", "Erro", JOptionPane.ERROR_MESSAGE);
-                 throw en;
-            }
+                throw en;
+                }
+           
         }
     }
 }

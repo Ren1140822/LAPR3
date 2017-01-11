@@ -48,6 +48,9 @@ public class AircraftAlgorithmsTest {
         double expResult = 0.317618939;
         double result = AircraftAlgorithms.calculateMTrue(airDens,vIas);
         assertEquals(expResult, result, 0.1);
+        double test = (result/expResult);
+        System.out.println("Result: "+ result);   
+        System.out.println(String.format("Error: %.2f %%", test));
     }    
 
     /**
@@ -62,6 +65,9 @@ public class AircraftAlgorithmsTest {
         double expResult = 108.0832375;
         double result = AircraftAlgorithms.calculateTAS(airDensity, temperature, vIas);
         assertEquals(expResult, result, 0.1);
+        double test = (result/expResult);
+        System.out.println("Result: "+ result);
+        System.out.println(String.format("Error: %.2f %%", test));
     }
 
     /**
@@ -77,6 +83,9 @@ public class AircraftAlgorithmsTest {
         double expResult = 0.8624279;
         double result = AircraftAlgorithms.calculateLiftCoefficient(mass, airDensity, areaWings, velocity);
         assertEquals(expResult, result, 0.1);
+        double test = (result/expResult);
+        System.out.println("Result: "+ result);
+        System.out.println(String.format("Error: %.2f %%", test));
     }
 
     /**
@@ -92,6 +101,9 @@ public class AircraftAlgorithmsTest {
         double expResult = 0.051316551;
         double result = AircraftAlgorithms.calculateDragCoefficient(cDrag0, liftCoef, aRatio, e);
         assertEquals(expResult, result, 0.1);
+        double test = (result/expResult);
+        System.out.println("Result: "+ result);
+        System.out.println(String.format("Error: %.2f %%", test));
     }
 
     /**
@@ -107,6 +119,9 @@ public class AircraftAlgorithmsTest {
         double expResult = 315044.7;
         double result = AircraftAlgorithms.calculateDragForce(coefDrag, airDensity, velocity, wingArea);
         assertEquals(expResult, result, 0.1);
+        double test = (result/expResult);
+        System.out.println("Result: "+ result);
+        System.out.println(String.format("Error: %.2f %%", test));
     }
 
     /**
@@ -123,6 +138,9 @@ public class AircraftAlgorithmsTest {
         double expResult = 2.82* Math.pow(10,5);
         double result = AircraftAlgorithms.calculateThrust(thrustMa, lambda, mTrue, airDensity, thrustLapseRate);
         assertEquals(expResult, result, 200);
+        double test = (result/expResult);
+        System.out.println("Result: "+ result);
+        System.out.println(String.format("Error: %.2f %%", test));
     }
 
     /**
@@ -137,6 +155,9 @@ public class AircraftAlgorithmsTest {
         double expResult = 1.76* Math.pow(10,5);
         double result = AircraftAlgorithms.calculateLambda(velThrustMa, thrustMa, thrustMi);
         assertEquals(expResult, result, 500);
+        double test = (result/expResult);
+        System.out.println("Result: "+ result);
+        System.out.println(String.format("Error: %.2f %%", test));
     }
 
     /**
@@ -152,6 +173,9 @@ public class AircraftAlgorithmsTest {
         double expResult = 16.6;
         double result = AircraftAlgorithms.calculateDhDt(thrust, drag, tas, mass);
         assertEquals(expResult, result, 0.01);
+        double test = (result/expResult);
+        System.out.println("Result: "+ result);
+        System.out.println(String.format("Error: %.2f %%", test));
     }
 
     /**
@@ -165,6 +189,9 @@ public class AircraftAlgorithmsTest {
         double expResult = 0.154;
         double result = AircraftAlgorithms.calculateClimbingAng(tas, dhDT);
         assertEquals(expResult, result, 0.01);
+        double test = (result/expResult);
+        System.out.println("Result: "+ result);
+        System.out.println(String.format("Error: %.2f %%", test));
     }
 
     /**
@@ -179,6 +206,9 @@ public class AircraftAlgorithmsTest {
         double expResult = 2.21*Math.pow(10, 3);
         double result = AircraftAlgorithms.calculateDwDt(thrust, timeStep, tsfc);
         assertEquals(expResult, result, 2.5);
+        double test = (result/expResult);
+        System.out.println("Result: "+ result);
+        System.out.println(String.format("Error: %.2f %%", test));
     }
 
     /**
@@ -195,6 +225,9 @@ public class AircraftAlgorithmsTest {
         double expResult = 1869.4;
         double result = AircraftAlgorithms.calculateInitialWeight(passengers, crew, cargoLoad, emptyWeight, fuel);
         assertEquals(expResult, result, 0.1);
+        double test = (result/expResult);
+        System.out.println("Result: "+ result);
+        System.out.println(String.format("Error: %.2f %%", test));
     }
 
     /**
@@ -209,6 +242,9 @@ public class AircraftAlgorithmsTest {
         double expResult = 1.28*Math.pow(10, 4);
         double result = AircraftAlgorithms.calculateDistanceGained(tas, angle, timeStep);
         assertEquals(expResult, result,20.0);
+        double test = (result/expResult);
+        System.out.println("Result: "+ result);
+        System.out.println(String.format("Error: %.2f %%", test));
     }
 
     /**
@@ -223,6 +259,9 @@ public class AircraftAlgorithmsTest {
         double expResult = 1993.83;
         double result = AircraftAlgorithms.calculateAltitudeGained(prevAlt,dhDT, timeStep);
         assertEquals(expResult, result, 2.0);
+        double test = (result/expResult);
+        System.out.println("Result: "+ result);
+        System.out.println(String.format("Error: %.2f %%", test));
     }
 
     /**
@@ -236,5 +275,8 @@ public class AircraftAlgorithmsTest {
         double expResult = 5.38*Math.pow(10,5);
         double result = AircraftAlgorithms.calculateNewMass(prevMass, dwDt);
         assertEquals(expResult, result,500.0);
+        double test = (result/expResult);
+        System.out.println("Result: "+ result);
+        System.out.println(String.format("Error: %.2f %%", test));
     }
 }

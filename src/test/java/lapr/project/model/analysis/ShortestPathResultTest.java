@@ -5,9 +5,9 @@
  */
 package lapr.project.model.analysis;
 
-import lapr.project.model.analysis.Simulation;
 import java.util.LinkedList;
 import lapr.project.model.AirNetwork;
+import lapr.project.model.Aircraft;
 import lapr.project.model.Airport;
 import lapr.project.model.Location;
 import org.junit.After;
@@ -52,7 +52,7 @@ public class ShortestPathResultTest {
     @Test
     public void testCalculateBestPath() {
         System.out.println("calculateBestPath");
-         Node startNode=new Node("test1", 40, 40);
+        Node startNode=new Node("test1", 40, 40);
         Node intNode=new Node("test2", 50, 70);
         Node endNode=new Node("test3", 40, 80);
         
@@ -68,7 +68,7 @@ public class ShortestPathResultTest {
         airnetwork.getAirNetwork().insertVertex(intNode);
         airnetwork.getAirNetwork().insertVertex(endNode);
         
-        airnetwork.getAirNetwork().insertEdge(startNode, endNode, segment1, 20);
+        airnetwork.getAirNetwork().insertEdge(startNode, endNode, segment1, 50);
         airnetwork.getAirNetwork().insertEdge(startNode, intNode, segment2, 10);
         airnetwork.getAirNetwork().insertEdge(intNode, endNode, segment3, 30);
 
@@ -82,12 +82,14 @@ public class ShortestPathResultTest {
         p.getAirportList().getAirportList().add(endAirport);
         
         Simulation instance=new Simulation();
+        
+        instance.setData(0, 0, 0, 0, startAirport, endAirport, new Aircraft());
         instance.createPathSimulation(TypePath.SHORTEST_PATH);
-        instance.getShortestResultPath().calculateBestPath(airnetwork, startNode, endNode);
+        instance.getShortestResultPath().calculateBestPath(airnetwork);
 
         LinkedList<Node> result=new LinkedList<>();
         result.add(startNode);
-        result.add(endNode);
+        result.add(intNode);
         assertEquals(instance.getShortestResultPath().getResultPath(), result);
     }
     

@@ -16,7 +16,7 @@ import lapr.project.model.physics.AircraftAlgorithms;
  * The class to stores and manage analysis results of simulation
  * @author Diana Silva
  */
-public abstract class ResultPath {
+public class ResultPath {
     /**
      * Value of result path calculated
      */

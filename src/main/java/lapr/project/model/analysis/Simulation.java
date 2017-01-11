@@ -193,6 +193,9 @@ public class Simulation{
      * @param crew number of crew members
      * @param cargoLoad cargo load (kg)
      * @param fuelLoad fuel weight (kg)
+     * @param startAirport
+     * @param endAirport
+     * @param aircraft
      */
     public void setData(int passengers, int crew, double cargoLoad, double fuelLoad,
             Airport startAirport, Airport endAirport, Aircraft aircraft){
@@ -200,7 +203,7 @@ public class Simulation{
         this.crew=crew;
         this.cargoLoad=cargoLoad;
         this.fuelWeight=ConversionAlgorithms.convertLtoKg(fuelLoad);
-         this.flightPlan=new FlightPlan("si"+counterCode, 0, aircraft,
+        this.flightPlan=new FlightPlan("si"+counterCode, 0, aircraft,
                 startAirport, endAirport, new LinkedList<>(), new LinkedList<>(),
                 new LinkedList<>()); 
         this.totalWeight=AircraftAlgorithms.calculateInitialWeight(passengers,
@@ -320,29 +323,28 @@ public class Simulation{
     public void setShortestResultPath(ShortestPathResult shortestResultPath) {
         this.shortestResultPath = shortestResultPath;
     }
-    
-     
+
     /**
      * Creates a best path simulation
-     * @param startAirport start airport of simulation
-     * @param endAirport end airport of simulation
      * @param type type of path to be simulated
      */
     public void createPathSimulation(TypePath type){  
         TypePath p=type;
-        switch(p){
-            case ALL:
-                this.shortestResultPath=new ShortestPathResult();
-                this.fastestResultPath=new FastestPathResult();
-                this.ecologicResultPath=new EcologicPathResult();
-            case SHORTEST_PATH:
-                this.shortestResultPath=new ShortestPathResult();
-            case FASTEST_PATH:
-                this.fastestResultPath=new FastestPathResult();
-            case ECOLOGIC_PATH:
-            this.ecologicResultPath=new EcologicPathResult();
-            default:
-                this.shortestResultPath=new ShortestPathResult();
+        if(flightPlan!=null){
+            switch(p){
+                case ALL:
+                    this.shortestResultPath=new ShortestPathResult(flightPlan);
+                    this.fastestResultPath=new FastestPathResult(flightPlan);
+                    this.ecologicResultPath=new EcologicPathResult(flightPlan);
+                case SHORTEST_PATH:
+                    this.shortestResultPath=new ShortestPathResult(flightPlan);
+                case FASTEST_PATH:
+                    this.fastestResultPath=new FastestPathResult(flightPlan);
+                case ECOLOGIC_PATH:
+                this.ecologicResultPath=new EcologicPathResult(flightPlan);
+                default:
+                    this.shortestResultPath=new ShortestPathResult(flightPlan);
+            }
         }
     }
     
@@ -362,34 +364,30 @@ public class Simulation{
      
      
      public boolean calculateBestPath(TypePath type, AirNetwork air){
-         if(validate()){ 
-         
-         TypePath p=type;
-          Node start=getStartNode(air);
-          Node end=getEndNode(air);
-          switch (p){
-              case SHORTEST_PATH:
-                   shortestResultPath.calculateBestPath(air, start, end);
-                   return true;
-              case FASTEST_PATH:
-                  fastestResultPath.calculateBestPath(air, start, end);
+         if(flightPlan!=null){
+             TypePath p=type;
+            switch (p){
+                case SHORTEST_PATH:
+                     shortestResultPath.calculateBestPath(air);
+                     return true;
+                case FASTEST_PATH:
+                    fastestResultPath.calculateBestPath(air);
+                    return true;
+                case ECOLOGIC_PATH:
+                    ecologicResultPath.calculateBestPath(air);
+                    return true;
+
+                case ALL:
+                  shortestResultPath.calculateBestPath(air);
+                  fastestResultPath.calculateBestPath(air);
+                  ecologicResultPath.calculateBestPath(air);
                   return true;
-              case ECOLOGIC_PATH:
-                  ecologicResultPath.calculateBestPath(air, start, end);
-                  return true;
-             
-              case ALL:
-                shortestResultPath.calculateBestPath(air, start, end);
-                fastestResultPath.calculateBestPath(air, start, end);
-                ecologicResultPath.calculateBestPath(air, start, end);
-                return true;
-              default:
-                  return false;
-          }
+                default:
+                    return false;
+            }
          }
-         return false;
-      }
-     
+      return false;
+     }
       
     @Override
     public String toString()

@@ -5,9 +5,12 @@
  */
 package lapr.project.utils;
 
+import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import org.junit.BeforeClass;
 
 /**
  *
@@ -18,8 +21,20 @@ public class DistanceCalculatorTest {
     public DistanceCalculatorTest() {
     }
 
+    @BeforeClass
+    public static void setUpClass() throws Exception {
+    }
+
+    @AfterClass
+    public static void tearDownClass() throws Exception {
+    }
+
     @Before
     public void setUp() {
+    }
+
+    @After
+    public void tearDown() throws Exception {
     }
 
     /**
@@ -35,6 +50,8 @@ public class DistanceCalculatorTest {
         double expResult = 51.91e3;
         double result = DistanceCalculator.calculateDistance(lat1, lon1, lat2, lon2);
         assertEquals(expResult, result, 10.0);
+        
+        
         
     }
 

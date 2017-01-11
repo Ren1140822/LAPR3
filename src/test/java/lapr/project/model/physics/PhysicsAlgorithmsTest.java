@@ -48,6 +48,9 @@ public class PhysicsAlgorithmsTest {
         double expResult = 255.650;
         double result = PhysicsAlgorithms.calculateAbsoluteTemperature(altitude);
         assertEquals(expResult, result, 0.01);
+        double test = (result/expResult);
+        System.out.println("Result: "+ result);   
+        System.out.println(String.format("Error: %.2f %%", test));
     }
 
     /**
@@ -61,6 +64,9 @@ public class PhysicsAlgorithmsTest {
         
         double result = PhysicsAlgorithms.calculateAbsolutePressure(altitude);
         assertEquals(expResult, result, 0.05);
+        double test = (result/expResult);
+        System.out.println("Result: "+ result);   
+        System.out.println(String.format("Error: %.2f %%", test));
     }
 
     /**
@@ -74,6 +80,9 @@ public class PhysicsAlgorithmsTest {
         double expResult = 1.11164;
         double result = PhysicsAlgorithms.calculateAirDensity(pressure, temperature);
         assertEquals(expResult, result, 0.01);
+        double test = (result/expResult);
+        System.out.println("Result: "+ result);   
+        System.out.println(String.format("Error: %.2f %%", test));
     }
 
     /**
@@ -87,6 +96,9 @@ public class PhysicsAlgorithmsTest {
         double expResult = 0.5;
         double result = PhysicsAlgorithms.calculateVelocity(distance, time);
         assertEquals(expResult, result, 0.0);
+        double test = (result/expResult);
+        System.out.println("Result: "+ result);   
+        System.out.println(String.format("Error: %.2f %%", test));
     }
 
     /**
@@ -100,6 +112,9 @@ public class PhysicsAlgorithmsTest {
         double expResult = 2.0;
         double result = PhysicsAlgorithms.calculateTime(distance, velocity);
         assertEquals(expResult, result, 0.0);
+        double test = (result/expResult);
+        System.out.println("Result: "+ result);   
+        System.out.println(String.format("Error: %.2f %%", test));
     }
 
     /**
@@ -112,6 +127,9 @@ public class PhysicsAlgorithmsTest {
         double expResult = 1.11164;
         double result = PhysicsAlgorithms.calculateAirdensity(altitude);
         assertEquals(expResult, result, 0.01);
+        double test = (result/expResult);
+        System.out.println("Result: "+ result);   
+        System.out.println(String.format("Error: %.2f %%", test));
     }
     
     /**
@@ -124,6 +142,9 @@ public class PhysicsAlgorithmsTest {
         double expResult = 340.3;
         double result = PhysicsAlgorithms.calculateSoundSpeed(temperature);
         assertEquals(expResult, result, 0.5);
+        double test = (result/expResult);
+        System.out.println("Result: "+ result);   
+        System.out.println(String.format("Error: %.2f %%", test));
     }
     
     /**
@@ -135,6 +156,9 @@ public class PhysicsAlgorithmsTest {
         double expResult = 101325.0;
         double result = PhysicsAlgorithms.getPRESSURE_SEA();
         assertEquals(expResult, result, 0.0);
+        double test = (result/expResult);
+        System.out.println("Result: "+ result);   
+        System.out.println(String.format("Error: %.2f %%", test));
     }
 
     /**
@@ -146,6 +170,9 @@ public class PhysicsAlgorithmsTest {
         double expResult = 288.15;
         double result = PhysicsAlgorithms.getTEMPERATURE_SEA();
         assertEquals(expResult, result, 0.0);
+        double test = (result/expResult);
+        System.out.println("Result: "+ result);   
+        System.out.println(String.format("Error: %.2f %%", test));
     }
 
     /**
@@ -157,6 +184,9 @@ public class PhysicsAlgorithmsTest {
         double expResult = 8.31432;
         double result = PhysicsAlgorithms.getGAS_CONSTANT_AIR();
         assertEquals(expResult, result, 0.0);
+        double test = (result/expResult);
+        System.out.println("Result: "+ result);   
+        System.out.println(String.format("Error: %.2f %%", test));
     }
 
     /**
@@ -168,6 +198,9 @@ public class PhysicsAlgorithmsTest {
         double expResult = 9.80665;
         double result = PhysicsAlgorithms.getGRAVITY_CONSTANT_SEA();
         assertEquals(expResult, result, 0.0);
+        double test = (result/expResult);
+        System.out.println("Result: "+ result);   
+        System.out.println(String.format("Error: %.2f %%", test));
     }
 
   

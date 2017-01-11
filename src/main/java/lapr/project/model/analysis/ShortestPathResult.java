@@ -7,8 +7,7 @@ package lapr.project.model.analysis;
 
 import java.util.LinkedList;
 import lapr.project.model.AirNetwork;
-import lapr.project.model.Aircraft;
-import lapr.project.model.Airport;
+import lapr.project.model.FlightPlan;
 import lapr.project.model.Node;
 import lapr.project.model.mapgraph.GraphAlgorithms;
 
@@ -17,22 +16,28 @@ import lapr.project.model.mapgraph.GraphAlgorithms;
  * @author DianaSilva
  */
 public class ShortestPathResult extends ResultPath implements BestPathInterface {
+    private FlightPlan flightPlan;
+    
     /**
      * Constructor
+     * @param flightPlan
      */
-    public ShortestPathResult(){
+    public ShortestPathResult(FlightPlan flightPlan){
         super();
+        this.flightPlan=flightPlan;
     }
   
      /**
      * Calculates the shortest path
      * @param airNetwork airnetwork of active project
-     * @param start
-     * @param end
+     * @param flightPlan
      */
     @Override
-    public void calculateBestPath(AirNetwork airNetwork, Node start, Node end){
+    public void calculateBestPath(AirNetwork airNetwork){
         LinkedList<Node> shortPath=new LinkedList<>();
+        Node start=airNetwork.getAirportNode(flightPlan.getOrigin());
+        Node end=airNetwork.getAirportNode(flightPlan.getDestination());
+        
         double res=GraphAlgorithms.shortestPath(airNetwork.getAirNetwork(), 
                 start, end, shortPath);
      

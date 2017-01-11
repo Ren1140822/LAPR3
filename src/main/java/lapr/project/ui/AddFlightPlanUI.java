@@ -225,7 +225,7 @@ public class AddFlightPlanUI extends JDialog {
         });
         return backBtn;
     }
-
+ 
     private JButton createButtonImportPattern() {
         importPatternBtn = new JButton("Import Pattern");
         importPatternBtn.setMnemonic(KeyEvent.VK_I);
@@ -370,12 +370,25 @@ public class AddFlightPlanUI extends JDialog {
     }
 
     private void finish() {
-        //implementar para gravacao na bd
         JOptionPane.showMessageDialog(
                 null,
                 "Flight Plan added successfully!",
                 "Add Flight Plan",
                 JOptionPane.INFORMATION_MESSAGE);
+        String[] op = {"Yes", "No"};
+        String question = "Save flight Plan in data base?";
+        int opcao = JOptionPane.showOptionDialog(AddFlightPlanUI.this, question,
+                "Save Flight Plan?", JOptionPane.YES_NO_OPTION,
+                JOptionPane.QUESTION_MESSAGE, null, op, op[0]);
+        if (opcao == JOptionPane.YES_OPTION) {
+            save();
+        } else {
+            dispose();
+        }      
+    }
+    
+    private void save(){
+        //implement save on data base
         dispose();
     }
 

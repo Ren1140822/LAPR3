@@ -6,7 +6,6 @@
 package lapr.project.model.analysis;
 
 import java.util.LinkedList;
-import lapr.project.model.Airport;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
