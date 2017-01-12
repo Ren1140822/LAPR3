@@ -7,7 +7,6 @@ package lapr.project.model.lists;
 
 import java.util.LinkedList;
 import java.util.List;
-import javafx.scene.shape.Line;
 import lapr.project.model.Airport;
 import lapr.project.model.Location;
 import lapr.project.model.Node;

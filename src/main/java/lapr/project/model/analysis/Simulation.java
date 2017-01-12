@@ -263,16 +263,17 @@ public class Simulation{
       * Validates aircraft related data (nr passengers/crew, weight, fuel capacity)
       * @return true if data related to the aircraft is valid, false if not
       */
-     public boolean validateAircraftRelatedData(){
+     private boolean validateAircraftRelatedData(){
          Aircraft aircraft=flightPlan.getAircraft();
          if(aircraft==null)
              return false;
-         else
-            return this.passengers<=aircraft.getCabinConfig().getTotalSeats() &&
+         else{
+            boolean v1 = this.passengers<=aircraft.getCabinConfig().getTotalSeats() &&
                 this.crew<=aircraft.getNrOfCrewElements() && 
-                this.fuelWeight<=ConversionAlgorithms.convertLtoKg(aircraft.getAircraftModel().getFuelCapacity())
-                && Double.doubleToLongBits(totalWeight)<=aircraft.getAircraftModel().getMTOW() &&
-                aircraft.validate();
+                this.fuelWeight<=ConversionAlgorithms.convertLtoKg(aircraft.getAircraftModel().getFuelCapacity());
+            boolean v2 = v1 && Double.doubleToLongBits(totalWeight)<=Double.doubleToLongBits(aircraft.getAircraftModel().getMTOW());
+            return v2 && aircraft.validate();
+         }
      }
     
      /**

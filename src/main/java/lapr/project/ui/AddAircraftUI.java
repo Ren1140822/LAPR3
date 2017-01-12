@@ -120,8 +120,6 @@ public class AddAircraftUI extends JDialog {
     private JPanel createPanelLabelText() {
         JPanel p = new JPanel(new GridLayout(4, 1));
         
-        p.setBorder(new TitledBorder("Aircarft:"));
-        
         textRegistration = new JTextField(10);
         textCompany = new JTextField(10);
         textNrOfCrewElements = new JTextField(10);
@@ -132,8 +130,6 @@ public class AddAircraftUI extends JDialog {
         p.add(createPanelLabelText("Company name: ", textCompany));
         p.add(createPanelLabelText("Nr. of crew elements: ", textNrOfCrewElements));
         p.add(createPanelLabelText("Aircarft Model: ", textAircraftModel));
-        
-        
         
         return p;
     }
