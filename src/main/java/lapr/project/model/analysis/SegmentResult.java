@@ -355,7 +355,7 @@ public class SegmentResult {
             pass=calculate(); 
             distAirport=distanceToGo(finalAirport);
         }while(pass && distAirport<=DIST_DESC);
-        return distAirport!=0;
+        return distAirport < 0 || distAirport > 0 ;
     }
     
     private double distanceToGo(Airport finAirport){
@@ -367,18 +367,18 @@ public class SegmentResult {
         double temperature=PhysicsAlgorithms.calculateAbsoluteTemperature(altitude);
         vIas=getVIas(altitude, type);
         
-        if(vIas==-1){
+        if(!(vIas<-1) && !(vIas>-1)){
             return false;
         }
         
         cDrag=0;
         
-        if(dhDT==-1)
+        if(!(dhDT<-1) && !(dhDT>-1))
              cDrag=getModel().getListIten().get(0).getCdrag_0();
         else
             cDrag=getCDrag0(dhDT);
 
-        if(cDrag==-1)
+        if(!(cDrag<-1) && !(cDrag>-1))
             return false;
         tas=AircraftAlgorithms.calculateTAS(airDensity, temperature, vIas);
 
@@ -465,7 +465,7 @@ public class SegmentResult {
     }
     
     public boolean validate(){
-         boolean v1 = this.altitude!=-1;
+         boolean v1 = this.altitude<-1 || this.altitude >-1;
          
         boolean v2 = this.type!=null;
         return v1 && v2;
