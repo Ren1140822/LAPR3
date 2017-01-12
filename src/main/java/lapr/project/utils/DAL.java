@@ -3,7 +3,6 @@ package lapr.project.utils;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
@@ -36,10 +35,10 @@ import oracle.jdbc.OracleTypes;
  */
 public class DAL {
 
-    private final String url = "jdbc:oracle:thin://@gandalf.dei.isep.ipp.pt:1521/pdborcl";
+    private static final String url = "jdbc:oracle:thin://@gandalf.dei.isep.ipp.pt:1521/pdborcl";
     private final String url2 = "jdbc:oracle:thin://@localhost:1521/pdborcl";
-    private final String user = "LAPR3_38";
-    private final String passw = "grupo38";
+    private static final String user = "LAPR3_38";
+    private static final String passw = "grupo38";
     private final String user2 = "orcl";
     private final String passw2 = "12345";
 
@@ -66,15 +65,16 @@ public class DAL {
      *
      * @return the connection object
      */
-    private Connection connect() {
-        Connection conn = null;
+    public Connection connect() {
+        Connection con = null;
         try {
+
             DriverManager.registerDriver(new oracle.jdbc.OracleDriver());
-            conn = DriverManager.getConnection(url, user, passw);
+            con = DriverManager.getConnection(url, user, passw);
         } catch (SQLException e) {
             Logger.getLogger(DAL.class.getName()).log(Level.SEVERE, null, e);
         }
-        return conn;
+        return con;
     }
 
     public List<Project> getAllProjects() {
@@ -82,7 +82,7 @@ public class DAL {
         ResultSet rs = null;
         Connection con = null;
         String query = "{call getprojects()}";
-        con = connect();
+        con=connect();
 
         try (CallableStatement st = con.prepareCall(query)) {
 
@@ -114,7 +114,7 @@ public class DAL {
 
         Connection con = null;
         String query = "{ ? =call get_airports(?)}";
-        con = connect();
+        con=connect();
 
         try (CallableStatement st = con.prepareCall(query)) {
 
@@ -128,7 +128,7 @@ public class DAL {
                 String name = rs.getString("Name");
                 String country = rs.getString("Country");
                 String town = rs.getString("Town");
-                Location location = getLocationByID(con,locationID);
+                Location location = getLocationByID(con, locationID);
                 Airport airport = new Airport(IATA, name, town, country, location);
                 airportList.add(airport);
             }
@@ -146,13 +146,12 @@ public class DAL {
      * @param locationID the location ID
      * @return the location object
      */
-    private Location getLocationByID(Connection con ,int locationID) {
+    private Location getLocationByID(Connection con, int locationID) {
         Location location = null;
-       
 
         ResultSet rs = null;
         String query = "{ ?= call get_location(?)}";
-        con = connect();
+        con=connect();
 
         try (CallableStatement st = con.prepareCall(query)) {
             st.setInt(2, locationID);
@@ -189,7 +188,7 @@ public class DAL {
 
         Connection con = null;
         String query = "{ ?= call get_aircrafts(?)}";
-        con = connect();
+        con=connect();
 
         try (CallableStatement st = con.prepareCall(query)) {
             st.setString(2, projectID);
@@ -228,7 +227,7 @@ public class DAL {
 
         ResultSet rs = null;
         Map<String, Integer> map = new HashMap<>();
-        con = connect();
+        con=connect();
         String query = "{ ?= call get_cabins(?)}";
         try (CallableStatement st2 = con.prepareCall(query)) {
             st2.setString(2, aircraftID);
@@ -260,7 +259,7 @@ public class DAL {
 
         ResultSet rs = null;
         Map<String, Integer> map = new HashMap<>();
-        con = connect();
+        con=connect();
         String query = "{ ?= call get_airport(?)}";
         try (CallableStatement st2 = con.prepareCall(query)) {
             st2.setInt(2, airportID);
@@ -274,7 +273,7 @@ public class DAL {
                 String country = rs.getString("Country");
                 String town = rs.getString("Town");
 
-                Location location = getLocationByID(con,locationID);
+                Location location = getLocationByID(con, locationID);
                 ap = new Airport(IATA, name, town, country, location);
             }
 
@@ -304,7 +303,7 @@ public class DAL {
         List<Iten> itemList = new LinkedList<Iten>();
         List<Pattern> patternList = new LinkedList<Pattern>();
         String query = "{?= call get_aircraft_model(?)}";
-        con = connect();
+        con=connect();
 
         try (CallableStatement st = con.prepareCall(query)) {
             st.setString(2, aircraftModelD);
@@ -359,8 +358,8 @@ public class DAL {
         ResultSet rs = null;
         List<Iten> itemList = new LinkedList<Iten>();
         List<Pattern> patternList = new LinkedList<Pattern>();
-        String query = "{?= call get_aircraft_model(?)}";
-        con = connect();
+        String query = "{?= call get_aircraft_models(?)}";
+        con=connect();
 
         try (CallableStatement st = con.prepareCall(query)) {
             st.setInt(2, projectlD);
@@ -410,7 +409,7 @@ public class DAL {
         ResultSet rs = null;
 
         String query = "{?= call get_flightplans(?)}";
-        con = connect();
+        con=connect();
 
         try (CallableStatement st = con.prepareCall(query)) {
             st.setInt(2, projectlD);
@@ -446,7 +445,7 @@ public class DAL {
         ResultSet rs = null;
 
         String query = "{?= call get_techicalstops(?)}";
-        con = connect();
+        con=connect();
 
         try (CallableStatement st = con.prepareCall(query)) {
             st.setString(2, fpID);
@@ -461,7 +460,7 @@ public class DAL {
                 String country = rs.getString("Country");
                 String town = rs.getString("Town");
 
-                Location location = getLocationByID(con,locationID);
+                Location location = getLocationByID(con, locationID);
                 Airport airport = new Airport(IATA, name, town, country, location);
 
                 airportList.add(airport);
@@ -485,7 +484,7 @@ public class DAL {
         ResultSet rs = null;
 
         String query = "{?= call get_mandatorywaypoints(?)}";
-        con = connect();
+        con=connect();
 
         try (CallableStatement st = con.prepareCall(query)) {
             st.setString(2, fpID);
@@ -523,7 +522,7 @@ public class DAL {
         Connection con = null;
         ResultSet rs = null;
         String query = "{?= call get_itens(?)}";
-        con = connect();
+        con=connect();
         try (CallableStatement st = con.prepareCall(query)) {
             st.setString(2, aircraftModelID);
             st.registerOutParameter(1, OracleTypes.CURSOR);
@@ -557,7 +556,7 @@ public class DAL {
 
         ResultSet rs = null;
         String query = "{?= call get_patterns(?)}";
-        con = connect();
+        con=connect();
         try (CallableStatement st = con.prepareCall(query)) {
             st.setString(2, flightDesignator);
             st.registerOutParameter(1, OracleTypes.CURSOR);
@@ -591,7 +590,7 @@ public class DAL {
 
         ResultSet rs = null;
         String query = "{?= call get_motorization(?)}";
-        con = connect();
+        con=connect();
         try (CallableStatement st = con.prepareCall(query)) {
             st.setInt(2, motorizationConfigID);
             st.registerOutParameter(1, OracleTypes.CURSOR);
@@ -629,7 +628,7 @@ public class DAL {
 
         ResultSet rs = null;
         String query = "{?= call get_thrust(?)}";
-        con = connect();
+        con=connect();
         try (CallableStatement st = con.prepareCall(query)) {
             st.setInt(2, thrustFunctionID);
             st.registerOutParameter(1, OracleTypes.CURSOR);
@@ -655,7 +654,7 @@ public class DAL {
 
         ResultSet rs = null;
         String query = "{?= call get_node(?)}";
-        con = connect();
+        con=connect();
         try (CallableStatement st = con.prepareCall(query)) {
             st.setString(2, nodeID);
             st.registerOutParameter(1, OracleTypes.CURSOR);
@@ -681,26 +680,26 @@ public class DAL {
      * @param projectID the id of the project
      * @return the air network
      */
-    public AirNetwork getAirNetwork(String projectID) {
+    public AirNetwork getAirNetwork(int projectID) {
 
         AirNetwork airNetwork = new AirNetwork();
         ResultSet rs = null;
 
         Connection con = null;
         String query = "{?= call get_airnetwork(?)}";
-        con = connect();
+        con=connect();
 
         try (CallableStatement st = con.prepareCall(query)) {
-            st.setString(2, projectID);
+            st.setInt(2, projectID);
             st.registerOutParameter(1, OracleTypes.CURSOR);
             st.execute();
             rs = (ResultSet) st.getObject(1);
             while (rs.next()) {
-                int id = rs.getInt("ID");
+                int netID= rs.getInt("ID");
                 String description = rs.getString("description");
-                List<Node> nodes = getNodesListByID(id);
-                List<Segment> segments = getSegmentsListByID(id, nodes);
-                airNetwork.setId(String.valueOf(id));
+                List<Node> nodes = getNodesListByID(netID);
+                List<Segment> segments = getSegmentsListByID(netID, nodes);
+                airNetwork.setId(String.valueOf(netID));
                 airNetwork.setDescription(description);
                 airNetwork.setNodeList(nodes);
                 airNetwork.setSegmentList(segments);
@@ -727,7 +726,7 @@ public class DAL {
         ResultSet rs = null;
         Connection con = null;
         String query = "{?= call get_nodes(?)}";
-        con = connect();
+        con=connect();
 
         try (CallableStatement st = con.prepareCall(query)) {
             st.setInt(2, airNetworkID);
@@ -764,7 +763,7 @@ public class DAL {
 
         Connection con = null;
         String query = "{?= call get_segments(?)}";
-        con = connect();
+        con=connect();
         try (CallableStatement st = con.prepareCall(query)) {
             st.setInt(2, airNetworkID);
             st.registerOutParameter(1, OracleTypes.CURSOR);
@@ -814,7 +813,7 @@ public class DAL {
 
         Connection con = null;
         String query = "{?= call get_wind(?)}";
-        con = connect();
+        con=connect();
         try (CallableStatement st = con.prepareCall(query)) {
             st.setInt(2, windID);
             st.registerOutParameter(1, OracleTypes.CURSOR);
@@ -837,7 +836,7 @@ public class DAL {
 
     public boolean WriteAircraftsToDatabase(List<Aircraft> aircraftList, int projectID) throws SQLException {
         Connection con = null;
-        con = connect();
+        con=connect();
         boolean ret = false;
 
         for (Aircraft aircraft : aircraftList) {
@@ -873,7 +872,7 @@ public class DAL {
 
     public boolean WriteAircraftModelsToDatabase(List<AircraftModel> aircraftModelList, int projectID) throws SQLException {
         Connection con = null;
-        con = connect();
+        con=connect();
 
         boolean ret = false;
 
@@ -940,7 +939,7 @@ public class DAL {
 
         boolean ret = false;
         for (Pattern p : plist) {
-            try (CallableStatement st = con.prepareCall("{call insert_pattern(?,?,?)}")) {
+            try (CallableStatement st = con.prepareCall("{call insert_pattern(?,?,?,?)}")) {
                 st.setDouble(1, p.getAltitude());
                 st.setDouble(2, p.getvClimb());
                 st.setDouble(3, p.getvDesc());
@@ -956,7 +955,7 @@ public class DAL {
 
     public boolean WriteAirportsToDatabase(List<Airport> airportList, int projectID) {
         Connection con = null;
-        con = connect();
+        con=connect();
         boolean ret = false;
 
         try (CallableStatement st = con.prepareCall("{call insert_airport(?,?,?,?,?,?,?,?)}")) {
@@ -983,7 +982,7 @@ public class DAL {
 
     public boolean WriteNodesToDatabase(List<Node> nodeList, int netID) {
         Connection con = null;
-        con = connect();
+        con=connect();
         boolean ret = false;
 
         try (CallableStatement st = con.prepareCall("{call insert_node(?,?,?,?)}")) {
@@ -1006,7 +1005,7 @@ public class DAL {
 
     public boolean WriteSegmentsToDatabase(List<Segment> segmentList, int airNetworkID) {
         Connection con = null;
-        con = connect();
+        con=connect();
         boolean ret = false;
 
         try (CallableStatement st = con.prepareCall("{call insert_segment(?,?,?,?,?,?,?,?,?)}")) {
@@ -1032,14 +1031,14 @@ public class DAL {
         return true;
     }
 
-    public boolean WriteAirNetworkToDatabase(String projectID, String description) {
+    public boolean WriteAirNetworkToDatabase(int projectID, String description) {
         Connection con = null;
-        con = connect();
+        con=connect();
         boolean ret = false;
 
         try (CallableStatement st = con.prepareCall("{call insert_airnetwork(?,?)}")) {
             st.setString(1, description);
-            st.setString(2, projectID);
+            st.setInt(2, projectID);
             ret = st.execute();
         } catch (SQLException ex) {
             Logger.getLogger(DAL.class.getName()).log(Level.SEVERE, null, ex);
@@ -1053,7 +1052,7 @@ public class DAL {
 
     public boolean WriteSimulationsToDatabase(List<Simulation> simList, int airNetworkID) {
         Connection con = null;
-        con = connect();
+        con=connect();
         boolean ret = false;
 
         for (Simulation sim : simList) {
@@ -1072,7 +1071,7 @@ public class DAL {
 
     public boolean WriteFlightPlansToDatabase(List<FlightPlan> plans, int projectID) {
         Connection con = null;
-        con = connect();
+        con=connect();
         boolean ret = false;
 
         try (CallableStatement st = con.prepareCall("{call insert_flightplan(?,?,?,?,?,?)}")) {
@@ -1083,11 +1082,11 @@ public class DAL {
                 st.setInt(3, plan.getMinStopTime());
                 st.setString(4, plan.getOrigin().getIATA());
                 st.setString(5, plan.getDestination().getIATA());
-                 st.setString(6, plan.getAircraft().getRegistration());
-                 ret = st.execute();
+                st.setString(6, plan.getAircraft().getRegistration());
+                ret = st.execute();
                 WriteStopsToDatabase(plan.getTechnicalStops(), plan.getFlightDesignator());
                 WritePatternsToDatabase(con, plan.getListPattern(), plan.getFlightDesignator());
-                WriteWaypointsToDatabase(plan.getMandatoryWaypoints(),  plan.getFlightDesignator());
+                WriteWaypointsToDatabase(plan.getMandatoryWaypoints(), plan.getFlightDesignator());
             }
         } catch (SQLException ex) {
             Logger.getLogger(DAL.class.getName()).log(Level.SEVERE, null, ex);
@@ -1100,7 +1099,7 @@ public class DAL {
 
     public boolean WriteStopsToDatabase(List<Airport> stops, String fpID) {
         Connection con = null;
-        con = connect();
+        con=connect();
         boolean ret = false;
 
         try (CallableStatement st = con.prepareCall("{call insert_stops(?,?)}")) {
@@ -1121,7 +1120,7 @@ public class DAL {
 
     public boolean WriteWaypointsToDatabase(List<Node> nodes, String fpID) {
         Connection con = null;
-        con = connect();
+        con=connect();
         boolean ret = false;
 
         try (CallableStatement st = con.prepareCall("{call insert_waypoint(?,?)}")) {
@@ -1146,7 +1145,7 @@ public class DAL {
      * @param ps prepared statement
      * @param conn connection
      */
-    private static void close(Connection conn) {
+    public static void close(Connection conn) {
 
         if (conn != null) {
             try {
