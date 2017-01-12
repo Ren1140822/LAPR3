@@ -14,6 +14,7 @@ import lapr.project.model.Iten;
 import lapr.project.model.Motorization;
 import lapr.project.model.Pattern;
 import lapr.project.model.Thrust_Function;
+import lapr.project.model.Wind;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -27,8 +28,7 @@ import static org.junit.Assert.*;
  */
 public class SegmentResultTest {
     LinkedList<Iten> listIten;
-    LinkedList<Pattern> listPattern;
-    
+    LinkedList<Pattern> listPattern;    
             
     public SegmentResultTest() {
     }
@@ -56,7 +56,7 @@ public class SegmentResultTest {
     public void testGetType() {
         System.out.println("getType");
         SegmentType expResult = SegmentType.CLIMBING;
-        SegmentResult instance = new SegmentResult(expResult, 0, 0, 0,
+        SegmentResult instance = new SegmentResult(expResult, 0, 0, 0,new Wind(),
                 new AircraftModel(), listPattern);
        
          SegmentType result = instance.getType();
@@ -73,7 +73,7 @@ public class SegmentResultTest {
         double expResult = 100;
         SegmentType type =  SegmentType.CLIMBING;
         SegmentResult instance = new SegmentResult(type,
-                 expResult, 0,0, new AircraftModel(),listPattern);
+                 expResult, 0,0,new Wind(), new AircraftModel(),listPattern);
        
        double result = instance.getInitialAltitude();
         assertEquals(expResult, result,0.0);
@@ -88,7 +88,7 @@ public class SegmentResultTest {
         double expResult = 100;
         SegmentType type =  SegmentType.CLIMBING;
         SegmentResult instance = new SegmentResult(type,
-                0,  expResult, 0, new AircraftModel(), listPattern);
+                0,  expResult, 0, new Wind(),new AircraftModel(), listPattern);
        
        double result = instance.getMass();
         assertEquals(expResult, result,0.0);
@@ -142,7 +142,7 @@ public class SegmentResultTest {
         SegmentType type = SegmentType.CLIMBING;
         int expResult = 120;
         SegmentResult instance = new SegmentResult(type,
-                0,  0, expResult, new AircraftModel(), listPattern);
+                0,  0, expResult, new Wind(),new AircraftModel(), listPattern);
         
         int result = instance.getTimeStep();
         assertEquals(expResult, result);
@@ -255,7 +255,7 @@ public class SegmentResultTest {
         createPatterns();
         
         AircraftModel aircraftModel=new AircraftModel("", "", "", "PASSENGER", motorization, 0,0, 0, 0, 0, 0, wingArea, 0, ar, e, listIten);
-        SegmentResult instance = new SegmentResult(type, 0, 10000, 0, aircraftModel, listPattern);
+        SegmentResult instance = new SegmentResult(type, 0, 10000, 0, new Wind(),aircraftModel, listPattern);
         
         double result = instance.getVIas(altitude, type);
         assertEquals(210, result, 0.0);
@@ -274,8 +274,10 @@ public class SegmentResultTest {
         AircraftModel aircraftModel=new AircraftModel("", "", "", "PASSENGER", 
                 new Motorization(), 0,0, 0, 0, 0, 0, 0, 0, 0,0, listIten);
         FlightPlan flightPlan=new FlightPlan("aa00", 0, new Aircraft(),
-                new Airport(), new Airport(), new LinkedList<>(), new LinkedList<>(), listPattern);
-        SegmentResult instance = new SegmentResult(type, 0, 10000, 0, aircraftModel, listPattern);
+                new Airport(), new Airport(), new LinkedList<>(), 
+                new LinkedList<>(), listPattern);
+        SegmentResult instance = new SegmentResult(type, 0, 10000, 0, new Wind(),
+                aircraftModel, listPattern);
 
         int result = instance.getIndex(altitude);
         assertEquals(expResult, result);
@@ -337,7 +339,7 @@ public class SegmentResultTest {
         System.out.println("getModel");
         AircraftModel expResult=new AircraftModel();
         SegmentResult instance = new SegmentResult(SegmentType.DESC, 0, 0, 0, 
-                expResult, listPattern);
+                new Wind(),expResult, listPattern);
         AircraftModel result = instance.getModel();
         assertEquals(expResult, result);
     }
@@ -349,7 +351,8 @@ public class SegmentResultTest {
     public void testSetModel() {
         System.out.println("setModel");
         AircraftModel model = new AircraftModel();
-        SegmentResult instance = new SegmentResult(SegmentType.DESC, 0, 0, 0, model, listPattern);
+        SegmentResult instance = new SegmentResult(SegmentType.DESC, 0, 0, 0, 
+                new Wind(),model, listPattern);
         instance.setModel(model);
     }
 
@@ -366,7 +369,7 @@ public class SegmentResultTest {
         AircraftModel model = new AircraftModel("Dummy01", "", "", "Dummy01", 
                 new Motorization(), 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, listIten);
         
-        SegmentResult instance = new SegmentResult(SegmentType.DESC, 0, 0, 0, model, listPattern);
+        SegmentResult instance = new SegmentResult(SegmentType.DESC, 0, 0, 0,new Wind(), model, listPattern);
         
         double expResult = 0.03;
         double result = instance.getCDrag0(speed);

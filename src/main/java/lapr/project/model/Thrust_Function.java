@@ -34,11 +34,11 @@ public class Thrust_Function implements Serializable {
     private double max_speed;
     
     @XmlTransient
-    private static final double DEFAULT_THRUST_0 = 1;
+    private static final double DEFAULT_THRUST_0 = -1;
     @XmlTransient
-    private static final double DEFAULT_THRUST_MAX_SPEED = 1;
+    private static final double DEFAULT_THRUST_MAX_SPEED = -1;
     @XmlTransient
-    private static final double DEFAULT_MAX_SPEED = 1;
+    private static final double DEFAULT_MAX_SPEED = -1;
     
     public Thrust_Function() {
         this.thrust_0 = DEFAULT_THRUST_0;
@@ -137,6 +137,14 @@ public class Thrust_Function implements Serializable {
      */
     public void setThrustMaxSpeed_(String th) {
         this.thrust_max_speed = StringToSIUnitConverter.TSFC(th);
+    }
+    
+    /**
+     * Return the default value for maxSpeed
+     * @return defaultMaxSpeed
+     */
+    public static double getDefaultValue(){
+        return DEFAULT_MAX_SPEED;
     }
     
     public boolean validate() {

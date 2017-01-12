@@ -134,9 +134,12 @@ public class AircraftAlgorithms {
      * @param groundSpeed aircraft speed relative to ground
      * @return true speed
      */
-    public static double calculateTrueForceSpeed(Wind wind, double groundSpeed){
+    public static double calculateTrueWindForce(Wind wind, double groundSpeed){
         return wind.getWindIntensity()*Math.cos(wind.getWindDirection()) + 
                 groundSpeed;
+        
+        
+        
     }
     
     
@@ -302,13 +305,16 @@ public class AircraftAlgorithms {
      * @param vIas indicated air speed (m/s)
      * @return true air speed (m/s)
      */
-    public static double calculateTAS(double airDensity, double temperature, double vIas){
+    public static double calculateTAS(double airDensity, double temperature,
+            double vIas, Wind wind){
         double mTrue=calculateMTrue(airDensity, vIas);
         double spSound=PhysicsAlgorithms.calculateSoundSpeed(temperature);
         
-        return mTrue*spSound;    
+        double velWindEffect=calculateTrueWindForce(wind, 0);
+        
+        return (mTrue*spSound)+velWindEffect;    
     }
-    
+  
     /**
      * Calculates the angle of aircraft related to the ground in climbing
      * @param tas true air speed (m/s)

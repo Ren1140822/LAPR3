@@ -5,6 +5,7 @@
  */
 package lapr.project.model.physics;
 
+import lapr.project.model.Wind;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -63,7 +64,8 @@ public class AircraftAlgorithmsTest {
         double temperature = 288.2;
         double vIas = 210.0;
         double expResult = 108.0832375;
-        double result = AircraftAlgorithms.calculateTAS(airDensity, temperature, vIas);
+        Wind wind=new Wind();
+        double result = AircraftAlgorithms.calculateTAS(airDensity, temperature, vIas,wind);
         assertEquals(expResult, result, 0.1);
         double test = (result/expResult);
         System.out.println("Result: "+ result);

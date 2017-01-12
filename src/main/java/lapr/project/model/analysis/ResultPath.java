@@ -12,6 +12,7 @@ import lapr.project.model.Airport;
 import lapr.project.model.FlightPlan;
 import lapr.project.model.Node;
 import lapr.project.model.Pattern;
+import lapr.project.model.Wind;
 import lapr.project.model.physics.AircraftAlgorithms;
 
 /**
@@ -127,7 +128,7 @@ public class ResultPath {
         return false;
     }
 
-    public boolean createSegments(FlightPlan flightPlan,
+    public boolean createPartialResults(FlightPlan flightPlan,
         double initialMass, int timeStep){
         AircraftModel aircraftModel=flightPlan.getAircraft().getAircraftModel();
         double altitude=-1;
@@ -135,15 +136,32 @@ public class ResultPath {
             List<Pattern> list=flightPlan.getListPattern();
             Airport finalAirport=flightPlan.getDestination();
             int nrScale=flightPlan.getMandatoryWaypoints().size();
-            for(int i=0; i<=nrScale;i++){
-                for(int j=0;j<resultPath.size()-1;j++){
-                    
+            double size=resultPath.size();
+            
+            //for(int j=0; j<nrScale;j++)
+            
+            
+            //ONLY ONE AIRPORT-SKY-DESCEND (nrScale=0)
+            for(int i=0; i<size;i++){
+               
+                    Wind wind=new Wind();
+              
+                    //NODE2-NODE3-...-LASTNODE
+                    if(i!=0 && i!=size-1){
+                        SegmentResult srCruise=new SegmentResult(SegmentType.CRUISE,
+                                altitude, initialMass, timeStep,wind,aircraftModel, list);
+                        segments.add(srCruise);
+                        boolean testCruise=srCruise.calculateCruise(finalAirport);
+                        if(testCruise){
+                            altitude=srCruise.getAltitudeFinal();
+                        } 
+                    }
                     //CLIMBING PHASE - AIRPORT/FIRSTNODE - SKY 
                     if(i==0){
                         altitude=flightPlan.getOrigin().getLocation().getAltitude();
                     
                         SegmentResult srClimb=new SegmentResult(SegmentType.CLIMBING,
-                                altitude,initialMass, timeStep,aircraftModel, 
+                                altitude,initialMass, timeStep, wind,aircraftModel, 
                                 list);
                         segments.add(srClimb);
                         boolean testClimb=srClimb.calculateClimb();
@@ -151,7 +169,7 @@ public class ResultPath {
                             altitude=srClimb.getAltitudeFinal();
                            
                             SegmentResult srCruise=new SegmentResult(SegmentType.CRUISE,
-                                altitude, initialMass, timeStep,aircraftModel,
+                                altitude, initialMass, timeStep,wind,aircraftModel,
                                     list);
                             segments.add(srCruise);
                             boolean testCruise=srCruise.calculateCruise(finalAirport);
@@ -163,27 +181,16 @@ public class ResultPath {
                     //DESCEND PHASE - SKY-AIRPORT
                     if(i==resultPath.size()-1){
                          SegmentResult srCruise=new SegmentResult(SegmentType.CRUISE,
-                                altitude,initialMass, timeStep,aircraftModel, list);
+                                altitude,initialMass, timeStep,wind, aircraftModel, list);
                          segments.add(srCruise);
                         if(srCruise.calculateCruise(finalAirport)){
                             altitude=srCruise.getAltitudeFinal();
                             SegmentResult srDescend=new SegmentResult(SegmentType.DESC,
-                                altitude, initialMass, timeStep,aircraftModel, list);
+                                altitude, initialMass, timeStep, wind,aircraftModel, list);
                             segments.add(srDescend);
                            srDescend.calculateDescend(finalAirport);
                         }
-                    
-                    //NODE2-NODE3-...-LASTNODE
-                    }else{
-                        SegmentResult srCruise=new SegmentResult(SegmentType.CRUISE,
-                                altitude, initialMass, timeStep,aircraftModel, list);
-                        segments.add(srCruise);
-                        boolean testCruise=srCruise.calculateCruise(finalAirport);
-                        if(testCruise){
-                            altitude=srCruise.getAltitudeFinal();
-                        } 
-                    }
-                    
+                                       
                 }
             }
         }

@@ -131,33 +131,33 @@ public class AircraftModel implements Serializable {
      * Default attributes
      */
     @XmlTransient
-    private final String DEFAULT_ID = "Dummy 01";
+    private static final String DEFAULT_ID = "Dummy 01";
     @XmlTransient
-    private final String DEFAULT_DESCRIPTION = "Dummy aircraft 01";
+    private static final String DEFAULT_DESCRIPTION = "Dummy aircraft 01";
     @XmlTransient
-    private final String DEFAULT_MAKER = "Boeing";
+    private static final String DEFAULT_MAKER = "Boeing";
     @XmlTransient
-    private final Type DEFAULT_TYPE = Type.PASSENGER;
+    private static final Type DEFAULT_TYPE = Type.PASSENGER;
     @XmlTransient
-    private final double DEFAULT_EWEIGHT = 1;
+    private static final double DEFAULT_EWEIGHT = 1;
     @XmlTransient
-    private final double DEFAULT_MTOW = 1;
+    private static final double DEFAULT_MTOW = 1;
     @XmlTransient
-    private final double DEFAULT_ASPECT_RATIO = 1;
+    private static final double DEFAULT_ASPECT_RATIO = 1;
     @XmlTransient
-    private final double DEFAULT_MAXPAYLOAD = 1;
+    private static final double DEFAULT_MAXPAYLOAD = 1;
     @XmlTransient
-    private final double DEFAULT_FUELCAPACITY = 1;
+    private static final double DEFAULT_FUELCAPACITY = 1;
     @XmlTransient
-    private final double DEFAULT_VMO = 1;
+    private static final double DEFAULT_VMO = 1;
     @XmlTransient
-    private final double DEFAULT_MMO = 1;
+    private static final double DEFAULT_MMO = 1;
     @XmlTransient
-    private final double DEFAULT_WINGAREA = 1;
+    private static final double DEFAULT_WINGAREA = 1;
     @XmlTransient
-    private final double DEFAULT_WINGSPAN = 1;
+    private static final double DEFAULT_WINGSPAN = 1;
     @XmlTransient
-    private final double DEFAULT_E = 1;
+    private static final double DEFAULT_E = 1;
 
     /**
      * Default constructor
@@ -513,6 +513,10 @@ public class AircraftModel implements Serializable {
 
         AircraftModel other = (AircraftModel) otherObject;
         return this.id.equalsIgnoreCase(other.id);
+    }
+    
+    public static double getDefaultWingArea(){
+        return DEFAULT_WINGAREA;
     }
 
     @Override

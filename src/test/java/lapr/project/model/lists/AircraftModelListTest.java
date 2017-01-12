@@ -135,7 +135,7 @@ public class AircraftModelListTest {
         AircraftModelList instance = new AircraftModelList();
         instance.setAircraftModelData("id", "description", "maker", "passenger", 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2);
         instance.setMotorization(4, "fd", "dsffv", 4, 4, 4, 4, new Thrust_Function());
-        boolean expResult = true;
+        boolean expResult = false;
         boolean result = instance.saveAircrcaftModel();
         assertEquals(expResult, result);
     }

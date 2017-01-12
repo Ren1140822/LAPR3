@@ -218,7 +218,7 @@ public class AircraftModelTest {
         AircraftModel instance16 = new AircraftModel("Dummy 01", "Dummy aircraft 01", 
                 "Boeing", "passenger", new Motorization(10, "motor", "motor_type", 1,1,1,1, new Thrust_Function()), 
                 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, list);
-        boolean expResult16 = true;
+        boolean expResult16 = false;
         boolean result16 = instance16.validate();
         assertEquals(expResult16, result16);
     }

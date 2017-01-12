@@ -12,6 +12,8 @@ import lapr.project.model.Airport;
 import lapr.project.model.Iten;
 import lapr.project.model.Pattern;
 import lapr.project.model.Thrust_Function;
+import lapr.project.model.Wind;
+import lapr.project.model.analysis.SegmentType;
 import lapr.project.model.physics.AircraftAlgorithms;
 import lapr.project.model.physics.PhysicsAlgorithms;
 
@@ -34,7 +36,7 @@ public class SegmentResult {
     private SegmentType type;
     private double angle;
     private double dhDT;
-    private static List<Pattern> listPatterns;
+    private List<Pattern> listPatterns;
     
     //DISTANCE TO THE AIRPORT WHEN AIRCRAFT START THE DESCEND PHASE 
     private static final double DIST_DESC=4.82803*1000;
@@ -46,6 +48,7 @@ public class SegmentResult {
     private static double thrustMi;
     private static double thrustLapseRate;
     private static double wingArea;
+    private Wind wind;
     
     //VALUES RELATED TO CALCULATION OPERATIONS 
     private double airDensity;
@@ -71,6 +74,7 @@ public class SegmentResult {
         this.dhDT=DEFAULT_VALUE;
         this.model=new AircraftModel();
         listPatterns=new LinkedList<>();
+        this.wind=new Wind();
         constantValues(model);
     }
     
@@ -91,6 +95,7 @@ public class SegmentResult {
         this.dhDT=DEFAULT_VALUE;
         this.model=new AircraftModel();
         listPatterns=new LinkedList<>();
+        this.wind=new Wind();
         constantValues(model);
    }
   
@@ -100,11 +105,12 @@ public class SegmentResult {
      * @param altitudeInitial altitude on the start node of segment (m)
      * @param mass mass (kg)
      * @param timeStep time step to consider in segments (s)
+     * @param wind wind in the previous node
      * @param model aircraft model
      * @param listPattern   list pattern
      */
     public SegmentResult(SegmentType type, double altitudeInitial,double mass, 
-            int timeStep, AircraftModel model, List<Pattern> listPattern){
+            int timeStep, Wind wind, AircraftModel model, List<Pattern> listPattern){
         this.type=type;
         this.altitude=altitudeInitial;
         this.mass=mass;
@@ -116,6 +122,7 @@ public class SegmentResult {
         this.dhDT=DEFAULT_VALUE;
         this.altitudeFinal=DEFAULT_VALUE;
         this.model=model;
+        this.wind=wind;
         listPatterns=listPattern;
         constantValues(model);
     }
@@ -355,7 +362,7 @@ public class SegmentResult {
             pass=calculate(); 
             distAirport=distanceToGo(finalAirport);
         }while(pass && distAirport<=DIST_DESC);
-        return Double.doubleToLongBits(distAirport)!=0;
+        return distAirport!=0;
     }
     
     private double distanceToGo(Airport finAirport){
@@ -380,7 +387,7 @@ public class SegmentResult {
 
         if(Double.doubleToLongBits(cDrag)==-1)
             return false;
-        tas=AircraftAlgorithms.calculateTAS(airDensity, temperature, vIas);
+        tas=AircraftAlgorithms.calculateTAS(airDensity, temperature, vIas, wind);
 
         lambda=AircraftAlgorithms.calculateLambda(velThrustMa, thrustMa, thrustMi);
 
@@ -465,9 +472,22 @@ public class SegmentResult {
     }
     
     public boolean validate(){
-         boolean v1 = Double.doubleToLongBits(this.altitude)!=-1;
+         boolean v1 = this.altitude!=-1;
          
         boolean v2 = this.type!=null;
         return v1 && v2;
+    }
+    
+    
+    public boolean validateCalculation(){
+         double defaultValue=Thrust_Function.getDefaultValue();
+         double defaultWing=AircraftModel.getDefaultWingArea();
+         
+         boolean v1=thrustMa!=defaultValue &&
+                 velThrustMa!=defaultValue &&
+                 thrustMi!=defaultValue &&
+                 thrustLapseRate!=defaultValue;     
+           
+         return v1 && t==null && wingArea!=defaultWing;
     }
 }

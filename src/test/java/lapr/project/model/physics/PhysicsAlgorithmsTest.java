@@ -134,6 +134,7 @@ public class PhysicsAlgorithmsTest {
     
     /**
      * Test of calculateSoundSpeed method, of class PhysicsAlgorithms.
+      http://www.sengpielaudio.com/calculator-speedsound.htm
      */
     @Test
     public void testCalculateSoundSpeed() {
