@@ -329,7 +329,7 @@ public class MenuProjectUI extends JDialog {
         String[] op = {"Yes", "No"};
         String question = "Close Project " + project.getName() +"?";
         int opcao = JOptionPane.showOptionDialog(MenuProjectUI.this, question,
-                "Close Project?", JOptionPane.YES_NO_OPTION,
+                "Close Project", JOptionPane.YES_NO_OPTION,
                 JOptionPane.QUESTION_MESSAGE, null, op, op[0]);
         if (opcao == JOptionPane.YES_OPTION) {
             dispose();

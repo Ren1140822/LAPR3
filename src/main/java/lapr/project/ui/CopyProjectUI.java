@@ -19,13 +19,16 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
+import static javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import lapr.project.controller.CopyProjectController;
 import lapr.project.model.Project;
 
 /**
@@ -34,15 +37,18 @@ import lapr.project.model.Project;
  */
 public class CopyProjectUI extends JDialog{
     
-    Project project;
-    JButton back;
-    JButton ok;
-    JList projectsList;
+    private Project project;
+    private JButton back;
+    private JButton ok;
+    private JList projectsList;
+    private CopyProjectController controller;
     
     public CopyProjectUI(JFrame frame){
         
         super(frame, "Copy Project", true);
-
+        
+        controller = new CopyProjectController();
+        
         create();
         
         pack();
@@ -149,11 +155,19 @@ public class CopyProjectUI extends JDialog{
     }
     
     private void check() {
-        // implementar controller
-        project = new Project(); // retirar e ir buscar o projecto pelo controller
-        
-        dispose();
-        MenuProjectUI menuProj = new MenuProjectUI(project, CopyProjectUI.this);        
+        String[] op = {"Yes", "No"};
+        String question = "Copy " + projectsList.getSelectedValue() +" project?";
+        int opcao = JOptionPane.showOptionDialog(CopyProjectUI.this, question,
+                "Copy Project", JOptionPane.YES_NO_OPTION,
+                JOptionPane.QUESTION_MESSAGE, null, op, op[0]);
+        if (opcao == JOptionPane.YES_OPTION) {
+            // implementar controller
+            project = new Project(); // controller.getProjectSelected(); retirar e ir buscar o projecto pelo controller
+            close();
+            MenuProjectUI menuProj = new MenuProjectUI(project, CopyProjectUI.this);            
+        } else {
+            setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+        }       
     }
     
 }

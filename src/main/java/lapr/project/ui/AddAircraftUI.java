@@ -25,9 +25,14 @@ import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
 import lapr.project.controller.AddAircraftController;
 import lapr.project.model.Project;
 
@@ -41,22 +46,21 @@ public class AddAircraftUI extends JDialog {
     /**
      * Instance variables
      */
-    private final int WINDOW_WIDTH = 800;
-    private final int WINDOW_HEIGHT = 500;
+    private final int WINDOW_WIDTH = 900;
+    private final int WINDOW_HEIGHT = 600;
     private final String WINDOW_TITLE = "Add aircraft";
     private transient AddAircraftController addAircraftController;
     private JTextField textRegistration;
     private JTextField textCompany;
     private JTextField textAircraftModel;
-    private JTextField textSeatsEcon;
-    private JTextField textSeatsCommercial;
-    private JTextField textNrOfCrewElements;
-    private JList listclasses;    
+    private JTextField textNrOfCrewElements;  
+    private JTable listclasses;    
     private DialogSelectable dialog;
     private JButton btnSubmit;
     private JButton btnClass;
     private JDialog parentFrame;
-    DefaultListModel model;
+    private final String[] clHeader = {"Class", "Max Passengers"};
+    private DefaultTableModel model;
     private static final Dimension LABEL_SIZE = new JLabel("Nr. of crew elements: ").
                                                         getPreferredSize();
     private Map<String, Integer> mapConfig;
@@ -80,7 +84,7 @@ public class AddAircraftUI extends JDialog {
         
         pack();
         setResizable(false);
-        setMinimumSize(new Dimension(WINDOW_WIDTH, WINDOW_HEIGHT));        
+        setSize(new Dimension(WINDOW_WIDTH, WINDOW_HEIGHT));        
         setLocationRelativeTo(parentFrame);        
         this.setVisible(true);
     }
@@ -145,24 +149,25 @@ public class AddAircraftUI extends JDialog {
         return p;
     }
     
-    private JPanel createPanelClasses(){
-        JPanel pClasses = new JPanel();
+    private JScrollPane createClasses(){
+
+        model = new DefaultTableModel();
+        model.setDataVector(new Object[1][1], clHeader);  
+        listclasses = new JTable(model);
+        listclasses.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+
+        listclasses.setEnabled(false);        
         
-        pClasses.setBorder(new TitledBorder("Classes:"));
-        
-        listclasses = new JList();
         JScrollPane scrPane = new JScrollPane(listclasses);
         
-        pClasses.add(scrPane, BorderLayout.CENTER);        
-        
-        return pClasses;
+        return scrPane;
     }
     
     private JPanel createPanelCenter(){
         JPanel p = new JPanel(new GridLayout(1,2));
         
         p.add(createPanelLabelText());
-        p.add(createPanelClasses());
+        p.add(createClasses());
         
         return p;
     }
@@ -218,8 +223,16 @@ public class AddAircraftUI extends JDialog {
                     String className = JOptionPane.showInputDialog("Please insert a name for the class.");
                     int classSeats = Integer.parseInt(JOptionPane.showInputDialog("Please insert the number of seats for this class."));                    
                     if (!Pattern.matches("[0-9]+", className)) {
-                        mapConfig.put(className, classSeats);                                     
-                        listclasses.setListData(mapConfig.keySet().toArray());
+                        mapConfig.put(className, classSeats);  
+                        model.setDataVector(new Object[0][0], clHeader);                        
+                        model.setColumnIdentifiers(clHeader);
+                        for (Map.Entry<String,Integer> entry : mapConfig.entrySet()){
+                            model.addRow(new Object[] {entry.getKey(), entry.getValue()});
+                        }
+                        DefaultTableCellRenderer dtcr = new DefaultTableCellRenderer();
+                        dtcr.setHorizontalAlignment(JLabel.CENTER);
+                        listclasses.getColumnModel().getColumn(0).setCellRenderer(dtcr);
+                        listclasses.getColumnModel().getColumn(1).setCellRenderer(dtcr);
                         JOptionPane.showMessageDialog(rootPane, "Data saved to this aircraft sucessfully.", "Sucess", JOptionPane.INFORMATION_MESSAGE);
                         btnSubmit.setEnabled(true);
                     } else {
