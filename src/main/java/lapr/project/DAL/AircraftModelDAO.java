@@ -27,12 +27,14 @@ import oracle.jdbc.OracleTypes;
  * @author Renato Oliveira 1140822@isep.ipp.pt
  */
 public class AircraftModelDAO {
- DAL dal;
+
+    DAL dal;
+
     public AircraftModelDAO() {
-          dal = new DAL();
+        dal = new DAL();
     }
 
-  /**
+    /**
      * Gets the aircraftModel by ID.
      *
      * @param aircraftModelD the aircraftModel model ID
@@ -47,7 +49,7 @@ public class AircraftModelDAO {
         List<Iten> itemList = new LinkedList<Iten>();
         List<Pattern> patternList = new LinkedList<Pattern>();
         String query = "{?= call get_aircraft_models(?)}";
-        con=dal.connect();
+        con = dal.connect();
 
         try (CallableStatement st = con.prepareCall(query)) {
             st.setInt(2, projectlD);
@@ -101,7 +103,7 @@ public class AircraftModelDAO {
 
         ResultSet rs = null;
         String query = "{?= call get_motorization(?)}";
-       con = dal.connect();
+        con = dal.connect();
         try (CallableStatement st = con.prepareCall(query)) {
             st.setInt(2, motorizationConfigID);
             st.registerOutParameter(1, OracleTypes.CURSOR);
@@ -139,7 +141,7 @@ public class AircraftModelDAO {
 
         ResultSet rs = null;
         String query = "{?= call get_thrust(?)}";
-       con = dal.connect();
+        con = dal.connect();
         try (CallableStatement st = con.prepareCall(query)) {
             st.setInt(2, thrustFunctionID);
             st.registerOutParameter(1, OracleTypes.CURSOR);
@@ -171,7 +173,7 @@ public class AircraftModelDAO {
         Connection con = null;
         ResultSet rs = null;
         String query = "{?= call get_itens(?)}";
-       con = dal.connect();
+        con = dal.connect();
         try (CallableStatement st = con.prepareCall(query)) {
             st.setString(2, aircraftModelID);
             st.registerOutParameter(1, OracleTypes.CURSOR);
@@ -192,9 +194,9 @@ public class AircraftModelDAO {
         return itemList;
     }
 
-    public boolean WriteAircraftModelsToDatabase(List<AircraftModel> aircraftModelList, int projectID) throws SQLException {
+    public boolean WriteAircraftModelsToDatabase(List<AircraftModel> aircraftModelList, int projectID) {
         Connection con = null;
-       con = dal.connect();
+        con = dal.connect();
 
         boolean ret = false;
 
@@ -235,7 +237,7 @@ public class AircraftModelDAO {
             close(con);
         }
 
-         return ret;
+        return ret;
     }
 
     private boolean WriteItensToDatabase(Connection con, List<Iten> itenList, String modelid) {
@@ -254,6 +256,6 @@ public class AircraftModelDAO {
             System.out.println(ex.toString());
         }
 
-         return ret;
+        return ret;
     }
 }

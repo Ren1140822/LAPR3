@@ -31,9 +31,11 @@ import oracle.jdbc.OracleTypes;
  * @author Renato Oliveira 1140822@isep.ipp.pt
  */
 public class AircraftDAO {
- DAL dal;
+
+    DAL dal;
+
     public AircraftDAO() {
-          dal = new DAL();
+        dal = new DAL();
     }
 
     /**
@@ -49,7 +51,7 @@ public class AircraftDAO {
 
         Connection con = null;
         String query = "{ ?= call get_aircrafts(?)}";
-       con = dal.connect();
+        con = dal.connect();
 
         try (CallableStatement st = con.prepareCall(query)) {
             st.setString(2, projectID);
@@ -63,9 +65,9 @@ public class AircraftDAO {
                 int nrOfCrewElements = rs.getInt("nrofcrewelements");
                 AircraftModel aircraftModel = getAircraftModelByID(rs.getString("aircraft_modelID"));
                 Aircraft aircraft = new Aircraft(registration, company, cabinConfig, nrOfCrewElements, aircraftModel);
-                if (aircraft.validate()) {
-                    aircraftList.add(aircraft);
-                }
+
+                aircraftList.add(aircraft);
+
             }
         } catch (SQLException ex) {
             Logger.getLogger(DAL.class.getName()).log(Level.SEVERE, null, ex);
@@ -88,7 +90,7 @@ public class AircraftDAO {
 
         ResultSet rs = null;
         Map<String, Integer> map = new HashMap<>();
-       con = dal.connect();
+        con = dal.connect();
         String query = "{ ?= call get_cabins(?)}";
         try (CallableStatement st2 = con.prepareCall(query)) {
             st2.setString(2, aircraftID);
@@ -128,7 +130,7 @@ public class AircraftDAO {
         List<Iten> itemList = new LinkedList<Iten>();
         List<Pattern> patternList = new LinkedList<Pattern>();
         String query = "{?= call get_aircraft_model(?)}";
-       con = dal.connect();
+        con = dal.connect();
 
         try (CallableStatement st = con.prepareCall(query)) {
             st.setString(2, aircraftModelD);
@@ -167,9 +169,8 @@ public class AircraftDAO {
         }
         return model;
     }
-    
-    
-       /**
+
+    /**
      * Gets the item by ID.
      *
      * @param itemID the item id
@@ -181,7 +182,7 @@ public class AircraftDAO {
         Connection con = null;
         ResultSet rs = null;
         String query = "{?= call get_itens(?)}";
-       con = dal.connect();
+        con = dal.connect();
         try (CallableStatement st = con.prepareCall(query)) {
             st.setString(2, aircraftModelID);
             st.registerOutParameter(1, OracleTypes.CURSOR);
@@ -201,9 +202,8 @@ public class AircraftDAO {
         }
         return itemList;
     }
-    
-    
-      /**
+
+    /**
      * Gets the motorization by ID.
      *
      * @param motorizationConfigID the motorization id
@@ -215,7 +215,7 @@ public class AircraftDAO {
 
         ResultSet rs = null;
         String query = "{?= call get_motorization(?)}";
-       con = dal.connect();
+        con = dal.connect();
         try (CallableStatement st = con.prepareCall(query)) {
             st.setInt(2, motorizationConfigID);
             st.registerOutParameter(1, OracleTypes.CURSOR);
@@ -241,8 +241,7 @@ public class AircraftDAO {
         return motorization;
     }
 
-    
-        /**
+    /**
      * Gets thrust function by ID.
      *
      * @param thrustFunctionID the thrust function id
@@ -254,7 +253,7 @@ public class AircraftDAO {
 
         ResultSet rs = null;
         String query = "{?= call get_thrust(?)}";
-       con = dal.connect();
+        con = dal.connect();
         try (CallableStatement st = con.prepareCall(query)) {
             st.setInt(2, thrustFunctionID);
             st.registerOutParameter(1, OracleTypes.CURSOR);
@@ -273,10 +272,10 @@ public class AircraftDAO {
         }
         return thrust;
     }
-    
-     public boolean WriteAircraftsToDatabase(List<Aircraft> aircraftList, int projectID) throws SQLException {
+
+    public boolean WriteAircraftsToDatabase(List<Aircraft> aircraftList, int projectID) {
         Connection con = null;
-       con = dal.connect();
+        con = dal.connect();
         boolean ret = false;
 
         for (Aircraft aircraft : aircraftList) {
@@ -309,5 +308,5 @@ public class AircraftDAO {
         }
         return ret;
     }
-    
+
 }
