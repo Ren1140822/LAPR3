@@ -403,7 +403,7 @@ public class FindBestPathUI extends JDialog{
             public void actionPerformed(ActionEvent e) {
                 try{
                     controller.createBestPathSimulation(TypePath.ALL);
-                    controller.calculatePath(TypePath.ALL);
+                    controller.calculatePath(TypePath.ALL,120);
                     
                 }catch(java.lang.UnsupportedOperationException en){
                         JOptionPane.showMessageDialog(frame,
@@ -465,7 +465,7 @@ public class FindBestPathUI extends JDialog{
         else{
             try{ 
                 setData();  
-                controller.calculatePath(type);
+                controller.calculatePath(type,120);
             }catch(java.lang.UnsupportedOperationException en){
                 JOptionPane.showMessageDialog(frame,
                         "It wasn´t possible to create simulation", "Erro", JOptionPane.ERROR_MESSAGE);

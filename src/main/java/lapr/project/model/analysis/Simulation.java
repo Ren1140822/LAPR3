@@ -363,24 +363,33 @@ public class Simulation{
       }
      
      
-     public boolean calculateBestPath(TypePath type, AirNetwork air){
+     public boolean calculateBestPath(TypePath type, AirNetwork air, int timeStep){
          if(flightPlan!=null){
              TypePath p=type;
             switch (p){
                 case SHORTEST_PATH:
                      shortestResultPath.calculateBestPath(air);
+                     shortestResultPath.createSegments(flightPlan, totalWeight, timeStep);
                      return true;
                 case FASTEST_PATH:
                     fastestResultPath.calculateBestPath(air);
+                    fastestResultPath.createSegments(flightPlan, totalWeight, timeStep);
                     return true;
                 case ECOLOGIC_PATH:
                     ecologicResultPath.calculateBestPath(air);
+                    ecologicResultPath.createSegments(flightPlan, totalWeight, timeStep);
                     return true;
 
                 case ALL:
                   shortestResultPath.calculateBestPath(air);
                   fastestResultPath.calculateBestPath(air);
                   ecologicResultPath.calculateBestPath(air);
+                  
+                  shortestResultPath.createSegments(flightPlan, totalWeight, timeStep);
+                  fastestResultPath.createSegments(flightPlan, totalWeight, timeStep);
+                  ecologicResultPath.createSegments(flightPlan, totalWeight, timeStep);
+                  
+                  
                   return true;
                 default:
                     return false;

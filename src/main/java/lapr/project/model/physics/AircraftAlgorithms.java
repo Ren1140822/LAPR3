@@ -211,7 +211,7 @@ public class AircraftAlgorithms {
     }
      
     /**
-     * Calculates thrust (kN)
+     * Calculates thrust to the climb phase (kN)
      * @param thrustMa thrust (N)
      * @param lambda lambda (thrust)
      * @param mTrue true mass (kg)
@@ -219,13 +219,48 @@ public class AircraftAlgorithms {
      * @param thrustLapseRate thrust lapse rate
      * @return thrust (kN)
      */
-    public static double calculateThrust(double thrustMa, double lambda,
+    public static double calculateThrustClimb(double thrustMa, double lambda,
             double mTrue, double airDensity, double thrustLapseRate){
         //return  dragCoef*airDensity*Math.pow(tas, 2);
         return (thrustMa-lambda*mTrue)*Math.pow(airDensity/AIR_DENSITY_SEA,
                 thrustLapseRate);
     } 
+    
+     /**
+     * Calculates thrust to the cruise phase (kN)
+     * @param drag drag force (N)
+     * @param nrEngines number of engines in the aircraft
+     * @return thrust (kN)
+     */
+    public static double calculateThrustCruise(double drag, int nrEngines){
+        return drag/nrEngines;
+    } 
+    
+     /**
+     * Calculates thrust to the descend phase (kN)
+     * @param thrustMa thrust (N)
+     * @param lambda lambda (thrust)
+     * @param mTrue true mass (kg)
+     * @param airDensity air density (kg/m3)
+     * @param thrustLapseRate thrust lapse rate
+     * @return thrust (kN)
+     */
+    public static double calculateThrustDescend(double thrustMa, double lambda,
+            double mTrue, double airDensity, double thrustLapseRate){
+        //return  dragCoef*airDensity*Math.pow(tas, 2);
+        return 0.1*(thrustMa-lambda*mTrue)*Math.pow(airDensity/AIR_DENSITY_SEA,
+                thrustLapseRate);
+ 
+    } 
   
+    /**
+     * Calculate the climb ratio (m/s)
+     * @param totalThrust 
+     * @param drag drag force (N)
+     * @param tas true air speed (m/s)
+     * @param mass initial mass (kg)
+     * @return 
+     */
     public static double calculateDhDt(double totalThrust, double
             drag, double tas, double mass){
         double gravity=PhysicsAlgorithms.getGRAVITY_CONSTANT_SEA();
@@ -284,6 +319,14 @@ public class AircraftAlgorithms {
         return Math.asin(dhDT/tas);
     }
    
+    /**
+     * Calculates the weight ratio (kg/s)
+     * @param totalThrust
+     * @param timeStep time step to consider
+     * @param tsfc estimative thrust specific fuel consumption (TSFC) (g/s) per
+     * unit of thrust (kN)
+     * @return 
+     */
     public static double calculateDwDt(double totalThrust, double
             timeStep, double tsfc){
         double gravity=PhysicsAlgorithms.getGRAVITY_CONSTANT_SEA();
@@ -322,5 +365,36 @@ public class AircraftAlgorithms {
      */
     public static double calculateNewMass(double prevMass, double dwDt){
         return prevMass-dwDt;
+    }
+    
+    /**
+     * Calculates the total thrust (climb phase) - N
+     * @param thrust (kN)
+     * @param nrEngines number of motors in the aircraft
+     * @return total thrust
+     */
+    public static double calculateTotalThrustClimb(double thrust, int nrEngines){
+        return thrust*nrEngines;
+    }
+    
+    /**
+     * Calculates the total thrust (descend phase) - N
+     * @param thrust (kN)
+     * @param nrEngines number of motors in the aircraft
+     * @return 
+     */
+    public static double calculateTotalThrustDescend(double thrust, int nrEngines){
+        if(thrust>0)
+            return thrust*nrEngines;
+        return 0;
+    }
+    
+    /**
+     * Calculates the total thrust (cruise phase) - N
+     * @param draft draft force applied
+     * @return total thrust
+     */
+    public static double calculateTotalThrustCruise(double draft){
+        return draft;
     }
 }

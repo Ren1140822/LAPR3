@@ -7,7 +7,9 @@ package lapr.project.model.analysis;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Objects;
+import lapr.project.model.AircraftModel;
+import lapr.project.model.Airport;
+import lapr.project.model.FlightPlan;
 import lapr.project.model.Node;
 import lapr.project.model.Pattern;
 import lapr.project.model.physics.AircraftAlgorithms;
@@ -50,14 +52,9 @@ public class ResultPath {
  /**
      * Constructor
      * @param resultPath result path of best path calculated
-     * @param distance distance of best path calculated
-     * @param energyConsum energy consume of best path calculated
-     * @param travellingTime travelling time of best path calculated
      * @param result result of best path
      */
-    public ResultPath(List resultPath, 
-            double distance, double energyConsum, double travellingTime,
-            double result){
+    public ResultPath(List resultPath,double result){
         this.resultPath=(LinkedList<Node>) resultPath;
         this.result=result;
         segments=new LinkedList<>();
@@ -122,46 +119,75 @@ public class ResultPath {
         this.segments = segments;
     }  
     
-    public boolean newSegment(SegmentResult sr){
+    private boolean newSegment(SegmentResult sr){
         if(sr.validate()){
            this.segments.add(sr);
            return true;
         }
         return false;
     }
-    
-    /**
-     * Gets the velocity desc indicated to the aircraft
-     * @param altitude altitude (m)
-     * @param list list of patterns of flight plan
-     * @return velocity (m/s)
-     */
-    public double getVDesc(double altitude, LinkedList<Pattern> list){
-        int size=list.size();
-        double vDesc=0;
-        for(int i=0; i<size; i++){
-            boolean b=list.get(i).getAltitude()<altitude &&
-                    altitude<list.get(i+1).getAltitude();
-            
-            if(b)
-                vDesc=list.get(i).getvClimb();
-        }
-        return vDesc;       
-    }
-    
-    
-    public void calculateSimulation(){
-        double altitude=0;
-        double vIas=0;
+
+    public boolean createSegments(FlightPlan flightPlan,
+        double initialMass, int timeStep){
+        AircraftModel aircraftModel=flightPlan.getAircraft().getAircraftModel();
+        double altitude=-1;
         if(!resultPath.isEmpty()){
-            for (Node resultPath1 : resultPath) {
-                //Se node2 Ã© AEROPORTO ---> logo criar Subida-Cruise-Descida
-                //Se node2 nÃ£o Ã© ""    ---> logo criar Subida-Cruise apenas
-//                if(resultPath.get(i+1)  ){
-//                    
-//                }
+            List<Pattern> list=flightPlan.getListPattern();
+            Airport finalAirport=flightPlan.getDestination();
+            int nrScale=flightPlan.getMandatoryWaypoints().size();
+            for(int i=0; i<=nrScale;i++){
+                for(int j=0;j<resultPath.size()-1;j++){
+                    
+                    //CLIMBING PHASE - AIRPORT/FIRSTNODE - SKY 
+                    if(i==0){
+                        altitude=flightPlan.getOrigin().getLocation().getAltitude();
+                    
+                        SegmentResult srClimb=new SegmentResult(SegmentType.CLIMBING,
+                                altitude,initialMass, timeStep,aircraftModel, 
+                                list);
+                        segments.add(srClimb);
+                        boolean testClimb=srClimb.calculateClimb();
+                        if(testClimb){ 
+                            altitude=srClimb.getAltitudeFinal();
+                           
+                            SegmentResult srCruise=new SegmentResult(SegmentType.CRUISE,
+                                altitude, initialMass, timeStep,aircraftModel,
+                                    list);
+                            segments.add(srCruise);
+                            boolean testCruise=srCruise.calculateCruise(finalAirport);
+                           if(testCruise){
+                               altitude=srCruise.getAltitudeFinal();
+                           } 
+                        }
+                    }
+                    //DESCEND PHASE - SKY-AIRPORT
+                    if(i==resultPath.size()-1){
+                         SegmentResult srCruise=new SegmentResult(SegmentType.CRUISE,
+                                altitude,initialMass, timeStep,aircraftModel, list);
+                         segments.add(srCruise);
+                        if(srCruise.calculateCruise(finalAirport)){
+                            altitude=srCruise.getAltitudeFinal();
+                            SegmentResult srDescend=new SegmentResult(SegmentType.DESC,
+                                altitude, initialMass, timeStep,aircraftModel, list);
+                            segments.add(srDescend);
+                           srDescend.calculateDescend(finalAirport);
+                        }
+                    
+                    //NODE2-NODE3-...-LASTNODE
+                    }else{
+                        SegmentResult srCruise=new SegmentResult(SegmentType.CRUISE,
+                                altitude, initialMass, timeStep,aircraftModel, list);
+                        segments.add(srCruise);
+                        boolean testCruise=srCruise.calculateCruise(finalAirport);
+                        if(testCruise){
+                            altitude=srCruise.getAltitudeFinal();
+                        } 
+                    }
+                    
+                }
             }
         }
+        return !resultPath.isEmpty() || segments.isEmpty();
     }
     
      /**
@@ -195,7 +221,6 @@ public class ResultPath {
     public int hashCode() {
         int hash = 7;
         hash = 79 * hash + (int) (Double.doubleToLongBits(this.result) ^ (Double.doubleToLongBits(this.result) >>> 32));
-        hash = 79 * hash + Objects.hashCode(this.resultPath);
         return hash;
     }   
 

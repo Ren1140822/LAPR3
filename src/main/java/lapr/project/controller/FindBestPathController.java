@@ -9,7 +9,6 @@ import java.util.LinkedList;
 import java.util.List;
 import lapr.project.model.Aircraft;
 import lapr.project.model.Airport;
-import lapr.project.model.FlightPlan;
 import lapr.project.model.Node;
 import lapr.project.model.Project;
 import lapr.project.model.analysis.ResultPath;
@@ -119,10 +118,11 @@ public class FindBestPathController {
     /**
      * Calculates the ecologic best path
      * @param type
+     * @param timeStep time step to consider in analysis
      * @return 
      */
-    public boolean calculatePath(TypePath type){
-        return project.getSimulationsList().getSimulation().calculateBestPath( type, project.getAirNetwork());
+    public boolean calculatePath(TypePath type, int timeStep){
+        return project.getSimulationsList().getSimulation().calculateBestPath( type, project.getAirNetwork(),timeStep);
     }
       /**
        * Get the simulation resulte receiving the type of simulation by parameter

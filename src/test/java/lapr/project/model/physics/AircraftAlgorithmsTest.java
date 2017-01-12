@@ -125,7 +125,7 @@ public class AircraftAlgorithmsTest {
     }
 
     /**
-     * Test of calculateThrust method, of class AircraftAlgorithms.
+     * Test of calculateThrustClimb method, of class AircraftAlgorithms.
      */
     @Test
     public void testCalculateThrust() {
@@ -136,7 +136,7 @@ public class AircraftAlgorithmsTest {
         double airDensity = 1.22501312;
         double thrustLapseRate = 0.96;
         double expResult = 2.82* Math.pow(10,5);
-        double result = AircraftAlgorithms.calculateThrust(thrustMa, lambda, mTrue, airDensity, thrustLapseRate);
+        double result = AircraftAlgorithms.calculateThrustClimb(thrustMa, lambda, mTrue, airDensity, thrustLapseRate);
         assertEquals(expResult, result, 200);
         double test = (result/expResult);
         System.out.println("Result: "+ result);
