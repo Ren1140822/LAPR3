@@ -112,7 +112,8 @@ public class MotorizationTest {
     @Test
     public void testValidate() {        
         System.out.println("validate1");
-        Motorization instance = new Motorization(10, "motor", "motor_type", 1,1,1,1, new Thrust_Function());
+        Motorization instance = new Motorization(10, "motor", "motor_type", 1,1,1,1, 
+                new Thrust_Function(10, 10, 10));
         boolean expResult = true;
         boolean result = instance.validate();
         assertEquals(expResult, result);

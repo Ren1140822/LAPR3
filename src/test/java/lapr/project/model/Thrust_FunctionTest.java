@@ -44,7 +44,8 @@ public class Thrust_FunctionTest {
     public void testGetThrust_0() {
         System.out.println("getThrust_0");
         Thrust_Function instance = new Thrust_Function();
-        double expResult = 1.0;
+        instance.setThrust_0(12);
+        double expResult = 12.0;
         double result = instance.getThrust_0();
         assertEquals(expResult, result, 0.0);
     }
@@ -67,7 +68,8 @@ public class Thrust_FunctionTest {
     public void testGetThrust_0_() {
         System.out.println("getThrust_0_");
         Thrust_Function instance = new Thrust_Function();
-        String expResult = "1.0";
+        instance.setThrust_0_("12 SI");
+        String expResult = "12.0";
         String result = instance.getThrust_0_();
         assertEquals(expResult, result);
     }
@@ -90,7 +92,8 @@ public class Thrust_FunctionTest {
     public void testGetMaxSpeed() {
         System.out.println("getMaxSpeed");
         Thrust_Function instance = new Thrust_Function();
-        double expResult = 1.0;
+        instance.setMaxSpeed(13);
+        double expResult = 13.0;
         double result = instance.getMaxSpeed();
         assertEquals(expResult, result, 0.0);
     }
@@ -113,7 +116,8 @@ public class Thrust_FunctionTest {
     public void testGetMaxSpeed_() {
         System.out.println("getMaxSpeed_");
         Thrust_Function instance = new Thrust_Function();
-        String expResult = "1.0";
+        instance.setMaxSpeed_("1 M");
+        String expResult = "343.2";
         String result = instance.getMaxSpeed_();
         assertEquals(expResult, result);
     }
@@ -136,7 +140,8 @@ public class Thrust_FunctionTest {
     public void testGetThrustMaxSpeed() {
         System.out.println("getThrustMaxSpeed");
         Thrust_Function instance = new Thrust_Function();
-        double expResult = 1.0;
+        instance.setThrustMaxSpeed(13);
+        double expResult = 13.0;
         double result = instance.getThrustMaxSpeed();
         assertEquals(expResult, result, 0.0);
     }
@@ -159,7 +164,8 @@ public class Thrust_FunctionTest {
     public void testGetThrustMaxSpeed_() {
         System.out.println("getThrustMaxSpeed_");
         Thrust_Function instance = new Thrust_Function();
-        String expResult = "1.0";
+        instance.setThrustMaxSpeed_("120 SI");
+        String expResult = "120.0";
         String result = instance.getThrustMaxSpeed_();
         assertEquals(expResult, result);
     }
