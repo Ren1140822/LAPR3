@@ -41,7 +41,7 @@ public class CopyProjectUI extends JDialog{
     private JButton back;
     private JButton ok;
     private JList projectsList;
-    private CopyProjectController controller;
+    private transient CopyProjectController controller;
     
     public CopyProjectUI(JFrame frame){
         

@@ -267,5 +267,17 @@ public class AddFlightPlanControllerTest {
         boolean result2 = instance2.pattern(ficheiro2);
         assertEquals(expResult2, result2);
     }
+
+    /**
+     * Test of getAircraftsModelList method, of class AddFlightPlanController.
+     */
+    @Test
+    public void testGetAircraftsModelList() {
+        System.out.println("getAircraftsModelList");
+        AddFlightPlanController instance = new AddFlightPlanController(project);
+        List<AircraftModel> expResult = project.getAircraftModelList().getModelList();
+        List<AircraftModel> result = instance.getAircraftsModelList();
+        assertEquals(expResult, result);
+    }
     
 }

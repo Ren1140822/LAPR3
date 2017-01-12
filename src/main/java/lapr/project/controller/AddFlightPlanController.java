@@ -7,6 +7,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
 import lapr.project.model.Aircraft;
+import lapr.project.model.AircraftModel;
 import lapr.project.model.Airport;
 import lapr.project.model.FlightPlan;
 import lapr.project.model.Node;
@@ -64,6 +65,14 @@ public class AddFlightPlanController {
      */
     public List<Aircraft> getAircraftsList(){
         return project.getAircraftList().getAircraftList();
+    }
+    
+    /**
+     * Gets the aircraft model list of active project
+     * @return list of available aircrafts models
+     */
+    public List<AircraftModel> getAircraftsModelList(){
+        return project.getAircraftModelList().getModelList();
     }
     
     /**

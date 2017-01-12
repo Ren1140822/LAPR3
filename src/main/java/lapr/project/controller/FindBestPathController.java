@@ -7,8 +7,10 @@ package lapr.project.controller;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import lapr.project.model.Aircraft;
 import lapr.project.model.Airport;
+import lapr.project.model.FlightPlan;
 import lapr.project.model.Node;
 import lapr.project.model.Project;
 import lapr.project.model.analysis.ResultPath;
@@ -23,12 +25,13 @@ public class FindBestPathController {
     /**
      * The project active
      */
-    Project project;
+    private Project project;
     
     /**
      * The possible endNodes for the start airport choosed
      */
-    LinkedList<Node> endNodes;
+    private LinkedList<Node> endNodes;
+    private FlightPlan flightPlan;
     
     /**
      * Constructor
@@ -43,14 +46,6 @@ public class FindBestPathController {
      */
     public void newSImulation(){
        project.getSimulationsList().newSimulation();
-    }
-    
-    /**
-     * Gets the aircraft list of active project
-     * @return list of available aircrafts
-     */
-    public List<Aircraft> getAircraftsList(){
-        return project.getAircraftList().getAircraftList();
     }
     
     /**
@@ -170,5 +165,17 @@ public class FindBestPathController {
     
     public Simulation getSimulation(){
         return project.getSimulationsList().getSimulation();
+    }
+    
+    public List<FlightPlan> getFlightPlanList(){
+        return project.getFlightList().getFlightList();
+    }
+    
+    public void getFlightPlanSelected(FlightPlan flightPlan){
+        this.flightPlan = flightPlan;
+    }
+    
+    public Map<String,Integer> getCabinConfig(){
+        return this.flightPlan.getAircraft().getCabinConfig().getMapOfClasses();
     }
 }

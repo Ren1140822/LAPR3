@@ -69,21 +69,35 @@ public class AddFlightPlanUI extends JDialog {
         this.dialog = dialog;
         controller = new AddFlightPlanController(project);
 
-        createComponents();
+        if (controller.getAircraftsModelList().isEmpty()) {
+            JOptionPane.showMessageDialog(rootPane, "Aircraft List is empty", "Error",
+                    JOptionPane.ERROR_MESSAGE);
+            dispose();
+        } else if (controller.getAirportList().isEmpty()) {
+            JOptionPane.showMessageDialog(rootPane, "Airport List is empty", "Error",
+                    JOptionPane.ERROR_MESSAGE);
+            dispose();
+        } else if (controller.getNodeList().isEmpty()) {
+            JOptionPane.showMessageDialog(rootPane, "Airnetwork is empty", "Error",
+                    JOptionPane.ERROR_MESSAGE);
+            dispose();
+        } else {
 
-        addWindowListener(new WindowAdapter() {
-            @Override
-            public void windowClosing(WindowEvent e) {
-                close();
-            }
-        });
+            createComponents();
 
-        pack();
-        setResizable(false);
-        setSize(new Dimension(900, 600));
-        setLocationRelativeTo(dialog);
-        setVisible(true);
+            addWindowListener(new WindowAdapter() {
+                @Override
+                public void windowClosing(WindowEvent e) {
+                    close();
+                }
+            });
 
+            pack();
+            setResizable(false);
+            setSize(new Dimension(900, 600));
+            setLocationRelativeTo(dialog);
+            setVisible(true);
+        }
     }
 
     private void createComponents() {
@@ -225,7 +239,7 @@ public class AddFlightPlanUI extends JDialog {
         });
         return backBtn;
     }
- 
+
     private JButton createButtonImportPattern() {
         importPatternBtn = new JButton("Import Pattern");
         importPatternBtn.setMnemonic(KeyEvent.VK_I);
@@ -359,7 +373,7 @@ public class AddFlightPlanUI extends JDialog {
                     "Error",
                     JOptionPane.ERROR_MESSAGE);
             System.err.println(ex);
-        } catch (NullPointerException exx){
+        } catch (NullPointerException exx) {
             JOptionPane.showMessageDialog(
                     null,
                     "Check if you have selected aircraft, origin or destiantion, please!\n",
@@ -384,10 +398,10 @@ public class AddFlightPlanUI extends JDialog {
             save();
         } else {
             dispose();
-        }      
+        }
     }
-    
-    private void save(){
+
+    private void save() {
         //implement save on data base
         dispose();
     }

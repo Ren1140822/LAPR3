@@ -12,6 +12,7 @@ import java.awt.event.KeyEvent;
 import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
@@ -59,8 +60,8 @@ public class UI {
         
         FlowLayout l = new FlowLayout();
 
-        l.setHgap(20);
-        l.setVgap(20);
+        l.setHgap(5);
+        l.setVgap(5);
 
         JPanel p = new JPanel(l);
         
@@ -105,6 +106,23 @@ public class UI {
 
         p.add(lb1);
         p.add(text);
+        p.add(lb2);
+
+        return p;
+    }
+    
+    public static JPanel createPanelLabelComboLabel(String label1, JComboBox combo, String label2) {
+        JLabel lb1 = new JLabel(label1, JLabel.RIGHT);
+        lb1.setPreferredSize(new JLabel("Number of passengers: ").
+                                                        getPreferredSize());
+        
+        JLabel lb2 = new JLabel(label2, JLabel.LEFT);
+        lb2.setPreferredSize(new Dimension(100,20));
+        
+        JPanel p = new JPanel(new FlowLayout(FlowLayout.CENTER));
+
+        p.add(lb1);
+        p.add(combo);
         p.add(lb2);
 
         return p;

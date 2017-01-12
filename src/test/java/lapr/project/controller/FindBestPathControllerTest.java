@@ -7,6 +7,7 @@ package lapr.project.controller;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import lapr.project.model.AirNetwork;
 import lapr.project.model.Aircraft;
 import lapr.project.model.AircraftModel;
@@ -21,7 +22,6 @@ import lapr.project.model.Project;
 import lapr.project.model.Segment;
 import lapr.project.model.Thrust_Function;
 import lapr.project.model.Wind;
-import lapr.project.model.analysis.SegmentResult;
 import lapr.project.model.analysis.Simulation;
 import lapr.project.model.analysis.TypePath;
 import lapr.project.model.lists.AirportList;
@@ -81,22 +81,6 @@ public class FindBestPathControllerTest {
         instance.newSImulation();
         Simulation result=p.getSimulationsList().getSimulation();
         Simulation expResult=instance.getSimulation();
-        assertEquals(expResult, result);
-    }
-
-    /**
-     * Test of getAircraftsList method, of class FindBestPathController.
-     */
-    @Test
-    public void testGetAircraftsList() {
-        System.out.println("getAircraftsList");
-        p=new Project();
-        Aircraft test=new Aircraft();
-        p.getAircraftList().getAircraftList().add(test);
-        FindBestPathController instance = new FindBestPathController(p);
-        List<Aircraft> expResult = new LinkedList<>();
-        expResult.add(test);
-        List<Aircraft> result = instance.getAircraftsList();
         assertEquals(expResult, result);
     }
 
