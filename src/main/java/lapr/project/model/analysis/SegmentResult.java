@@ -362,7 +362,7 @@ public class SegmentResult {
             pass=calculate(); 
             distAirport=distanceToGo(finalAirport);
         }while(pass && distAirport<=DIST_DESC);
-        return distAirport!=0;
+        return Double.doubleToLongBits(distAirport)!=0;
     }
     
     private double distanceToGo(Airport finAirport){
@@ -472,7 +472,7 @@ public class SegmentResult {
     }
     
     public boolean validate(){
-         boolean v1 = this.altitude!=-1;
+         boolean v1 = Double.doubleToLongBits(this.altitude)!=-1;
          
         boolean v2 = this.type!=null;
         return v1 && v2;
@@ -483,11 +483,11 @@ public class SegmentResult {
          double defaultValue=Thrust_Function.getDefaultValue();
          double defaultWing=AircraftModel.getDefaultWingArea();
          
-         boolean v1=thrustMa!=defaultValue &&
-                 velThrustMa!=defaultValue &&
-                 thrustMi!=defaultValue &&
-                 thrustLapseRate!=defaultValue;     
+         boolean v1=Double.doubleToLongBits(thrustMa)!=Double.doubleToLongBits(defaultValue) &&
+                 Double.doubleToLongBits(velThrustMa)!=Double.doubleToLongBits(defaultValue)&&
+                 Double.doubleToLongBits(thrustMi)!=Double.doubleToLongBits(defaultValue) &&
+                 Double.doubleToLongBits(thrustLapseRate)!=Double.doubleToLongBits(defaultValue);     
            
-         return v1 && t==null && wingArea!=defaultWing;
+         return v1 && t==null && Double.doubleToLongBits(wingArea)!=Double.doubleToLongBits(defaultWing);
     }
 }

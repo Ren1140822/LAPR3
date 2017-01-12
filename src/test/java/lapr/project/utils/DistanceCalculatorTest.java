@@ -42,7 +42,7 @@ public class DistanceCalculatorTest {
      */
     @Test
     public void testCalculateDistance() {
-        System.out.println("calculateDistance");
+        System.out.println("calculateDistance1");
         double lat1 = 41.2481003;
         double lon1 = -8.6813898;
         double lat2 = 40.7812996;
@@ -50,9 +50,19 @@ public class DistanceCalculatorTest {
         double expResult = 51.91e3;
         double result = DistanceCalculator.calculateDistance(lat1, lon1, lat2, lon2);
         assertEquals(expResult, result, 10.0);
+        System.out.println("Expected: " + expResult);
+        System.out.println("Distance: " + result);
         
-        
-        
+        System.out.println("calculateDistance2 - Lisboa -> Miami");
+        double lat3 = 25.7931995;
+        double lon3 = -80.2906036;
+        double lat4 = 38.7812996;
+        double lon4 = -9.1359196;
+        double expResult2 = 6677000;
+        double result2 = DistanceCalculator.calculateDistance(lat3, lon3, lat4, lon4);
+        assertEquals(expResult2, result2, 1000.0);
+        System.out.println("Expected: " + expResult2);
+        System.out.println("Distance: " + result2);
     }
 
 }
