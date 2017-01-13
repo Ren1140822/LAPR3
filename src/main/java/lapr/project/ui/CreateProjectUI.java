@@ -193,6 +193,7 @@ public class CreateProjectUI extends JDialog {
                             + project.getDescription(),
                     "Create Project",
                     JOptionPane.INFORMATION_MESSAGE);
+                         controller.insertProjectDataBase();
                     dispose();
                 }else{
                     closeWindow();
@@ -234,6 +235,7 @@ public class CreateProjectUI extends JDialog {
                     "Project created sucessfuly!",
                     "Create Project",
                     JOptionPane.INFORMATION_MESSAGE);
+              
             }else{
                 JOptionPane.showMessageDialog(
                     null,
@@ -256,6 +258,7 @@ public class CreateProjectUI extends JDialog {
     }
     
     private void finish() {
+     
         dispose();
     }
     

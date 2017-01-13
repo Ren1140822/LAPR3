@@ -314,8 +314,7 @@ public class FlightDAO {
         try (CallableStatement st = con.prepareCall("{call insert_stops(?,?)}")) {
             for (Airport ap : stops) {
                 st.setString(1, fpID);
-                st.setString(2, ap.getIATA());
-                
+                st.setString(2, ap.getIATA());          
                 ret = st.execute();
             }
         } catch (SQLException ex) {

@@ -79,7 +79,7 @@ public class ProjectDAO {
             Logger.getLogger(DAL.class.getName()).log(Level.SEVERE, null, ex);
             System.out.println(ex.toString());
         } finally {
-
+            p.setIdProject(getProjectID());
             close(con);
         }
 

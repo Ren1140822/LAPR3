@@ -1,0 +1,537 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Network id="TestSet02" description="test set 02">
+  <node_list>
+    <node id="PT01">
+      <latitude>41.2481003</latitude>
+      <longitude>-8.6813898</longitude>
+    </node>
+    <node id="PT02">
+      <latitude>40.7812996</latitude>
+      <longitude>-8.6813898</longitude>
+    </node>
+    <node id="PT03">
+      <latitude>38.7812996</latitude>
+      <longitude>-9.1359196</longitude>
+    </node>
+    <node id="PT04">
+      <latitude>37.7411995</latitude>
+      <longitude>-25.6979008</longitude>
+    </node>
+    <node id="PT05">
+      <latitude>32.6978989</latitude>
+      <longitude>-16.7744999</longitude>
+    </node>
+    <node id="ES01">
+      <latitude>40.4936</latitude>
+      <longitude>-3.56676</longitude>
+    </node>
+    <node id="ES02">
+      <latitude>39.5517006</latitude>
+      <longitude>2.7388101</longitude>
+    </node>
+    <node id="ES03">
+      <latitude>27.9319</latitude>
+      <longitude>-15.3865995</longitude>
+    </node>
+    <node id="ES04">
+      <latitude>36.5</latitude>
+      <longitude>-6.3</longitude>
+    </node>
+    <node id="ATN01">
+      <latitude>52</latitude>
+      <longitude>-53</longitude>
+    </node>
+    <node id="ATN02">
+      <latitude>55</latitude>
+      <longitude>-30</longitude>
+    </node>
+    <node id="ATN03">
+      <latitude>62</latitude>
+      <longitude>-38</longitude>
+    </node>
+    <node id="ATC01">
+      <latitude>40</latitude>
+      <longitude>-63</longitude>
+    </node>
+    <node id="ATC02">
+      <latitude>32.3639984</latitude>
+      <longitude>-64.6787033</longitude>
+    </node>
+    <node id="ATC03">
+      <latitude>38.7411995</latitude>
+      <longitude>-45</longitude>
+    </node>
+    <node id="IS01">
+      <latitude>63.9850006</latitude>
+      <longitude>-22.6056004</longitude>
+    </node>
+    <node id="IR01">
+      <latitude>52.7019997</latitude>
+      <longitude>-8.9248199</longitude>
+    </node>
+    <node id="UK01">
+      <latitude>51.4706001</latitude>
+      <longitude>-0.461941</longitude>
+    </node>
+    <node id="FR01">
+      <latitude>49.0127983</latitude>
+      <longitude>2.55</longitude>
+    </node>
+    <node id="FR02">
+      <latitude>46</latitude>
+      <longitude>-1.5</longitude>
+    </node>
+    <node id="UK02">
+      <latitude>55.8718987</latitude>
+      <longitude>-4.4330602</longitude>
+    </node>
+    <node id="USE01">
+      <latitude>40.639801</latitude>
+      <longitude>-73.7789002</longitude>
+    </node>
+    <node id="USE02">
+      <latitude>40.6925011</latitude>
+      <longitude>-74.1687012</longitude>
+    </node>
+    <node id="USE03">
+      <latitude>42.3642998</latitude>
+      <longitude>-71.0052033</longitude>
+    </node>
+    <node id="USE04">
+      <latitude>25.7931995</latitude>
+      <longitude>-80.2906036</longitude>
+    </node>
+    <node id="USE05">
+      <latitude>33.6366997</latitude>
+      <longitude>-84.4281006</longitude>
+    </node>
+    <node id="USE06">
+      <latitude>38.9445</latitude>
+      <longitude>-77.4558029</longitude>
+    </node>
+    <node id="USE07">
+      <latitude>30.3</latitude>
+      <longitude>-81.79</longitude>
+    </node>
+    <node id="USE08">
+      <latitude>35.7</latitude>
+      <longitude>-78.6</longitude>
+    </node>
+    <node id="USC09">
+      <latitude>41.9785996</latitude>
+      <longitude>-87.9048004</longitude>
+    </node>
+    <node id="USC09a">
+      <latitude>38.1</latitude>
+      <longitude>-85.90</longitude>
+    </node>
+    <node id="USC10">
+      <latitude>39.8616982</latitude>
+      <longitude>-104.6729965</longitude>
+    </node>
+    <node id="USC11">
+      <latitude>46.86</latitude>
+      <longitude>-114.6729</longitude>
+    </node>
+    <node id="USW13">
+      <latitude>37.6189995</latitude>
+      <longitude>-122.375</longitude>
+    </node>
+    <node id="USW14">
+      <latitude>33.9425011</latitude>
+      <longitude>-118.4079971</longitude>
+    </node>
+    <node id="CA01">
+      <latitude>45.4706001</latitude>
+      <longitude>-73.740799</longitude>
+    </node>
+    <node id="CA02">
+      <latitude>51.1138992</latitude>
+      <longitude>-114.0199966</longitude>
+    </node>
+    <node id="CA03">
+      <latitude>49.93</latitude>
+      <longitude>-96.85</longitude>
+    </node>
+  </node_list>
+  <segment_list>
+    <segment id="PTLS01">
+    	<start_node>PT01</start_node>
+    	<end_node>PT02</end_node>
+      <direction>bidirectional</direction>
+      <wind>
+        <wind_intensity>15 knot</wind_intensity>
+        <wind_direction>-5</wind_direction>
+      </wind>
+    </segment>
+    <segment id="PTLS02">
+      <start_node>PT02</start_node>
+    	<end_node>PT03</end_node>
+      <direction>bidirectional</direction>
+      <wind>
+        <wind_intensity>10 knot</wind_intensity>
+        <wind_direction>-15</wind_direction>
+      </wind>
+    </segment>
+    <segment id="LSPD01">
+      <start_node>PT03</start_node>
+    	<end_node>PT04</end_node>
+      <direction>bidirectional</direction>
+      <wind>
+        <wind_intensity>20 knot</wind_intensity>
+        <wind_direction>-90</wind_direction>
+      </wind>
+    </segment>
+    <segment id="LSFU01">
+      <start_node>PT03</start_node>
+    	<end_node>PT05</end_node>
+      <direction>bidirectional</direction>
+      <wind>
+        <wind_intensity>10 knot</wind_intensity>
+        <wind_direction>135</wind_direction>
+      </wind>
+    </segment>
+    <segment id="LSMD01">
+      <start_node>PT02</start_node>
+    	<end_node>ES01</end_node>
+      <direction>bidirectional</direction>
+      <wind>
+        <wind_intensity>5 knot</wind_intensity>
+        <wind_direction>-45</wind_direction>
+      </wind>
+    </segment>
+    <segment id="MDLP01">
+      <start_node>ES01</start_node>
+    	<end_node>ES02</end_node>
+      <direction>bidirectional</direction>
+      <wind>
+        <wind_intensity>5 knot</wind_intensity>
+        <wind_direction>45</wind_direction>
+      </wind>
+    </segment>
+    <segment id="MDGC01">
+      <start_node>ES01</start_node>
+    	<end_node>ES04</end_node>
+      <direction>bidirectional</direction>
+      <wind>
+        <wind_intensity>5 knot</wind_intensity>
+        <wind_direction>15</wind_direction>
+      </wind>
+    </segment>
+    <segment id="MDGC02">
+      <start_node>ES04</start_node>
+    	<end_node>ES03</end_node>
+      <direction>bidirectional</direction>
+      <wind>
+        <wind_intensity>15 knot</wind_intensity>
+        <wind_direction>90</wind_direction>
+      </wind>
+    </segment>
+    <segment id="MDLP01">
+      <start_node>ES01</start_node>
+    	<end_node>ES02</end_node>
+      <direction>bidirectional</direction>
+      <wind>
+        <wind_intensity>5 knot</wind_intensity>
+        <wind_direction>45</wind_direction>
+      </wind>
+    </segment>
+    <segment id="LPGC01">
+      <start_node>ES02</start_node>
+    	<end_node>ES04</end_node>
+      <direction>bidirectional</direction>
+      <wind>
+        <wind_intensity>7.5 knot</wind_intensity>
+        <wind_direction>15</wind_direction>
+      </wind>
+    </segment>
+    <segment id="FUGC01">
+      <start_node>PT05</start_node>
+    	<end_node>ES03</end_node>
+      <direction>bidirectional</direction>
+      <wind>
+        <wind_intensity>7 knot</wind_intensity>
+        <wind_direction>90</wind_direction>
+      </wind>
+    </segment>
+    <segment id="JFKATC01">
+      <start_node>USE01</start_node>
+    	<end_node>ATC01</end_node>
+      <direction>bidirectional</direction>
+      <wind>
+        <wind_intensity>10 knot</wind_intensity>
+        <wind_direction>-15</wind_direction>
+      </wind>
+    </segment>
+    <segment id="JFKATC02">
+      <start_node>USE01</start_node>
+    	<end_node>ATC02</end_node>
+      <direction>bidirectional</direction>
+      <wind>
+        <wind_intensity>15 knot</wind_intensity>
+        <wind_direction>-35</wind_direction>
+      </wind>
+    </segment>
+    <segment id="ATC0103">
+      <start_node>ATC01</start_node>
+    	<end_node>ATC03</end_node>
+      <direction>bidirectional</direction>
+      <wind>
+        <wind_intensity>10 knot</wind_intensity>
+        <wind_direction>-90</wind_direction>
+      </wind>
+    </segment>
+    <segment id="ATC0203">
+      <start_node>ATC02</start_node>
+      <end_node>ATC03</end_node>
+      <direction>bidirectional</direction>
+      <wind>
+        <wind_intensity>40 knot</wind_intensity>
+        <wind_direction>-135</wind_direction>
+      </wind>
+    </segment>
+    <segment id="ATC03PT04">
+      <start_node>ATC03</start_node>
+      <end_node>PT04</end_node>
+      <direction>bidirectional</direction>
+      <wind>
+        <wind_intensity>30 knot</wind_intensity>
+        <wind_direction>-90</wind_direction>
+      </wind>
+    </segment>
+    <segment id="MIATC02">
+      <start_node>USE04</start_node>
+      <end_node>ATC02</end_node>
+      <direction>bidirectional</direction>
+      <wind>
+        <wind_intensity>30 knot</wind_intensity>
+        <wind_direction>-135</wind_direction>
+      </wind>
+    </segment>
+    <segment id="MIAATL01">
+      <start_node>USE04</start_node>
+      <end_node>USE07</end_node>
+      <direction>bidirectional</direction>
+      <wind>
+        <wind_intensity>10 knot</wind_intensity>
+        <wind_direction>20</wind_direction>
+      </wind>
+    </segment>
+    <segment id="MIAATL02">
+      <start_node>USE07</start_node>
+      <end_node>USE05</end_node>
+      <direction>bidirectional</direction>
+      <wind>
+        <wind_intensity>5 knot</wind_intensity>
+        <wind_direction>65</wind_direction>
+      </wind>
+    </segment>
+    <segment id="ATLIAD01">
+      <start_node>USE05</start_node>
+      <end_node>USE08</end_node>
+      <direction>bidirectional</direction>
+      <wind>
+        <wind_intensity>7 knot</wind_intensity>
+        <wind_direction>65</wind_direction>
+      </wind>
+    </segment>
+    <segment id="ATLIAD02">
+      <start_node>USE08</start_node>
+      <end_node>USE06</end_node>
+      <direction>bidirectional</direction>
+      <wind>
+        <wind_intensity>10 knot</wind_intensity>
+        <wind_direction>70</wind_direction>
+      </wind>
+    </segment>
+    <segment id="MIAIAD01">
+      <start_node>USE07</start_node>
+      <end_node>USE08</end_node>
+      <direction>bidirectional</direction>
+      <wind>
+        <wind_intensity>12 knot</wind_intensity>
+        <wind_direction>75</wind_direction>
+      </wind>
+    </segment>
+    <segment id="EWRIAD01">
+      <start_node>USE02</start_node>
+      <end_node>USE06</end_node>
+      <direction>bidirectional</direction>
+      <wind>
+        <wind_intensity>12 knot</wind_intensity>
+        <wind_direction>45</wind_direction>
+      </wind>
+    </segment>
+    <segment id="IADJFK01">
+      <start_node>USE06</start_node>
+      <end_node>USE01</end_node>
+      <direction>bidirectional</direction>
+      <wind>
+        <wind_intensity>12 knot</wind_intensity>
+        <wind_direction>45</wind_direction>
+      </wind>
+    </segment>
+    <segment id="JFKBOS01">
+      <start_node>USE01</start_node>
+      <end_node>USE03</end_node>
+      <direction>bidirectional</direction>
+      <wind>
+        <wind_intensity>17 knot</wind_intensity>
+        <wind_direction>45</wind_direction>
+      </wind>
+    </segment>
+    <segment id="JFKEWR01">
+      <start_node>USE01</start_node>
+      <end_node>USE02</end_node>
+      <direction>bidirectional</direction>
+      <wind>
+        <wind_intensity>15 knot</wind_intensity>
+        <wind_direction>45</wind_direction>
+      </wind>
+    </segment>
+    <segment id="BOSYUL01">
+      <start_node>USE03</start_node>
+      <end_node>CA01</end_node>
+      <direction>bidirectional</direction>
+      <wind>
+        <wind_intensity>10 knot</wind_intensity>
+        <wind_direction>15</wind_direction>
+      </wind>
+    </segment>
+    <segment id="BOSORD01">
+      <start_node>USE03</start_node>
+      <end_node>USC09</end_node>
+      <direction>bidirectional</direction>
+      <wind>
+        <wind_intensity>25 knot</wind_intensity>
+        <wind_direction>5</wind_direction>
+      </wind>
+    </segment>
+    <segment id="EWRORD01">
+      <start_node>USE02</start_node>
+      <end_node>USC09</end_node>
+      <direction>bidirectional</direction>
+      <wind>
+        <wind_intensity>18 knot</wind_intensity>
+        <wind_direction>-5</wind_direction>
+      </wind>
+    </segment>
+    <segment id="EWRUSC09a01">
+      <start_node>USE02</start_node>
+      <end_node>USC09a</end_node>
+      <direction>bidirectional</direction>
+      <wind>
+        <wind_intensity>10 knot</wind_intensity>
+        <wind_direction>-5</wind_direction>
+      </wind>
+    </segment>
+    <segment id="YULORD01">
+      <start_node>CA01</start_node>
+      <end_node>USC09</end_node>
+      <direction>bidirectional</direction>
+      <wind>
+        <wind_intensity>25 knot</wind_intensity>
+        <wind_direction>10</wind_direction>
+      </wind>
+    </segment>
+    <segment id="IADORD01">
+      <start_node>USE06</start_node>
+      <end_node>USC09</end_node>
+      <direction>bidirectional</direction>
+      <wind>
+        <wind_intensity>10 knot</wind_intensity>
+        <wind_direction>15</wind_direction>
+      </wind>
+    </segment>
+    <segment id="IADUSC09a01">
+      <start_node>USE06</start_node>
+      <end_node>USC09a</end_node>
+      <direction>bidirectional</direction>
+      <wind>
+        <wind_intensity>7 knot</wind_intensity>
+        <wind_direction>15</wind_direction>
+      </wind>
+    </segment>
+    <segment id="ORDUSC09a01">
+      <start_node>USC09</start_node>
+      <end_node>USC09a</end_node>
+      <direction>bidirectional</direction>
+      <wind>
+        <wind_intensity>10 knot</wind_intensity>
+        <wind_direction>-5</wind_direction>
+      </wind>
+    </segment>
+    <segment id="ORDDEN01">
+      <start_node>USC09</start_node>
+      <end_node>USC10</end_node>
+      <direction>bidirectional</direction>
+      <wind>
+        <wind_intensity>10 knot</wind_intensity>
+        <wind_direction>-5</wind_direction>
+      </wind>
+    </segment>
+    <segment id="DENUSC09a01">
+      <start_node>USC10</start_node>
+      <end_node>USC09a</end_node>
+      <direction>bidirectional</direction>
+      <wind>
+        <wind_intensity>7 knot</wind_intensity>
+        <wind_direction>0</wind_direction>
+      </wind>
+    </segment>
+    <segment id="DENYYC01">
+      <start_node>USC10</start_node>
+      <end_node>CA02</end_node>
+      <direction>bidirectional</direction>
+      <wind>
+        <wind_intensity>15 knot</wind_intensity>
+        <wind_direction>5</wind_direction>
+      </wind>
+    </segment>
+    <segment id="DENSFOC01">
+      <start_node>USC10</start_node>
+      <end_node>USW13</end_node>
+      <direction>bidirectional</direction>
+      <wind>
+        <wind_intensity>15 knot</wind_intensity>
+        <wind_direction>-10</wind_direction>
+      </wind>
+    </segment>
+    <segment id="DENLAXC01">
+      <start_node>USC10</start_node>
+      <end_node>USW14</end_node>
+      <direction>bidirectional</direction>
+      <wind>
+        <wind_intensity>10 knot</wind_intensity>
+        <wind_direction>-15</wind_direction>
+      </wind>
+    </segment>
+    <segment id="SFOCLAX01">
+      <start_node>USW13</start_node>
+      <end_node>USW14</end_node>
+      <direction>bidirectional</direction>
+      <wind>
+        <wind_intensity>15 knot</wind_intensity>
+        <wind_direction>-45</wind_direction>
+      </wind>
+    </segment>
+    <segment id="YYCCA0301">
+      <start_node>CA02</start_node>
+      <end_node>CA03</end_node>
+      <direction>bidirectional</direction>
+      <wind>
+        <wind_intensity>20 knot</wind_intensity>
+        <wind_direction>5</wind_direction>
+      </wind>
+    </segment>
+    <segment id="YULCA0301">
+      <start_node>CA01</start_node>
+      <end_node>CA03</end_node>
+      <direction>bidirectional</direction>
+      <wind>
+        <wind_intensity>25 knot</wind_intensity>
+        <wind_direction>0</wind_direction>
+      </wind>
+    </segment>
+  </segment_list>
+</Network>

@@ -25,32 +25,33 @@ import lapr.project.model.lists.SimulationsList;
  * @author Pedro Fernandes
  */
 public class CreateProjectController {
-    
+
     private Project project;
-    
-    public CreateProjectController(){
+
+    public CreateProjectController() {
     }
-    
-    public boolean setProject(String name, String description){
+
+    public boolean setProject(String name, String description) {
         project = new Project();
         project.setName(name);
         project.setDescription(description);
-        
-        return project.validate() && insertProjectDataBase(); 
+
+        return project.validate();
     }
-    
-    private boolean insertProjectDataBase(){
-       
-        
-        return true;
+
+    public boolean insertProjectDataBase() {
+        ProjectDAO projectDAO = new ProjectDAO();
+        projectDAO.createProject(project);
+        return projectDAO.saveFullProject(project);
+
     }
-    
-    public Project getProject(){
+
+    public Project getProject() {
         return this.project;
     }
-    
-    public boolean hasProjectCreated(){
-        return this.project!=null;
+
+    public boolean hasProjectCreated() {
+        return this.project != null;
     }
-    
+
 }
