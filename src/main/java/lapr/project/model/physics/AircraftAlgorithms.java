@@ -39,20 +39,7 @@ public class AircraftAlgorithms {
      * Ratio of specific heat at constant volume
      */
     private static final double GAMMA_RATIO=1.4;
-    
-      /**
-     * Calculates the velocity of aircraft based on aircraft mass
-     * @param velocityRef reference velocity
-     * @param mass real mass
-     * @param massRef reference mass
-     * @return the velocity of aircraft (m/s)
-     */
-    public static double calculateVelocityAircraftMass(double velocityRef, 
-            double mass, double massRef){
-        return Double.doubleToLongBits(velocityRef) * 
-                Math.pow(Double.doubleToLongBits(mass)/Double.doubleToLongBits(massRef), 0.5);
-    }
-    
+
     /**
      * Calculate the lift force acting on the aircraft (N)
      * @param coefLift lift coefficient
@@ -108,24 +95,6 @@ public class AircraftAlgorithms {
     //return cDrag0 + (Math.pow(liftCoef,2)/ Math.PI*(Math.pow(wingSpan, 2)/wingArea)*e);
        
       return Math.pow(liftCoef,2)/(Math.PI*aRatio*e +cDrag0);
-    }
-
-    /**
-     * Calculate true air speed based on cruise velocity and altitude (knot)
-     * @param velocity velocity (m/s)
-     * @param altitude altitude (m)
-     * @return true air speed
-     */
-    public static double calculateTrueAirSpeed(double velocity, double altitude){
-       
-        /**
-         * cruiseSpeed + 2% per 2000feets altitude
-         *     2000 feets  ----- 2%
-                  1 feet   ------ x
-         */
-        
-        double altitudeFeets=ConversionAlgorithms.convertMetersFeet(altitude);
-        return ConversionAlgorithms.convertKnotMS(velocity+ 0.00001*altitudeFeets);      
     }
     
     /**
@@ -299,7 +268,7 @@ public class AircraftAlgorithms {
     }
     
         /**
-     * Caculates the true wind applied (E6B- delta A)
+     * Calculates the true wind applied (E6B- delta A)
      * @param course desired course relative to aircraft
      * @param wind wind applied
      * @param tas true airspeed (m/s)
@@ -322,13 +291,6 @@ public class AircraftAlgorithms {
         double deltaA=calculateWindCorrectionAngle(course, tas, wind);
         return Math.sqrt(Math.pow(tas, 2)+Math.pow(wind.getWindIntensity(), 2)-
                 2*tas*wind.getWindIntensity()*Math.cos((Math.PI*(course-wind.getWindDirection())+ deltaA)/180));
-    }
-    
-    public static double calculateHeading(double angAircCourse, 
-            double TAS, Wind wind){
-        double windCorrectionAng=calculateWindCorrectionAngle(angAircCourse,
-                TAS, wind);
-        return angAircCourse+windCorrectionAng;
     }
         
     /**

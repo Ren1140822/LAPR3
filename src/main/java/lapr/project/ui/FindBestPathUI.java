@@ -182,6 +182,7 @@ public class FindBestPathUI extends JDialog {
             @Override
             public void actionPerformed(ActionEvent e) {
                 controller.getFlightPlanSelected((FlightPlan) comboFlights.getSelectedItem());
+                model = new DefaultTableModel();
                 mapConfig = controller.getCabinConfig();
                 for (Map.Entry<String, Integer> entry : mapConfig.entrySet()) {
                     model.addRow(new Object[]{entry.getKey(), entry.getValue()});

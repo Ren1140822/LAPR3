@@ -10,6 +10,7 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlTransient;
+import lapr.project.utils.StringToSIUnitConverter;
 
 /**
  * Class that represents Wind of a Segment
@@ -92,8 +93,7 @@ public class Wind implements Serializable{
      * @param windInt the wind intensity for JAXB
      */
     public void setWindIntensity_(String windInt) {
-        String a = windInt.replaceAll(" knot", "");
-        this.windIntensity = Double.parseDouble(a);
+        this.windIntensity = StringToSIUnitConverter.speed(windInt);
     }
 
     /**
