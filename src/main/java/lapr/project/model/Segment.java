@@ -353,5 +353,6 @@ public class Segment implements Serializable {
                 && this.wind.validate();
         return v1 && v2;
     }
+    
 
 }

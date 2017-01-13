@@ -9,12 +9,11 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import lapr.project.model.Airport;
 import lapr.project.model.Project;
 
 import lapr.project.model.analysis.Path;
+import lapr.project.model.analysis.SegmentResult;
 import lapr.project.model.analysis.Simulation;
-import lapr.project.model.analysis.TypePath;
 import lapr.project.model.lists.AirportList;
 import lapr.project.utils.HTMLExporter;
 
@@ -57,7 +56,7 @@ public class ExportHTMLController {
     public List<String> getSimulationsList() {
         List<String> simString = new LinkedList<>();
         List<Simulation> list = project.getSimulationsList().getSimulationsList();
-    
+
         for (Simulation simulation : list) {
             simString.add(simulation.toString());
         }
@@ -178,21 +177,28 @@ public class ExportHTMLController {
      * @return true if exported
      */
     public boolean exportResults(String[] s, String filePath, String whatToExport) {
-        String results[][] = new String[s.length][6];
+        String results[][] = new String[s.length][11];
         if (whatToExport.equals("short")) {
 
             int i = 0;
             for (int j = 0; j < results.length; j++) {
 
                 Simulation sim = getSimulationByString(s[i]);
-                if (sim.getShortestResultPath() != null) {
-                    results[j][0] = "Shortest path result: " + String.valueOf(sim.getShortestResultPath());
-                    results[j][1] = "Origin airport latitude: " + sim.getStartAirport().getLocation().getLatitude();
-                    results[j][2] = "Origin airport longitude: " + sim.getStartAirport().getLocation().getLongitude();
-                    results[j][3] = "Destination airport latitude: " + sim.getEndAirport().getLocation().getLatitude();
-                    results[j][4] = "Destination airport longitude: " + sim.getEndAirport().getLocation().getLongitude();
-                    results[j][5] = "Total distance calculated: " + sim.getShortestResultPath().getResult();
+                for (SegmentResult seg : sim.getShortestResultPath().getSegments()) {
+                    if (sim.getShortestResultPath() != null) {
+                        results[j][0] = "Shortest path result: " + String.valueOf(seg.getSegment().getId());
+                        results[j][1] = "Origin airport latitude: " + seg.getSegment().getStartNode().getId();
+                        results[j][2] = "Destination airport longitude: " + seg.getSegment().getEndNode().getId();
+                        results[j][3] = "TAS: " + seg.getDistance();
+                        results[j][4] = "Initial Altitude: " + seg.getInitialAltitude();
+                        results[j][5] = "TASFinal: " + seg.getDistance();
+                        results[j][6] = "Final altitude: " + seg.getAltitudeFinal();
+                        results[j][7] = "Fuel consumption: " + seg.getEnergyConsume();
+                        results[j][8] = "Remaining fuel: " + seg.getDistance();
+                        results[j][9] = "Distance: " + seg.getDistance();
+                        results[j][10] = "Flight Time: " + seg.getDistance();
 
+                    }
                 }
                 i++;
             }
@@ -201,30 +207,44 @@ public class ExportHTMLController {
             int i = 0;
             for (int j = 0; j < results.length; j++) {
                 Simulation sim = getSimulationByString(s[i]);
-                if (sim.getEcologicResultPath() != null) {
-                    results[j][0] = "Shortest path result: " + String.valueOf(sim.getEcologicResultPath());
-                    results[j][1] = "Origin airport latitude: " + sim.getStartAirport().getLocation().getLatitude();
-                    results[j][2] = "Origin airport longitude: " + sim.getStartAirport().getLocation().getLongitude();
-                    results[j][3] = "Destination airport latitude: " + sim.getEndAirport().getLocation().getLatitude();
-                    results[j][4] = "Destination airport longitude: " + sim.getEndAirport().getLocation().getLongitude();
-                    results[j][5] = "Total distance calculated: " + sim.getEcologicResultPath().getResult();
+                for (SegmentResult seg : sim.getEcologicResultPath().getSegments()) {
+                    if (sim.getEcologicResultPath() != null) {
+                        results[j][0] = "Shortest path result: " + String.valueOf(seg.getSegment().getId());
+                        results[j][1] = "Origin airport latitude: " + seg.getSegment().getStartNode().getId();
+                        results[j][2] = "Destination airport longitude: " + seg.getSegment().getEndNode().getId();
+                        results[j][3] = "TAS: " + seg.getDistance();
+                        results[j][4] = "Initial Altitude: " + seg.getInitialAltitude();
+                        results[j][5] = "TASFinal: " + seg.getDistance();
+                        results[j][6] = "Final altitude: " + seg.getAltitudeFinal();
+                        results[j][7] = "Fuel consumption: " + seg.getEnergyConsume();
+                        results[j][8] = "Remaining fuel: " + seg.getDistance();
+                        results[j][9] = "Distance: " + seg.getDistance();
+                        results[j][10] = "Flight Time: " + seg.getDistance();
 
+                    }
                 }
                 i++;
             }
         }
         if (whatToExport.equals("fastest")) {
             int i = 0;
-            for (int j = 0; j < results.length; j++) {
+           for (int j = 0; j < results.length; j++) {
                 Simulation sim = getSimulationByString(s[i]);
-                if (sim.getFastestResultPath() != null) {
-                    results[j][0] = "Shortest path result: " + String.valueOf(sim.getFastestResultPath());
-                    results[j][1] = "Origin airport latitude: " + sim.getStartAirport().getLocation().getLatitude();
-                    results[j][2] = "Origin airport longitude: " + sim.getStartAirport().getLocation().getLongitude();
-                    results[j][3] = "Destination airport latitude: " + sim.getEndAirport().getLocation().getLatitude();
-                    results[j][4] = "Destination airport longitude: " + sim.getEndAirport().getLocation().getLongitude();
-                    results[j][5] = "Total distance calculated: " + sim.getFastestResultPath().getResult();
+                for (SegmentResult seg : sim.getFastestResultPath().getSegments()) {
+                    if (sim.getFastestResultPath() != null) {
+                        results[j][0] = "Shortest path result: " + String.valueOf(seg.getSegment().getId());
+                        results[j][1] = "Origin airport latitude: " + seg.getSegment().getStartNode().getId();
+                        results[j][2] = "Destination airport longitude: " + seg.getSegment().getEndNode().getId();
+                        results[j][3] = "TAS: " + seg.getDistance();
+                        results[j][4] = "Initial Altitude: " + seg.getInitialAltitude();
+                        results[j][5] = "TASFinal: " + seg.getDistance();
+                        results[j][6] = "Final altitude: " + seg.getAltitudeFinal();
+                        results[j][7] = "Fuel consumption: " + seg.getEnergyConsume();
+                        results[j][8] = "Remaining fuel: " + seg.getDistance();
+                        results[j][9] = "Distance: " + seg.getDistance();
+                        results[j][10] = "Flight Time: " + seg.getDistance();
 
+                    }
                 }
                 i++;
             }
