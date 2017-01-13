@@ -72,7 +72,7 @@ public class ProjectDAO {
         boolean ret = false;
 
         try (CallableStatement st = con.prepareCall("{call insert_project(?,?)}")) {
-            st.setString(1,  p.getName());
+            st.setString(1, p.getName());
             st.setString(2, p.getDescription());
             st.execute();
         } catch (SQLException ex) {
@@ -156,6 +156,27 @@ public class ProjectDAO {
         return projAttributes;
     }
 
+    private boolean prepareForProjectSave(int pid) {
+        Connection con = null;
+        con = dal.connect();
+        boolean ret = false;
+
+        try (CallableStatement st = con.prepareCall("{call release_project_data(?)}")) {
+            st.setInt(1, pid);
+
+            st.execute();
+        } catch (SQLException ex) {
+            Logger.getLogger(DAL.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println(ex.toString());
+        } finally {
+
+            close(con);
+        }
+
+        return ret;
+
+    }
+
     public boolean saveFullProject(Project project) {
         ProjectDAO projectDAO = this;
         AirportDAO airportDAO = new AirportDAO();
@@ -163,8 +184,9 @@ public class ProjectDAO {
         AirNetworkDAO airnetworkDAO = new AirNetworkDAO();
         AircraftModelDAO modelDAO = new AircraftModelDAO();
         FlightDAO flightDAO = new FlightDAO();
-        projectDAO.createProject(project);
-        int projectID = projectDAO.getProjectID();
+       
+        int projectID = project.getIdProject();
+         prepareForProjectSave(project.getIdProject());
         airportDAO.WriteAirportsToDatabase(project.getAirportList().getAirportList(), projectID);
         modelDAO.WriteAircraftModelsToDatabase(project.getAircraftModelList().getModelList(), projectID);
         aircraftDAO.WriteAircraftsToDatabase(project.getAircraftList().getAircraftList(), projectID);

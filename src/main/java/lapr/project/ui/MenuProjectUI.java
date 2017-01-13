@@ -29,6 +29,7 @@ import javax.swing.KeyStroke;
 import static javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
+import lapr.project.DAL.ProjectDAO;
 import lapr.project.model.Project;
 
 /**
@@ -74,11 +75,11 @@ public class MenuProjectUI extends JDialog {
         setJMenuBar(menuBar);
 
         add(createPanelImage(), BorderLayout.CENTER);
-        
+
         JPanel p = new JPanel(new BorderLayout());
         p.add(createPanelButons(), BorderLayout.CENTER);
         p.add(createPanelBack(), BorderLayout.SOUTH);
-        
+
         add(p, BorderLayout.SOUTH);
     }
 
@@ -322,20 +323,31 @@ public class MenuProjectUI extends JDialog {
     }
 
     private void analysis() {
-         AnalysisUI aui= new AnalysisUI(project, MenuProjectUI.this);
+        AnalysisUI aui = new AnalysisUI(project, MenuProjectUI.this);
     }
 
     private void closeBack() {
         String[] op = {"Yes", "No"};
-        String question = "Close Project " + project.getName() +"?";
+        String question = "Close Project " + project.getName() + "?";
         int opcao = JOptionPane.showOptionDialog(MenuProjectUI.this, question,
                 "Close Project", JOptionPane.YES_NO_OPTION,
                 JOptionPane.QUESTION_MESSAGE, null, op, op[0]);
         if (opcao == JOptionPane.YES_OPTION) {
-            dispose();
+
+            question = "Save  " + project.getName() + "?";
+            opcao = JOptionPane.showOptionDialog(MenuProjectUI.this, question,
+                    "Save project", JOptionPane.YES_NO_OPTION,
+                    JOptionPane.QUESTION_MESSAGE, null, op, op[0]);
+            if (opcao == JOptionPane.YES_OPTION) {
+                ProjectDAO projectDAO = new ProjectDAO();
+                projectDAO.saveFullProject(project);
+                dispose();
+            } else {
+                setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+            }
         } else {
             setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-        }        
+        }
     }
 
 }
