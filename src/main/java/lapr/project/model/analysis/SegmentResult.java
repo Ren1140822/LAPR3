@@ -13,7 +13,6 @@ import lapr.project.model.Iten;
 import lapr.project.model.Pattern;
 import lapr.project.model.Segment;
 import lapr.project.model.Thrust_Function;
-import lapr.project.model.Wind;
 import lapr.project.model.physics.AircraftAlgorithms;
 import lapr.project.model.physics.PhysicsAlgorithms;
 
@@ -68,7 +67,7 @@ public class SegmentResult {
         this.mass=DEFAULT_VALUE;
         this.flightTime=(int) DEFAULT_VALUE;
         this.distance=DEFAULT_VALUE;
-        this.energyConsume=DEFAULT_VALUE;
+        this.energyConsume=0;
         this.timeStep=(int) DEFAULT_VALUE;
         this.angle=DEFAULT_VALUE;
         this.dhDT=DEFAULT_VALUE;
@@ -89,7 +88,7 @@ public class SegmentResult {
         this.mass=DEFAULT_VALUE;
         this.flightTime=(int) DEFAULT_VALUE;
         this.distance=DEFAULT_VALUE;
-        this.energyConsume=DEFAULT_VALUE;
+        this.energyConsume=0;
         this.timeStep=(int) DEFAULT_VALUE;
         this.angle=DEFAULT_VALUE;
         this.dhDT=DEFAULT_VALUE;
@@ -116,7 +115,7 @@ public class SegmentResult {
         this.timeStep=timeStep;
         this.flightTime=(int) DEFAULT_VALUE;
         this.distance=DEFAULT_VALUE;
-        this.energyConsume=DEFAULT_VALUE;
+        this.energyConsume=0;
         this.angle=DEFAULT_VALUE;
         this.dhDT=DEFAULT_VALUE;
         this.altitudeFinal=DEFAULT_VALUE;
@@ -249,15 +248,14 @@ public class SegmentResult {
 
      /**
      * Calculates the energy consum of simulation result
-     * @param initialWeight
-     * @param timeFlight
-     * @param tsfc
-     * @param weightZeroFuel
+     * 
      */
-    public void calculateEnergyConsumption(double initialWeight, double timeFlight, double tsfc, double weightZeroFuel){
-        double finalWeight=AircraftAlgorithms.calculateFinalWeight(initialWeight, timeFlight, tsfc);
-        //falta converter fuel para energia
-        AircraftAlgorithms.calculateFuelUsed(initialWeight, finalWeight, weightZeroFuel);      
+    public void calculateEnergyConsumption(double initMass, double finalMass){
+//        double finalWeight=AircraftAlgorithms.calculateFinalWeight(initialWeight, timeFlight, tsfc);
+//        //falta converter fuel para energia
+//        AircraftAlgorithms.calculateFuelUsed(initialWeight, finalWeight, weightZeroFuel);     
+        setEnergyConsume(getEnergyConsume()+(finalMass-initMass));
+        
     }
         
     public double getVIas(double altitude, SegmentType type) {
@@ -325,7 +323,7 @@ public class SegmentResult {
      */
     public boolean calculateClimb(){
         boolean pass=false;
-        
+        double initMass = mass;
         do{
             pass=calculate();
             
@@ -333,6 +331,7 @@ public class SegmentResult {
                 && pass);
         if(!pass) return false;
         altitudeFinal=altitude;
+        calculateEnergyConsumption(initMass, mass);
         return true;
     }
     
@@ -343,13 +342,13 @@ public class SegmentResult {
      */
     public boolean calculateDescend(Airport finalAirport){
         boolean pass=false;
-        
+        double initMass = mass;
         do{
             pass=calculate();
         }while(altitude<finalAirport.getLocation().getAltitude() && pass);
         
         if(!pass) return false;
-        
+        calculateEnergyConsumption(initMass, mass);
         altitudeFinal=altitude;
         return true;
     }
@@ -366,9 +365,11 @@ public class SegmentResult {
     
     public boolean calculateCruise(Airport finalAirport){
         boolean pass=false;
+         double initMass = mass;
         do{
             pass=calculate(); 
         }while(pass);
+        calculateEnergyConsumption(initMass, mass);
         return pass;
     }
     
