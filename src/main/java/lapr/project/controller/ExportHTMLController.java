@@ -24,9 +24,9 @@ import lapr.project.utils.HTMLExporter;
  */
 public class ExportHTMLController {
 
-    Project project;
+    private Project project;
 
-    String currentSim;
+    private String currentSim;
 
     public ExportHTMLController(Project project) {
         this.project = project;
@@ -57,16 +57,7 @@ public class ExportHTMLController {
     public List<String> getSimulationsList() {
         List<String> simString = new LinkedList<>();
         List<Simulation> list = project.getSimulationsList().getSimulationsList();
-        Simulation sim = new Simulation();
-        sim.createPathSimulation(TypePath.ALL);
-        list.add(sim);
-        sim = new Simulation();
-        list.add(sim);
-        sim = new Simulation();
-        list.add(sim);
-        sim = new Simulation();
-        list.add(sim);
-
+    
         for (Simulation simulation : list) {
             simString.add(simulation.toString());
         }
