@@ -268,4 +268,6 @@ public class FlightPlan implements Serializable {
     public void setListPattern(List<Pattern> listPattern) {
         this.listPattern = listPattern;
     }
+    
+   
 }

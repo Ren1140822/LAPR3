@@ -35,13 +35,7 @@ public class FastestPathResult extends Path implements BestPathInterface{
         LinkedList<Node> fastestPath=(LinkedList<Node>)super.getResultPath();
         AirNetwork clone=airNetwork;
                 
-//        for(Segment seg:clone.getSegmentList()){
-//            start=clone.getNodeFromList(seg.getStartNode());
-//            end=clone.getNodeFromList(seg.getEndNode());
-//    
-//        }
-//         double res=GraphAlgorithms.shortestPath(clone.getAirNetwork(), 
-//                start,end, fastestPath);
+       
         //vento+cruiseSpeed
         super.setResult(0);
         super.setResultPath(fastestPath);

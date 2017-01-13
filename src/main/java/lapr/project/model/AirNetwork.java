@@ -6,6 +6,7 @@
 package lapr.project.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
@@ -200,8 +201,8 @@ public class AirNetwork implements Serializable {
         }
         return n;
     }
-    
-    public Node getNodeFromList(Node n){
+
+    public Node getNodeFromList(Node n) {
         Node node = null;
         for (Node nod : nodeList) {
             if (nod.equals(n)) {
@@ -210,9 +211,8 @@ public class AirNetwork implements Serializable {
         }
         return node;
     }
-            
-//*************************** end Node List *******************************
 
+//*************************** end Node List *******************************
 //****************************** Segment List *********************************     
     /**
      * sets the segment
@@ -233,19 +233,20 @@ public class AirNetwork implements Serializable {
         segment.setDirection(direction);
         segment.setWind(windIntensity, windDirection);
     }
+
     /**
      * method that subtitute corretely the StartNode and End Node of segment
      * because when import xml, start and end nodes are created only with Id
      */
-    public void setSegmentsForJAXB(){
-        for (Segment s : segmentList){
+    public void setSegmentsForJAXB() {
+        for (Segment s : segmentList) {
             String s1 = s.getStartNode().getId();
             Node n1 = getNodeByString(s1);
             s.setStartNode(n1);
-            
+
             String s2 = s.getEndNode().getId();
             Node n2 = getNodeByString(s2);
-            s.setEndNode(n2);            
+            s.setEndNode(n2);
         }
     }
 
@@ -335,12 +336,12 @@ public class AirNetwork implements Serializable {
     private boolean insertSegments() {
         for (Segment seg : segmentList) {
             airNetworkGraph.insertEdge(getNodeFromList(seg.getStartNode()),
-                    getNodeFromList(seg.getEndNode()), seg, 
-                    DistanceCalculator.calculateDistance(getNodeFromList(seg.getStartNode()).getLatitude(), 
-                            getNodeFromList(seg.getStartNode()).getLongitude(), 
-                            getNodeFromList(seg.getEndNode()).getLatitude(), 
+                    getNodeFromList(seg.getEndNode()), seg,
+                    DistanceCalculator.calculateDistance(getNodeFromList(seg.getStartNode()).getLatitude(),
+                            getNodeFromList(seg.getStartNode()).getLongitude(),
+                            getNodeFromList(seg.getEndNode()).getLatitude(),
                             getNodeFromList(seg.getEndNode()).getLongitude()));
-            
+
         }
         return airNetworkGraph.numEdges() > 0;
     }
@@ -363,37 +364,99 @@ public class AirNetwork implements Serializable {
      */
     public List<Node> getPossibleEndNodes(Node startNode) {
         /**
-         * implement methods to find possible end airports by the segments in project*
+         * implement methods to find possible end airports by the segments in
+         * project*
          */
         /**
          * falta verificar range*
          */
         return GraphAlgorithms.DepthFirstSearch(airNetworkGraph, startNode);
     }
-    
+
     /**
      * Gets node correspondent to the airport if exists
+     *
      * @param airport airport
      * @return node equivalent to the node
      */
-    public Node getAirportNode(Airport airport){
-        for(Node nodeFind: nodeList){
-            if (Double.doubleToLongBits(nodeFind.getLatitude())==
-                    Double.doubleToLongBits(airport.getLocation().getLatitude()) &&
-                Double.doubleToLongBits(nodeFind.getLongitude())==
-                    Double.doubleToLongBits(airport.getLocation().getLongitude()))
+    public Node getAirportNode(Airport airport) {
+        for (Node nodeFind : nodeList) {
+            if (Double.doubleToLongBits(nodeFind.getLatitude())
+                    == Double.doubleToLongBits(airport.getLocation().getLatitude())
+                    && Double.doubleToLongBits(nodeFind.getLongitude())
+                    == Double.doubleToLongBits(airport.getLocation().getLongitude())) {
                 return nodeFind;
+            }
         }
         return null;
     }
-    
+
     /**
      * Gets segment from origin and destination nodes
-     * @param startNode 
+     *
+     * @param startNode
      * @param endNode
      * @return segment
      */
-    public Segment getSegmentFromNodes(Node startNode, Node endNode){
+    public Segment getSegmentFromNodes(Node startNode, Node endNode) {
         return getAirNetwork().getEdge(startNode, endNode).getElement();
     }
+
+    public LinkedList<Node> getAllPathsFromFlightPlanPassingThroughWaypoints(FlightPlan plan) {
+        LinkedList<Node> fullPaths = new LinkedList<>();
+        Node origin = getAirportNode(plan.getOrigin());
+        Node dest = getAirportNode(plan.getDestination());
+        List<Node> waypoints = plan.getMandatoryWaypoints();
+        if (waypoints.size() > 0) {
+
+            GraphAlgorithms.shortestPath(airNetworkGraph, origin, waypoints.get(0), fullPaths);
+            for (int i = 0; i < waypoints.size() - 1; i++) {
+                GraphAlgorithms.shortestPath(airNetworkGraph, waypoints.get(i), waypoints.get(i + 1), fullPaths);
+            }
+            GraphAlgorithms.shortestPath(airNetworkGraph, waypoints.get(waypoints.size()), dest, fullPaths);
+        } else {
+            GraphAlgorithms.shortestPath(airNetworkGraph, origin, dest, fullPaths);
+        }
+        return fullPaths;
+    }
+
+    public LinkedList<Node> getAllPathsFromFlightPlanPassingThroughWaypoints2(FlightPlan plan) {
+        LinkedList<Node> fullPaths = new LinkedList<>();
+        Node origin = getAirportNode(plan.getOrigin());
+        Node dest = getAirportNode(plan.getDestination());
+        List<Node> waypoints = plan.getMandatoryWaypoints();
+        double x = origin.getLatitude() - waypoints.get(0).getLatitude();
+        double y = origin.getLongitude() - waypoints.get(0).getLongitude();
+        double distance = Math.sqrt(x * x + y * y);
+        Graph<Node, Segment> graph = new Graph<>(true);
+        graph = airNetworkGraph.clone();
+        graph.getEdge(origin, waypoints.get(0)).setWeight(distance);
+        for (int i = 0; i < waypoints.size() - 1; i++) {
+            x = waypoints.get(i).getLatitude() - waypoints.get(i + 1).getLatitude();
+            y = waypoints.get(i).getLongitude() - waypoints.get(i + 1).getLongitude();
+            distance = Math.sqrt(x * x + y * y);
+
+            if (graph.getEdge(waypoints.get(i), waypoints.get(i + 1)) != null) {
+
+                graph.getEdge(waypoints.get(i), waypoints.get(i + 1)).setWeight(distance);
+            }
+        }
+        x = waypoints.get(waypoints.size() - 1).getLatitude() - dest.getLatitude();
+        y = waypoints.get(waypoints.size() - 1).getLongitude() - dest.getLongitude();
+        distance = Math.sqrt(x * x + y * y);
+        graph.getEdge(waypoints.get(waypoints.size() - 1), dest).setWeight(distance);
+        if (waypoints.size() > 0) {
+
+            GraphAlgorithms.shortestPath(graph, origin, waypoints.get(0), fullPaths);
+            for (int i = 0; i < waypoints.size() - 1; i++) {
+
+                GraphAlgorithms.shortestPath(graph, waypoints.get(i), waypoints.get(i + 1), fullPaths);
+            }
+            GraphAlgorithms.shortestPath(graph, waypoints.get(waypoints.size() - 1), dest, fullPaths);
+        } else {
+            GraphAlgorithms.shortestPath(airNetworkGraph, origin, dest, fullPaths);
+        }
+        return fullPaths;
+    }
+
 }

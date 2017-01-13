@@ -21,22 +21,22 @@ import org.junit.Test;
  * @author Pedro Fernandes, Diana Silva
  */
 public class AirNetworkTest {
-    
+
     public AirNetworkTest() {
     }
-    
+
     @BeforeClass
     public static void setUpClass() {
     }
-    
+
     @AfterClass
     public static void tearDownClass() {
     }
-    
+
     @Before
     public void setUp() {
     }
-    
+
     @After
     public void tearDown() {
     }
@@ -49,7 +49,7 @@ public class AirNetworkTest {
         System.out.println("getAirNetwork");
         Project p = new Project();
         AirNetwork instance = p.getAirNetwork();
-        Graph<Node, Segment> expResult = instance.getAirNetwork();        
+        Graph<Node, Segment> expResult = instance.getAirNetwork();
         Graph<Node, Segment> result = instance.getAirNetwork();
         assertEquals(expResult, result);
     }
@@ -65,29 +65,28 @@ public class AirNetworkTest {
         boolean expResult = false;
         boolean result = instance.generateGraph();
         assertEquals(expResult, result);
-        
-        
+
         System.out.println("generateGraph2");
         AirNetwork instance2 = new AirNetwork();
-        
-        Node n1= new Node("id1",-40,90);
-        Node n2= new Node("id2", -50, 90);
-        Node n3= new Node("id3", -90, 40);
-        Node n4= new Node("id4", -90, 50);
-        
-        instance2.setNode("id1",-40,90);
-        instance2.saveNode();        
+
+        Node n1 = new Node("id1", -40, 90);
+        Node n2 = new Node("id2", -50, 90);
+        Node n3 = new Node("id3", -90, 40);
+        Node n4 = new Node("id4", -90, 50);
+
+        instance2.setNode("id1", -40, 90);
+        instance2.saveNode();
         instance2.setNode("id2", -50, 90);
         instance2.saveNode();
         instance2.setNode("id3", -90, 40);
         instance2.saveNode();
         instance2.setNode("id4", -90, 50);
         instance2.saveNode();
-        
-        instance2.setSegment("seg01", n1, 
+
+        instance2.setSegment("seg01", n1,
                 n2, "bidirectional", 15, 40);
         instance2.saveSegment();
-        instance2.setSegment("seg02", n1, 
+        instance2.setSegment("seg02", n1,
                 n3, "bidirectional", 15, 40);
         instance2.saveSegment();
 
@@ -191,7 +190,7 @@ public class AirNetworkTest {
         System.out.println("setSegment");
         String id = "a";
         Node startNode = new Node("a", 0, 0);
-        Node endNode = new Node("b",1,1);
+        Node endNode = new Node("b", 1, 1);
         String direction = "bidirectional";
         int windIntensity = 0;
         int windDirection = 0;
@@ -208,7 +207,7 @@ public class AirNetworkTest {
         AirNetwork instance = new AirNetwork();
         String id = "a";
         Node startNode = new Node("a", 0, 0);
-        Node endNode = new Node("b",1,1);
+        Node endNode = new Node("b", 1, 1);
         instance.getNodeList().add(startNode);
         instance.getNodeList().add(endNode);
         String direction = "bidirectional";
@@ -276,15 +275,15 @@ public class AirNetworkTest {
         System.out.println("getNodeByString1");
         String id = "";
         AirNetwork instance = new AirNetwork();
-        Node expResult = new Node("id1",45,12);
+        Node expResult = new Node("id1", 45, 12);
         instance.getNodeList().add(expResult);
         Node result = instance.getNodeByString(id);
         assertNotEquals(expResult, result);
-        
+
         System.out.println("getNodeByString2");
         String id2 = "id1";
         AirNetwork instance2 = new AirNetwork();
-        Node expResult2 = new Node("id1",45,12);
+        Node expResult2 = new Node("id1", 45, 12);
         instance2.getNodeList().add(expResult);
         Node result2 = instance2.getNodeByString(id2);
         assertEquals(expResult2, result2);
@@ -296,20 +295,20 @@ public class AirNetworkTest {
     @Test
     public void testGetPossibleEndNodes() {
         System.out.println("getPossibleEndNodes");
-        Node startNode=new Node("test1", 40, 40);
-        Node intNode=new Node("test2", 50, 70);
-        Node endNode=new Node("test3", 40, 80);
-        Node testNode1=new Node("test4", 40,30);
-        Node testNode=new Node("test5", 40, 90);
-        
-        Wind windTest=new Wind(10,10);
-        String direction="BIDIRECTIONAL";
-        Segment segment1=new Segment("segmentTest1",startNode, endNode, direction,windTest,0,0);       
-        Segment segment2=new Segment("segmentTest2", startNode, intNode, direction,windTest,0,0);
-        Segment segment3=new Segment("segmentTest3", intNode, endNode, direction, windTest,0,0);
-        Segment segment4=new Segment("segmentTest4", testNode1, testNode, direction, windTest,0,0);
-        
-        AirNetwork instance=new AirNetwork();
+        Node startNode = new Node("test1", 40, 40);
+        Node intNode = new Node("test2", 50, 70);
+        Node endNode = new Node("test3", 40, 80);
+        Node testNode1 = new Node("test4", 40, 30);
+        Node testNode = new Node("test5", 40, 90);
+
+        Wind windTest = new Wind(10, 10);
+        String direction = "BIDIRECTIONAL";
+        Segment segment1 = new Segment("segmentTest1", startNode, endNode, direction, windTest, 0, 0);
+        Segment segment2 = new Segment("segmentTest2", startNode, intNode, direction, windTest, 0, 0);
+        Segment segment3 = new Segment("segmentTest3", intNode, endNode, direction, windTest, 0, 0);
+        Segment segment4 = new Segment("segmentTest4", testNode1, testNode, direction, windTest, 0, 0);
+
+        AirNetwork instance = new AirNetwork();
         instance.getAirNetwork().insertVertex(startNode);
         instance.getAirNetwork().insertVertex(intNode);
         instance.getAirNetwork().insertVertex(endNode);
@@ -318,15 +317,15 @@ public class AirNetworkTest {
 
         instance.getAirNetwork().insertEdge(startNode, intNode, segment2, 10);
         instance.getAirNetwork().insertEdge(intNode, endNode, segment3, 30);
-        instance.getAirNetwork().insertEdge(startNode, endNode, segment1, 20); 
+        instance.getAirNetwork().insertEdge(startNode, endNode, segment1, 20);
         instance.getAirNetwork().insertEdge(testNode1, testNode, segment4, 5);
         //falta verificar range
-        
-        LinkedList<Node> result=new LinkedList<>();
+
+        LinkedList<Node> result = new LinkedList<>();
         result.add(startNode);
         result.add(intNode);
         result.add(endNode);
-       
+
         assertEquals(instance.getPossibleEndNodes(startNode), result);
     }
 
@@ -337,17 +336,17 @@ public class AirNetworkTest {
     public void testGetAirportNode() {
         System.out.println("getAirportNode");
         AirNetwork instance = new AirNetwork();
-        
-        Node nodeTest1=new Node("test1", 10, 30);
-        Node nodeTest2=new Node("test2", 10, 20);
-        Node nodeTest3=new Node("test3", 40, 20);
-       
+
+        Node nodeTest1 = new Node("test1", 10, 30);
+        Node nodeTest2 = new Node("test2", 10, 20);
+        Node nodeTest3 = new Node("test3", 40, 20);
+
         instance.getNodeList().add(nodeTest1);
         instance.getNodeList().add(nodeTest2);
         instance.getNodeList().add(nodeTest3);
-        
-        Airport airportTest=new Airport("", "", "", "", new Location(10,20,10));
-        
+
+        Airport airportTest = new Airport("", "", "", "", new Location(10, 20, 10));
+
         Node expResult = nodeTest2;
         Node result = instance.getAirportNode(airportTest);
         assertEquals(expResult, result);
@@ -377,5 +376,69 @@ public class AirNetworkTest {
         instance.setSegmentsForJAXB();
     }
 
+    @Test
+    public void testFilterByLat() {
+        System.out.println("setSegmentsForJAXB");
+        AirNetwork instance2 = new AirNetwork();
+
+        Node n1 = new Node("id1", -40, 90);
+        Node n2 = new Node("id2", -50, 90);
+        Node n3 = new Node("id3", -90, 40);
+        Node n4 = new Node("id4", -120, 50);
+        Node n5 = new Node("id5", -50, 50);
+        instance2.setNode("id1", -40, 90);
+        instance2.saveNode();
+        Node n6 = new Node("id6", -150, 50);
+        instance2.setNode("id6", -150, 90);
+        instance2.saveNode();
+        instance2.setNode("id2", -50, 90);
+        instance2.saveNode();
+        instance2.setNode("id3", -90, 40);
+        instance2.saveNode();
+        instance2.setNode("id4", -120, 50);
+        instance2.saveNode();
+        instance2.setNode("id5", -50, 50);
+        instance2.saveNode();
+        instance2.setSegment("seg01", n1,
+                n4, "bidirectional", 200, 400);
+        instance2.saveSegment();
+        instance2.setSegment("seg02", n1,
+                n3, "bidirectional", 100, 100);
+        instance2.saveSegment();
+        instance2.setSegment("seg02", n3,
+                n4, "bidirectional", 20, 40);
+        instance2.saveSegment();
+        instance2.setSegment("seg02", n1,
+                n2, "bidirectional", 50, 50);
+        instance2.setSegment("seg02", n3,
+                n2, "bidirectional", 60, 40);
+        instance2.setSegment("seg02", n4,
+                n2, "bidirectional", 125, 140);
+           instance2.setSegment("seg02", n2,
+                n5, "bidirectional", 125, 140);
+           instance2.setSegment("seg02", n1,
+                n5, "bidirectional", 125, 140);
+        instance2.saveSegment();
+         instance2.setSegment("seg02", n4,
+                n6, "bidirectional", 25, 140);
+          instance2.saveSegment();
+           instance2.setSegment("seg02", n5,
+                n6, "bidirectional", 125, 140);
+        instance2.saveSegment();
+        boolean expResult2 = true;
+        instance2.generateGraph();
+        FlightPlan fp = new FlightPlan();
+        LinkedList<Node> way = new LinkedList<>();
+        way.add(n2);
+        way.add(n3);
+        fp.setMandatoryWaypoints(way);
+        Airport or = new Airport();
+        or.setLocation(n1.getLatitude(), n1.getLongitude(), 0);
+        Airport or2 = new Airport();
+        or2.setLocation(n6.getLatitude(), n5.getLongitude(), 0);
+        fp.setOrigin(or);
+        fp.setDestination(or2);
+        instance2.getAllPathsFromFlightPlanPassingThroughWaypoints(fp);
+    }
 
 }
