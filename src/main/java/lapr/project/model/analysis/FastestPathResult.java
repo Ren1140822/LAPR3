@@ -15,7 +15,7 @@ import lapr.project.model.Node;
  *
  * @author DianaSilva
  */
-public class FastestPathResult extends ResultPath implements BestPathInterface{
+public class FastestPathResult extends Path implements BestPathInterface{
     private FlightPlan flightPlan;
     /**
      * Constructor

@@ -11,9 +11,9 @@ import lapr.project.model.AircraftModel;
 import lapr.project.model.Airport;
 import lapr.project.model.Iten;
 import lapr.project.model.Pattern;
+import lapr.project.model.Segment;
 import lapr.project.model.Thrust_Function;
 import lapr.project.model.Wind;
-import lapr.project.model.analysis.SegmentType;
 import lapr.project.model.physics.AircraftAlgorithms;
 import lapr.project.model.physics.PhysicsAlgorithms;
 
@@ -29,6 +29,7 @@ public class SegmentResult {
     private double distance;
     private int flightTime;
     private AircraftModel model;
+    private Segment segment;
 
     private static final double DEFAULT_VALUE=-1;
     private double energyConsume;
@@ -48,7 +49,6 @@ public class SegmentResult {
     private static double thrustMi;
     private static double thrustLapseRate;
     private static double wingArea;
-    private Wind wind;
     
     //VALUES RELATED TO CALCULATION OPERATIONS 
     private double airDensity;
@@ -56,7 +56,7 @@ public class SegmentResult {
     private double cDrag; 
     private double lambda;
     private double mTrue;
-    private double tas;
+    private double groundSpeed;
     
     /**
      * Constructor
@@ -72,9 +72,9 @@ public class SegmentResult {
         this.timeStep=(int) DEFAULT_VALUE;
         this.angle=DEFAULT_VALUE;
         this.dhDT=DEFAULT_VALUE;
+        this.segment=new Segment();
         this.model=new AircraftModel();
         listPatterns=new LinkedList<>();
-        this.wind=new Wind();
         constantValues(model);
     }
     
@@ -93,9 +93,9 @@ public class SegmentResult {
         this.timeStep=(int) DEFAULT_VALUE;
         this.angle=DEFAULT_VALUE;
         this.dhDT=DEFAULT_VALUE;
+        this.segment=new Segment();
         this.model=new AircraftModel();
         listPatterns=new LinkedList<>();
-        this.wind=new Wind();
         constantValues(model);
    }
   
@@ -105,12 +105,11 @@ public class SegmentResult {
      * @param altitudeInitial altitude on the start node of segment (m)
      * @param mass mass (kg)
      * @param timeStep time step to consider in segments (s)
-     * @param wind wind in the previous node
      * @param model aircraft model
      * @param listPattern   list pattern
      */
     public SegmentResult(SegmentType type, double altitudeInitial,double mass, 
-            int timeStep, Wind wind, AircraftModel model, List<Pattern> listPattern){
+            int timeStep, AircraftModel model, List<Pattern> listPattern, Segment segment){
         this.type=type;
         this.altitude=altitudeInitial;
         this.mass=mass;
@@ -122,7 +121,7 @@ public class SegmentResult {
         this.dhDT=DEFAULT_VALUE;
         this.altitudeFinal=DEFAULT_VALUE;
         this.model=model;
-        this.wind=wind;
+        this.segment=segment;
         listPatterns=listPattern;
         constantValues(model);
     }
@@ -272,12 +271,12 @@ public class SegmentResult {
             case CLIMBING:
                altIndex=getIndex(altitude);
                if(altIndex!=-1)
-                    return listPatterns.get(altIndex).getvClimb();
+                    return getListPatterns().get(altIndex).getvClimb();
                return altIndex;
             case DESC:
                altIndex=getIndex(altitude);
                if(altIndex!=-1)
-                    return listPatterns.get(altIndex).getvDesc(); 
+                    return getListPatterns().get(altIndex).getvDesc(); 
                return -altIndex;
             default:
                 return altIndex;         
@@ -302,15 +301,15 @@ public class SegmentResult {
     }
     
     public int getIndex(double altitude){
-        int size=listPatterns.size();
+        int size=getListPatterns().size();
         if(size>0){
-            boolean b=listPatterns.get(0).getAltitude()<=altitude &&
-                    altitude<listPatterns.get(size-1).getAltitude();
+            boolean b=getListPatterns().get(0).getAltitude()<=altitude &&
+                    altitude<getListPatterns().get(size-1).getAltitude();
             
             if(b ){
                 for(int i=0; i<size-1;i++){
-                    double min=listPatterns.get(i).getAltitude();
-                    double max=listPatterns.get(i+1).getAltitude();
+                    double min=getListPatterns().get(i).getAltitude();
+                    double max=getListPatterns().get(i+1).getAltitude();
                     if(min<=altitude && altitude<max){
                         return i;
                     }   
@@ -355,7 +354,7 @@ public class SegmentResult {
         return true;
     }
     
-    public boolean calculateCruise(Airport finalAirport){
+    public boolean calculateCruiseDescend(Airport finalAirport){
         boolean pass=false;
         double distAirport=0;
         do{
@@ -363,6 +362,14 @@ public class SegmentResult {
             distAirport=distanceToGo(finalAirport);
         }while(pass && distAirport<=DIST_DESC);
         return Double.doubleToLongBits(distAirport)!=0;
+    }
+    
+    public boolean calculateCruise(Airport finalAirport){
+        boolean pass=false;
+        do{
+            pass=calculate(); 
+        }while(pass);
+        return pass;
     }
     
     private double distanceToGo(Airport finAirport){
@@ -387,7 +394,10 @@ public class SegmentResult {
 
         if(Double.doubleToLongBits(cDrag)==-1)
             return false;
-        tas=AircraftAlgorithms.calculateTAS(airDensity, temperature, vIas, wind);
+        
+        double tas=AircraftAlgorithms.calculateTAS(airDensity, temperature, vIas);
+        
+        groundSpeed=AircraftAlgorithms.calculateGroundSpeed(tas, segment.getWind(), angle);
 
         lambda=AircraftAlgorithms.calculateLambda(velThrustMa, thrustMa, thrustMi);
 
@@ -417,15 +427,15 @@ public class SegmentResult {
 
         double totalThrust=calculateTotalThrust(thrust, drag);
 
-        dhDT=AircraftAlgorithms.calculateDhDt(totalThrust, drag, tas, mass);
+        dhDT=AircraftAlgorithms.calculateDhDt(totalThrust, drag, groundSpeed, mass);
 
-        angle=AircraftAlgorithms.calculateClimbingAng(tas, dhDT);
+        angle=AircraftAlgorithms.calculateClimbingAng(groundSpeed, dhDT);
 
-        double dwDT=AircraftAlgorithms.calculateDwDt(totalThrust, thrust, tas);
+        double dwDT=AircraftAlgorithms.calculateDwDt(totalThrust, thrust, groundSpeed);
 
         double newMass=AircraftAlgorithms.calculateNewMass(mass, dwDT);
 
-        distance+=AircraftAlgorithms.calculateDistanceGained(tas, angle, timeStep);
+        distance+=AircraftAlgorithms.calculateDistanceGained(groundSpeed, angle, timeStep);
         altitude+=AircraftAlgorithms.calculateAltitudeGained(drag, dhDT, thrust);
         mass+=newMass;
         flightTime+=timeStep;
@@ -489,5 +499,33 @@ public class SegmentResult {
                  Double.doubleToLongBits(thrustLapseRate)!=Double.doubleToLongBits(defaultValue);     
            
          return v1 && t==null && Double.doubleToLongBits(wingArea)!=Double.doubleToLongBits(defaultWing);
+    }
+
+    /**
+     * @return the segment
+     */
+    public Segment getSegment() {
+        return segment;
+    }
+
+    /**
+     * @param segment the segment to set
+     */
+    public void setSegment(Segment segment) {
+        this.segment = segment;
+    }
+
+    /**
+     * @return the listPatterns
+     */
+    public List<Pattern> getListPatterns() {
+        return listPatterns;
+    }
+
+    /**
+     * @param listPatterns the listPatterns to set
+     */
+    public void setListPatterns(List<Pattern> listPatterns) {
+        this.listPatterns = listPatterns;
     }
 }

@@ -129,21 +129,6 @@ public class AircraftAlgorithms {
     }
     
     /**
-     * Claculates the true force speed of aircraft
-     * @param wind wind 
-     * @param groundSpeed aircraft speed relative to ground
-     * @return true speed
-     */
-    public static double calculateTrueWindApplied(Wind wind, double groundSpeed){
-        return wind.getWindIntensity()*Math.cos(wind.getWindDirection()) + 
-                groundSpeed;
-        
-        
-        
-    }
-    
-    
-    /**
      * Calculates the estimative thrust specific fuel consumption (TSFC) - fuel 
      * efficienty of an engine design, i.e. fuel consumption (g/s) per unit of
      * thrust (kN)
@@ -306,15 +291,59 @@ public class AircraftAlgorithms {
      * @return true air speed (m/s)
      */
     public static double calculateTAS(double airDensity, double temperature,
-            double vIas, Wind wind){
+            double vIas){
         double mTrue=calculateMTrue(airDensity, vIas);
         double spSound=PhysicsAlgorithms.calculateSoundSpeed(temperature);
-        
-        double velWindEffect=calculateTrueWindApplied(wind, 0);
-        
-        return (mTrue*spSound)+velWindEffect;    
+
+        return (mTrue*spSound);    
     }
-  
+    
+        /**
+     * Caculates the true wind applied (E6B- delta A)
+     * @param course desired course relative to aircraft
+     * @param wind wind applied
+     * @param tas true airspeed (m/s)
+       * @return true speed
+     */
+    public static double calculateTrueWindApplied(double course, Wind wind,
+            double tas){
+        return (int)(180/Math.PI * Math.asin(wind.getWindIntensity()/tas)*
+                Math.sin((Math.PI*(wind.getWindDirection()-course))/180));
+    }
+    
+    /**
+     * Calculates the ground speed
+     * @param tas true air speed of aircraft (m/s)
+     * @param wind wind
+     * @param course desired course
+     * @return ground speed (m/s)
+     */
+    public static double calculateGroundSpeed(double tas,Wind wind, double course){
+        double deltaA=calculateWindCorrectionAngle(course, tas, wind);
+        return Math.sqrt(Math.pow(tas, 2)+Math.pow(wind.getWindIntensity(), 2)-
+                2*tas*wind.getWindIntensity()*Math.cos((Math.PI*(course-wind.getWindDirection())+ deltaA)/180));
+    }
+    
+    public static double calculateHeading(double angAircCourse, 
+            double TAS, Wind wind){
+        double windCorrectionAng=calculateWindCorrectionAngle(angAircCourse,
+                TAS, wind);
+        return angAircCourse+windCorrectionAng;
+    }
+        
+    /**
+     * Calculates the wind correction angle
+     * @param angAircCourse angle of aircraft relative to the course
+     * @param tas true airspeed of aircraft
+     * @param wind wind applied
+     * @return wind correction (%)
+     */
+    public static double calculateWindCorrectionAngle(double angAircCourse,
+            double tas, Wind wind){
+        return Math.asin(Math.toRadians(wind.getWindIntensity()/tas));
+    }
+    
+
     /**
      * Calculates the angle of aircraft related to the ground in climbing
      * @param tas true air speed (m/s)

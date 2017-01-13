@@ -14,7 +14,7 @@ import lapr.project.model.Node;
  *
  * @author DianaSilva
  */
-public class EcologicPathResult extends ResultPath implements BestPathInterface{
+public class EcologicPathResult extends Path implements BestPathInterface{
     private FlightPlan flightPlan;
     
     /**

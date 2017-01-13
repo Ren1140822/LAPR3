@@ -29,7 +29,7 @@ import javax.swing.JPanel;
 import javax.swing.border.Border;
 import lapr.project.controller.ExportCSVController;
 import lapr.project.model.Project;
-import lapr.project.model.analysis.ResultPath;
+import lapr.project.model.analysis.Path;
 
 /**
  *

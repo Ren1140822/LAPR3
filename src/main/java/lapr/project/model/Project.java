@@ -8,7 +8,7 @@ package lapr.project.model;
 import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
-import lapr.project.model.analysis.ResultPath;
+import lapr.project.model.analysis.Path;
 import lapr.project.model.analysis.Simulation;
 import lapr.project.model.lists.AircraftList;
 import lapr.project.model.lists.AircraftModelList;
@@ -237,8 +237,8 @@ public class Project implements Serializable, Comparable {
      *
      * @return the ecologic results
      */
-    public List<ResultPath> getEcologicPathResults() {
-        LinkedList<ResultPath> list = new LinkedList<>();
+    public List<Path> getEcologicPathResults() {
+        LinkedList<Path> list = new LinkedList<>();
         for (Simulation s : getSimulationsList().getSimulationsList()) {
             if (Double.doubleToLongBits(s.getEcologicResultPath().getResult()) != 0) {
                 list.add(s.getEcologicResultPath());
@@ -252,8 +252,8 @@ public class Project implements Serializable, Comparable {
      *
      * @return the shortest path results
      */
-    public List<ResultPath> getShortestPathResults() {
-        LinkedList<ResultPath> list = new LinkedList<>();
+    public List<Path> getShortestPathResults() {
+        LinkedList<Path> list = new LinkedList<>();
         for (Simulation s : getSimulationsList().getSimulationsList()) {
             if (Double.doubleToLongBits(s.getShortestResultPath().getResult()) != 0) {
                 list.add(s.getShortestResultPath());
@@ -267,8 +267,8 @@ public class Project implements Serializable, Comparable {
      *
      * @return the fastestest path results
      */
-    public List<ResultPath> getFastestPathResults() {
-        LinkedList<ResultPath> list = new LinkedList<>();
+    public List<Path> getFastestPathResults() {
+        LinkedList<Path> list = new LinkedList<>();
         for (Simulation s : getSimulationsList().getSimulationsList()) {
             if (Double.doubleToLongBits(s.getFastestResultPath().getResult()) != 0) {
                 list.add(s.getFastestResultPath());

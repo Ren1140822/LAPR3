@@ -64,8 +64,7 @@ public class AircraftAlgorithmsTest {
         double temperature = 288.2;
         double vIas = 210.0;
         double expResult = 108.0832375;
-        Wind wind=new Wind();
-        double result = AircraftAlgorithms.calculateTAS(airDensity, temperature, vIas,wind);
+        double result = AircraftAlgorithms.calculateTAS(airDensity, temperature, vIas);
         assertEquals(expResult, result, 0.1);
         double test = (result/expResult);
         System.out.println("Result: "+ result);
@@ -125,26 +124,7 @@ public class AircraftAlgorithmsTest {
         System.out.println("Result: "+ result);
         System.out.println(String.format("Error: %.2f %%", test));
     }
-
-    /**
-     * Test of calculateThrustClimb method, of class AircraftAlgorithms.
-     */
-    @Test
-    public void testCalculateThrust() {
-        System.out.println("calculateThrust");
-        double thrustMa = 3.38*Math.pow(10,5);
-        double lambda = 1.76*Math.pow(10,5);
-        double mTrue = 0.317618939;
-        double airDensity = 1.22501312;
-        double thrustLapseRate = 0.96;
-        double expResult = 2.82* Math.pow(10,5);
-        double result = AircraftAlgorithms.calculateThrustClimb(thrustMa, lambda, mTrue, airDensity, thrustLapseRate);
-        assertEquals(expResult, result, 200);
-        double test = (result/expResult);
-        System.out.println("Result: "+ result);
-        System.out.println(String.format("Error: %.2f %%", test));
-    }
-
+ 
     /**
      * Test of calculateLambda method, of class AircraftAlgorithms.
      */
@@ -281,4 +261,216 @@ public class AircraftAlgorithmsTest {
         System.out.println("Result: "+ result);
         System.out.println(String.format("Error: %.2f %%", test));
     }
+
+    /**
+     * FALTA
+     * Test of calculateTrueAirSpeed method, of class AircraftAlgorithms.
+     */
+    @Test
+    public void testCalculateTrueAirSpeed() {
+        System.out.println("calculateTrueAirSpeed");
+        double velocity = 0.0;
+        double altitude = 0.0;
+        double expResult = 0.0;
+        double result = AircraftAlgorithms.calculateTrueAirSpeed(velocity, altitude);
+        assertEquals(expResult, result, 0.0);
+    }
+
+//    /**
+//     * Test of calculateTrueWindApplied method, of class AircraftAlgorithms.
+//     http://hyperphysics.phy-astr.gsu.edu/hbase/airpw.html#c2
+//     * FALTA
+//     */
+//    @Test
+//    public void testCalculateTrueWindApplied() {
+//        System.out.println("calculateTrueWindApplied");
+//        Wind wind = null;
+//        double course=0;
+//        double tas=0;
+//        double expResult=0;
+//        double result = AircraftAlgorithms.calculateTrueWindApplied(course,wind,tas);
+//        assertEquals(expResult, result, 0.0);
+//    }
+//
+//    /**
+//     * Test of calculateTSFC method, of class AircraftAlgorithms.
+//     * FALTA
+//     */
+//    @Test
+//    public void testCalculateTSFC() {
+//        System.out.println("calculateTSFC");
+//        double p = 0.0;
+//        double density = 0.0;
+//        double airVolume = 0.0;
+//        double expResult = 0.0;
+//        double result = AircraftAlgorithms.calculateTSFC(p, density, airVolume);
+//        assertEquals(expResult, result, 0.0);
+//    }
+
+//    /**
+//     * Test of calculateRangeAircraft method, of class AircraftAlgorithms.
+//     * FALTA
+//     */
+//    @Test
+//    public void testCalculateRangeAircraft() {
+//        System.out.println("calculateRangeAircraft");
+//        double tas = 0.0;
+//        double tsfc = 0.0;
+//        double wi = 0.0;
+//        double wf = 0.0;
+//        double liftForce = 0.0;
+//        double dragForce = 0.0;
+//        double expResult = 0.0;
+//        double result = AircraftAlgorithms.calculateRangeAircraft(tas, tsfc, wi, wf, liftForce, dragForce);
+//        assertEquals(expResult, result, 0.0);
+//
+//    }
+
+
+    /**
+     * Test of calculateFuelUsed method, of class AircraftAlgorithms.
+     * FALTA
+     */
+    @Test
+    public void testCalculateFuelUsed() {
+        System.out.println("calculateFuelUsed");
+        double initialWeight = 0.0;
+        double finalWeight = 0.0;
+        double weightZeroFuel = 0.0;
+        double expResult = 0.0;
+        double result = AircraftAlgorithms.calculateFuelUsed(initialWeight, finalWeight, weightZeroFuel);
+        assertEquals(expResult, result, 0.0);
+
+    }
+
+     /**
+     * Test of calculateThrustClimb method, of class AircraftAlgorithms.
+     */
+    @Test
+    public void testCalculateThrustClimb() {
+        System.out.println("calculateThrust");
+        double thrustMa = 3.38*Math.pow(10,5);
+        double lambda = 1.76*Math.pow(10,5);
+        double mTrue = 0.317618939;
+        double airDensity = 1.22501312;
+        double thrustLapseRate = 0.96;
+        double expResult = 2.82* Math.pow(10,5);
+        double result = AircraftAlgorithms.calculateThrustClimb(thrustMa, lambda, mTrue, airDensity, thrustLapseRate);
+        assertEquals(expResult, result, 200);
+        double test = (result/expResult);
+        System.out.println("Result: "+ result);
+        System.out.println(String.format("Error: %.2f %%", test));
+    }
+
+    /**
+     * Test of calculateThrustCruise method, of class AircraftAlgorithms.
+     * FALTA
+     */
+    @Test
+    public void testCalculateThrustCruise() {
+        System.out.println("calculateThrustCruise");
+        double drag = 0.0;
+        int nrEngines = 0;
+        double expResult = 0.0;
+        double result =0;
+                //AircraftAlgorithms.calculateThrustCruise(drag, nrEngines);
+        assertEquals(expResult, result, 0.0);
+    }
+
+    /**
+     * Test of calculateThrustDescend method, of class AircraftAlgorithms.
+     * FALTA
+     */
+    @Test
+    public void testCalculateThrustDescend() {
+        System.out.println("calculateThrustDescend");
+        double thrustMa = 0.0;
+        double lambda = 0.0;
+        double mTrue = 0.0;
+        double airDensity = 0.0;
+        double thrustLapseRate = 0.0;
+        double expResult = 0.0;
+       // double result = AircraftAlgorithms.calculateThrustDescend(thrustMa, lambda, mTrue, airDensity, thrustLapseRate);
+        
+       double result=0;
+       assertEquals(expResult, result, 0.0);
+
+    }
+
+//    /**
+//     * Test of calculateHeading method, of class AircraftAlgorithms.
+//     * FALTA
+//     */
+//    @Test
+//    public void testCalculateHeading() {
+//        System.out.println("calculateHeading");
+//        double angAircCourse = 0.0;
+//        double TAS = 0.0;
+//        Wind wind = null;
+//        double expResult = 0.0;
+//        double result = AircraftAlgorithms.calculateHeading(angAircCourse, TAS, wind);
+//        assertEquals(expResult, result, 0.0);
+//    }
+//
+//    /**
+//     * Test of calculateWindCorrectionAngle method, of class AircraftAlgorithms.
+//     * http://www.luizmonteiro.com/Article_Estimating_Wind_Correction_Angle_Printable.htm
+//     * FALTA
+//     */
+//    @Test
+//    public void testCalculateWindCorrectionAngle() {
+//        System.out.println("calculateWindCorrectionAngle");
+//        double angAircCourse = 0.0;
+//        double tas = 0.0;
+//        Wind wind = null;
+//        double expResult = 0.0;
+//        double result = AircraftAlgorithms.calculateWindCorrectionAngle(angAircCourse, tas, wind);
+//        assertEquals(expResult, result, 0.0);
+//    }
+
+    /**
+     * Test of calculateTotalThrustClimb method, of class AircraftAlgorithms.
+     * FALTA
+     */
+    @Test
+    public void testCalculateTotalThrustClimb() {
+        System.out.println("calculateTotalThrustClimb");
+        double thrust = 0.0;
+        int nrEngines = 0;
+        double expResult = 0.0;
+        double result = AircraftAlgorithms.calculateTotalThrustClimb(thrust, nrEngines);
+        assertEquals(expResult, result, 0.0);
+
+    }
+
+    /**
+     * Test of calculateTotalThrustDescend method, of class AircraftAlgorithms.
+     * FALTA
+     */
+    @Test
+    public void testCalculateTotalThrustDescend() {
+        System.out.println("calculateTotalThrustDescend");
+        double thrust = 0.0;
+        int nrEngines = 0;
+        double expResult = 0.0;
+        double result = AircraftAlgorithms.calculateTotalThrustDescend(thrust, nrEngines);
+        assertEquals(expResult, result, 0.0);
+
+    }
+
+    /**
+     * Test of calculateTotalThrustCruise method, of class AircraftAlgorithms.
+     * FALTA
+     */
+    @Test
+    public void testCalculateTotalThrustCruise() {
+        System.out.println("calculateTotalThrustCruise");
+        double draft = 0.0;
+        double expResult = 0.0;
+        double result = AircraftAlgorithms.calculateTotalThrustCruise(draft);
+        assertEquals(expResult, result, 0.0);
+    }
+    
+    //falta groundSpeed http://www.csgnetwork.com/e6bcalc.html
+    //falta windApplied http://hyperphysics.phy-astr.gsu.edu/hbase/airpw.html#c2
 }

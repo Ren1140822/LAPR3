@@ -13,7 +13,7 @@ import lapr.project.model.Airport;
 import lapr.project.model.FlightPlan;
 import lapr.project.model.Node;
 import lapr.project.model.Project;
-import lapr.project.model.analysis.ResultPath;
+import lapr.project.model.analysis.Path;
 import lapr.project.model.analysis.Simulation;
 import lapr.project.model.analysis.TypePath;
 
@@ -124,7 +124,7 @@ public class FindBestPathController {
        * @param type type of simulation (shortest, fastest, ecologic
        * @return the result of simulationÂ´s type
        */
-      public ResultPath getResult(TypePath type){
+      public Path getResult(TypePath type){
           return project.getSimulationsList().getSimulation().getResult(type);
       }
       

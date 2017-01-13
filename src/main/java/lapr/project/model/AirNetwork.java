@@ -386,4 +386,14 @@ public class AirNetwork implements Serializable {
         }
         return null;
     }
+    
+    /**
+     * Gets segment from origin and destination nodes
+     * @param startNode 
+     * @param endNode
+     * @return segment
+     */
+    public Segment getSegmentFromNodes(Node startNode, Node endNode){
+        return getAirNetwork().getEdge(startNode, endNode).getElement();
+    }
 }

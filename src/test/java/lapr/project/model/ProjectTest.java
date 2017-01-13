@@ -7,7 +7,7 @@ package lapr.project.model;
 
 import java.util.LinkedList;
 import java.util.List;
-import lapr.project.model.analysis.ResultPath;
+import lapr.project.model.analysis.Path;
 import lapr.project.model.analysis.Simulation;
 import lapr.project.model.lists.AircraftList;
 import lapr.project.model.lists.AircraftModelList;
@@ -271,11 +271,11 @@ public class ProjectTest {
     public void testGetEcologicPathResults() {
         System.out.println("getEcologicPathResults");
         Project instance = new Project();
-        List<ResultPath> expResult = new LinkedList<>();
+        List<Path> expResult = new LinkedList<>();
         instance.getSimulationsList().getSimulationsList().stream().forEach((s) -> {
             expResult.add(s.getEcologicResultPath());
         });
-        List<ResultPath> result = instance.getEcologicPathResults();
+        List<Path> result = instance.getEcologicPathResults();
         assertEquals(expResult, result);
     }
 
@@ -286,11 +286,11 @@ public class ProjectTest {
     public void testGetShortestPathResults() {
         System.out.println("getShortestPathResults");
         Project instance = new Project();
-        List<ResultPath> expResult = new LinkedList<>();
+        List<Path> expResult = new LinkedList<>();
         instance.getSimulationsList().getSimulationsList().stream().forEach((s) -> {
             expResult.add(s.getEcologicResultPath());
         });
-        List<ResultPath> result = instance.getShortestPathResults();
+        List<Path> result = instance.getShortestPathResults();
         assertEquals(expResult, result);
     }
 
@@ -301,11 +301,11 @@ public class ProjectTest {
     public void testGetFastestPathResults() {
         System.out.println("getFastestPathResults");
         Project instance = new Project();
-        List<ResultPath> expResult = new LinkedList<>();
+        List<Path> expResult = new LinkedList<>();
         instance.getSimulationsList().getSimulationsList().stream().forEach((s) -> {
             expResult.add(s.getEcologicResultPath());
         });
-        List<ResultPath> result = instance.getFastestPathResults();
+        List<Path> result = instance.getFastestPathResults();
         assertEquals(expResult, result);
     }
 

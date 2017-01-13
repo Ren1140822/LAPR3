@@ -24,7 +24,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import static javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE;
 import lapr.project.controller.FindBestPathController;
-import lapr.project.model.analysis.ResultPath;
+import lapr.project.model.analysis.Path;
 import lapr.project.model.analysis.TypePath;
 
 /**
@@ -41,7 +41,7 @@ public class ResultUI extends JDialog{
     /**
      * Simulation created
      */
-    private transient ResultPath resultPath;
+    private transient Path resultPath;
     
     private transient FindBestPathController controller;
     
@@ -49,7 +49,7 @@ public class ResultUI extends JDialog{
     
     private JList jListSegments;
     
-     public ResultUI(FindBestPathController controller, ResultPath result, TypePath type, JDialog frame){
+     public ResultUI(FindBestPathController controller, Path result, TypePath type, JDialog frame){
         super(frame, "Simulation: ",true);
         this.controller= controller;
         this.resultPath=result;

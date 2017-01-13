@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Map;
 import lapr.project.model.Project;
 
-import lapr.project.model.analysis.ResultPath;
+import lapr.project.model.analysis.Path;
 import lapr.project.model.analysis.Simulation;
 import lapr.project.utils.CSVExporter;
 
@@ -34,9 +34,9 @@ public class ExportCSVController {
      *
      * @return the list of results
      */
-    public Map<String, ResultPath> getAvailableResults(String sim) {
+    public Map<String, Path> getAvailableResults(String sim) {
         currentSim = sim;
-        Map<String, ResultPath> results = new HashMap<>();
+        Map<String, Path> results = new HashMap<>();
         List<Simulation> list = project.getSimulationsList().getSimulationsList();
         Simulation aux = getSimulationByString(sim);
         for (Simulation simulation : list) {
@@ -94,7 +94,7 @@ public class ExportCSVController {
                 if (simulation.getStartAirport().getIATA().equals(startNode) && simulation.getEndAirport().getIATA().equals(endNode)) {
                     results.add(simulation.toString());
                     //results.put("Comparison",sim.getComparison());
-                    //  results.put("Shortest ResultPath", Project.getShortestPathResults());
+                    //  results.put("Shortest Path", Project.getShortestPathResults());
                 }
             }
 //        List<ResultPath> filteredResults = filterResults(Project.getEcologicPathResults(), startNode, endNode);
@@ -102,7 +102,7 @@ public class ExportCSVController {
 //        filteredResults = filterResults(Project.getComparisonResults(), startNode, endNode);
 //        results.put("Comparison", filteredResults);
 //        filteredResults = filterResults(Project.getShortestPathResults(), startNode, endNode);
-//        results.put("Shortest ResultPath", filteredResults);
+//        results.put("Shortest Path", filteredResults);
             return results;
         }
         return results;
@@ -116,7 +116,7 @@ public class ExportCSVController {
             if (s.getFlightPlan().getAircraft().getAircraftModel().getType().equals(aircrafType)) {
                 results.add(s.toString());
                 //results.put("Comparison",sim.getComparison());
-                //  results.put("Shortest ResultPath", Project.getShortestPathResults());
+                //  results.put("Shortest Path", Project.getShortestPathResults());
             }
 
         }
@@ -220,7 +220,7 @@ public class ExportCSVController {
         return CSVExporter.exportMultipleStringsToCSV(filePath, "Results", "Title", results, filePath);
     }
 
-    public boolean exportResult(ResultPath r, String filePath) {
+    public boolean exportResult(Path r, String filePath) {
         String results[] = new String[10];
         return CSVExporter.exportStringsToCSV("Results", "", "", results, filePath);
     }

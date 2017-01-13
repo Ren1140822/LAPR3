@@ -12,7 +12,7 @@ import java.util.Map;
 import lapr.project.model.AirNetwork;
 import lapr.project.model.FlightPlan;
 import lapr.project.model.Project;
-import lapr.project.model.analysis.ResultPath;
+import lapr.project.model.analysis.Path;
 import lapr.project.model.analysis.ShortestPathResult;
 import lapr.project.model.analysis.Simulation;
 import lapr.project.model.analysis.TypePath;
@@ -70,11 +70,11 @@ public class ExportHTMLControllerTest {
         Simulation simu = new Simulation();
         simu.setShortestResultPath(sp);
         p.getSimulationsList().getSimulationsList().add(simu);
-        Map<String, ResultPath> expResult = new HashMap<>();
+        Map<String, Path> expResult = new HashMap<>();
         expResult.put("Best consumption", p.getSimulationsList().getSimulationsList().getFirst().getEcologicResultPath());
         expResult.put("Fastest path", p.getSimulationsList().getSimulationsList().getFirst().getFastestResultPath());
         expResult.put("ShortestPath", p.getSimulationsList().getSimulationsList().getFirst().getShortestResultPath());
-        Map<String, ResultPath> result = instance.getAvailableResults(sim);
+        Map<String, Path> result = instance.getAvailableResults(sim);
         assertEquals(expResult, result);
 
     }

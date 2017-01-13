@@ -41,7 +41,7 @@ public class Simulation{
     /**
      * path of simulation
      */
-    private ResultPath resultPath;
+    private Path resultPath;
     
     /**
      * default value
@@ -349,7 +349,7 @@ public class Simulation{
         }
     }
     
-     public ResultPath getResult(TypePath type){
+     public Path getResult(TypePath type){
           TypePath p=type;
           switch (p){
               case SHORTEST_PATH:
@@ -371,6 +371,7 @@ public class Simulation{
                 case SHORTEST_PATH:
                      shortestResultPath.calculateBestPath(air);
                      shortestResultPath.createPartialResults(flightPlan, totalWeight, timeStep);
+                     
                      return true;
                 case FASTEST_PATH:
                     fastestResultPath.calculateBestPath(air);

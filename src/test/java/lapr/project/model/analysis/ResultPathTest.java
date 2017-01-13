@@ -40,19 +40,19 @@ public class ResultPathTest {
     }
 
     /**
-     * Test of setResult method, of class ResultPath.
+     * Test of setResult method, of class Path.
      */
     @Test
     public void testSetResult() {
         System.out.println("setResult");
         double result_2 = 0.0;
-        ResultPath instance = new ResultPath();
+        Path instance = new Path();
         instance.setResult(result_2);
         assertEquals(instance.getResult(), result_2, 0.0);
     }
 
     /**
-     * Test of setResultPath method, of class ResultPath.
+     * Test of setResultPath method, of class Path.
      */
     @Test
     public void testSetResultPath() {
@@ -60,18 +60,18 @@ public class ResultPathTest {
         LinkedList<Node> resultPath = new LinkedList<>();
         Node test=new Node("test",0,0);
         resultPath.add(test);
-        ResultPath instance = new ResultPath();
+        Path instance = new Path();
         instance.setResultPath(resultPath);
         assertEquals(instance.getResultPath(), resultPath);
     }
 
     /**
-     * Test of getResult method, of class ResultPath.
+     * Test of getResult method, of class Path.
      */
     @Test
     public void testGetResult() {
         System.out.println("getResult");
-        ResultPath instance = new ResultPath();
+        Path instance = new Path();
         double expResult = 2.0;
         instance.setResult(expResult);  
         double result = instance.getResult();

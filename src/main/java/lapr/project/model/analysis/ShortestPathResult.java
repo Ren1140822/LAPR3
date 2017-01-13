@@ -15,7 +15,7 @@ import lapr.project.model.mapgraph.GraphAlgorithms;
  * The class to store and manage result data of shortest path analysis
  * @author DianaSilva
  */
-public class ShortestPathResult extends ResultPath implements BestPathInterface {
+public class ShortestPathResult extends Path implements BestPathInterface {
     private FlightPlan flightPlan;
     
     /**

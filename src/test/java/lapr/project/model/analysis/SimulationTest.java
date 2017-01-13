@@ -487,29 +487,29 @@ public class SimulationTest {
         System.out.println("getResult");
         TypePath type = TypePath.ALL;
         Simulation instance = new Simulation();
-        ResultPath expResult = instance.getShortestResultPath();
-        ResultPath result = instance.getResult(type);
+        Path expResult = instance.getShortestResultPath();
+        Path result = instance.getResult(type);
         assertEquals(expResult, result);
         
         System.out.println("getResult2");
         TypePath type2 = TypePath.SHORTEST_PATH;
         Simulation instance2 = new Simulation();
-        ResultPath expResult2 = instance2.getShortestResultPath();
-        ResultPath result2 = instance2.getResult(type2);
+        Path expResult2 = instance2.getShortestResultPath();
+        Path result2 = instance2.getResult(type2);
         assertEquals(expResult2, result2);
         
         System.out.println("getResult3");
         TypePath type3 = TypePath.FASTEST_PATH;
         Simulation instance3 = new Simulation();
-        ResultPath expResult3 = instance.getFastestResultPath();
-        ResultPath result3 = instance3.getResult(type3);
+        Path expResult3 = instance.getFastestResultPath();
+        Path result3 = instance3.getResult(type3);
         assertEquals(expResult3, result3);
         
         System.out.println("getResult4");
         TypePath type4 = TypePath.ECOLOGIC_PATH;
         Simulation instance4 = new Simulation();
-        ResultPath expResult4 = instance4.getEcologicResultPath();
-        ResultPath result4 = instance.getResult(type4);
+        Path expResult4 = instance4.getEcologicResultPath();
+        Path result4 = instance.getResult(type4);
         assertEquals(expResult4, result4);
     }
 
