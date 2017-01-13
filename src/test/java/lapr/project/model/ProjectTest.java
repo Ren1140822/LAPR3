@@ -494,4 +494,102 @@ public class ProjectTest {
         AircraftModelList result = instance.getModelList();
         assertEquals(expResult, result);
     }
+
+    /**
+     * Test of getSimulationsAircraft method, of class Project.
+     */
+    @Test
+    public void testGetSimulationsAircraft() {
+        System.out.println("getSimulationsAircraft");
+        String type = "";
+        Project instance = new Project();
+        List<Simulation> expResult = new LinkedList<>(); 
+        List<Simulation> sims = instance.getSimulationsList().getSimulationsList();
+        for (Simulation s : sims) {
+            if (s.getFlightPlan().getAircraft().getAircraftModel().getType().equals(type)) {
+                expResult.add(s);
+            }
+        }
+        List<Simulation> result = instance.getSimulationsAircraft(type);
+        assertEquals(expResult, result);
+    }
+
+    /**
+     * Test of getTypesAircraftSimulated method, of class Project.
+     */
+    @Test
+    public void testGetTypesAircraftSimulated() {
+        System.out.println("getTypesAircraftSimulated");
+        Project instance = new Project();
+        List<String> expResult = new LinkedList<>();
+        List<Simulation> sims = instance.getSimulationsList().getSimulationsList();
+        for (Simulation s : sims) {
+            String a = s.getFlightPlan().getAircraft().getAircraftModel().getType();
+            if (!expResult.contains(a)) {
+                expResult.add(a);
+            }
+        }
+        List<String> result = instance.getTypesAircraftSimulated();
+        assertEquals(expResult, result);
+    }
+
+    /**
+     * Test of compareTo method, of class Project.
+     */
+    @Test
+    public void testCompareTo() {
+        Project test = new Project();
+        test.setIdProject(2);
+        
+        System.out.println("compareTo1");
+        Object t = new Project();
+        Project instance = new Project();
+        int expResult = 0;
+        int result = instance.compareTo(t);
+        assertEquals(expResult, result);
+        
+        System.out.println("compareTo2");
+        Object t2 = new Project();
+        Project instance2 = new Project(test);
+        int expResult2 = 1;
+        int result2 = instance2.compareTo(t2);
+        assertEquals(expResult2, result2);
+        
+        System.out.println("compareTo3");
+        
+        Object t3 = new Project(test);
+        Project instance3 = new Project();
+        int expResult3 = -1;
+        int result3 = instance3.compareTo(t3);
+        assertEquals(expResult3, result3);
+
+    }
+
+    /**
+     * Test of equals method, of class Project.
+     */
+    @Test
+    public void testEquals() {
+        System.out.println("equals1");
+        Object otherObject = null;
+        Project instance = new Project();
+        boolean expResult = false;
+        boolean result = instance.equals(otherObject);
+        assertEquals(expResult, result);
+        
+        System.out.println("equals2");
+        Object otherObject2 = new Project();
+        Project instance2 = new Project();
+        boolean expResult2 = true;
+        boolean result2 = instance2.equals(otherObject2);
+        assertEquals(expResult2, result2);
+        
+        System.out.println("equals3");
+        Object otherObject3 = new Project();
+        Project instance3 = new Project();
+        instance3.setName("abc");
+        boolean expResult3 = false;
+        boolean result3 = instance3.equals(otherObject3);
+        assertEquals(expResult3, result3);
+    }
 }

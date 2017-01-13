@@ -332,22 +332,25 @@ public class MenuProjectUI extends JDialog {
         int opcao = JOptionPane.showOptionDialog(MenuProjectUI.this, question,
                 "Close Project", JOptionPane.YES_NO_OPTION,
                 JOptionPane.QUESTION_MESSAGE, null, op, op[0]);
-        if (opcao == JOptionPane.YES_OPTION) {
+        if (opcao == JOptionPane.YES_OPTION) {            check();
 
-            question = "Save  " + project.getName() + "?";
-            opcao = JOptionPane.showOptionDialog(MenuProjectUI.this, question,
-                    "Save project", JOptionPane.YES_NO_OPTION,
-                    JOptionPane.QUESTION_MESSAGE, null, op, op[0]);
-            if (opcao == JOptionPane.YES_OPTION) {
-                ProjectDAO projectDAO = new ProjectDAO();
-                projectDAO.saveFullProject(project);
-                dispose();
-            } else {
-                setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-            }
         } else {
             setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         }
     }
 
+    private void check() {
+        String[] op = {"Yes", "No"};
+        String question = "Save  " + project.getName() + "?";
+        int opcao = JOptionPane.showOptionDialog(MenuProjectUI.this, question,
+                "Save project", JOptionPane.YES_NO_OPTION,
+                JOptionPane.QUESTION_MESSAGE, null, op, op[0]);
+        if (opcao == JOptionPane.YES_OPTION) {
+            ProjectDAO projectDAO = new ProjectDAO();
+            projectDAO.saveFullProject(project);
+            dispose();
+        } else {
+            dispose();
+        }
+    }
 }
