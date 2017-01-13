@@ -8,7 +8,6 @@ package lapr.project.model.analysis;
 import java.util.LinkedList;
 import java.util.List;
 import lapr.project.model.AircraftModel;
-import lapr.project.model.Airport;
 import lapr.project.model.Iten;
 import lapr.project.model.Pattern;
 import lapr.project.model.Segment;
@@ -56,6 +55,7 @@ public class SegmentResult {
     private double lambda;
     private double mTrue;
     private double groundSpeed;
+    private double tas;
     
     /**
      * Constructor
@@ -67,7 +67,7 @@ public class SegmentResult {
         this.mass=DEFAULT_VALUE;
         this.flightTime=(int) DEFAULT_VALUE;
         this.distance=DEFAULT_VALUE;
-        this.energyConsume=0;
+        this.energyConsume=DEFAULT_VALUE;
         this.timeStep=(int) DEFAULT_VALUE;
         this.angle=DEFAULT_VALUE;
         this.dhDT=DEFAULT_VALUE;
@@ -88,7 +88,7 @@ public class SegmentResult {
         this.mass=DEFAULT_VALUE;
         this.flightTime=(int) DEFAULT_VALUE;
         this.distance=DEFAULT_VALUE;
-        this.energyConsume=0;
+        this.energyConsume=DEFAULT_VALUE;
         this.timeStep=(int) DEFAULT_VALUE;
         this.angle=DEFAULT_VALUE;
         this.dhDT=DEFAULT_VALUE;
@@ -106,16 +106,18 @@ public class SegmentResult {
      * @param timeStep time step to consider in segments (s)
      * @param model aircraft model
      * @param listPattern   list pattern
+     * @param segment
      */
     public SegmentResult(SegmentType type, double altitudeInitial,double mass, 
-            int timeStep, AircraftModel model, List<Pattern> listPattern, Segment segment){
+            int timeStep, AircraftModel model, List<Pattern> listPattern, 
+            Segment segment){
         this.type=type;
         this.altitude=altitudeInitial;
         this.mass=mass;
         this.timeStep=timeStep;
         this.flightTime=(int) DEFAULT_VALUE;
         this.distance=DEFAULT_VALUE;
-        this.energyConsume=0;
+        this.energyConsume=DEFAULT_VALUE;
         this.angle=DEFAULT_VALUE;
         this.dhDT=DEFAULT_VALUE;
         this.altitudeFinal=DEFAULT_VALUE;
@@ -245,17 +247,43 @@ public class SegmentResult {
     public void setFlightTime(int flightTime) {
         this.flightTime = flightTime;
     }
-
-     /**
-     * Calculates the energy consum of simulation result
-     * 
+    
+    
+    /**
+     * @return the segment
      */
-    public void calculateEnergyConsumption(double initMass, double finalMass){
-//        double finalWeight=AircraftAlgorithms.calculateFinalWeight(initialWeight, timeFlight, tsfc);
-//        //falta converter fuel para energia
-//        AircraftAlgorithms.calculateFuelUsed(initialWeight, finalWeight, weightZeroFuel);     
-        setEnergyConsume(getEnergyConsume()+(finalMass-initMass));
-        
+    public Segment getSegment() {
+        return segment;
+    }
+
+    /**
+     * @param segment the segment to set
+     */
+    public void setSegment(Segment segment) {
+        this.segment = segment;
+    }
+
+    /**
+     * @return the listPatterns
+     */
+    public List<Pattern> getListPatterns() {
+        return listPatterns;
+    }
+
+    /**
+     * @param listPatterns the listPatterns to set
+     */
+    public void setListPatterns(List<Pattern> listPatterns) {
+        this.listPatterns = listPatterns;
+    }
+    
+    
+    /**
+     * Get true airspeed
+     * @return the tas true air speed (m/s)
+     */
+    public double getTas() {
+        return tas;
     }
         
     public double getVIas(double altitude, SegmentType type) {
@@ -323,7 +351,7 @@ public class SegmentResult {
      */
     public boolean calculateClimb(){
         boolean pass=false;
-        double initMass = mass;
+        
         do{
             pass=calculate();
             
@@ -331,50 +359,15 @@ public class SegmentResult {
                 && pass);
         if(!pass) return false;
         altitudeFinal=altitude;
-        calculateEnergyConsumption(initMass, mass);
         return true;
     }
-    
-    /**
-     * Calculates the values of descend phase 
-     * @param finalAirport
-     * @return true if valid, false if not
-     */
-    public boolean calculateDescend(Airport finalAirport){
-        boolean pass=false;
-        double initMass = mass;
-        do{
-            pass=calculate();
-        }while(altitude<finalAirport.getLocation().getAltitude() && pass);
         
-        if(!pass) return false;
-        calculateEnergyConsumption(initMass, mass);
-        altitudeFinal=altitude;
-        return true;
-    }
-    
-    public boolean calculateCruiseDescend(Airport finalAirport){
+    public boolean calculateCruise(){
         boolean pass=false;
-        double distAirport=0;
-        do{
-            pass=calculate(); 
-            distAirport=distanceToGo(finalAirport);
-        }while(pass && distAirport<=DIST_DESC);
-        return Double.doubleToLongBits(distAirport)!=0;
-    }
-    
-    public boolean calculateCruise(Airport finalAirport){
-        boolean pass=false;
-         double initMass = mass;
         do{
             pass=calculate(); 
         }while(pass);
-        calculateEnergyConsumption(initMass, mass);
         return pass;
-    }
-    
-    private double distanceToGo(Airport finAirport){
-        return 3-finAirport.getLocation().getLongitude();
     }
     
     private boolean calculateBasic(){        
@@ -435,9 +428,14 @@ public class SegmentResult {
         double dwDT=AircraftAlgorithms.calculateDwDt(totalThrust, thrust, groundSpeed);
 
         double newMass=AircraftAlgorithms.calculateNewMass(mass, dwDT);
-
+        
         distance+=AircraftAlgorithms.calculateDistanceGained(groundSpeed, angle, timeStep);
-        altitude+=AircraftAlgorithms.calculateAltitudeGained(drag, dhDT, thrust);
+        
+        if(type!=SegmentType.CLIMBING)
+            altitude+=AircraftAlgorithms.calculateAltitudeGained(drag, dhDT, thrust);
+        if(type!=SegmentType.DESC)
+            altitude+=AircraftAlgorithms.calculateAltitudeDesc(dhDT, timeStep);
+        
         mass+=newMass;
         flightTime+=timeStep;
         return true;
@@ -500,33 +498,5 @@ public class SegmentResult {
                  Double.doubleToLongBits(thrustLapseRate)!=Double.doubleToLongBits(defaultValue);     
            
          return v1 && t==null && Double.doubleToLongBits(wingArea)!=Double.doubleToLongBits(defaultWing);
-    }
-
-    /**
-     * @return the segment
-     */
-    public Segment getSegment() {
-        return segment;
-    }
-
-    /**
-     * @param segment the segment to set
-     */
-    public void setSegment(Segment segment) {
-        this.segment = segment;
-    }
-
-    /**
-     * @return the listPatterns
-     */
-    public List<Pattern> getListPatterns() {
-        return listPatterns;
-    }
-
-    /**
-     * @param listPatterns the listPatterns to set
-     */
-    public void setListPatterns(List<Pattern> listPatterns) {
-        this.listPatterns = listPatterns;
     }
 }

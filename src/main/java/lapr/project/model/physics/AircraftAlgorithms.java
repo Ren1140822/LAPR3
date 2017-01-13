@@ -394,4 +394,15 @@ public class AircraftAlgorithms {
     public static double calculateTotalThrustCruise(double draft){
         return draft;
     }
+    
+        /**
+     * Calculates the altitude descended by aircraft (m)
+     * @param dhDt ratio altitude per second (m/s)
+     * @param timeStep time step considered
+     * @return 
+     */
+    public static double calculateAltitudeDesc(double dhDt, int timeStep){
+        return dhDt*timeStep;
+    }
+
 }

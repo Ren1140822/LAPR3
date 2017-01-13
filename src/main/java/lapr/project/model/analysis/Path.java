@@ -1,3 +1,4 @@
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -14,7 +15,6 @@ import lapr.project.model.FlightPlan;
 import lapr.project.model.Node;
 import lapr.project.model.Pattern;
 import lapr.project.model.Segment;
-import lapr.project.model.Wind;
 import lapr.project.model.physics.AircraftAlgorithms;
 
 /**
@@ -48,6 +48,12 @@ public class Path {
     private static final double DEFAULT_VALUE=0.0;
     
     private AirNetwork air;
+    
+    /**
+     * distnace to land aircraft desired
+     */
+    private static final double LAND_DIST_REF=193.121*1000;
+
    
     /**
      * Constructor
@@ -64,6 +70,7 @@ public class Path {
      * Constructor
      * @param resultPath result path of best path calculated
      * @param result result of best path
+     * @param air airnetwork
      */
     public Path(List resultPath,double result, AirNetwork air){
         this.path=(LinkedList<Node>) resultPath;
@@ -209,11 +216,11 @@ public class Path {
      
     
     /**
-     * 
-     * @param flightPlan
-     * @param initialMass
-     * @param timeStep
-     * @return 
+     * Create results of path (climb-cruise-descend)
+     * @param flightPlan flight plan to calculate
+     * @param initialMass initial weigt
+     * @param timeStep time step do consider
+     * @return true if valid, false if not
      */
     public boolean createPartialResults(FlightPlan flightPlan,
         double initialMass, int timeStep){
@@ -235,12 +242,10 @@ public class Path {
                 Segment segment=listSegments.get(i);
                     //NODE2-NODE3-...-LASTNODE
                     if(i!=0 && i!=size-1){
-                       
-              
                         SegmentResult srCruise=new SegmentResult(SegmentType.CRUISE,
                                 altitude, initialMass, timeStep,aircraftModel, list, segment);
                         segmentsResult.add(srCruise);
-                        boolean testCruise=srCruise.calculateCruise(finalAirport);
+                        boolean testCruise=srCruise.calculateCruise();
                         if(testCruise){
                             altitude=srCruise.getAltitudeFinal();
                             segmentsResult.add(srCruise);
@@ -263,29 +268,46 @@ public class Path {
                                 altitude, initialMass, timeStep,aircraftModel,
                                     list, segment);
 
-                            boolean testCruise=srCruise.calculateCruise(finalAirport);
+                            boolean testCruise=srCruise.calculateCruise();
                            if(testCruise){
                                altitude=srCruise.getAltitudeFinal();
                                segmentsResult.add(srCruise);
                            } 
                         }
                     }
-                    //DESCEND PHASE - SKY-AIRPORT
+                    //DESCEND PHASE
                     if(i==path.size()-1){
-                         SegmentResult srCruise=new SegmentResult(SegmentType.CRUISE,
+                        //SIMULATE DESCENT
+                        SegmentResult srAuxDesc=new SegmentResult(SegmentType.DESC,
                                 altitude,initialMass, timeStep, aircraftModel, 
                                  list, segment);
-                         segmentsResult.add(srCruise);
-                        if(srCruise.calculateCruise(finalAirport)){
-                            altitude=srCruise.getAltitudeFinal();
-                            SegmentResult srDescend=new SegmentResult(SegmentType.DESC,
-                                altitude, initialMass, timeStep, aircraftModel, list, segment);
-                      
-                           boolean testDescend=srDescend.calculateDescend(finalAirport);
-                           if(testDescend)
-                                segmentsResult.add(srDescend);
+                        double altFinalAirport=flightPlan.getDestination().getLocation().getAltitude();
+                        double altFinalSimulation=srAuxDesc.getAltitudeFinal();
+                        double distanceDesc=0;
+                                if(altFinalSimulation<=altFinalAirport){
+                           double margin=altFinalAirport-altFinalSimulation;
+                           double perc=(srAuxDesc.getDistance()-LAND_DIST_REF)/srAuxDesc.getDistance();
+                           distanceDesc=srAuxDesc.getDistance()*(srAuxDesc.getDistance()*perc);
                         }
-                                       
+                        else
+                            //in the last node aircraft can´t desc
+                            return false;
+                        
+                        SegmentResult srCruise;        
+                        do{
+                            srCruise=new SegmentResult(SegmentType.CRUISE,
+                                altitude,initialMass, timeStep, aircraftModel, 
+                                 list, segment);
+
+                            if(srCruise.calculateCruise())
+                                    segmentsResult.add(srCruise);
+                        }while(srCruise.getDistance()<distanceDesc);
+                        
+
+                        SegmentResult srDescend=new SegmentResult(SegmentType.DESC,
+                                    altitude, initialMass, timeStep, aircraftModel, list, segment);
+                        segmentsResult.add(srDescend);
+              
                 }
             }
         }
@@ -298,5 +320,16 @@ public class Path {
             list.add(air.getAirNetwork().getEdge(path.get(i),path.get(i+1)).getElement());
         }
         return list;
+    }
+        
+    /**
+     * Calculate distance needed do descend phase
+     * @return distance (m)
+     */
+    private double calculateDistanceToDescend(double altitude, Airport finalAirport){
+     //  double timeToDescend=altitude-finalAirport.getLocation().getAltitude()/dhDT;
+        
+       //return timeToDescend*groundSpeed;
+       return 0;
     }
 }
