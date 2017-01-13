@@ -278,9 +278,9 @@ public class AircraftDAO {
         con = dal.connect();
         boolean ret = false;
 
-        for (Aircraft aircraft : aircraftList) {
+        try (CallableStatement st = con.prepareCall("{call insert_aircraft(?,?,?,?,?)}")) {
+            for (Aircraft aircraft : aircraftList) {
 
-            try (CallableStatement st = con.prepareCall("{call insert_aircraft(?,?,?,?,?)}")) {
                 st.setInt(1, projectID);
                 st.setString(2, aircraft.getRegistration());
 
@@ -298,14 +298,15 @@ public class AircraftDAO {
                         ret = st2.execute();
                     }
                 }
-            } catch (SQLException ex) {
-                Logger.getLogger(DAL.class.getName()).log(Level.SEVERE, null, ex);
-                System.out.println(ex.toString());
-            } finally {
-
-                close(con);
             }
+        } catch (SQLException ex) {
+            Logger.getLogger(DAL.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println(ex.toString());
+        } finally {
+
+            close(con);
         }
+
         return ret;
     }
 

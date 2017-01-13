@@ -384,5 +384,18 @@ public class Project implements Serializable, Comparable {
         Project otherProject = (Project) t;
         return this.idProject > otherProject.idProject ? 1 : this.idProject < otherProject.idProject ? -1 : 0;
     }
+    
+    @Override
+    public boolean equals(Object otherObject) {
+        if (otherObject == null || this.getClass() != otherObject.getClass()) {
+            return false;
+        }
+        if (this == otherObject) {
+            return true;
+        }
+        Project otherProject = (Project) otherObject;
+       
+        return  this.name.equalsIgnoreCase(otherProject.getName());
+    } 
 
 }
