@@ -47,9 +47,10 @@ public class ConversionAlgorithmsTest {
         double expResult = 18.0446;
         double result = ConversionAlgorithms.convertMetersFeet(meters);
         assertEquals(expResult, result, 0.01);
-        double test = (result/expResult);
+        double test = 1 - result/expResult;
+        System.out.println("ExpResult: "+ expResult);
         System.out.println("Result: "+ result);
-        System.out.println(String.format("Error: %.4f %%", test));
+        System.out.println(String.format("Error: %.5f %%", test));
     }
 
     /**
@@ -62,9 +63,10 @@ public class ConversionAlgorithmsTest {
         double expResult = 1.6764;
         double result = ConversionAlgorithms.convertFeetM(feet);
         assertEquals(expResult, result, 0.01);
-        double test = (result/expResult);
+        double test = 1 - result/expResult;
+        System.out.println("ExpResult: "+ expResult);
         System.out.println("Result: "+ result);
-        System.out.println(String.format("Error: %.4f %%", test));
+        System.out.println(String.format("Error: %.5f %%", test));
     }
 
     /**
@@ -77,9 +79,10 @@ public class ConversionAlgorithmsTest {
         double expResult = 2.82944;
         double result = ConversionAlgorithms.convertKnotMS(knot);
         assertEquals(expResult, result, 0.01);
-        double test = (result/expResult);
+        double test = 1 - result/expResult;
+        System.out.println("ExpResult: "+ expResult);
         System.out.println("Result: "+ result);
-        System.out.println(String.format("Error: %.4f %%", test));
+        System.out.println(String.format("Error: %.5f %%", test));
     }
 
     /**
@@ -92,9 +95,10 @@ public class ConversionAlgorithmsTest {
         double expResult = 244.652;
         double result = ConversionAlgorithms.convertLbfN(lbf);
         assertEquals(expResult, result, 0.01);
-        double test = (result/expResult);
+        double test = 1 - result/expResult;
+        System.out.println("ExpResult: "+ expResult);
         System.out.println("Result: "+ result);
-        System.out.println(String.format("Error: %.4f %%", test));
+        System.out.println(String.format("Error: %.5f %%", test));
     }
 
     /**
@@ -107,9 +111,10 @@ public class ConversionAlgorithmsTest {
         double expResult = 2494.76;
         double result = ConversionAlgorithms.convertLbfGram(lbf);
         assertEquals(expResult, result, 0.01);
-        double test = (result/expResult);
+        double test = 1 - result/expResult;
+        System.out.println("ExpResult: "+ expResult);
         System.out.println("Result: "+ result);
-        System.out.println(String.format("Error: %.4f %%", test));
+        System.out.println(String.format("Error: %.5f %%", test));
     }
 
     /**
@@ -122,9 +127,10 @@ public class ConversionAlgorithmsTest {
         double expResult = 18.9271;
         double result = ConversionAlgorithms.convertGallonsLit(gal);
         assertEquals(expResult, result, 0.5);
-        double test = (result/expResult);
+        double test = 1 - result/expResult;
+        System.out.println("ExpResult: "+ expResult);
         System.out.println("Result: "+ result);
-        System.out.println(String.format("Error: %.4f %%", test));
+        System.out.println(String.format("Error: %.5f %%", test));
     }
 
     /**
@@ -137,9 +143,10 @@ public class ConversionAlgorithmsTest {
         double expResult = 144720.0;
         double result = ConversionAlgorithms.convertLtoKg(l);
         assertEquals(expResult, result, 0.0);
-        double test = (result/expResult);
+        double test = 1 - result/expResult;
+        System.out.println("ExpResult: "+ expResult);
         System.out.println("Result: "+ result);
-        System.out.println(String.format("Error: %.4f %%", test));
+        System.out.println(String.format("Error: %.5f %%", test));
     }
     
 }
