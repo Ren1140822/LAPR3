@@ -134,7 +134,7 @@ public class AircraftAlgorithms {
      * @param groundSpeed aircraft speed relative to ground
      * @return true speed
      */
-    public static double calculateTrueWindForce(Wind wind, double groundSpeed){
+    public static double calculateTrueWindApplied(Wind wind, double groundSpeed){
         return wind.getWindIntensity()*Math.cos(wind.getWindDirection()) + 
                 groundSpeed;
         
@@ -310,7 +310,7 @@ public class AircraftAlgorithms {
         double mTrue=calculateMTrue(airDensity, vIas);
         double spSound=PhysicsAlgorithms.calculateSoundSpeed(temperature);
         
-        double velWindEffect=calculateTrueWindForce(wind, 0);
+        double velWindEffect=calculateTrueWindApplied(wind, 0);
         
         return (mTrue*spSound)+velWindEffect;    
     }

@@ -154,6 +154,7 @@ public class ResultPath {
                         boolean testCruise=srCruise.calculateCruise(finalAirport);
                         if(testCruise){
                             altitude=srCruise.getAltitudeFinal();
+                            segments.add(srCruise);
                         } 
                     }
                     //CLIMBING PHASE - AIRPORT/FIRSTNODE - SKY 
@@ -167,14 +168,16 @@ public class ResultPath {
                         boolean testClimb=srClimb.calculateClimb();
                         if(testClimb){ 
                             altitude=srClimb.getAltitudeFinal();
+                            segments.add(srClimb);
                            
                             SegmentResult srCruise=new SegmentResult(SegmentType.CRUISE,
                                 altitude, initialMass, timeStep,wind,aircraftModel,
                                     list);
-                            segments.add(srCruise);
+
                             boolean testCruise=srCruise.calculateCruise(finalAirport);
                            if(testCruise){
                                altitude=srCruise.getAltitudeFinal();
+                               segments.add(srCruise);
                            } 
                         }
                     }
@@ -187,8 +190,10 @@ public class ResultPath {
                             altitude=srCruise.getAltitudeFinal();
                             SegmentResult srDescend=new SegmentResult(SegmentType.DESC,
                                 altitude, initialMass, timeStep, wind,aircraftModel, list);
-                            segments.add(srDescend);
-                           srDescend.calculateDescend(finalAirport);
+                      
+                           boolean testDescend=srDescend.calculateDescend(finalAirport);
+                           if(testDescend)
+                                segments.add(srDescend);
                         }
                                        
                 }
