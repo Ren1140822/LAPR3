@@ -68,14 +68,6 @@ public class EditDataProjectControllerTest {
         boolean expResult3 = false;
         boolean result3 = instance3.setDataProject(name3, desc3);
         assertEquals(expResult3, result3);
-        
-        System.out.println("setDataProject4");
-        String name4 = "test";
-        String desc4 = "test";
-        EditDataProjectController instance4 = new EditDataProjectController(project);
-        boolean expResult4 = true;
-        boolean result4 = instance4.setDataProject(name4, desc4);
-        assertEquals(expResult4, result4);
     }
 
     /**
