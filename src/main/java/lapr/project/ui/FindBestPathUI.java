@@ -7,7 +7,6 @@ package lapr.project.ui;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -39,7 +38,6 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import lapr.project.controller.FindBestPathController;
-import lapr.project.model.Aircraft;
 import lapr.project.model.Airport;
 import lapr.project.model.FlightPlan;
 import lapr.project.model.Node;

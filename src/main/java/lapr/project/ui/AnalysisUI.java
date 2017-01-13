@@ -7,9 +7,9 @@ package lapr.project.ui;
 
 import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import javax.swing.Icon;
@@ -32,7 +32,7 @@ public class AnalysisUI extends JDialog{
     
     private Project project;
 
-    private final int WINDOW_WIDTH = 400;
+    private final int WINDOW_WIDTH = 650;
     private final int WINDOW_HEIGHT = 250;
     private final String WINDOW_TITLE = "Analysis";
     
@@ -55,7 +55,8 @@ public class AnalysisUI extends JDialog{
     }
     
     private void createComponents() {
-        JPanel p=new JPanel(new GridLayout(1,2));
+        JPanel p=new JPanel(new GridLayout(1,3));
+        p.add(createJButtonCalculatePath());
         p.add(createJButtonPath());
         p.add(createJButtonCompare()); 
         
@@ -72,10 +73,9 @@ public class AnalysisUI extends JDialog{
         button.setMnemonic(KeyEvent.VK_S);
         button.setToolTipText("Simulates flight and results of simulation");
 
-        button.addMouseListener(new MouseAdapter() {
-
+        button.addActionListener(new ActionListener() {
             @Override
-            public void mouseClicked(MouseEvent me) {
+            public void actionPerformed(ActionEvent e) {
                if(project.getAircraftList().getAircraftList().isEmpty() ||
                        project.getAirportList().getAirportList().isEmpty() ||
                        project.getAirNetwork().getSegmentList().isEmpty())
@@ -92,6 +92,32 @@ public class AnalysisUI extends JDialog{
         return button;
     }
     
+    private JButton createJButtonCalculatePath() {
+        Icon icone = new ImageIcon( "src/main/resources/images/path_mini.jpg" );
+        JButton calBtn = new JButton("Calculate Paths Two Airports", icone);
+        calBtn.setContentAreaFilled(false);
+        calBtn.setBorderPainted(false);
+        calBtn.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        calBtn.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);  
+        calBtn.setMnemonic(KeyEvent.VK_S);
+        calBtn.setToolTipText("Simulates flight between two Airports and results of simulation");
+
+        calBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+               if(project.getAirportList().getAirportList().isEmpty() ||
+                       project.getAirNetwork().getSegmentList().isEmpty())                   
+                   JOptionPane.showMessageDialog(frame,
+                "There aren´t airports or segments created", "Error", JOptionPane.ERROR_MESSAGE);
+               else{
+                   CalculatePathsUI calcUI = new CalculatePathsUI(project,frame);
+               }
+            }
+
+        });
+        return calBtn;
+    }
+    
     private JButton createJButtonCompare() {
         Icon icone = new ImageIcon( "src/main/resources/images/compare.png" );
         JButton button = new JButton("Compare", icone);
@@ -102,13 +128,12 @@ public class AnalysisUI extends JDialog{
         button.setMnemonic(KeyEvent.VK_S);
         button.setToolTipText("Compare Aircrafts/Engines");
         
-        button.addMouseListener(new MouseAdapter() {
-
+        button.addActionListener(new ActionListener() {
             @Override
-            public void mouseClicked(MouseEvent me) {
+            public void actionPerformed(ActionEvent e) {
                 if(project.getSimulationsList().getSimulationsList().isEmpty())
                    JOptionPane.showMessageDialog(frame,
-                "There aren´t simulations created", "Erro", JOptionPane.ERROR_MESSAGE);
+                "There aren´t simulations created", "Error", JOptionPane.ERROR_MESSAGE);
                 else  
                  comp=new ComparisonUI(project, frame);        
             }
