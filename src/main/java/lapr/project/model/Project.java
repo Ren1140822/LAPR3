@@ -22,7 +22,7 @@ import lapr.project.model.lists.SimulationsList;
  *
  * @author Renato Oliveira, Pedro Fernandes, Diana Silva
  */
-public class Project implements Serializable {
+public class Project implements Serializable, Comparable {
 
     /**
      * Variables to read from DAL or file.
@@ -297,17 +297,17 @@ public class Project implements Serializable {
         List<Node> endNodes = getAirNetwork().getPossibleEndNodes(startNode);
         for (Node nodeEnd : endNodes) {
             Airport a = getAirportList().getAirportNode(nodeEnd);
-            if(a != null){
-                listAirports.add(getAirportList().getAirportNode(nodeEnd));                
-            }            
+            if (a != null) {
+                listAirports.add(getAirportList().getAirportNode(nodeEnd));
+            }
         }
         Airport airport = getAirportList().getAirportNode(startNode);
-        if(listAirports.contains(airport)){
+        if (listAirports.contains(airport)) {
             listAirports.remove(airport);
         }
         return listAirports;
     }
-    
+
     /**
      * Gets the possible end airports linked to the origin node
      *
@@ -315,8 +315,8 @@ public class Project implements Serializable {
      * @return list airports linked to the start node
      */
     public List<Node> getPossibleEndNodes(Node startNode) {
-        List<Node> listNodes = getAirNetwork().getPossibleEndNodes(startNode);               
-        if(listNodes.contains(startNode)){
+        List<Node> listNodes = getAirNetwork().getPossibleEndNodes(startNode);
+        if (listNodes.contains(startNode)) {
             listNodes.remove(startNode);
         }
         return listNodes;
@@ -349,10 +349,10 @@ public class Project implements Serializable {
         }
         return listSimulated;
     }
-    
+
     /**
-     * 
-     * @return 
+     *
+     * @return
      */
     public FlightList getFlightList() {
         return flightList;
@@ -377,6 +377,12 @@ public class Project implements Serializable {
      */
     public void setModelList(AircraftModelList modelList) {
         this.modelList = modelList;
+    }
+
+    @Override
+    public int compareTo(Object t) {
+        Project otherProject = (Project) t;
+        return this.idProject > otherProject.idProject ? 1 : this.idProject < otherProject.idProject ? -1 : 0;
     }
 
 }

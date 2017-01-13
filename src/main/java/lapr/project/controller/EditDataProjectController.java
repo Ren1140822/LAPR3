@@ -5,6 +5,7 @@
  */
 package lapr.project.controller;
 
+import lapr.project.DAL.ProjectDAO;
 import lapr.project.model.Project;
 
 /**
@@ -23,7 +24,7 @@ public class EditDataProjectController {
         project.setName(name);
         project.setDescription(desc);
         
-        return project.validate() && editProjectDataBase();        
+        return project.validate() && editProjectDataBase(name, desc, project.getIdProject());        
     }
     
     public int getIdProject(){
@@ -38,9 +39,10 @@ public class EditDataProjectController {
         return project.getDescription();
     }
     
-    private boolean editProjectDataBase(){
-        // implement connect db
-        return true;
+    private boolean editProjectDataBase(String name,String desc,int pid){
+       ProjectDAO projectDAO = new ProjectDAO();
+       return projectDAO.editProject(name, desc, pid);
+       
     }
     
 }

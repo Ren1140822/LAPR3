@@ -12,7 +12,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.util.ArrayList;
 import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -26,25 +25,27 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import lapr.project.controller.OpenProjectController;
 import lapr.project.model.Project;
 
 /**
  *
  * @author Pedro Fernandes
  */
-public class OpenProjectUI extends JDialog{
-    
+public class OpenProjectUI extends JDialog {
+
     private Project project;
     private JButton backBtn;
     private JButton okBtn;
     private JList projectsList;
-    
-    public OpenProjectUI(JFrame frame){
-        
-        super(frame, "Open Project", true);
+    private OpenProjectController controller;
 
+    public OpenProjectUI(JFrame frame) {
+
+        super(frame, "Open Project", true);
+        controller = new OpenProjectController();
         createComp();
-        
+
         pack();
         setResizable(false);
         setMinimumSize(new Dimension(400, 150));
@@ -59,27 +60,16 @@ public class OpenProjectUI extends JDialog{
             }
         });
     }
+
     private void createComp() {
 
-        List projs= new ArrayList(); //receber do controller
-        projs.add("teste1"); // retirar
-        projs.add("teste2"); // retirar
-        projs.add("teste3"); // retirar
-        projs.add("teste4"); // retirar
-        projs.add("teste5"); // retirar
-        projs.add("teste6"); // retirar
-        projs.add("teste7"); // retirar
-        projs.add("teste8"); // retirar
-        projs.add("teste9"); // retirar
-        projs.add("teste10"); // retirar
-        projs.add("teste11"); // retirar
-        projs.add("teste12"); // retirar
+        List<Project> projs = controller.getProjectsListByName();
         projectsList = new JList(projs.toArray());
-        
-        add(createPanelProjects("Projects:", projectsList), BorderLayout.CENTER);        
+
+        add(createPanelProjects("Projects:", projectsList), BorderLayout.CENTER);
         add(createPanelButons(), BorderLayout.SOUTH);
     }
-    
+
     private JPanel createPanelButons() {
         int aux = 10;
         JPanel pback = new JPanel();
@@ -90,9 +80,9 @@ public class OpenProjectUI extends JDialog{
 
         return pback;
     }
-    
-     private JPanel createPanelProjects(String title, JList list) {
-         
+
+    private JPanel createPanelProjects(String title, JList list) {
+
         list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         list.addListSelectionListener(new ListSelectionListener() {
             @Override
@@ -103,19 +93,19 @@ public class OpenProjectUI extends JDialog{
         JScrollPane scrPane = new JScrollPane(list);
 
         JPanel p = new JPanel(new BorderLayout());
-        
+
         final int MARGEM_SUPERIOR = 5, MARGEM_INFERIOR = 5;
         final int MARGEM_ESQUERDA = 5, MARGEM_DIREITA = 5;
         p.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createTitledBorder(title),
                 new EmptyBorder(MARGEM_SUPERIOR, MARGEM_ESQUERDA,
-                MARGEM_INFERIOR, MARGEM_DIREITA)));
-        
+                        MARGEM_INFERIOR, MARGEM_DIREITA)));
+
         p.add(scrPane, BorderLayout.CENTER);
-         
+
         return p;
-     }
-    
+    }
+
     private JButton createButtonBack() {
         backBtn = new JButton("Back");
         backBtn.setMnemonic(KeyEvent.VK_B);
@@ -128,7 +118,7 @@ public class OpenProjectUI extends JDialog{
         });
         return backBtn;
     }
-    
+
     private JButton createButtonOk() {
         okBtn = new JButton("Ok");
         okBtn.setMnemonic(KeyEvent.VK_O);
@@ -142,17 +132,17 @@ public class OpenProjectUI extends JDialog{
         });
         return okBtn;
     }
-    
+
     private void close() {
         dispose();
     }
-    
+
     private void confirm() {
-        // implementar controller
-        project = new Project(); // retirar e ir buscar o projecto pelo controller
-        
+      
+        project =controller.getProjectFromDB(((Project)projectsList.getSelectedValue()).getIdProject());
+
         dispose();
-        MenuProjectUI menuProj = new MenuProjectUI(project, OpenProjectUI.this);        
+        MenuProjectUI menuProj = new MenuProjectUI(project, OpenProjectUI.this);
     }
 
 }

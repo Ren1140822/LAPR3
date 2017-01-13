@@ -5,7 +5,20 @@
  */
 package lapr.project.controller;
 
+import lapr.project.DAL.AirNetworkDAO;
+import lapr.project.DAL.AircraftDAO;
+import lapr.project.DAL.AircraftModelDAO;
+import lapr.project.DAL.AirportDAO;
+import lapr.project.DAL.FlightDAO;
+import lapr.project.DAL.ProjectDAO;
+import lapr.project.model.AirNetwork;
 import lapr.project.model.Project;
+import lapr.project.model.lists.AircraftList;
+import lapr.project.model.lists.AircraftModelList;
+import lapr.project.model.lists.AirportList;
+import lapr.project.model.lists.CompareResultsList;
+import lapr.project.model.lists.FlightList;
+import lapr.project.model.lists.SimulationsList;
 
 /**
  *
@@ -20,7 +33,6 @@ public class CreateProjectController {
     
     public boolean setProject(String name, String description){
         project = new Project();
-        //project.setIdProject(0); check in db and add 1 to count of projects
         project.setName(name);
         project.setDescription(description);
         
@@ -28,7 +40,8 @@ public class CreateProjectController {
     }
     
     private boolean insertProjectDataBase(){
-        // implement connect db
+       
+        
         return true;
     }
     

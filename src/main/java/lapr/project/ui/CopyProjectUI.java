@@ -68,19 +68,8 @@ public class CopyProjectUI extends JDialog{
     
     private void create() {
 
-        List projs= new ArrayList(); //receber do controller
-        projs.add("teste1"); // retirar
-        projs.add("teste2"); // retirar
-        projs.add("teste3"); // retirar
-        projs.add("teste4"); // retirar
-        projs.add("teste5"); // retirar
-        projs.add("teste6"); // retirar
-        projs.add("teste7"); // retirar
-        projs.add("teste8"); // retirar
-        projs.add("teste9"); // retirar
-        projs.add("teste10"); // retirar
-        projs.add("teste11"); // retirar
-        projs.add("teste12"); // retirar
+        List<Project> projs= controller.getProjectsListByName();
+        
         projectsList = new JList(projs.toArray());
         
         add(createPanelProjects("Choose Project to copy:", projectsList), BorderLayout.CENTER);        
@@ -162,7 +151,7 @@ public class CopyProjectUI extends JDialog{
                 JOptionPane.QUESTION_MESSAGE, null, op, op[0]);
         if (opcao == JOptionPane.YES_OPTION) {
             // implementar controller
-            project = new Project(); // controller.getProjectSelected(); retirar e ir buscar o projecto pelo controller
+            project =controller.copyProject(controller.getProject( ((Project)projectsList.getSelectedValue()).getIdProject()));
             close();
             MenuProjectUI menuProj = new MenuProjectUI(project, CopyProjectUI.this);            
         } else {

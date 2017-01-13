@@ -58,7 +58,7 @@ public class AirNetworkDAO {
                 String description = rs.getString("description");
                 List<Node> nodes = getNodesListByID(netID);
                 List<Segment> segments = getSegmentsListByID(netID, nodes);
-                airNetwork.setId(String.valueOf(projectID));
+                airNetwork.setId(String.valueOf(netID));
                 airNetwork.setDescription(description);
                 airNetwork.setNodeList(nodes);
                 airNetwork.setSegmentList(segments);

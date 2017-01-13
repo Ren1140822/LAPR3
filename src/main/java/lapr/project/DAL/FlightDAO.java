@@ -68,6 +68,7 @@ public class FlightDAO {
                 LinkedList<Node> waypoints = getWaypointsList(designator);
                 LinkedList<Pattern> patterns = getPatternByID(designator);
                 plan = new FlightPlan(designator, minStopTime, new Aircraft(), origin, dest, stops, waypoints, patterns);
+                planList.add(plan);
             }
             
         } catch (SQLException ex) {
@@ -129,7 +130,7 @@ public class FlightDAO {
             rs = (ResultSet) st.getObject(1);
             
             while (rs.next()) {
-                String nodeID = rs.getString("ID");
+                String nodeID = rs.getString("NODEID");
                 Node n = getNodeByID(nodeID);
                 nodes.add(n);
                 

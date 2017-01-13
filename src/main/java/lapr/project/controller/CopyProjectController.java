@@ -33,13 +33,14 @@ import lapr.project.model.lists.SimulationsList;
 public class CopyProjectController {
 
     private Project project;
-    private List<String> listProjects;
+    private List<Project> listProjects;
 
     public CopyProjectController() {
-        listProjects = new LinkedList<>();// implement from DAL
+        ProjectDAO projectDAO = new ProjectDAO();
+        listProjects = projectDAO.getAllProjects();
     }
 
-    public List<String> getProjectsListByName() {
+    public List<Project> getProjectsListByName() {
         return this.listProjects;
     }
 
@@ -65,7 +66,7 @@ public class CopyProjectController {
         airnetworkDAO.WriteSegmentsToDatabase(p.getAirNetwork().getSegmentList(), Integer.parseInt(tmp.getId()));
         AirNetwork realAN = airnetworkDAO.getAirNetwork(projectID);
         flightDAO.WriteFlightPlansToDatabase(p.getFlightList().getFlightList(), projectID);
-        Project newProject = new Project(projectID, p.getName() + "copy", p.getDescription() + "copy", new AircraftList(p.getAircraftList()), realAN, new AirportList(p.getAirportList()), new CompareResultsList(), new FlightList(p.getFlightList()), new AircraftModelList(p.getModelList().getModelList()), new SimulationsList());
+        Project newProject = new Project(projectID, p.getName() + "copy", p.getDescription() + "copy", new AircraftList(p.getAircraftList().getAircraftList()), realAN, new AirportList(p.getAirportList().getAirportList()), new CompareResultsList(), new FlightList(p.getFlightList().getFlightList()), new AircraftModelList(p.getModelList().getModelList()), new SimulationsList());
         return newProject;
     }
 
