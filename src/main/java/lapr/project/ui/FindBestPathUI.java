@@ -15,7 +15,6 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 import javax.swing.BorderFactory;
 import javax.swing.Icon;
@@ -39,7 +38,6 @@ import javax.swing.table.DefaultTableModel;
 import lapr.project.controller.FindBestPathController;
 import lapr.project.model.Airport;
 import lapr.project.model.FlightPlan;
-import lapr.project.model.Node;
 import lapr.project.model.Project;
 import lapr.project.model.analysis.TypePath;
 
@@ -98,6 +96,7 @@ public class FindBestPathUI extends JDialog {
 
         controller = new FindBestPathController(project);
         controller.newSImulation();
+
         mapConfig = new HashMap<>();
         totalPassengers = 0;
 
@@ -174,20 +173,23 @@ public class FindBestPathUI extends JDialog {
                 listStopAirports.setListData(controller.getTechnicalStops().toArray());
                 listWaypoints.setListData(controller.getMandatoryWaypoints().toArray());
                 flightInfo.setText(controller.getFlightPlanStringInfo());
-                int i= 0;
-                if (mapConfig.size() > 0) {
-                    for (i=0; i < mapConfig.size(); i++) {
+                int i = 0;
+                if (model.getColumnCount() > 0) {
+                    for (i = mapConfig.size()-1; i >= 0; i--) {
                         model.removeRow(i);
                     }
                 }
                 mapConfig = controller.getCabinConfig();
-                for (Map.Entry<String, Integer> entry : mapConfig.entrySet()) {
-                    model.addRow(new Object[]{entry.getKey(), entry.getValue()});
+                if (mapConfig.size() > 0) {
+                    model.fireTableDataChanged();
+                    for (Map.Entry<String, Integer> entry : mapConfig.entrySet()) {
+                        model.addRow(new Object[]{entry.getKey(), entry.getValue()});
+                    }                    
+                    btAll.setEnabled(true);
+                    btEco.setEnabled(true);
+                    btFast.setEnabled(true);
+                    btShort.setEnabled(true);
                 }
-                btAll.setEnabled(true);
-                btEco.setEnabled(true);
-                btFast.setEnabled(true);
-                btShort.setEnabled(true);
             }
         });
         txtCrew = new JTextField(10);
