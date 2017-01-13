@@ -78,6 +78,38 @@ public class AircraftDAO {
         return aircraftList;
     }
 
+    public Aircraft getAircraft(String aID) {
+
+        Aircraft aircraft = null;
+        ResultSet rs = null;
+
+        Connection con = null;
+        String query = "{ ?= call get_aircraft(?)}";
+        con = dal.connect();
+
+        try (CallableStatement st = con.prepareCall(query)) {
+            st.setString(2, aID);
+            st.registerOutParameter(1, OracleTypes.CURSOR);
+            st.execute();
+            rs = (ResultSet) st.getObject(1);
+            while (rs.next()) {
+                String registration = rs.getString("Registration");
+                String company = rs.getString("Company");
+                CabinConfiguration cabinConfig = getCabinConfigByID(rs.getString("registration"));
+                int nrOfCrewElements = rs.getInt("nrofcrewelements");
+                AircraftModel aircraftModel = getAircraftModelByID(rs.getString("aircraft_modelID"));
+                aircraft = new Aircraft(registration, company, cabinConfig, nrOfCrewElements, aircraftModel);
+
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(DAL.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            DAL.close(con);
+
+        }
+        return aircraft;
+    }
+
     /**
      * Gets a cabin configuration by ID.
      *
