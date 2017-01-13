@@ -76,10 +76,7 @@ public class AnalysisUI extends JDialog{
         button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-               if(project.getAircraftList().getAircraftList().isEmpty() ||
-                       project.getAirportList().getAirportList().isEmpty() ||
-                       project.getAirNetwork().getSegmentList().isEmpty())
-                   
+               if(project.getFlightList().getFlightList().isEmpty())                   
                    JOptionPane.showMessageDialog(frame,
                 "There aren´t aircrafts/airports/segments created", "Erro", JOptionPane.ERROR_MESSAGE);
                 else

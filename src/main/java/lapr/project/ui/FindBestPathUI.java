@@ -29,12 +29,11 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import static javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import lapr.project.controller.FindBestPathController;
@@ -63,7 +62,7 @@ public class FindBestPathUI extends JDialog {
     /**
      * panel with analysis input data
      */
-    private JPanel panel, panelData;
+    private JPanel panelData;
 
     /**
      * buttons
@@ -73,7 +72,8 @@ public class FindBestPathUI extends JDialog {
     /**
      * list of aircrafts, list of airports, list of possible destinations
      */
-    private JList listStartAirports, listEndAirports;
+    private JList listStopAirports, listWaypoints;
+    private JTextArea flightInfo;
 
     /**
      * controller
@@ -81,10 +81,6 @@ public class FindBestPathUI extends JDialog {
     private transient FindBestPathController controller;
 
     private transient Project project;
-    /**
-     * aircrafts, start nodes, possible end nodes
-     */
-    private transient List<Airport> startAirports, endAirports;
 
     private int dialogResult = JOptionPane.CANCEL_OPTION;
 
@@ -100,14 +96,12 @@ public class FindBestPathUI extends JDialog {
         this.project = project;
         this.frame = frame;
 
-        controller = new FindBestPathController(this.project);
+        controller = new FindBestPathController(project);
         controller.newSImulation();
-        startAirports = controller.getAirportList();
-        endAirports = new LinkedList();
         mapConfig = new HashMap<>();
         totalPassengers = 0;
 
-        add(createComponents());
+        createComponents();
 
         addWindowListener(new WindowAdapter() {
             @Override
@@ -116,15 +110,14 @@ public class FindBestPathUI extends JDialog {
             }
         });
         pack();
-        setResizable(false);
+        setResizable(true);
         setSize(new Dimension(900, 700));
-        setLocationRelativeTo(null);
+        setLocationRelativeTo(frame);
         setVisible(true);
     }
 
-    private JPanel createComponents() {
-        panel = new JPanel(new BorderLayout());
-        panel.add(createInputPanel(), BorderLayout.CENTER);
+    private void createComponents() {
+        add(createInputPanel(), BorderLayout.CENTER);
 
         btClean = UI.createButtonClean();
         btBack = UI.createButtonBack();
@@ -135,8 +128,7 @@ public class FindBestPathUI extends JDialog {
         p.add(UI.createButtonsCleanBackPanel(btClean, btBack), BorderLayout.SOUTH);
         p.add(createPanelFind(), BorderLayout.CENTER);
 
-        panel.add(p, BorderLayout.SOUTH);
-        return panel;
+        add(p, BorderLayout.SOUTH);
     }
 
     private JPanel createInputPanel() {
@@ -146,7 +138,7 @@ public class FindBestPathUI extends JDialog {
         panelData.setBorder(BorderFactory.createTitledBorder("Simulation Data:"));
 
         panelData.add(createPanelImage());
-        panelData.add(createPanelAirports());
+        panelData.add(createPanelFlightPlanInfo());
         panelData.add(createPanelInputData());
         panelData.add(createPanelCabinConfig());
 
@@ -159,9 +151,6 @@ public class FindBestPathUI extends JDialog {
         dtcr.setHorizontalAlignment(JLabel.CENTER);
         model = new DefaultTableModel();
         model.setColumnIdentifiers(header);
-//        for (Map.Entry<String, Integer> entry : mapConfig.entrySet()) {
-//            model.addRow(new Object[]{entry.getKey(), entry.getValue()});
-//        }        
         tableCabin = new JTable(model);
         tableCabin.getColumnModel().getColumn(0).setCellRenderer(dtcr);
         tableCabin.getColumnModel().getColumn(1).setCellRenderer(dtcr);
@@ -182,11 +171,23 @@ public class FindBestPathUI extends JDialog {
             @Override
             public void actionPerformed(ActionEvent e) {
                 controller.getFlightPlanSelected((FlightPlan) comboFlights.getSelectedItem());
-                model = new DefaultTableModel();
+                listStopAirports.setListData(controller.getTechnicalStops().toArray());
+                listWaypoints.setListData(controller.getMandatoryWaypoints().toArray());
+                flightInfo.setText(controller.getFlightPlanStringInfo());
+                int i= 0;
+                if (mapConfig.size() > 0) {
+                    for (i=0; i < mapConfig.size(); i++) {
+                        model.removeRow(i);
+                    }
+                }
                 mapConfig = controller.getCabinConfig();
                 for (Map.Entry<String, Integer> entry : mapConfig.entrySet()) {
                     model.addRow(new Object[]{entry.getKey(), entry.getValue()});
                 }
+                btAll.setEnabled(true);
+                btEco.setEnabled(true);
+                btFast.setEnabled(true);
+                btShort.setEnabled(true);
             }
         });
         txtCrew = new JTextField(10);
@@ -201,60 +202,32 @@ public class FindBestPathUI extends JDialog {
         return pcenter;
     }
 
-    private JPanel createPanelAirports() {
-        JPanel panel = new JPanel(new GridLayout(1, 2));
+    private JPanel createPanelFlightPlanInfo() {
+        JPanel panel = new JPanel(new GridLayout(1, 3));
         JPanel pright = new JPanel();
         JPanel pleft = new JPanel();
         JPanel po = new JPanel(new BorderLayout());
-        JLabel labelOrigin = UI.createJLabels("Select origin:");
-        listStartAirports = UI.createJListAirport(startAirports);
-
-        listStartAirports.addListSelectionListener(new ListSelectionListener() {
-            @Override
-            public void valueChanged(ListSelectionEvent e) {
-                if (!e.getValueIsAdjusting()) {
-                    Airport selected = (Airport) listStartAirports.getSelectedValue();
-                    Node startNode = controller.convertAirportToNode(selected);
-
-                    endAirports = controller.getPossibleEndAirports(startNode);
-                    if (!endAirports.isEmpty()) {
-                        listEndAirports.setListData(endAirports.toArray());
-                    }
-                }
-            }
-        });
-
+        JLabel labelOrigin = UI.createJLabels("Tecnichal Stops:");
+        listStopAirports = UI.createJListAirport(new LinkedList<>());
         po.add(labelOrigin, BorderLayout.NORTH);
-        po.add(listStartAirports, BorderLayout.CENTER);
+        po.add(listStopAirports, BorderLayout.CENTER);
 
-        JLabel labelADest = UI.createJLabels("Select destination:");
+        JLabel labelADest = UI.createJLabels("Mandatory Wayoints:");
         labelADest.setPreferredSize(new JLabel("Select destination: ").
                 getPreferredSize());
         JPanel pd = new JPanel(new BorderLayout());
-        listEndAirports = UI.createJListAirport(endAirports);
-        listEndAirports.addListSelectionListener(new ListSelectionListener() {
-            @Override
-            public void valueChanged(ListSelectionEvent e) {
-                if (!e.getValueIsAdjusting()) {
-                    btShort.setEnabled(true);
-                    btFast.setEnabled(true);
-
-                    if (listEndAirports.getSelectedValue() != null 
-                            && comboFlights.getSelectedItem() != null
-                            && validateData()) {
-                        btEco.setEnabled(true);
-                        btAll.setEnabled(true);
-                    }
-                }
-            }
-        });
+        listWaypoints = UI.createJListNodes(new LinkedList<>());
 
         pd.add(labelADest, BorderLayout.NORTH);
-        pd.add(listEndAirports, BorderLayout.CENTER);
+        pd.add(listWaypoints, BorderLayout.CENTER);
 
         pleft.add(po);
         pright.add(pd);
 
+        flightInfo = new JTextArea();
+        flightInfo.setPreferredSize(new Dimension(150, 100));
+
+        panel.add(flightInfo);
         panel.add(pleft);
         panel.add(pright);
         return panel;
@@ -438,13 +411,13 @@ public class FindBestPathUI extends JDialog {
 
     private boolean validatePassCrew() {
         boolean b1 = true;
-                //controller.getAircraft().getNrOfCrewElements() >= Integer.parseInt(txtCrew.getText());
+        //controller.getAircraft().getNrOfCrewElements() >= Integer.parseInt(txtCrew.getText());
         return b1;
     }
 
     private void setData() {
-        Airport startAirportSelected = (Airport) listStartAirports.getSelectedValue();
-        Airport endAirportSelected = (Airport) listEndAirports.getSelectedValue();
+        Airport startAirportSelected = (Airport) listStopAirports.getSelectedValue();
+        Airport endAirportSelected = (Airport) listWaypoints.getSelectedValue();
         for (Integer i : mapConfig.values()) {
             totalPassengers += i;
             System.out.println(totalPassengers);

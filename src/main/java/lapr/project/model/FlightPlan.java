@@ -269,5 +269,11 @@ public class FlightPlan implements Serializable {
         this.listPattern = listPattern;
     }
     
+    public String getFlightPlanStringInfo(){
+        return "Designator: " + flightDesignator + "\nAirport Origin: " + 
+                getOrigin().getIATA() + "\nAirport Destiantion: " +                 
+                getDestination().getIATA() + "\nAircraft -> " + 
+                this.getAircraft().toStringInfo() + "\n";
+    }
    
 }

@@ -49,29 +49,19 @@ public class FindBestPathController {
     }
     
     /**
-     * Gets the airport list of active project
-     * @return list of available airports
+     * Gets the airport origin
+     * @return airport origin
      */
-    public List<Airport> getAirportList(){
-        return project.getAirportList().getAirportList();
+    public String getFlightPlanStringInfo(){
+        return flightPlan.getFlightPlanStringInfo();
     }
     
-    /**
-     * Gets airport correspondent to the selected node if exists
-     * @param node selected node
-     * @return airport with same latitude and longitude of selected node
-     */
-    public Airport convertNodeToAirport(Node node){
-       return project.getAirportList().getAirportNode(node);
+    public List<Airport> getTechnicalStops(){
+        return flightPlan.getTechnicalStops();
     }
     
-    /**
-     * Gets node correspondent to the selected airport if exists
-     * @param airport selected airport
-     * @return node with same latitude and longitude of selected airport
-     */
-    public Node convertAirportToNode(Airport airport){
-         return project.getAirNetwork().getAirportNode(airport);
+    public List<Node> getMandatoryWaypoints(){
+        return flightPlan.getMandatoryWaypoints();
     }
           
     /**
@@ -177,5 +167,9 @@ public class FindBestPathController {
     
     public Map<String,Integer> getCabinConfig(){
         return this.flightPlan.getAircraft().getCabinConfig().getMapOfClasses();
+    }
+    
+    public FlightPlan getFlightPlan(){
+        return flightPlan;
     }
 }

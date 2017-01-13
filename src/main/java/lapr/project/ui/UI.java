@@ -43,7 +43,7 @@ public class UI {
 
         Border border = BorderFactory.createLineBorder(Color.BLACK);
         jList.setBorder(border);
-        jList.setPreferredSize(new Dimension(150, 70));
+        jList.setPreferredSize(new Dimension(50, 150));
         jList.setListData(list.toArray());
         return jList;
     }

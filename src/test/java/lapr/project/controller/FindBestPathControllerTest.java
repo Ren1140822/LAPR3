@@ -45,7 +45,7 @@ public class FindBestPathControllerTest {
     private Segment seg1,seg2,seg3;
     private AirportList listTest;
     private Airport startAirport, endAirport, intAirport;
-    private FlightPlan flightPlan;
+    private FlightPlan fPlan;
     private Aircraft aircraft;
     private AircraftModel aircraftModel;
     private double mass=5.40*Math.pow(10,5);
@@ -81,71 +81,6 @@ public class FindBestPathControllerTest {
         instance.newSImulation();
         Simulation result=p.getSimulationsList().getSimulation();
         Simulation expResult=instance.getSimulation();
-        assertEquals(expResult, result);
-    }
-
-    /**
-     * Test of getAirportList method, of class FindBestPathController.
-     */
-    @Test
-    public void testGetAirportList() {
-        System.out.println("getAirportList");
-        p=new Project();
-        Airport a=new Airport();
-        p.getAirportList().getAirportList().add(a);
-        FindBestPathController instance = new FindBestPathController(p);
-        
-        List<Airport> expResult = new LinkedList<>();
-        expResult.add(a);
-        List<Airport> result = instance.getAirportList();
-        assertEquals(expResult, result);
-    }
-
-    /**
-     * Test of convertNodeToAirport method, of class FindBestPathController.
-     */
-    @Test
-    public void testConvertNodeToAirport() {
-        System.out.println("convertNodeToAirport");
-        p=new Project();
-        
-       createAirports();
-  
-        testNode1=new Node("test1", 40, 50);
-        
-        p.getAirportList().setAirportList(listTest.getAirportList());
-        
-        FindBestPathController instance=new FindBestPathController(p);
-        Airport expResult = intAirport;
-        Airport result = instance.convertNodeToAirport(testNode1);
-        assertEquals(expResult, result);
-    }
-
-    /**
-     * Test of convertAirportToNode method, of class FindBestPathController.
-     */
-    @Test
-    public void testConvertAirportToNode() {
-        System.out.println("convertAirportToNode");
-        p=new Project();
-        
-       airTest = new AirNetwork();
-        
-        Node nodeTest1=new Node("test1", 10, 30);
-        Node nodeTest2=new Node("test2", 10, 20);
-        Node nodeTest3=new Node("test3", 40, 20);
-       
-        airTest.getNodeList().add(nodeTest1);
-        airTest.getNodeList().add(nodeTest2);
-        airTest.getNodeList().add(nodeTest3);
-        
-        Airport airportTest=new Airport("", "", "", "", new Location(10,20,10));
-        
-        p.getAirNetwork().setNodeList(airTest.getNodeList());
-        FindBestPathController instance= new FindBestPathController(p);
-        
-        Node expResult = nodeTest2;
-        Node result = instance.convertAirportToNode(airportTest);
         assertEquals(expResult, result);
     }
 
@@ -231,33 +166,11 @@ public class FindBestPathControllerTest {
         Simulation s=new Simulation(passengers, crew, cargoLoad, fuelWeight);
         
         createFlightPlan();
-        s.setFlightPlan(flightPlan);
+        s.setFlightPlan(fPlan);
         
         s.createPathSimulation(TypePath.ALL);
         assertEquals(instance.getSimulation(), s);
     }
-
-//    /**
-//     * Test of calculateShortesPath method, of class FindBestPathController.
-//     */
-//    @Test
-//    public void testCalculateShortesPath() {
-//        System.out.println("calculateShortesPath");
-//        
-//        createAirNet();
-//        FindBestPathController instance= new FindBestPathController(p);
-//        instance.newSImulation();
-//        Airport startAirport=new Airport("test1", "","","", new Location(40, 40,10));
-//        Airport endAirport=new Airport("test2", "","","", new Location(50,70,10));
-//        instance.setData(startAirport, endAirport, new Aircraft(), 0, 0, 0, 0);
-//        instance.createBestPathSimulation(TypePath.SHORTEST_PATH);
-//        
-//        instance.calculatePath(TypePath.SHORTEST_PATH,timeStep);
-//        LinkedList<Node> expResult=new LinkedList<>();
-//        expResult.add(startNode);
-//        expResult.add(intNode);
-//        assertEquals(expResult,instance.getSimulation().getShortestResultPath().getResultPath());
-//    }
 
     /**
      * Test of getResult method, of class FindBestPathController.
@@ -325,35 +238,6 @@ public class FindBestPathControllerTest {
         boolean result = instance.saveSimulation();
         assertEquals(expResult, result);
     }
-
-//    /**
-//     * Test of getTravellingTime method, of class FindBestPathController.
-//     */
-//    @Test
-//    public void testGetTravellingTime() {
-//        System.out.println("getTravellingTime");
-//        TypePath type = TypePath.SHORTEST_PATH;
-//        int expResult = 60;
-//         
-//        FindBestPathController instance = new FindBestPathController(new Project());
-//        
-//        createAirNet();
-//
-//        createAircraft();
-//        instance.newSImulation();
-//        
-//        instance.createBestPathSimulation(type);
-//        instance.setData(startAirport, endAirport, aircraft, 0, 0, 0, 0);
-//        instance.calculatePath(type,timeStep);
-//        
-//        instance.getSimulation().getEcologicResultPath().createSegments(
-//                instance.getSimulation().getFlightPlan(), mass, timeStep);
-//        
-//        instance.getSimulation().getEcologicResultPath().getSegments().get(0).setDistance(expResult);
-//        
-//        double result = instance.getTravellingTime(type);
-//        assertEquals(expResult, result, 0.0);
-//    }
 
     /**
      * Test of getSimulation method, of class FindBestPathController.
@@ -434,12 +318,12 @@ public class FindBestPathControllerTest {
     }
     
     private void createFlightPlan(){
-        flightPlan=new FlightPlan();
+        fPlan=new FlightPlan();
         
         createAirNet();
-        flightPlan.setOrigin(startAirport);
-        flightPlan.setDestination(endAirport);
-        flightPlan.setAircraft(new Aircraft());
+        fPlan.setOrigin(startAirport);
+        fPlan.setDestination(endAirport);
+        fPlan.setAircraft(new Aircraft());
     }
     
     private void createAircraft(){
@@ -472,5 +356,75 @@ public class FindBestPathControllerTest {
        aircraftModel=new AircraftModel("", "", "", "Dummy 01", 
                         motorization, eWeight, 0, 0, 0, 0,0, wingArea, 0, ar, e, listIten);
 
+    }
+
+    /**
+     * Test of getFlightPlanStringInfo method, of class FindBestPathController.
+     */
+    @Test
+    public void testGetFlightPlanStringInfo() {
+        System.out.println("getFlightPlanStringInfo");
+        FindBestPathController instance = new FindBestPathController(p);
+        FlightPlan flightPlan = new FlightPlan();
+        instance.getFlightPlanSelected(flightPlan);
+        String expResult = instance.getFlightPlanStringInfo();
+        String result = instance.getFlightPlanStringInfo();
+        assertEquals(expResult, result);
+    }
+
+    /**
+     * Test of getTechnicalStops method, of class FindBestPathController.
+     */
+    @Test
+    public void testGetTechnicalStops() {
+        System.out.println("getTechnicalStops");
+        FindBestPathController instance = new FindBestPathController(p);
+        FlightPlan flightPlan = new FlightPlan();
+        instance.getFlightPlanSelected(flightPlan);
+        List<Airport> expResult = instance.getFlightPlan().getTechnicalStops();
+        List<Airport> result = instance.getTechnicalStops();
+        assertEquals(expResult, result);
+    }
+
+    /**
+     * Test of getMandatoryWaypoints method, of class FindBestPathController.
+     */
+    @Test
+    public void testGetMandatoryWaypoints() {
+        System.out.println("getMandatoryWaypoints");
+        FindBestPathController instance = new FindBestPathController(p);
+        FlightPlan flightPlan = new FlightPlan();
+        instance.getFlightPlanSelected(flightPlan);
+        List<Node> expResult = instance.getFlightPlan().getMandatoryWaypoints();
+        List<Node> result = instance.getMandatoryWaypoints();
+        assertEquals(expResult, result);
+    }
+
+    /**
+     * Test of getCabinConfig method, of class FindBestPathController.
+     */
+    @Test
+    public void testGetCabinConfig() {
+        System.out.println("getCabinConfig");
+        FindBestPathController instance = new FindBestPathController(p);
+        FlightPlan flightPlan = new FlightPlan();
+        instance.getFlightPlanSelected(flightPlan);
+        Map<String, Integer> expResult = instance.getFlightPlan().getAircraft().getCabinConfig().getMapOfClasses();
+        Map<String, Integer> result = instance.getCabinConfig();
+        assertEquals(expResult, result);
+    }
+
+    /**
+     * Test of getFlightPlan method, of class FindBestPathController.
+     */
+    @Test
+    public void testGetFlightPlan() {
+        System.out.println("getFlightPlan");
+        FindBestPathController instance = new FindBestPathController(p);
+        FlightPlan flightPlan = new FlightPlan();
+        instance.getFlightPlanSelected(flightPlan);
+        FlightPlan expResult = flightPlan;
+        FlightPlan result = instance.getFlightPlan();
+        assertEquals(expResult, result);
     }
 }
