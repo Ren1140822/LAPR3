@@ -514,7 +514,7 @@ public class SegmentResult {
             double continueCruise=0;
             if(altFinalSimulation<=altFinalAirport){
                 double margin=altFinalAirport-altFinalSimulation;
-                double perc=(aux.getDistance()-LAND_DIST_REF)/aux.getDistance();
+                double perc=(aux.getDistance()-margin+LAND_DIST_REF)/aux.getDistance();
                 distGo= aux.getDistance()*(aux.getDistance()*perc);
             }else{
                 return abort;
@@ -526,6 +526,7 @@ public class SegmentResult {
     }
 
     /**
+     * Sets the true airspeed of aircraft
      * @param tas the tas to set
      */
     public void setTas(double tas) {
@@ -533,6 +534,7 @@ public class SegmentResult {
     }
 
     /**
+     * Gets the total weight of aircraft
      * @return the initMass
      */
     public double getInitMass() {
@@ -540,9 +542,18 @@ public class SegmentResult {
     }
 
     /**
+     * Sets the total weight of aircraft
      * @param initMass the initMass to set
      */
     public void setInitMass(double initMass) {
         this.initMass = initMass;
+    }
+    
+    /**
+     * Gets textual description of segment 
+     * @return segment id 
+     */
+    public String toString(){
+        return segment.getId();
     }
 }

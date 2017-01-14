@@ -1,10 +1,16 @@
-
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package lapr.project.model.analysis;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import lapr.project.controller.AddFlightPlanController;
 import lapr.project.controller.ImportAircraftModelListController;
 import lapr.project.controller.ImportAirportController;
@@ -19,6 +25,7 @@ import lapr.project.model.Iten;
 import lapr.project.model.Motorization;
 import lapr.project.model.Node;
 import lapr.project.model.Project;
+import lapr.project.model.Segment;
 import lapr.project.model.Thrust_Function;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -35,7 +42,6 @@ public class PathTest {
     private Airport airportTest, airportTest2;
     private Aircraft aircraft;
     private int timeStep;
-    private FlightPlan flightPlan;
     
     public PathTest() {
     }
@@ -138,6 +144,7 @@ public class PathTest {
         System.out.println("getAir");
         Path instance = new PathImpl();
         AirNetwork expResult = new AirNetwork();
+        instance.setAir(expResult);
         AirNetwork result = instance.getAir();
         assertEquals(expResult, result);
     }
@@ -226,8 +233,8 @@ public class PathTest {
         double totalWeight=5.40*Math.pow(10,5);
         
         
-        Path instance = new PathImpl();
-        boolean expResult = false;
+        Path instance = new EcologicPathResult(project.getFlightList().getFlightList().get(0));
+        boolean expResult = true;
         
         Node startNode=project.getAirNetwork().getAirportNode(airportTest);
         Node endNode=project.getAirNetwork().getAirportNode(airportTest2);
@@ -239,6 +246,7 @@ public class PathTest {
 
 
     public class PathImpl extends Path {
+        
     }
     
     private void createFlightPlan(Project project){
@@ -265,35 +273,41 @@ public class PathTest {
         listIten.add(it2);
         listIten.add(it3);
         
-        Motorization motorization=new Motorization(numberMotor, "","", 0, 0, 
+        Motorization motorization=new Motorization(numberMotor, "hjgf","hjutr", 0, 0, 
                 tsfc, lapseRate, thrustFunction);
         
-       AircraftModel aircraftModel=new AircraftModel("", "", "", "Dummy 01", 
+       AircraftModel aircraftModel=new AircraftModel("gtrtgr", "jhygfjh", "kjgf", "passenger", 
                         motorization, eWeight, 0, 0, 0, 0,0, wingArea, 0, ar, e, listIten);
        
        timeStep=120;
-       aircraft=new Aircraft("", "", new CabinConfiguration(), 10, aircraftModel);
+       Map<String, Integer> map = new HashMap<>();
+       map.put("afd", 123);
+       CabinConfiguration c = new CabinConfiguration(map);
+       aircraft=new Aircraft("lol", "lol", c, 10, aircraftModel);
        
-       airportTest=project.getAirportList().getAirportList().get(0);
-       airportTest2=project.getAirportList().getAirportList().get(1);
+       project.getAircraftList().getAircraftList().add(aircraft);
+       airportTest=project.getAirportList().getAirportByString("LIS");
+       airportTest2=project.getAirportList().getAirportByString("PDL");
        
-       String filePattern = "src/main/resources/TestSet02_Aircraft.xml";
-       File file = new File(filePattern);
 
-       flightPlan=new FlightPlan("test", timeStep, aircraft, airportTest, airportTest2, new LinkedList<>(), new LinkedList<>(), new LinkedList<>());
+//       flightPlan=new FlightPlan("test", timeStep, aircraft, airportTest, airportTest2, new LinkedList<>(), new LinkedList<>(), new LinkedList<>());
        
        File filePatterns = new File("src/main/resources/Flight_pattern_A380_v1a.csv");
        AddFlightPlanController controller = new AddFlightPlanController(project);
        controller.pattern(filePatterns);
+       
+       
+       Object[] technicalStops = new Object[0];
+        Object[] mandatoryWaypoints = new Object[0];
+        
+       controller.setData("te6454", timeStep, aircraft.getRegistration(), airportTest.getIATA(), airportTest2.getIATA(),technicalStops,mandatoryWaypoints);
        controller.saveFlightPlan();
  
-       flightPlan.setListPattern(project.getFlightList().getFlightList().get(0).getListPattern());
-       
-       controller.pattern(file);
+//       flightPlan.setListPattern(project.getFlightList().getFlightList().get(0).getListPattern());
+
          
        
        
     }
 
 }
-
