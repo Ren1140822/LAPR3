@@ -97,7 +97,7 @@ public class CSVExporterTest {
           file.deleteOnExit();
          Scanner scan = new Scanner (file);
          
-         boolean result=false;
+      result=false;
          while(scan.hasNext())
          {
            String test= scan.next();
