@@ -8,6 +8,7 @@ package lapr.project.model.analysis;
 import java.util.LinkedList;
 import java.util.List;
 import lapr.project.model.AircraftModel;
+import lapr.project.model.Airport;
 import lapr.project.model.Iten;
 import lapr.project.model.Pattern;
 import lapr.project.model.Segment;
@@ -22,7 +23,6 @@ import lapr.project.model.physics.PhysicsAlgorithms;
 public class SegmentResult {
 
     private double altitude;
-    private double altitudeFinal;
     private double mass;
     private double distance;
     private int flightTime;
@@ -56,6 +56,12 @@ public class SegmentResult {
     private double mTrue;
     private double groundSpeed;
     private double tas;
+    private double initMass;
+    
+     /**
+     * distance to land aircraft desired
+     */
+    private static final double LAND_DIST_REF=193.121*1000;
     
     /**
      * Constructor
@@ -63,7 +69,6 @@ public class SegmentResult {
     public SegmentResult(){
         this.type=SegmentType.CLIMBING;
         this.altitude=DEFAULT_VALUE;
-        this.altitudeFinal=DEFAULT_VALUE;
         this.mass=DEFAULT_VALUE;
         this.flightTime=(int) DEFAULT_VALUE;
         this.distance=DEFAULT_VALUE;
@@ -74,6 +79,9 @@ public class SegmentResult {
         this.segment=new Segment();
         this.model=new AircraftModel();
         listPatterns=new LinkedList<>();
+        this.tas=DEFAULT_VALUE;
+        this.groundSpeed=DEFAULT_VALUE;
+        this.initMass=DEFAULT_VALUE;
         constantValues(model);
     }
     
@@ -84,7 +92,6 @@ public class SegmentResult {
     public SegmentResult(SegmentType type){
        this.type=type;
        this.altitude=DEFAULT_VALUE;
-        this.altitudeFinal=DEFAULT_VALUE;
         this.mass=DEFAULT_VALUE;
         this.flightTime=(int) DEFAULT_VALUE;
         this.distance=DEFAULT_VALUE;
@@ -95,35 +102,40 @@ public class SegmentResult {
         this.segment=new Segment();
         this.model=new AircraftModel();
         listPatterns=new LinkedList<>();
+        this.tas=DEFAULT_VALUE;
+        this.groundSpeed=DEFAULT_VALUE;
+        this.initMass=DEFAULT_VALUE;
         constantValues(model);
    }
   
     /**
      * Constructor
      * @param type type of segment result
-     * @param altitudeInitial altitude on the start node of segment (m)
+     * @param lastAltitude altitude on the start node of segment (m)
      * @param mass mass (kg)
      * @param timeStep time step to consider in segments (s)
      * @param model aircraft model
      * @param listPattern list pattern
      * @param segment
      */
-    public SegmentResult(SegmentType type, double altitudeInitial,double mass, 
+    public SegmentResult(SegmentType type, double lastAltitude,double initialMass, 
             int timeStep, AircraftModel model, List<Pattern> listPattern, 
-            Segment segment){
+            Segment segment, double lastMass){
         this.type=type;
-        this.altitude=altitudeInitial;
-        this.mass=mass;
+        this.altitude=lastAltitude;
+        this.mass=lastMass;
         this.timeStep=timeStep;
         this.flightTime=(int) DEFAULT_VALUE;
         this.distance=DEFAULT_VALUE;
         this.energyConsume=0;
         this.angle=DEFAULT_VALUE;
         this.dhDT=DEFAULT_VALUE;
-        this.altitudeFinal=DEFAULT_VALUE;
+        this.tas=DEFAULT_VALUE;
+        this.groundSpeed=DEFAULT_VALUE;
         this.model=model;
         this.segment=segment;
         listPatterns=listPattern;
+        this.initMass=initialMass;
         constantValues(model);
     }
       
@@ -173,7 +185,7 @@ public class SegmentResult {
      * @return the altitudeFinal
      */
     public double getAltitudeFinal() {
-        return altitudeFinal;
+        return altitude;
     }
     
      /**
@@ -209,7 +221,7 @@ public class SegmentResult {
      * @param altitudeFinal the altitudeFinal to set
      */
     public void setAltitudeFinal(double altitudeFinal) {
-        this.altitudeFinal = altitudeFinal;
+        this.altitude = altitudeFinal;
     }
     
 
@@ -358,7 +370,6 @@ public class SegmentResult {
         }while(angle>0.2 || altitude>=getModel().getMotorization().getCruise_altitude()
                 && pass);
         if(!pass) return false;
-        altitudeFinal=altitude;
         return true;
     }
 
@@ -398,6 +409,7 @@ public class SegmentResult {
      * @return boolean if operation is valid, false if not
      */
     public boolean calculateByType(SegmentType type){
+        new SegmentResult();
         this.type=type;
         return calculate();
     }
@@ -417,7 +429,7 @@ public class SegmentResult {
 
         double thrust=-1;
         if(type!=SegmentType.CRUISE){
-              thrust=calculateThrust(thrustMa, lambda, mTrue, airDensity, thrustLapseRate);
+              thrust=calculateThrustClimbDesc(thrustMa, lambda, mTrue, airDensity, thrustLapseRate);
         }else
             thrust=AircraftAlgorithms.calculateThrustCruise(drag, getModel().getMotorization().getNumberMotors());
 
@@ -429,36 +441,31 @@ public class SegmentResult {
 
         double dwDT=AircraftAlgorithms.calculateDwDt(totalThrust, thrust, groundSpeed);
         
-        double initMass = mass;
-        
-        double newMass=AircraftAlgorithms.calculateNewMass(mass, dwDT);
-        
         distance+=AircraftAlgorithms.calculateDistanceGained(groundSpeed, angle, timeStep);
         
-        if(type!=SegmentType.CLIMBING)
+        if(type==SegmentType.CLIMBING)
             altitude+=AircraftAlgorithms.calculateAltitudeGained(drag, dhDT, thrust);
-        if(type!=SegmentType.DESC)
+        if(type==SegmentType.DESC)
             altitude+=AircraftAlgorithms.calculateAltitudeDesc(dhDT, timeStep);
-        
-        mass+=newMass;
+        mass+=AircraftAlgorithms.calculateNewMass(mass, dwDT);
         energyConsume += (initMass-mass);
         flightTime+=timeStep;
         return true;
     }
     
     
-    private double calculateThrust(double thrustMa, double lambda, double mTrue,
+    private double calculateThrustClimbDesc(double thrustMa, double lambda, double mTrue,
             double airDensity, double thrustLapseRate){
-        double totalThrust=-1;
+        double thrust=-1;
 
         if(SegmentType.CLIMBING==type)
-             totalThrust=AircraftAlgorithms.
+             thrust=AircraftAlgorithms.
                      calculateThrustClimb(thrustMa, lambda, mTrue, airDensity, thrustLapseRate);
         if(SegmentType.DESC==type) 
-            totalThrust= AircraftAlgorithms.
+            thrust= AircraftAlgorithms.
                     calculateThrustDescend(thrustMa, lambda, mTrue, airDensity, thrustLapseRate);
         
-        return totalThrust;
+        return thrust;
     }  
     
     private double calculateTotalThrust(double thrust, double drag){
@@ -500,8 +507,27 @@ public class SegmentResult {
          boolean v1=Double.doubleToLongBits(thrustMa)!=Double.doubleToLongBits(defaultValue) &&
                  Double.doubleToLongBits(velThrustMa)!=Double.doubleToLongBits(defaultValue)&&
                  Double.doubleToLongBits(thrustMi)!=Double.doubleToLongBits(defaultValue) &&
-                 Double.doubleToLongBits(thrustLapseRate)!=Double.doubleToLongBits(defaultValue);     
+                 Double.doubleToLongBits(thrustLapseRate)!=Double.doubleToLongBits(defaultValue);
            
          return v1 && t==null && Double.doubleToLongBits(wingArea)!=Double.doubleToLongBits(defaultWing);
     }
+    
+       public double estimateDistanceToDescend(Airport end,
+            int timeStep, double initialMass, AircraftModel aircraftModel, List<Pattern> list,
+            Segment segment,double lastMass, double lastAltitude){
+         
+            SegmentResult srAuxDesc=new SegmentResult(SegmentType.DESC,
+                        lastAltitude,initialMass, timeStep, aircraftModel, list, segment,lastMass);
+            double altFinalAirport=end.getLocation().getAltitude();
+            double altFinalSimulation=srAuxDesc.getAltitudeFinal();
+            double distanceDesc=0;
+            if(altFinalSimulation<=altFinalAirport){
+                double margin=altFinalAirport-altFinalSimulation;
+                double perc=(srAuxDesc.getDistance()-LAND_DIST_REF)/srAuxDesc.getDistance();
+                return srAuxDesc.getDistance()*(srAuxDesc.getDistance()*perc);
+              
+            }else
+                return -1;
+    }
+       
 }
