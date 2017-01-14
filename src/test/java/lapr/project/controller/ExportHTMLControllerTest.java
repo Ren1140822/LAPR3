@@ -178,9 +178,11 @@ public class ExportHTMLControllerTest {
 
     @Test
     public void testExportResults() throws FileNotFoundException {
-            HTMLExporterTest test = new HTMLExporterTest();
-            test.testExportStringsToHTML_5args_1();
-            assertTrue(test.isResult());
+        HTMLExporterTest test = new HTMLExporterTest();
+        String filePath = "src/main/resources/testcsv2.csv";
+        this.instance.exportResults(new String[1], filePath, "shortest");
+        test.testExportStringsToHTML_5args_1();
+        assertTrue(test.isResult());
     }
 
 }

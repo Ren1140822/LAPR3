@@ -175,6 +175,8 @@ public class ExportCSVControllerTest {
      @Test
     public void testExportResults() throws FileNotFoundException {
            CSVExporterTest test = new CSVExporterTest();
+              String filePath = "src/main/resources/testcsv2.csv";
+           this.instance.exportResults(new String[1], filePath, "shortest");
             test.testExportMultipleStringsToCSV();
             assertTrue(test.isResult());
     }
