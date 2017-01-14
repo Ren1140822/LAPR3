@@ -403,7 +403,7 @@ public class Simulation{
     @Override
     public String toString()
     {
-        return String.valueOf(this.getCounterCode());
+        return "Simulation";
     }
 
      /**

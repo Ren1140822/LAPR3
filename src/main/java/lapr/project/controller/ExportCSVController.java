@@ -13,6 +13,7 @@ import lapr.project.model.Project;
 
 import lapr.project.model.analysis.Path;
 import lapr.project.model.analysis.Simulation;
+import lapr.project.model.lists.AirportList;
 import lapr.project.utils.CSVExporter;
 
 /**
@@ -41,9 +42,9 @@ public class ExportCSVController {
         Simulation aux = getSimulationByString(sim);
         for (Simulation simulation : list) {
             if (aux.equals(simulation)) {
-                results.put("Best consumption", simulation.getEcologicResultPath());
-                results.put("Fastest path", simulation.getFastestResultPath());
-                results.put("Shortest pth", simulation.getShortestResultPath());
+                results.put("Best Consumption", simulation.getEcologicResultPath());
+                results.put("Fastest Path", simulation.getFastestResultPath());
+                results.put("Shortest Path", simulation.getShortestResultPath());
             }
         }
 
@@ -54,15 +55,6 @@ public class ExportCSVController {
     public List<String> getSimulationsList() {
         List<String> simString = new LinkedList<>();
         List<Simulation> list = project.getSimulationsList().getSimulationsList();
-        Simulation sim = new Simulation();
-        list.add(sim);
-        sim = new Simulation();
-        list.add(sim);
-        sim = new Simulation();
-        list.add(sim);
-        sim = new Simulation();
-        list.add(sim);
-
         for (Simulation simulation : list) {
             simString.add(simulation.toString());
         }
@@ -160,6 +152,28 @@ public class ExportCSVController {
         return results;
     }
 
+      /**
+     * Gets list of all start nodes.
+     *
+     * @return the list of start nodes.
+     */
+    public List<String> getListOfNodes() {
+        List<String> results = new LinkedList<>();
+        List<Simulation> sims = project.getSimulationsList().getSimulationsList();
+        AirportList list = project.getAirportList();
+        for (Simulation s : sims) {
+            if (!results.contains(s.getStartAirport().getIATA())) {
+                results.add(s.getStartAirport().getIATA());
+            }
+            if (!results.contains(s.getEndAirport().getIATA())) {
+                results.add(s.getEndAirport().getIATA());
+            }
+
+        }
+        return results;
+    }
+
+    
     /**
      * Exports results to csv.
      *
