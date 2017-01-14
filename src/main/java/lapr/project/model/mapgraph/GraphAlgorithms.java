@@ -279,85 +279,9 @@ public class GraphAlgorithms {
         return pathrev ;
     }    
     
-          /**
-     * Computes shortest-path distance from a source vertex to all reachable
-     * vertices of a graph g with nonnegative edge weights This implementation
-     * uses Dijkstra's algorithm
-     *
-     * @param g Graph instance
-     * @param vOrig Vertex that will be the source of the path
-     * @param visited set of discovered vertices
-     * @param pathkeys minimum path vertices keys
-     * @param dist minimum distances
-     */
-    private static <V, E> void shortestPathLengthInverted(Graph<V, E> g, V vOrig, V[] vertices, boolean[] visited, int[] pathKeys, double[] dist) {
-
-        for (V v : vertices) {
-            dist[g.getKey(v)] = Double.POSITIVE_INFINITY;
-            pathKeys[g.getKey(v)] = -1;
-            visited[g.getKey(v)] = false;
-        }
-
-        dist[g.getKey(vOrig)] = 0;
-
-        while (vOrig != null) {
-            int vOrigValue = g.getKey(vOrig);
-            visited[vOrigValue] = true;
-
-            for (Edge<V, E> edge : g.outgoingEdges(vOrig)) {
-                V vAdj = g.opposite(vOrig, edge);
-                if (!visited[g.getKey(vAdj)] && dist[g.getKey(vAdj)] < dist[vOrigValue] + edge.getWeight()) {
-                    dist[g.getKey(vAdj)] = dist[vOrigValue] + edge.getWeight();
-                    pathKeys[g.getKey(vAdj)] = vOrigValue;
-                }
-            }
-
-            vOrig = null;
-            double minimunDistance = Double.POSITIVE_INFINITY;
-
-            for (V ver : vertices) {
-                int vId = g.getKey(ver);
-                if (visited[vId] == false && dist[vId] < minimunDistance) {
-                    vOrig = ver;
-                    minimunDistance = dist[vId];
-                }
-            }
-        }
-    }
+       
 
   
     
-    public static <V, E> double shortestPathForLatitude(Graph<V, E> g, V vOrig, V vDest, LinkedList<V> shortPath) {
-
-        if (!g.validVertex(vOrig) || !g.validVertex(vDest)) {
-            return -1d;
-        }
-
-        int numVert = g.numVertices();
-
-        V[] vertices = (V[]) g.allkeyVerts().clone();
-        boolean visited[] = new boolean[numVert];
-        int[] pathKeys = new int[numVert];
-        double[] dist = new double[numVert];
-
-        shortestPathLengthInverted(g, vOrig, vertices, visited, pathKeys, dist);
-        shortPath.clear();
-        if (!visited[g.getKey(vDest)]) {
-            return -1d;
-        }
-        getPath(g, vOrig, vDest, vertices, pathKeys, shortPath);
-
-        LinkedList<V> pathInOrder = revPath(shortPath);
-        shortPath.clear();
-        while (!pathInOrder.isEmpty()) {
-            shortPath.add(pathInOrder.removeFirst());
-        }
-
-        int vDestId = g.getKey(vDest);
-        if (!visited[vDestId]) {
-            return -1d;
-        }
-        return dist[vDestId];
-    }
     
 }

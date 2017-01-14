@@ -402,61 +402,61 @@ public class AirNetwork implements Serializable {
         return getAirNetwork().getEdge(startNode, endNode).getElement();
     }
 
-    public LinkedList<Node> getAllPathsFromFlightPlanPassingThroughWaypoints(FlightPlan plan) {
-        LinkedList<Node> fullPaths = new LinkedList<>();
-        Node origin = getAirportNode(plan.getOrigin());
-        Node dest = getAirportNode(plan.getDestination());
-        List<Node> waypoints = plan.getMandatoryWaypoints();
-        if (waypoints.size() > 0) {
+//    public LinkedList<Node> getAllPathsFromFlightPlanPassingThroughWaypoints(FlightPlan plan) {
+//        LinkedList<Node> fullPaths = new LinkedList<>();
+//        Node origin = getAirportNode(plan.getOrigin());
+//        Node dest = getAirportNode(plan.getDestination());
+//        List<Node> waypoints = plan.getMandatoryWaypoints();
+//        if (waypoints.size() > 0) {
+//
+//            GraphAlgorithms.shortestPath(airNetworkGraph, origin, waypoints.get(0), fullPaths);
+//            for (int i = 0; i < waypoints.size() - 1; i++) {
+//                GraphAlgorithms.shortestPath(airNetworkGraph, waypoints.get(i), waypoints.get(i + 1), fullPaths);
+//            }
+//            GraphAlgorithms.shortestPath(airNetworkGraph, waypoints.get(waypoints.size()), dest, fullPaths);
+//        } else {
+//            GraphAlgorithms.shortestPath(airNetworkGraph, origin, dest, fullPaths);
+//        }
+//        return fullPaths;
+//    }
 
-            GraphAlgorithms.shortestPath(airNetworkGraph, origin, waypoints.get(0), fullPaths);
-            for (int i = 0; i < waypoints.size() - 1; i++) {
-                GraphAlgorithms.shortestPath(airNetworkGraph, waypoints.get(i), waypoints.get(i + 1), fullPaths);
-            }
-            GraphAlgorithms.shortestPath(airNetworkGraph, waypoints.get(waypoints.size()), dest, fullPaths);
-        } else {
-            GraphAlgorithms.shortestPath(airNetworkGraph, origin, dest, fullPaths);
-        }
-        return fullPaths;
-    }
-
-    public LinkedList<Node> getAllPathsFromFlightPlanPassingThroughWaypoints2(FlightPlan plan) {
-        LinkedList<Node> fullPaths = new LinkedList<>();
-        Node origin = getAirportNode(plan.getOrigin());
-        Node dest = getAirportNode(plan.getDestination());
-        List<Node> waypoints = plan.getMandatoryWaypoints();
-        double x = origin.getLatitude() - waypoints.get(0).getLatitude();
-        double y = origin.getLongitude() - waypoints.get(0).getLongitude();
-        double distance = Math.sqrt(x * x + y * y);
-        Graph<Node, Segment> graph = new Graph<>(true);
-        graph = airNetworkGraph.clone();
-        graph.getEdge(origin, waypoints.get(0)).setWeight(distance);
-        for (int i = 0; i < waypoints.size() - 1; i++) {
-            x = waypoints.get(i).getLatitude() - waypoints.get(i + 1).getLatitude();
-            y = waypoints.get(i).getLongitude() - waypoints.get(i + 1).getLongitude();
-            distance = Math.sqrt(x * x + y * y);
-
-            if (graph.getEdge(waypoints.get(i), waypoints.get(i + 1)) != null) {
-
-                graph.getEdge(waypoints.get(i), waypoints.get(i + 1)).setWeight(distance);
-            }
-        }
-        x = waypoints.get(waypoints.size() - 1).getLatitude() - dest.getLatitude();
-        y = waypoints.get(waypoints.size() - 1).getLongitude() - dest.getLongitude();
-        distance = Math.sqrt(x * x + y * y);
-        graph.getEdge(waypoints.get(waypoints.size() - 1), dest).setWeight(distance);
-        if (waypoints.size() > 0) {
-
-            GraphAlgorithms.shortestPath(graph, origin, waypoints.get(0), fullPaths);
-            for (int i = 0; i < waypoints.size() - 1; i++) {
-
-                GraphAlgorithms.shortestPath(graph, waypoints.get(i), waypoints.get(i + 1), fullPaths);
-            }
-            GraphAlgorithms.shortestPath(graph, waypoints.get(waypoints.size() - 1), dest, fullPaths);
-        } else {
-            GraphAlgorithms.shortestPath(airNetworkGraph, origin, dest, fullPaths);
-        }
-        return fullPaths;
-    }
+//    public LinkedList<Node> getAllPathsFromFlightPlanPassingThroughWaypoints2(FlightPlan plan) {
+//        LinkedList<Node> fullPaths = new LinkedList<>();
+//        Node origin = getAirportNode(plan.getOrigin());
+//        Node dest = getAirportNode(plan.getDestination());
+//        List<Node> waypoints = plan.getMandatoryWaypoints();
+//        double x = origin.getLatitude() - waypoints.get(0).getLatitude();
+//        double y = origin.getLongitude() - waypoints.get(0).getLongitude();
+//        double distance = Math.sqrt(x * x + y * y);
+//        Graph<Node, Segment> graph = new Graph<>(true);
+//        graph = airNetworkGraph.clone();
+//        graph.getEdge(origin, waypoints.get(0)).setWeight(distance);
+//        for (int i = 0; i < waypoints.size() - 1; i++) {
+//            x = waypoints.get(i).getLatitude() - waypoints.get(i + 1).getLatitude();
+//            y = waypoints.get(i).getLongitude() - waypoints.get(i + 1).getLongitude();
+//            distance = Math.sqrt(x * x + y * y);
+//
+//            if (graph.getEdge(waypoints.get(i), waypoints.get(i + 1)) != null) {
+//
+//                graph.getEdge(waypoints.get(i), waypoints.get(i + 1)).setWeight(distance);
+//            }
+//        }
+//        x = waypoints.get(waypoints.size() - 1).getLatitude() - dest.getLatitude();
+//        y = waypoints.get(waypoints.size() - 1).getLongitude() - dest.getLongitude();
+//        distance = Math.sqrt(x * x + y * y);
+//        graph.getEdge(waypoints.get(waypoints.size() - 1), dest).setWeight(distance);
+//        if (waypoints.size() > 0) {
+//
+//            GraphAlgorithms.shortestPath(graph, origin, waypoints.get(0), fullPaths);
+//            for (int i = 0; i < waypoints.size() - 1; i++) {
+//
+//                GraphAlgorithms.shortestPath(graph, waypoints.get(i), waypoints.get(i + 1), fullPaths);
+//            }
+//            GraphAlgorithms.shortestPath(graph, waypoints.get(waypoints.size() - 1), dest, fullPaths);
+//        } else {
+//            GraphAlgorithms.shortestPath(airNetworkGraph, origin, dest, fullPaths);
+//        }
+//        return fullPaths;
+//    }
 
 }

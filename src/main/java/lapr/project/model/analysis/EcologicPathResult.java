@@ -35,13 +35,13 @@ public class EcologicPathResult extends Path implements BestPathInterface {
 
     @Override
     public void calculateBestPath(AirNetwork airNetwork) {
-        LinkedList<Node> ecologicPath = airNetwork.getAllPathsFromFlightPlanPassingThroughWaypoints(flightPlan);
-        /**
-         * corrigir*
-         */
-
-        super.setResult(0);
-        super.setResultPath(ecologicPath);
+//        //LinkedList<Node> ecologicPath = airNetwork.getAllPathsFromFlightPlanPassingThroughWaypoints(flightPlan);
+//        /**
+//         * corrigir*
+//         */
+//
+//        super.setResult(0);
+//        super.setResultPath(ecologicPath);
     }
 
     /**
