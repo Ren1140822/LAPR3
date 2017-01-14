@@ -513,65 +513,65 @@ public class SimulationTest {
         assertEquals(expResult4, result4);
     }
 
-//    /**
-//     * Test of calculateBestPath method, of class Simulation.
-//     */
-//    @Test
-//    public void testCalculateBestPath() {    
-//        Aircraft a1 = new Aircraft("dsfsdg", "fdh", new CabinConfiguration(), 2, new AircraftModel(
-//                "id", "description", "maker", "passenger", new Motorization(), 10, 
-//                10, 10, 10, 10, 10, 10, 10, 10, 10, new LinkedList<>()));
-//        
-//        Airport airp1 = new Airport("opo", "porto", "porto", "portugal", new Location(10, 10, 10));
-//        Airport airp2 = new Airport("lis", "lisboa", "lisboa", "portugal", new Location(20, 20, 20));
-//        FlightPlan f = new FlightPlan("FF0001A", 10, a1, airp1, airp2,
-//                new LinkedList<>(), new LinkedList<>(),new LinkedList<>());
-//        
-//        System.out.println("calculateBestPath1");
-//        TypePath type = TypePath.SHORTEST_PATH;
-//        AirNetwork air = network;
-//        int timeStep = 10;
-//        Simulation instance = new Simulation(); 
-//        instance.createPathSimulation(type);
-//        instance.setData(10, 10, 10, 10, airp1, airp2, a1);
-//        instance.setFlightPlan(f);
-//        boolean expResult = true;
-//        boolean result = instance.calculateBestPath(type, air, timeStep);
-//        assertEquals(expResult, result);
-//        
-//        System.out.println("calculateBestPath2");
-//        TypePath type2 = TypePath.ALL;
-//        AirNetwork air2 = network;
-//        int timeStep2 = 0;
-//        Simulation instance2 = new Simulation();
-//        instance2.createPathSimulation(type);
-//        instance2.setFlightPlan(f);
-//        boolean expResult2 = true;
-//        boolean result2 = instance2.calculateBestPath(type2, air2, timeStep2);
-//        assertEquals(expResult2, result2);
-//        
-//        System.out.println("calculateBestPath3");
-//        TypePath type3 = TypePath.ECOLOGIC_PATH;
-//        AirNetwork air3 = network;
-//        int timeStep3 = 0;
-//        Simulation instance3 = new Simulation();
-//        instance3.createPathSimulation(type);
-//        instance3.setFlightPlan(f);
-//        boolean expResult3 = true;
-//        boolean result3 = instance3.calculateBestPath(type3, air3, timeStep3);
-//        assertEquals(expResult3, result3);
-//        
-//        System.out.println("calculateBestPath4");
-//        TypePath type4 = TypePath.FASTEST_PATH;
-//        AirNetwork air4 = network;
-//        int timeStep4 = 0;
-//        Simulation instance4 = new Simulation();
-//        instance4.createPathSimulation(type);
-//        instance4.setFlightPlan(f);
-//        boolean expResult4 = true;
-//        boolean result4 = instance4.calculateBestPath(type4, air4, timeStep4);
-//        assertEquals(expResult4, result4);
-//    }
+    /**
+     * Test of calculateBestPath method, of class Simulation.
+     */
+    @Test
+    public void testCalculateBestPath() {    
+        Aircraft a1 = new Aircraft("dsfsdg", "fdh", new CabinConfiguration(), 2, new AircraftModel(
+                "id", "description", "maker", "passenger", new Motorization(), 10, 
+                10, 10, 10, 10, 10, 10, 10, 10, 10, new LinkedList<>()));
+        
+        Airport airp1 = new Airport("opo", "porto", "porto", "portugal", new Location(10, 10, 10));
+        Airport airp2 = new Airport("lis", "lisboa", "lisboa", "portugal", new Location(20, 20, 20));
+        FlightPlan f = new FlightPlan("FF0001A", 10, a1, airp1, airp2,
+                new LinkedList<>(), new LinkedList<>(),new LinkedList<>());
+        
+        System.out.println("calculateBestPath1");
+        TypePath type = TypePath.SHORTEST_PATH;
+        AirNetwork air = network;
+        int timeStep = 10;
+        Simulation instance = new Simulation(); 
+        instance.createPathSimulation(type);
+        instance.setData(10, 10, 10, 10, airp1, airp2, a1);
+        instance.setFlightPlan(f);
+        boolean expResult = true;
+        boolean result = instance.calculateBestPath(type, air, timeStep);
+        assertEquals(expResult, result);
+        
+        System.out.println("calculateBestPath2");
+        TypePath type2 = TypePath.ALL;
+        AirNetwork air2 = network;
+        int timeStep2 = 0;
+        Simulation instance2 = new Simulation();
+        instance2.createPathSimulation(type);
+        instance2.setFlightPlan(f);
+        boolean expResult2 = true;
+        boolean result2 = instance2.calculateBestPath(type2, air2, timeStep2);
+        assertEquals(expResult2, result2);
+        
+        System.out.println("calculateBestPath3");
+        TypePath type3 = TypePath.ECOLOGIC_PATH;
+        AirNetwork air3 = network;
+        int timeStep3 = 0;
+        Simulation instance3 = new Simulation();
+        instance3.createPathSimulation(type);
+        instance3.setFlightPlan(f);
+        boolean expResult3 = true;
+        boolean result3 = instance3.calculateBestPath(type3, air3, timeStep3);
+        assertEquals(expResult3, result3);
+        
+        System.out.println("calculateBestPath4");
+        TypePath type4 = TypePath.FASTEST_PATH;
+        AirNetwork air4 = network;
+        int timeStep4 = 0;
+        Simulation instance4 = new Simulation();
+        instance4.createPathSimulation(type);
+        instance4.setFlightPlan(f);
+        boolean expResult4 = true;
+        boolean result4 = instance4.calculateBestPath(type4, air4, timeStep4);
+        assertEquals(expResult4, result4);
+    }
 
     /**
      * Test of toString method, of class Simulation.

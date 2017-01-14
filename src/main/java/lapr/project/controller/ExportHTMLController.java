@@ -177,7 +177,7 @@ public class ExportHTMLController {
      * @return true if exported
      */
     public boolean exportResults(String[] s, String filePath, String whatToExport) {
-        String results[][] = new String[s.length][11];
+        String results[][] = new String[s.length][1000];
         if (whatToExport.equals("short")) {
 
             int i = 0;
@@ -185,21 +185,23 @@ public class ExportHTMLController {
 
                 Simulation sim = getSimulationByString(s[i]);
                 if (sim.getShortestResultPath() != null) {
-                    for (SegmentResult seg : sim.getShortestResultPath().getSegments()) {
-
-                        results[j][0] = "Shortest path result: " + String.valueOf(seg.getSegment().getId());
-                        results[j][1] = "Origin airport latitude: " + seg.getSegment().getStartNode().getId();
-                        results[j][2] = "Destination airport longitude: " + seg.getSegment().getEndNode().getId();
-                        results[j][3] = "TAS: " + seg.getDistance();
-                        results[j][4] = "Initial Altitude: " + seg.getInitialAltitude();
-                        results[j][5] = "TASFinal: " + seg.getDistance();
-                        results[j][6] = "Final altitude: " + seg.getAltitudeFinal();
-                        results[j][7] = "Fuel consumption: " + seg.getEnergyConsume();
-                        results[j][8] = "Remaining fuel: " + seg.getDistance();
-                        results[j][9] = "Distance: " + seg.getDistance();
-                        results[j][10] = "Flight Time: " + seg.getDistance();
-
+                    int oldZ =0;
+                    for (int z = 0; z < sim.getShortestResultPath().getSegments().size(); z++) {
+                        SegmentResult seg = sim.getShortestResultPath().getSegments().get(z);
+                        results[j][z+oldZ] = "Shortest path result: " + String.valueOf(seg.getSegment().getId());
+                        results[j][z + 1+oldZ] = "Origin airport latitude: " + seg.getSegment().getStartNode().getId();
+                        results[j][z + 2+oldZ] = "Destination airport longitude: " + seg.getSegment().getEndNode().getId();
+                        results[j][z + 3+oldZ] = "TAS: " + seg.getDistance();
+                        results[j][z + 4+oldZ] = "Initial Altitude: " + seg.getInitialAltitude();
+                        results[j][z + 5+oldZ] = "TASFinal: " + seg.getDistance();
+                        results[j][z + 6+oldZ] = "Final altitude: " + seg.getAltitudeFinal();
+                        results[j][z + 7+oldZ] = "Fuel consumption: " + seg.getEnergyConsume();
+                        results[j][z + 8+oldZ] = "Remaining fuel: " + seg.getDistance();
+                        results[j][z + 9+oldZ] = "Distance: " + seg.getDistance();
+                        results[j][z + 10+oldZ] = "Flight Time: " + seg.getDistance();
+                        oldZ +=10;
                     }
+
                 }
                 i++;
             }
@@ -209,20 +211,21 @@ public class ExportHTMLController {
             for (int j = 0; j < results.length; j++) {
                 Simulation sim = getSimulationByString(s[i]);
                 if (sim.getEcologicResultPath() != null) {
-                    for (SegmentResult seg : sim.getEcologicResultPath().getSegments()) {
-
-                        results[j][0] = "Shortest path result: " + String.valueOf(seg.getSegment().getId());
-                        results[j][1] = "Origin airport latitude: " + seg.getSegment().getStartNode().getId();
-                        results[j][2] = "Destination airport longitude: " + seg.getSegment().getEndNode().getId();
-                        results[j][3] = "TAS: " + seg.getDistance();
-                        results[j][4] = "Initial Altitude: " + seg.getInitialAltitude();
-                        results[j][5] = "TASFinal: " + seg.getDistance();
-                        results[j][6] = "Final altitude: " + seg.getAltitudeFinal();
-                        results[j][7] = "Fuel consumption: " + seg.getEnergyConsume();
-                        results[j][8] = "Remaining fuel: " + seg.getDistance();
-                        results[j][9] = "Distance: " + seg.getDistance();
-                        results[j][10] = "Flight Time: " + seg.getDistance();
-
+                  int oldZ =0;
+                    for (int z = 0; z < sim.getEcologicResultPath().getSegments().size(); z++) {
+                        SegmentResult seg = sim.getEcologicResultPath().getSegments().get(z);
+                        results[j][z+oldZ] = "Shortest path result: " + String.valueOf(seg.getSegment().getId());
+                        results[j][z + 1+oldZ] = "Origin airport latitude: " + seg.getSegment().getStartNode().getId();
+                        results[j][z + 2+oldZ] = "Destination airport longitude: " + seg.getSegment().getEndNode().getId();
+                        results[j][z + 3+oldZ] = "TAS: " + seg.getDistance();
+                        results[j][z + 4+oldZ] = "Initial Altitude: " + seg.getInitialAltitude();
+                        results[j][z + 5+oldZ] = "TASFinal: " + seg.getDistance();
+                        results[j][z + 6+oldZ] = "Final altitude: " + seg.getAltitudeFinal();
+                        results[j][z + 7+oldZ] = "Fuel consumption: " + seg.getEnergyConsume();
+                        results[j][z + 8+oldZ] = "Remaining fuel: " + seg.getDistance();
+                        results[j][z + 9+oldZ] = "Distance: " + seg.getDistance();
+                        results[j][z + 10+oldZ] = "Flight Time: " + seg.getDistance();
+                        oldZ +=11;
                     }
                 }
                 i++;
@@ -233,20 +236,21 @@ public class ExportHTMLController {
             for (int j = 0; j < results.length; j++) {
                 Simulation sim = getSimulationByString(s[i]);
                 if (sim.getFastestResultPath() != null) {
-                    for (SegmentResult seg : sim.getFastestResultPath().getSegments()) {
-
-                        results[j][0] = "Shortest path result: " + String.valueOf(seg.getSegment().getId());
-                        results[j][1] = "Origin airport latitude: " + seg.getSegment().getStartNode().getId();
-                        results[j][2] = "Destination airport longitude: " + seg.getSegment().getEndNode().getId();
-                        results[j][3] = "TAS: " + seg.getDistance();
-                        results[j][4] = "Initial Altitude: " + seg.getInitialAltitude();
-                        results[j][5] = "TASFinal: " + seg.getDistance();
-                        results[j][6] = "Final altitude: " + seg.getAltitudeFinal();
-                        results[j][7] = "Fuel consumption: " + seg.getEnergyConsume();
-                        results[j][8] = "Remaining fuel: " + seg.getDistance();
-                        results[j][9] = "Distance: " + seg.getDistance();
-                        results[j][10] = "Flight Time: " + seg.getDistance();
-
+                  int oldZ =0;
+                    for (int z = 0; z < sim.getFastestResultPath().getSegments().size(); z++) {
+                        SegmentResult seg = sim.getFastestResultPath().getSegments().get(z);
+                        results[j][z+oldZ] = "Shortest path result: " + String.valueOf(seg.getSegment().getId());
+                        results[j][z + 1+oldZ] = "Origin airport latitude: " + seg.getSegment().getStartNode().getId();
+                        results[j][z + 2+oldZ] = "Destination airport longitude: " + seg.getSegment().getEndNode().getId();
+                        results[j][z + 3+oldZ] = "TAS: " + seg.getDistance();
+                        results[j][z + 4+oldZ] = "Initial Altitude: " + seg.getInitialAltitude();
+                        results[j][z + 5+oldZ] = "TASFinal: " + seg.getDistance();
+                        results[j][z + 6+oldZ] = "Final altitude: " + seg.getAltitudeFinal();
+                        results[j][z + 7+oldZ] = "Fuel consumption: " + seg.getEnergyConsume();
+                        results[j][z + 8+oldZ] = "Remaining fuel: " + seg.getDistance();
+                        results[j][z + 9+oldZ] = "Distance: " + seg.getDistance();
+                        results[j][z + 10+oldZ] = "Flight Time: " + seg.getDistance();
+                        oldZ +=11;
                     }
                 }
                 i++;

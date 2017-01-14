@@ -9,7 +9,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Formatter;
 
-
 /**
  *
  * @author Renato Oliveira 1140822@isep.ipp.pt
@@ -31,20 +30,20 @@ public class CSVExporter {
 
         page = title + "\n\n" + heading1 + "\n\n" + heading2 + "\n\n";
         for (int i = 0; i < body.length; i++) {
-            page += body[i] + "\n";
+            if (body[i] != null) {
+                page += body[i] + "\n";
+            }
         }
         System.out.println(page);
         Formatter out = null;
         try {
             out = new Formatter(new File(filePath));
         } catch (FileNotFoundException | NullPointerException ex) {
-              if(out!=null)
-            {
+            if (out != null) {
                 out.close();
             }
-             System.err.print(ex);
+            System.err.print(ex);
             return false;
-            
 
         }
         out.format("%s", page);
@@ -63,7 +62,7 @@ public class CSVExporter {
      * @return true if exported
      */
     public static boolean exportMultipleStringsToCSV(String title, String heading1, String heading2, String[][] body, String filePath) {
-        
+
         String page;
         String data[] = new String[body[0].length];
         for (int i = 0; i < data.length; i++) {
@@ -71,8 +70,9 @@ public class CSVExporter {
         }
         for (int i = 0; i < body[0].length; i++) {
             for (int j = 0; j < body.length; j++) {
-
-                data[i] += body[j][i] + "; ";
+                if (body[j][i] != null) {
+                    data[i] += body[j][i] + "; ";
+                }
 
             }
             data[i] += "\n";
@@ -84,16 +84,15 @@ public class CSVExporter {
         }
 
         System.out.println(page);
-  
+
         Formatter out = null;
         try {
             out = new Formatter(new File(filePath));
         } catch (FileNotFoundException | NullPointerException ex) {
-             if(out!=null)
-            {
+            if (out != null) {
                 out.close();
             }
-                System.err.print(ex);
+            System.err.print(ex);
             return false;
         }
         out.format("%s", page);

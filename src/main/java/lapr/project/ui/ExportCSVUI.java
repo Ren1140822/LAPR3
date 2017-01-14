@@ -30,6 +30,9 @@ import javax.swing.border.Border;
 import lapr.project.controller.ExportCSVController;
 import lapr.project.model.Project;
 import lapr.project.model.analysis.Path;
+import lapr.project.model.analysis.SegmentResult;
+import lapr.project.model.analysis.Simulation;
+import lapr.project.model.analysis.TypePath;
 
 /**
  *
@@ -217,5 +220,17 @@ public class ExportCSVUI extends JDialog {
         }
     }
 
-     
+      public static void main(String[] args)
+    {
+         Project p = new Project();
+        Simulation sim = new Simulation();
+        sim.createPathSimulation(TypePath.ALL);
+        sim.getShortestResultPath().getSegments().add(new SegmentResult());
+           sim.getShortestResultPath().getSegments().add(new SegmentResult());
+              sim.getShortestResultPath().getSegments().add(new SegmentResult());
+                 sim.getShortestResultPath().getSegments().add(new SegmentResult());
+        sim.getShortestResultPath().getSegments().add(new SegmentResult());
+        p.getSimulationsList().getSimulationsList().add(sim);
+        ExportCSVUI ui = new ExportCSVUI(p, new JDialog());
+    }
 }

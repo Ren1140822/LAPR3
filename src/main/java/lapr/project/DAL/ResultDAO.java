@@ -53,7 +53,7 @@ public class ResultDAO {
             st.execute();
             rs = (ResultSet) st.getObject(1);
             while (rs.next()) {
-                String ID = rs.getString("SEGID");
+                String ID = rs.getString("SEGMENTID");
                 double TAS = rs.getDouble("TAS_0");
                 double altitude_0 = rs.getDouble("ALTITUDE_0");
                 //double TAS_end = rs.getDouble("TAS_END");
@@ -80,7 +80,7 @@ public class ResultDAO {
             st.setInt(1, projectID);
 
             for (Simulation sim : simList) {
-                if (sim.getEcologicResultPath().getSegments() != null) {
+                if (sim.getEcologicResultPath().getSegments().size()>0) {
                     for (SegmentResult s : sim.getEcologicResultPath().getSegments()) {
                         st.setString(2, s.getSegment().getId());
                         st.setDouble(3, s.getTas());
@@ -91,7 +91,7 @@ public class ResultDAO {
                         ret = st.execute();
                     }
                 }
-                if (sim.getShortestResultPath().getSegments() != null) {
+                if (sim.getShortestResultPath().getSegments().size()>0) {
                     for (SegmentResult s : sim.getShortestResultPath().getSegments()) {
                         st.setString(2, s.getSegment().getId());
                         st.setDouble(3, s.getTas());
@@ -102,7 +102,7 @@ public class ResultDAO {
                         ret = st.execute();
                     }
                 }
-                if (sim.getFastestResultPath().getSegments() != null) {
+                if (sim.getFastestResultPath().getSegments().size()>0) {
                     for (SegmentResult s : sim.getFastestResultPath().getSegments()) {
                         st.setString(2, s.getSegment().getId());
                         st.setDouble(3, s.getTas());
