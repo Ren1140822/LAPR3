@@ -6,7 +6,6 @@
 package lapr.project.ui;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -31,8 +30,8 @@ import static javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import lapr.project.controller.FindBestPathController;
-import lapr.project.model.analysis.Path;
+import lapr.project.controller.FindBestPathResultController;
+import lapr.project.model.analysis.Simulation;
 import lapr.project.model.analysis.TypePath;
 
 /**
@@ -49,14 +48,13 @@ public class FindBestPathResultUI extends JDialog {
     /**
      * Simulation created
      */
-    private transient Path resultPath;
+    private transient Simulation simulation;
 
-    private transient FindBestPathController controller;
+    private transient FindBestPathResultController controller;
 
     private transient TypePath type;
 
     private JList jListSegments;
-
     private JLabel lblStartNode;
     private JLabel lblEndNode;
     private JLabel lblComp;
@@ -69,13 +67,13 @@ public class FindBestPathResultUI extends JDialog {
     private JLabel lblDistanceAcumulate;
     private JLabel lblTimeAcumulate;
 
-    public FindBestPathResultUI() {
+    public FindBestPathResultUI(Simulation simulation, TypePath type ,JDialog dialog) {
         super();
         setTitle("Simulation Result: ");
-//        this.controller= controller;
-//        this.resultPath=result;
-//        this.type=type;
-//        this.dialog = dialog;
+        this.simulation = simulation;
+        this.type = type;
+        this.controller= new FindBestPathResultController(simulation,type);
+        this.dialog = dialog;
 
         createComponents();
 
@@ -107,18 +105,25 @@ public class FindBestPathResultUI extends JDialog {
         int aux = 20;
         JTextField txtDesignation = new JTextField(aux);
         txtDesignation.setEnabled(false);
+        txtDesignation.setText(controller.getPlan().getFlightDesignator());
         JTextField txtOrigin = new JTextField(aux);
         txtOrigin.setEnabled(false);
+        txtOrigin.setText(controller.getPlan().getOrigin().getIATA());
         JTextField txtDestination = new JTextField(aux);
         txtDestination.setEnabled(false);
+        txtDestination.setText(controller.getPlan().getDestination().getIATA());
         JTextField txtCrew = new JTextField(aux);
         txtCrew.setEnabled(false);
+        txtCrew.setText(""+controller.getSimulation().getCrew());
         JTextField txtPassengers = new JTextField(aux);
         txtPassengers.setEnabled(false);
+        txtPassengers.setText(""+controller.getSimulation().getPassengers());
         JTextField txtTravel = new JTextField(aux);
         txtTravel.setEnabled(false);
+        txtTravel.setText(""+controller.getTotalFlightTime());
         JTextField txtEnergy = new JTextField(aux);
         txtEnergy.setEnabled(false);
+        txtEnergy.setText(""+controller.getTotalFlightTime());
 
         north.add(labelFlight);
         north.add(UI.createPanelLabelTextLabel("Airport Origin: ", txtOrigin, ""));
@@ -127,7 +132,7 @@ public class FindBestPathResultUI extends JDialog {
         north.add(UI.createPanelLabelTextLabel("Num Crew Elements: ", txtCrew, ""));
         north.add(UI.createPanelLabelTextLabel("Num Passengers: ", txtPassengers, ""));
         north.add(UI.createPanelLabelTextLabel("Total Traveling Time: ", txtTravel, ""));
-        north.add(UI.createPanelLabelTextLabel("Total Energy Consump: ", txtEnergy, ""));
+        north.add(UI.createPanelLabelTextLabel("Total Flight Time: ", txtEnergy, ""));
 
         return north;
     }
@@ -169,17 +174,19 @@ public class FindBestPathResultUI extends JDialog {
         p1.add(createListPanel("Segments: ", jListSegments), BorderLayout.CENTER);
 
         JPanel p2 = new JPanel(new GridLayout(11, 1));
-        lblStartNode = createLabel("colocar valores");
-        lblEndNode = createLabel("colocar valores");
-        lblComp = createLabel("colocar valores");
-        lblVelStartSeg = createLabel("colocar valores");
-        lblaltStartSeg = createLabel("colocar valores");
-        lblVelEndSeg = createLabel("colocar valores");
-        lblaltEndSeg = createLabel("colocar valores");
-        lblCombConsumed = createLabel("colocar valores");
-        lblCombRemain = createLabel("colocar valores");
-        lblDistanceAcumulate = createLabel("colocar valores");
-        lblTimeAcumulate = createLabel("colocar valores");
+        
+        lblStartNode = createLabel("");
+        lblEndNode = createLabel("");
+        lblComp = createLabel("");
+        lblVelStartSeg = createLabel("");
+        lblaltStartSeg = createLabel("");
+        lblVelEndSeg = createLabel("");
+        lblaltEndSeg = createLabel("");
+        lblCombConsumed = createLabel("");
+        lblCombRemain = createLabel("");
+        lblDistanceAcumulate = createLabel("");
+        lblTimeAcumulate = createLabel("");
+        
         p2.add(createPanelLabelLabel("Start Node: ", lblStartNode,""));
         p2.add(createPanelLabelLabel("End Node: ", lblEndNode,""));
         p2.add(createPanelLabelLabel("Size: ", lblComp,""));
@@ -281,17 +288,17 @@ public class FindBestPathResultUI extends JDialog {
     }
     
     private void changeValues(){
-//        lblStartNode = controller.get
-//        lblEndNode = createLabel("colocar valores");
-//        lblComp = createLabel("colocar valores");
-//        lblVelStartSeg = createLabel("colocar valores");
-//        lblaltStartSeg = createLabel("colocar valores");
-//        lblVelEndSeg = createLabel("colocar valores");
-//        lblaltEndSeg = createLabel("colocar valores");
-//        lblCombConsumed = createLabel("colocar valores");
-//        lblCombRemain = createLabel("colocar valores");
-//        lblDistanceAcumulate = createLabel("colocar valores");
-//        lblTimeAcumulate = createLabel("colocar valores");
+        lblStartNode = createLabel(controller.getNodeID());
+        lblEndNode = createLabel(controller.getEndNodeID());
+        lblComp = createLabel("FALTA");
+        lblVelStartSeg = createLabel(""+controller.getTas_0());
+        lblaltStartSeg = createLabel(""+controller.getInitAltitude());
+        lblVelEndSeg = createLabel(""+controller.getTas());
+        lblaltEndSeg = createLabel(""+controller.getFinalAlt());
+        lblCombConsumed = createLabel(""+controller.getConsumedActual());
+        lblCombRemain = createLabel("colocar valores");
+        lblDistanceAcumulate = createLabel(""+controller.getDistance());
+        lblTimeAcumulate = createLabel(""+controller.getFlightTime());
     }
 
 }

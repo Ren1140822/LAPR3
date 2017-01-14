@@ -30,10 +30,12 @@ public class FindBestPathResultController {
     private double distance;
     private double flightTime;
     private double consumedActual;
+    private TypePath type;
 
-    public FindBestPathResultController(Simulation simulation) {
+    public FindBestPathResultController(Simulation simulation, TypePath type) {
         this.simulation = simulation;
         this.plan = simulation.getFlightPlan();
+        this.type = type;
     }
 
     /**
@@ -134,8 +136,13 @@ public class FindBestPathResultController {
     }
 
     
+    public double getTotalDistanceTime()
+    {
+        return getSegmentsList(type).get(getSegmentsList(type).size()).getDistance();
+    }
+    
     public double getTotalFlightTime()
     {
-        return getSegmentsList(TypePath.ALL).get(getSegmentsList(TypePath.ALL).size()).getDistance();
+        return getSegmentsList(type).get(getSegmentsList(type).size()).getFlightTime();
     }
 }

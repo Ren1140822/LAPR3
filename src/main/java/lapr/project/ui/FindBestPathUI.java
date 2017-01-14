@@ -49,7 +49,7 @@ public class FindBestPathUI extends JDialog {
     /**
      * Guarda a janela anterior
      */
-    private final JDialog frame;
+    private final JDialog dialog;
 
     /**
      * Saves the analysis input data
@@ -91,7 +91,7 @@ public class FindBestPathUI extends JDialog {
     public FindBestPathUI(Project project, JDialog frame) {
         super(frame, "Find BestPath", true);
         this.project = project;
-        this.frame = frame;
+        this.dialog = frame;
 
         controller = new FindBestPathController(project);
         controller.newSImulation();
@@ -285,7 +285,7 @@ public class FindBestPathUI extends JDialog {
     public void closeWindow() {
         String[] op = {"Yes", "No"};
         String question = "Close window and discard Find Best Path?";
-        int opcao = JOptionPane.showOptionDialog(frame, question,
+        int opcao = JOptionPane.showOptionDialog(dialog, question,
                 "Find Best Path", JOptionPane.YES_NO_OPTION,
                 JOptionPane.QUESTION_MESSAGE, null, op, op[0]);
         if (opcao == JOptionPane.YES_OPTION) {
@@ -307,9 +307,13 @@ public class FindBestPathUI extends JDialog {
         btShort.setToolTipText("Please insert origin and destination airports");
         btShort.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {                
-                createSimulation(TypePath.SHORTEST_PATH);
-                openResultWindow();
+            public void actionPerformed(ActionEvent e) {
+                if (createSimulation(TypePath.SHORTEST_PATH)) {
+                    openResultWindow(TypePath.SHORTEST_PATH);
+                } else {
+                    JOptionPane.showMessageDialog(FindBestPathUI.this, "Data is invalid!", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+
             }
         });
 
@@ -327,8 +331,11 @@ public class FindBestPathUI extends JDialog {
         btFast.setEnabled(false);
         btFast.setToolTipText("Please insert origin and destination airports");
         btFast.addActionListener((ActionEvent e) -> {
-            createSimulation(TypePath.FASTEST_PATH);
-            openResultWindow();
+            if (createSimulation(TypePath.FASTEST_PATH)) {
+                openResultWindow(TypePath.FASTEST_PATH);
+            } else {
+                JOptionPane.showMessageDialog(FindBestPathUI.this, "Data is invalid!", "Error", JOptionPane.ERROR_MESSAGE);
+            }
         });
         return btFast;
     }
@@ -347,11 +354,13 @@ public class FindBestPathUI extends JDialog {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    createSimulation(TypePath.ECOLOGIC_PATH);
-                    openResultWindow();
+                    if (createSimulation(TypePath.ECOLOGIC_PATH)) {
+                        openResultWindow(TypePath.ECOLOGIC_PATH);
+                    } else {
+                        JOptionPane.showMessageDialog(FindBestPathUI.this, "Data is invalid!", "Error", JOptionPane.ERROR_MESSAGE);
+                    }
                 } catch (java.lang.UnsupportedOperationException en) {
-
-                    JOptionPane.showMessageDialog(frame,
+                    JOptionPane.showMessageDialog(FindBestPathUI.this,
                             "It wasn´t possible to create simulation", "Error", JOptionPane.ERROR_MESSAGE);
                     throw en;
                 }
@@ -360,8 +369,8 @@ public class FindBestPathUI extends JDialog {
         return btEco;
     }
 
-    private void openResultWindow() {
-//        FindBestPathResultUI result = new FindBestPathResultUI(controller, controller.getResult(type), type, null);
+    private void openResultWindow(TypePath type) {
+        FindBestPathResultUI result = new FindBestPathResultUI(controller.getSimulation(), type, FindBestPathUI.this);
     }
 
     private boolean validateData() {
@@ -380,23 +389,24 @@ public class FindBestPathUI extends JDialog {
                 try {
                     int crew = Integer.parseInt(txtCrew.getText());
                     double cargo = Double.parseDouble(txtCargoLoad.getText());
-                    double fuel = Double.parseDouble(txtFuelLoad.getText());                    
+                    double fuel = Double.parseDouble(txtFuelLoad.getText());
                     controller.setData(totalPassengers, crew, cargo, fuel);
                 } catch (NumberFormatException ne1) {
-                    JOptionPane.showMessageDialog(frame, "Field invalid!", "Error", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(dialog, "Field invalid!", "Error", JOptionPane.ERROR_MESSAGE);
                     System.err.println(ne1.getMessage());
                 }
             } else {
-                JOptionPane.showMessageDialog(frame, "Fill all fields, please!", "Error", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(dialog, "Fill all fields, please!", "Error", JOptionPane.ERROR_MESSAGE);
             }
         } catch (NumberFormatException ne2) {
-            JOptionPane.showMessageDialog(frame, "Max Passengers fields invalid!", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(dialog, "Max Passengers fields invalid!", "Error", JOptionPane.ERROR_MESSAGE);
             System.err.println(ne2.getMessage());
         }
     }
 
-    private void createSimulation(TypePath type) {
+    private boolean createSimulation(TypePath type) {
         controller.createBestPathSimulation(type);
         setData();
+        return controller.saveSimulation();
     }
 }
