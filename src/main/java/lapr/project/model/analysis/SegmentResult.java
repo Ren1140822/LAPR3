@@ -67,7 +67,7 @@ public class SegmentResult {
         this.mass=DEFAULT_VALUE;
         this.flightTime=(int) DEFAULT_VALUE;
         this.distance=DEFAULT_VALUE;
-        this.energyConsume=DEFAULT_VALUE;
+        this.energyConsume=0;
         this.timeStep=(int) DEFAULT_VALUE;
         this.angle=DEFAULT_VALUE;
         this.dhDT=DEFAULT_VALUE;
@@ -88,7 +88,7 @@ public class SegmentResult {
         this.mass=DEFAULT_VALUE;
         this.flightTime=(int) DEFAULT_VALUE;
         this.distance=DEFAULT_VALUE;
-        this.energyConsume=DEFAULT_VALUE;
+        this.energyConsume=0;
         this.timeStep=(int) DEFAULT_VALUE;
         this.angle=DEFAULT_VALUE;
         this.dhDT=DEFAULT_VALUE;
@@ -105,7 +105,7 @@ public class SegmentResult {
      * @param mass mass (kg)
      * @param timeStep time step to consider in segments (s)
      * @param model aircraft model
-     * @param listPattern   list pattern
+     * @param listPattern list pattern
      * @param segment
      */
     public SegmentResult(SegmentType type, double altitudeInitial,double mass, 
@@ -117,7 +117,7 @@ public class SegmentResult {
         this.timeStep=timeStep;
         this.flightTime=(int) DEFAULT_VALUE;
         this.distance=DEFAULT_VALUE;
-        this.energyConsume=DEFAULT_VALUE;
+        this.energyConsume=0;
         this.angle=DEFAULT_VALUE;
         this.dhDT=DEFAULT_VALUE;
         this.altitudeFinal=DEFAULT_VALUE;
@@ -408,6 +408,7 @@ public class SegmentResult {
     public boolean calculate(){
         if(type!=SegmentType.CRUISE)
             calculateBasic();
+        
         double liftCoef=AircraftAlgorithms.calculateLiftCoefficient(mass, airDensity, wingArea, vIas);
 
         double coefDrag=AircraftAlgorithms.calculateDragCoefficient(cDrag, liftCoef, getModel().getAspectRatio(), getModel().getE());
@@ -427,7 +428,9 @@ public class SegmentResult {
         angle=AircraftAlgorithms.calculateClimbingAng(groundSpeed, dhDT);
 
         double dwDT=AircraftAlgorithms.calculateDwDt(totalThrust, thrust, groundSpeed);
-
+        
+        double initMass = mass;
+        
         double newMass=AircraftAlgorithms.calculateNewMass(mass, dwDT);
         
         distance+=AircraftAlgorithms.calculateDistanceGained(groundSpeed, angle, timeStep);
@@ -438,6 +441,7 @@ public class SegmentResult {
             altitude+=AircraftAlgorithms.calculateAltitudeDesc(dhDT, timeStep);
         
         mass+=newMass;
+        energyConsume += (initMass-mass);
         flightTime+=timeStep;
         return true;
     }
