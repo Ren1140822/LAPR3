@@ -349,7 +349,7 @@ public class SegmentResult {
      * Calculates the values of climb phase 
      * @return true if valid, false if not
      */
-    public boolean calculateClimb(){
+    public boolean stopClimb(){
         boolean pass=false;
         
         do{
@@ -361,15 +361,7 @@ public class SegmentResult {
         altitudeFinal=altitude;
         return true;
     }
-        
-    public boolean calculateCruise(){
-        boolean pass=false;
-        do{
-            pass=calculate(); 
-        }while(pass);
-        return pass;
-    }
-    
+
     private boolean calculateBasic(){        
         airDensity=PhysicsAlgorithms.calculateAirdensity(altitude);
         double temperature=PhysicsAlgorithms.calculateAbsoluteTemperature(altitude);
@@ -400,11 +392,20 @@ public class SegmentResult {
         return true;
     }
     
+    /**
+     * Calculates the segment according to type (Descente,Cruise,Climb) 
+     * @param type 
+     * @return boolean if operation is valid, false if not
+     */
+    public boolean calculateByType(SegmentType type){
+        this.type=type;
+        return calculate();
+    }
     
      /**
      * Calculates the distance, mass and flight time in the segment
      */
-    private boolean calculate(){
+    public boolean calculate(){
         if(type!=SegmentType.CRUISE)
             calculateBasic();
         double liftCoef=AircraftAlgorithms.calculateLiftCoefficient(mass, airDensity, wingArea, vIas);
