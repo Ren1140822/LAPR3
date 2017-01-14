@@ -18,11 +18,10 @@ import lapr.project.model.Airport;
 import lapr.project.model.FlightPlan;
 import lapr.project.model.Project;
 import lapr.project.model.analysis.Path;
+import lapr.project.model.analysis.SegmentResult;
 import lapr.project.model.analysis.ShortestPathResult;
 import lapr.project.model.analysis.Simulation;
 import lapr.project.model.analysis.TypePath;
-import lapr.project.utils.CSVExporterTest;
-import static oracle.jdbc.driver.DatabaseError.test;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -178,6 +177,10 @@ public class ExportCSVControllerTest {
          System.out.println("exportResults");
           Simulation sm = new Simulation();
         sm.createPathSimulation(TypePath.ALL);
+        SegmentResult r  = new SegmentResult();
+        LinkedList<SegmentResult> segs = new LinkedList<>();
+        segs.add(r);
+        sm.getEcologicResultPath().setSegments(segs);
            p.getSimulationsList().getSimulationsList().add(sm);
         this.instance = new ExportCSVController(p);
         String[] s = new String[1];
@@ -185,6 +188,52 @@ public class ExportCSVControllerTest {
          String filePath = "src/main/resources/testhtml3.html";
            File file = new File(filePath);
         String whatToExport = "eco";
+        ExportCSVController instance =  this.instance;
+      
+        boolean expResult =  true;
+        boolean result = instance.exportResults(s, filePath, whatToExport);
+        assertEquals(expResult, result);
+    }
+    
+      @Test
+    public void testExportResults_2() throws FileNotFoundException {
+         System.out.println("exportResults");
+          Simulation sm = new Simulation();
+        sm.createPathSimulation(TypePath.ALL);
+        SegmentResult r  = new SegmentResult();
+        LinkedList<SegmentResult> segs = new LinkedList<>();
+        segs.add(r);
+        sm.getShortestResultPath().setSegments(segs);
+           p.getSimulationsList().getSimulationsList().add(sm);
+        this.instance = new ExportCSVController(p);
+        String[] s = new String[1];
+        s[0] = "Simulation";
+         String filePath = "src/main/resources/testhtml3.html";
+           File file = new File(filePath);
+        String whatToExport = "short";
+        ExportCSVController instance =  this.instance;
+      
+        boolean expResult =  true;
+        boolean result = instance.exportResults(s, filePath, whatToExport);
+        assertEquals(expResult, result);
+    }
+    
+      @Test
+    public void testExportResults_3() throws FileNotFoundException {
+         System.out.println("exportResults");
+          Simulation sm = new Simulation();
+        sm.createPathSimulation(TypePath.ALL);
+        SegmentResult r  = new SegmentResult();
+        LinkedList<SegmentResult> segs = new LinkedList<>();
+        segs.add(r);
+        sm.getFastestResultPath().setSegments(segs);
+           p.getSimulationsList().getSimulationsList().add(sm);
+        this.instance = new ExportCSVController(p);
+        String[] s = new String[1];
+        s[0] = "Simulation";
+         String filePath = "src/main/resources/testhtml3.html";
+           File file = new File(filePath);
+        String whatToExport = "fast";
         ExportCSVController instance =  this.instance;
       
         boolean expResult =  true;

@@ -18,6 +18,7 @@ import lapr.project.model.Airport;
 import lapr.project.model.FlightPlan;
 import lapr.project.model.Project;
 import lapr.project.model.analysis.Path;
+import lapr.project.model.analysis.SegmentResult;
 import lapr.project.model.analysis.ShortestPathResult;
 import lapr.project.model.analysis.Simulation;
 import lapr.project.model.analysis.TypePath;
@@ -177,25 +178,23 @@ public class ExportHTMLControllerTest {
 
     }
 
-
     /**
      * Test of exportResult method, of class ExportHTMLController.
      */
     @Test
     public void testExportResult() {
         System.out.println("exportResult");
-        
+
         String filePath = "src/main/resources/testhtml3.html";
-           File file = new File(filePath);
+        File file = new File(filePath);
         Simulation s = new Simulation();
         s.createPathSimulation(TypePath.ALL);
-        
-       
+
         ExportHTMLController instance = this.instance;
         boolean expResult = true;
         boolean result = instance.exportResult(s, filePath);
         assertEquals(expResult, result);
-      
+
     }
 
     /**
@@ -204,21 +203,82 @@ public class ExportHTMLControllerTest {
     @Test
     public void testExportResults() {
         System.out.println("exportResults");
-          Simulation sm = new Simulation();
+
+        Simulation sm = new Simulation();
         sm.createPathSimulation(TypePath.ALL);
-           p.getSimulationsList().getSimulationsList().add(sm);
+        SegmentResult r = new SegmentResult();
+        LinkedList<SegmentResult> segs = new LinkedList<>();
+        segs.add(r);
+        sm.getEcologicResultPath().setSegments(segs);
+        p.getSimulationsList().getSimulationsList().add(sm);
         this.instance = new ExportHTMLController(p);
         String[] s = new String[1];
         s[0] = "Simulation";
-         String filePath = "src/main/resources/testhtml3.html";
-           File file = new File(filePath);
+        String filePath = "src/main/resources/testhtml3.html";
+        File file = new File(filePath);
         String whatToExport = "eco";
-        ExportHTMLController instance =  this.instance;
-      
-        boolean expResult =  true;
+        ExportHTMLController instance = this.instance;
+
+        boolean expResult = true;
         boolean result = instance.exportResults(s, filePath, whatToExport);
         assertEquals(expResult, result);
-     
+
+    }
+    
+     /**
+     * Test of exportResults method, of class ExportHTMLController.
+     */
+    @Test
+    public void testExportResults_2() {
+        System.out.println("exportResults");
+
+        Simulation sm = new Simulation();
+        sm.createPathSimulation(TypePath.ALL);
+        SegmentResult r = new SegmentResult();
+        LinkedList<SegmentResult> segs = new LinkedList<>();
+        segs.add(r);
+        sm.getShortestResultPath().setSegments(segs);
+        p.getSimulationsList().getSimulationsList().add(sm);
+        this.instance = new ExportHTMLController(p);
+        String[] s = new String[1];
+        s[0] = "Simulation";
+        String filePath = "src/main/resources/testhtml3.html";
+        File file = new File(filePath);
+        String whatToExport = "short";
+        ExportHTMLController instance = this.instance;
+
+        boolean expResult = true;
+        boolean result = instance.exportResults(s, filePath, whatToExport);
+        assertEquals(expResult, result);
+
+    }
+    
+      /**
+     * Test of exportResults method, of class ExportHTMLController.
+     */
+    @Test
+    public void testExportResults_3() {
+        System.out.println("exportResults");
+
+        Simulation sm = new Simulation();
+        sm.createPathSimulation(TypePath.ALL);
+        SegmentResult r = new SegmentResult();
+        LinkedList<SegmentResult> segs = new LinkedList<>();
+        segs.add(r);
+        sm.getFastestResultPath().setSegments(segs);
+        p.getSimulationsList().getSimulationsList().add(sm);
+        this.instance = new ExportHTMLController(p);
+        String[] s = new String[1];
+        s[0] = "Simulation";
+        String filePath = "src/main/resources/testhtml3.html";
+        File file = new File(filePath);
+        String whatToExport = "fast";
+        ExportHTMLController instance = this.instance;
+
+        boolean expResult = true;
+        boolean result = instance.exportResults(s, filePath, whatToExport);
+        assertEquals(expResult, result);
+
     }
 
 }
