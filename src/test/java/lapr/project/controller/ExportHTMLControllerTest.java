@@ -21,7 +21,6 @@ import lapr.project.model.analysis.SegmentResult;
 import lapr.project.model.analysis.ShortestPathResult;
 import lapr.project.model.analysis.Simulation;
 import lapr.project.model.analysis.TypePath;
-
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -165,7 +164,7 @@ public class ExportHTMLControllerTest {
     public void testGetListOfNodes() {
         System.out.println("getListOfNodes");
         Simulation sim = new Simulation();
-        sim.setData(0, 0, 0, 0, new Airport(), new Airport(), new Aircraft());
+        sim.setData(0, 0, 0, 0, new FlightPlan());
         p.getSimulationsList().getSimulationsList().add(sim);
         ExportHTMLController instance = new ExportHTMLController(p);
 

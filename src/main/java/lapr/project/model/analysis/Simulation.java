@@ -193,21 +193,17 @@ public class Simulation{
      * @param crew number of crew members
      * @param cargoLoad cargo load (kg)
      * @param fuelLoad fuel weight (kg)
-     * @param startAirport
-     * @param endAirport
-     * @param aircraft
+     * @param flightPlan
      */
     public void setData(int passengers, int crew, double cargoLoad, double fuelLoad,
-            Airport startAirport, Airport endAirport, Aircraft aircraft){
+            FlightPlan flightPlan){
         this.passengers=passengers;
         this.crew=crew;
         this.cargoLoad=cargoLoad;
         this.fuelWeight=ConversionAlgorithms.convertLtoKg(fuelLoad);
-        this.flightPlan=new FlightPlan("si"+counterCode, 0, aircraft,
-                startAirport, endAirport, new LinkedList<>(), new LinkedList<>(),
-                new LinkedList<>()); 
-        this.totalWeight=AircraftAlgorithms.calculateInitialWeight(passengers,
-                crew, cargoLoad, aircraft.getAircraftModel().geteWeight(),fuelLoad);
+        this.flightPlan=flightPlan; 
+        this.totalWeight=AircraftAlgorithms.calculateInitialWeight(passengers, crew, 
+                cargoLoad, flightPlan.getAircraft().getAircraftModel().geteWeight(),fuelLoad);
     }
 
     /**
@@ -364,7 +360,7 @@ public class Simulation{
       }
      
      
-     public boolean calculateBestPath(TypePath type, AirNetwork air, int timeStep){
+     public boolean calculateBestPath(TypePath type, AirNetwork air){
          if(flightPlan!=null){
              TypePath p=type;
             switch (p){

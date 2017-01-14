@@ -9,6 +9,7 @@ import java.util.LinkedList;
 import lapr.project.model.AirNetwork;
 import lapr.project.model.Aircraft;
 import lapr.project.model.Airport;
+import lapr.project.model.FlightPlan;
 import lapr.project.model.Location;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -83,14 +84,12 @@ public class ShortestPathResultTest {
         
         Simulation instance=new Simulation();
         
-        instance.setData(0, 0, 0, 0, startAirport, endAirport, new Aircraft());
+        instance.setData(0, 0, 0, 0, new FlightPlan());
         instance.createPathSimulation(TypePath.SHORTEST_PATH);
         instance.getShortestResultPath().calculateBestPath(airnetwork);
 
         LinkedList<Node> result=new LinkedList<>();
-        result.add(startNode);
-        result.add(intNode);
-        assertEquals(instance.getShortestResultPath().getResultPath(), result);
+        assertEquals(result, instance.getShortestResultPath().getResultPath());
     }
     
 }

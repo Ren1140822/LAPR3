@@ -212,7 +212,7 @@ public class SimulationTest {
                 new Location(20, 10, 10));;
         Aircraft aircraft = new Aircraft();
         Simulation instance = new Simulation();
-        instance.setData(passengers, crew, cargoLoad, fuelLoad, startAirport, endAirport, aircraft);
+        instance.setData(passengers, crew, cargoLoad, fuelLoad, new FlightPlan());
     }
 
     /**
@@ -256,8 +256,7 @@ public class SimulationTest {
                 new Location(20, 10, 10));;
         Aircraft aircraft = new Aircraft();
         Simulation instance = new Simulation();
-        instance.setData(passengers, crew, cargoLoad, fuelLoad, startAirport, 
-                endAirport, aircraft);
+        instance.setData(passengers, crew, cargoLoad, fuelLoad, new FlightPlan());
         FlightPlan f = new FlightPlan();
         instance.setFlightPlan(f);
         Node expResult = network.getAirportNode(f.getOrigin());        
@@ -282,8 +281,7 @@ public class SimulationTest {
                 new Location(20, 10, 10));;
         Aircraft aircraft = new Aircraft();
         Simulation instance = new Simulation();
-        instance.setData(passengers, crew, cargoLoad, fuelLoad, startAirport, 
-                endAirport, aircraft);
+        instance.setData(passengers, crew, cargoLoad, fuelLoad, new FlightPlan());
         FlightPlan f = new FlightPlan();
         instance.setFlightPlan(f);
         Node expResult = network.getAirportNode(f.getDestination());    
@@ -344,7 +342,7 @@ public class SimulationTest {
         Simulation instance = new Simulation();
         instance.setFlightPlan(f);
         instance.createPathSimulation(TypePath.ALL);
-        instance.setData(10, 10, 10, 10, airp1, airp2, a1);
+        instance.setData(10, 10, 10, 10, f);
         boolean expResult = false;
         boolean result = instance.validate();
         assertEquals(expResult, result);
@@ -353,7 +351,7 @@ public class SimulationTest {
         Simulation instance2 = new Simulation();
         instance2.setFlightPlan(f);
         instance2.createPathSimulation(TypePath.ALL);
-        instance2.setData(10, 7, 10, 10, airp1, airp2, a1);
+        instance2.setData(10, 7, 10, 10, f);
         boolean expResult2 = true;
         boolean result2 = instance2.validate();
         assertEquals(expResult2, result2);
@@ -533,10 +531,10 @@ public class SimulationTest {
         int timeStep = 10;
         Simulation instance = new Simulation(); 
         instance.createPathSimulation(type);
-        instance.setData(10, 10, 10, 10, airp1, airp2, a1);
+        instance.setData(10, 10, 10, 10, f);
         instance.setFlightPlan(f);
         boolean expResult = true;
-        boolean result = instance.calculateBestPath(type, air, timeStep);
+        boolean result = instance.calculateBestPath(type, air);
         assertEquals(expResult, result);
         
         System.out.println("calculateBestPath2");
@@ -547,7 +545,7 @@ public class SimulationTest {
         instance2.createPathSimulation(type);
         instance2.setFlightPlan(f);
         boolean expResult2 = true;
-        boolean result2 = instance2.calculateBestPath(type2, air2, timeStep2);
+        boolean result2 = instance2.calculateBestPath(type2, air2);
         assertEquals(expResult2, result2);
         
         System.out.println("calculateBestPath3");
@@ -558,7 +556,7 @@ public class SimulationTest {
         instance3.createPathSimulation(type);
         instance3.setFlightPlan(f);
         boolean expResult3 = true;
-        boolean result3 = instance3.calculateBestPath(type3, air3, timeStep3);
+        boolean result3 = instance3.calculateBestPath(type3, air3);
         assertEquals(expResult3, result3);
         
         System.out.println("calculateBestPath4");
@@ -569,7 +567,7 @@ public class SimulationTest {
         instance4.createPathSimulation(type);
         instance4.setFlightPlan(f);
         boolean expResult4 = true;
-        boolean result4 = instance4.calculateBestPath(type4, air4, timeStep4);
+        boolean result4 = instance4.calculateBestPath(type4, air4);
         assertEquals(expResult4, result4);
     }
 

@@ -85,19 +85,14 @@ public class FindBestPathController {
     
     /**
      * Set the data introduced by the user 
-     * @param startAirport
-     * @param endAirport
-     * @param aircraft
      * @param passengers
      * @param crew
      * @param cargoLoad 
      * @param fuelLoad 
      */
-    public void setData(Airport startAirport, Airport endAirport,
-            Aircraft aircraft, int passengers, int crew, 
-            double cargoLoad, double fuelLoad){
+    public void setData(int passengers, int crew, double cargoLoad, double fuelLoad){
         project.getSimulationsList().getSimulation().setData(passengers, 
-                crew, cargoLoad, fuelLoad, startAirport, endAirport, aircraft);
+                crew, cargoLoad, fuelLoad, flightPlan);
     }
     
     /**
@@ -106,8 +101,8 @@ public class FindBestPathController {
      * @param timeStep time step to consider in analysis
      * @return 
      */
-    public boolean calculatePath(TypePath type, int timeStep){
-        return project.getSimulationsList().getSimulation().calculateBestPath( type, project.getAirNetwork(),timeStep);
+    public boolean calculatePath(TypePath type){
+        return project.getSimulationsList().getSimulation().calculateBestPath( type, project.getAirNetwork());
     }
       /**
        * Get the simulation resulte receiving the type of simulation by parameter
