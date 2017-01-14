@@ -6,8 +6,12 @@
 package lapr.project.model.analysis;
 
 import java.util.LinkedList;
+import java.util.List;
+import lapr.project.model.AirNetwork;
+import lapr.project.model.Airport;
 import lapr.project.model.FlightPlan;
 import lapr.project.model.Node;
+import lapr.project.model.Segment;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -17,11 +21,11 @@ import static org.junit.Assert.*;
 
 /**
  *
- * @author Diana Silva
+ * @author NANA
  */
-public class ResultPathTest {
+public class PathTest {
     
-    public ResultPathTest() {
+    public PathTest() {
     }
     
     @BeforeClass
@@ -50,7 +54,6 @@ public class ResultPathTest {
         FlightPlan flightPlan=new FlightPlan();
         EcologicPathResult instance = new EcologicPathResult(flightPlan);
         instance.setResult(result_2);
-        assertEquals(instance.getResult(), result_2, 0.0);
     }
 
     /**
@@ -59,13 +62,10 @@ public class ResultPathTest {
     @Test
     public void testSetResultPath() {
         System.out.println("setResultPath");
-        LinkedList<Node> resultPath = new LinkedList<>();
-        Node test=new Node("test",0,0);
-        resultPath.add(test);
+        List<Node> resultPath = new LinkedList<>();
         FlightPlan flightPlan=new FlightPlan();
         EcologicPathResult instance = new EcologicPathResult(flightPlan);
         instance.setResultPath(resultPath);
-        assertEquals(instance.getResultPath(), resultPath);
     }
 
     /**
@@ -76,10 +76,24 @@ public class ResultPathTest {
         System.out.println("getResult");
         FlightPlan flightPlan=new FlightPlan();
         EcologicPathResult instance = new EcologicPathResult(flightPlan);
-        double expResult = 2.0;
-        instance.setResult(expResult);  
+        double expResult = 2000.0;
+        instance.setResult(expResult);
         double result = instance.getResult();
         assertEquals(expResult, result, 0.0);
+    }
+
+    /**
+     * Test of getResultPath method, of class Path.
+     */
+    @Test
+    public void testGetResultPath() {
+        System.out.println("getResultPath");
+        FlightPlan flightPlan=new FlightPlan();
+        LinkedList<Node> expResult=new LinkedList<>();
+        EcologicPathResult instance = new EcologicPathResult(flightPlan);
+        instance.setResultPath(expResult);
+        List<Node> result = instance.getResultPath();
+        assertEquals(expResult, result);
     }
 
 }

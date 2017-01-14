@@ -13,13 +13,12 @@ import lapr.project.model.Airport;
 import lapr.project.model.FlightPlan;
 import lapr.project.model.Node;
 import lapr.project.model.Segment;
-import lapr.project.model.physics.AircraftAlgorithms;
 
 /**
  * The class to stores and manage analysis results of simulation
  * @author Diana Silva
  */
-public class Path {
+public abstract class Path {
     /**
      * Value of result path calculated
      */
@@ -103,19 +102,6 @@ public class Path {
     public List<Node> getResultPath(){
         return path;
     }
-    
-    /**
-     * Calculates the energy consum of simulation result
-     * @param initialWeight
-     * @param timeFlight
-     * @param tsfc
-     * @param weightZeroFuel
-     */
-    public void calculateEnergyConsumption(double initialWeight, double timeFlight, double tsfc, double weightZeroFuel){
-        double finalWeight=AircraftAlgorithms.calculateFinalWeight(initialWeight, timeFlight, tsfc);
-        //falta converter fuel para energia
-//        energyConsum= AircraftAlgorithms.calculateFuelUsed(initialWeight, finalWeight, weightZeroFuel);      
-    }
      
     /**
      * @return the segmentsResult
@@ -130,6 +116,21 @@ public class Path {
     public void setSegments(LinkedList<SegmentResult> segments) {
         this.segmentsResult = segments;
     }  
+    
+    
+    /**
+     * @return the air
+     */
+    public AirNetwork getAir() {
+        return air;
+    }
+
+    /**
+     * @param air the air to set
+     */
+    public void setAir(AirNetwork air) {
+        this.air = air;
+    }
    
      /**
      * Validates the result path
@@ -233,7 +234,7 @@ public class Path {
         do{    
             seg.calculate();
             segmentsResult.add(seg);
-        }while(seg.startLand(seg, endAirport)==0);
+        }while(aux.startLand(seg, endAirport)==0);
 
         seg = new SegmentResult(SegmentType.DESC, segmentsResult.getLast().getAltitudeFinal(), totalWeight, timeStep,
                 flightPlan.getAircraft().getAircraftModel(), flightPlan.getListPattern(), segment, segmentsResult.getLast().getMass());

@@ -483,16 +483,53 @@ public class SegmentResultTest {
         boolean result = instance.validateCalculation();
         assertEquals(expResult, result);
     }
-    
-       /**
-     * Test of stopClimb method, of class SegmentResult.
+   
+    /**
+     * Test of setTas method, of class SegmentResult.
      */
     @Test
-    public void testStopClimb() {
-        System.out.println("stopClimb");
+    public void testSetTas() {
+        System.out.println("setTas");
+        double tas = 0.0;
         SegmentResult instance = new SegmentResult();
-        boolean expResult = true;
-        boolean result = instance.stopClimb();
-        assertEquals(expResult, result);
+        instance.setTas(tas);
+    }
+
+    /**
+     * Test of getInitMass method, of class SegmentResult.
+     */
+    @Test
+    public void testGetInitMass() {
+        System.out.println("getInitMass");
+        SegmentResult instance = new SegmentResult();
+        double expResult = 1000;
+        instance.setInitMass(expResult);
+        double result = instance.getInitMass();
+        assertEquals(expResult, result, 0.0);
+    }
+
+    /**
+     * Test of setInitMass method, of class SegmentResult.
+     */
+    @Test
+    public void testSetInitMass() {
+        System.out.println("setInitMass");
+        double initMass = 0.0;
+        SegmentResult instance = new SegmentResult();
+        instance.setInitMass(initMass);
+    }
+    
+    
+    /**
+     * Test of getAltitudeFinal method, of class SegmentResult.
+     */
+    @Test
+    public void testGetAltitudeFinal() {
+        System.out.println("getAltitudeFinal");
+        SegmentResult instance = new SegmentResult();
+        double expResult = 1000.0;
+        instance.setAltitudeFinal(expResult);
+        double result = instance.getAltitudeFinal();
+        assertEquals(expResult, result, 0.0);  
     }
 }
