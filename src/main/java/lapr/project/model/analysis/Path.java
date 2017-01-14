@@ -234,7 +234,7 @@ public abstract class Path {
         do{    
             seg.calculate();
             segmentsResult.add(seg);
-        }while(Double.doubleToLongBits(aux.startLand(seg, endAirport))==0);
+        }while(aux.startLand(seg, endAirport)==0);
 
         seg = new SegmentResult(SegmentType.DESC, segmentsResult.getLast().getAltitudeFinal(), totalWeight, timeStep,
                 flightPlan.getAircraft().getAircraftModel(), flightPlan.getListPattern(), segment, segmentsResult.getLast().getMass());
