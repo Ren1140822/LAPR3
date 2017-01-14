@@ -27,6 +27,8 @@ import javax.swing.JPanel;
 import javax.swing.border.Border;
 import lapr.project.controller.ExportHTMLController;
 import lapr.project.model.Project;
+import lapr.project.model.analysis.Simulation;
+import lapr.project.model.analysis.TypePath;
 
 /**
  *
@@ -37,7 +39,7 @@ public class ExportHTMLUI extends JDialog {
     /**
      * Instance variables.
      */
-    private final int WINDOW_WIDTH = 550;
+    private final int WINDOW_WIDTH = 195;
     private final int WINDOW_HEIGHT = 500;
     private final String WINDOW_TITLE = "Export data to HTML";
     private transient ExportHTMLController controller;
@@ -77,24 +79,25 @@ public class ExportHTMLUI extends JDialog {
         FlowLayout fl = new FlowLayout(FlowLayout.LEADING);
         FlowLayout fl2 = new FlowLayout(FlowLayout.LEADING, 50, 0);
 
-        JPanel panelLists = new JPanel(fl);
+        JPanel panelLists = new JPanel();
         JPanel panelLabels = new JPanel(fl2);
         JLabel labelBest = createJLabels("List of simulations");
-       
+
         panelLabels.add(labelBest);
-    
-        JPanel panelUpdateBtn = new JPanel();
+
+        JPanel panelUpdateBtn = new JPanel(new FlowLayout());
         listSimulations = createJList("List of simulations");
 
-        panelLists.add(listSimulations);
+        panelLists.add(listSimulations,BorderLayout.CENTER);
 
         JButton btn = createJButtonUpdate();
         panelUpdateBtn.add(btn, BorderLayout.NORTH);
+        JButton btnExport = createExportJButton();
+        panelUpdateBtn.add(btnExport, BorderLayout.SOUTH);
         add(panelLists, BorderLayout.WEST);
         add(panelLabels, BorderLayout.NORTH);
-        add(panelUpdateBtn, BorderLayout.CENTER);
-        JButton btnExport = createExportJButton();
-        add(btnExport, BorderLayout.SOUTH);
+        add(panelUpdateBtn, BorderLayout.SOUTH);
+
     }
 
     private JLabel createJLabels(String text) {
@@ -154,9 +157,10 @@ public class ExportHTMLUI extends JDialog {
     public JButton createExportJButton() {
         JButton btn = new JButton();
 
-        btn.setText("Export selected results");
+        btn.setText("Export results");
         Border border = BorderFactory.createLineBorder(Color.BLACK);
         btn.setBorder(border);
+        btn.setPreferredSize(new Dimension(100,40));
         btn.addMouseListener(new MouseAdapter() {
 
             @Override
@@ -212,5 +216,7 @@ public class ExportHTMLUI extends JDialog {
             setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         }
     }
+    
+  
 
 }
