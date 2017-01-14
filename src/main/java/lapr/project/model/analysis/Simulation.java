@@ -370,27 +370,19 @@ public class Simulation{
             switch (p){
                 case SHORTEST_PATH:
                      shortestResultPath.calculateBestPath(air);
-                     shortestResultPath.createPartialResults(flightPlan, totalWeight, timeStep);
                      
                      return true;
                 case FASTEST_PATH:
                     fastestResultPath.calculateBestPath(air);
-                    fastestResultPath.createPartialResults(flightPlan, totalWeight, timeStep);
                     return true;
                 case ECOLOGIC_PATH:
                     ecologicResultPath.calculateBestPath(air);
-                    ecologicResultPath.createPartialResults(flightPlan, totalWeight, timeStep);
                     return true;
 
                 case ALL:
                   shortestResultPath.calculateBestPath(air);
                   fastestResultPath.calculateBestPath(air);
-                  ecologicResultPath.calculateBestPath(air);
-                  
-                  shortestResultPath.createPartialResults(flightPlan, totalWeight, timeStep);
-                  fastestResultPath.createPartialResults(flightPlan, totalWeight, timeStep);
-                  ecologicResultPath.createPartialResults(flightPlan, totalWeight, timeStep);
-                  
+                  ecologicResultPath.calculateBestPath(air);                 
                   
                   return true;
                 default:

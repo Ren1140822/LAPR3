@@ -9,11 +9,8 @@ package lapr.project.model.analysis;
 import java.util.LinkedList;
 import java.util.List;
 import lapr.project.model.AirNetwork;
-import lapr.project.model.AircraftModel;
-import lapr.project.model.Airport;
 import lapr.project.model.FlightPlan;
 import lapr.project.model.Node;
-import lapr.project.model.Pattern;
 import lapr.project.model.Segment;
 import lapr.project.model.physics.AircraftAlgorithms;
 
@@ -48,11 +45,6 @@ public class Path {
     private static final double DEFAULT_VALUE=0.0;
     
     private AirNetwork air;
-    
-    /**
-     * distnace to land aircraft desired
-     */
-    private static final double LAND_DIST_REF=193.121*1000;
 
    
     /**
@@ -137,15 +129,7 @@ public class Path {
     public void setSegments(LinkedList<SegmentResult> segments) {
         this.segmentsResult = segments;
     }  
-    
-    private boolean newSegment(SegmentResult sr){
-        if(sr.validate()){
-           this.segmentsResult.add(sr);
-           return true;
-        }
-        return false;
-    }
-    
+   
      /**
      * Validates the result path
      * @return true if valid, false if not
@@ -213,146 +197,8 @@ public class Path {
         return res;
     }
     
-    /**
-     * Simulates initial node
-     * @param start start airport
-     * @param initialMass initial weight of aircraft (kg)
-     * @param timeStep time step to consider (s)
-     * @param aircraftModel aircraftModel
-     * @param list list of patterns to consider
-     * @param segment segment to simulate
-     * @return true if segment result was created, false if not
-     */
-    public boolean simulateInitialNode(Airport start, double initialMass,
-            int timeStep,  AircraftModel aircraftModel, List<Pattern> list, Segment segment)
-    {
-        double altitude=start.getLocation().getAltitude();
-                    
-        SegmentResult srClimb=new SegmentResult(SegmentType.CLIMBING,
-                altitude,initialMass, timeStep, aircraftModel, 
-                list,segment);
-        boolean stopClimb=srClimb.stopClimb();
-        do{
-            boolean testClimb= srClimb.calculate();
-     
-           if(testClimb)
-           
-            segmentsResult.add(srClimb);
-        }while(!stopClimb);
-        
-        return simulateIntermNodes(segmentsResult.getLast().getMass(),
-                timeStep, aircraftModel, list,segment, segmentsResult.getLast().getAltitudeFinal());
-       
-    }
-    
-    /**
-     * Simulate the intermediate nodes
-     * @param initialMass initial mass (kg)
-     * @param timeStep time step to consider (s)
-     * @param aircraftModel aircraft model
-     * @param list list of patterns to consider
-     * @param segment segment to simulate
-     * @param initialAltitude initial altitude (m)
-     * @return true if segment result was created, false if not
-     */
-    public boolean simulateIntermNodes(double initialMass, int timeStep, 
-            AircraftModel aircraftModel, List<Pattern> list, Segment segment, 
-            double initialAltitude)
-    {
-       
-        SegmentResult srCruise=new SegmentResult(SegmentType.CRUISE,
-                            initialAltitude, initialMass, timeStep,aircraftModel, list, segment);
-       
-        boolean testCruise=srCruise.calculate();
-        if(testCruise)
-            segmentsResult.add(srCruise);
-        
-        return testCruise;
-    }
-    
-    public boolean simulateEndNode(int timeStep, 
-            AircraftModel aircraftModel, List<Pattern> list, Segment segment, 
-            double initialAltitude)
-    {
-            SegmentResult srDescend=new SegmentResult(SegmentType.DESC,
-                                segmentsResult.getLast().getAltitudeFinal(),
-                    segmentsResult.getLast().getMass(), timeStep, aircraftModel, list, segment);
-            boolean testEnd=srDescend.calculate();
-            
-             if(testEnd)
-                 segmentsResult.add(srDescend);
-             return testEnd;
-    }
-    
-    private double estimateDistanceToDescend(Airport end,
-            int timeStep,  AircraftModel aircraftModel, List<Pattern> list,
-            Segment segment){
-         
-            SegmentResult srAuxDesc=new SegmentResult(SegmentType.DESC,
-                        segmentsResult.getLast().getAltitudeFinal(),segmentsResult.getLast().getMass(), 
-            timeStep, aircraftModel, list, segment);
-            double altFinalAirport=end.getLocation().getAltitude();
-            double altFinalSimulation=srAuxDesc.getAltitudeFinal();
-            double distanceDesc=0;
-            if(altFinalSimulation<=altFinalAirport){
-                double margin=altFinalAirport-altFinalSimulation;
-                double perc=(srAuxDesc.getDistance()-LAND_DIST_REF)/srAuxDesc.getDistance();
-                return srAuxDesc.getDistance()*(srAuxDesc.getDistance()*perc);
-              
-            }else
-                return -1;
-    }
-    
-    /**
-     * Create results of path (climb-cruise-descend)
-     * @param flightPlan flight plan to calculate
-     * @param initialMass initial weigt
-     * @param timeStep time step do consider
-     * @return true if valid, false if not
-     */
-    public boolean createPartialResults(FlightPlan flightPlan,
-        double initialMass, int timeStep){
-        AircraftModel aircraftModel=flightPlan.getAircraft().getAircraftModel();
-        double altitude=-1;
-        if(!path.isEmpty()){
-            List<Pattern> list=flightPlan.getListPattern();
-            int nrScale=flightPlan.getMandatoryWaypoints().size();
-            double size=path.size();
-            LinkedList<Segment> listSegments=getSegmentsPath(air);
-            Airport startAirport=flightPlan.getOrigin();
-                      
-            //for(int j=0; j<nrScale;j++)
  
-            //ONLY ONE AIRPORT-SKY-DESCEND (nrScale=0)
-            for(int i=0; i<size;i++){
-                //NODE2-NODE3-...-LASTNODE
-                if(i!=0 && i!=size-1)
-                    simulateIntermNodes(segmentsResult.getLast().getMass(), timeStep, aircraftModel, list,
-                            listSegments.get(i), segmentsResult.getLast().getAltitudeFinal());
-                
-                //CLIMBING PHASE - AIRPORT/FIRSTNODE - SKY 
-                if(i==0){
-                    simulateInitialNode(startAirport, initialMass, timeStep,
-                            aircraftModel, list, listSegments.get(i));
-                    
-                }
-                //DESCEND PHASE
-                if(i==path.size()-1){
-                    //SIMULATE DESCENT
-                    double distance=estimateDistanceToDescend(flightPlan.getDestination(),
-                            timeStep, aircraftModel, list, listSegments.get(i));                 
-                    do{
-                        simulateIntermNodes(segmentsResult.getLast().getMass(), timeStep, aircraftModel, list,
-                            listSegments.get(i), segmentsResult.getLast().getAltitudeFinal());
 
-                    }while(segmentsResult.getLast().getDistance()<distance);           
-                }
-            }
-        }
-        
-        return !path.isEmpty() || segmentsResult.isEmpty();
-    }
-    
     public LinkedList<Segment> getSegmentsPath(AirNetwork air){
         LinkedList<Segment> list=new LinkedList<>();
         for(int i=0; i<path.size()-1;i++){
@@ -360,15 +206,47 @@ public class Path {
         }
         return list;
     }
+    
+    public boolean simulateInitialNode(FlightPlan flightPlan, int timeStep, double totalWeight, Segment segment){
+        SegmentResult srClimb = new SegmentResult(SegmentType.CLIMBING, flightPlan.getOrigin().getLocation().getAltitude(), 
+                            totalWeight, timeStep, flightPlan.getAircraft().getAircraftModel(), flightPlan.getListPattern(), segment,totalWeight);
+        do{
+            srClimb.calculateByType(SegmentType.CLIMBING);
+            segmentsResult.add(srClimb);
+        }while(!srClimb.stopClimb());
         
-    /**
-     * Calculate distance needed do descend phase
-     * @return distance (m)
-     */
-    private double calculateDistanceToDescend(double altitude, Airport finalAirport){
-     //  double timeToDescend=altitude-finalAirport.getLocation().getAltitude()/dhDT;
+        SegmentResult seg = new SegmentResult(SegmentType.CRUISE, segmentsResult.getLast().getAltitudeFinal(), totalWeight, timeStep, 
+                 flightPlan.getAircraft().getAircraftModel(), flightPlan.getListPattern(), segment, segmentsResult.getLast().getMass());
+         seg.calculateByType(SegmentType.CRUISE);
+         segmentsResult.add(seg);
+         return true;
+    }
+    
+    public boolean simulateEndNode(FlightPlan flightPlan, int timeStep, double totalWeight, Segment segment){
+        SegmentResult seg = new SegmentResult(SegmentType.CRUISE, getSegments().getLast().getAltitudeFinal(), totalWeight, timeStep, 
+                             flightPlan.getAircraft().getAircraftModel(), flightPlan.getListPattern(), segment, getSegments().getLast().getMass());
+                   
+        double distGo=seg.estimateDistanceToDescend(flightPlan.getDestination(), timeStep, totalWeight, 
+                             flightPlan.getAircraft().getAircraftModel(), flightPlan.getListPattern(), segment,
+                            segmentsResult.getLast().getMass(), segmentsResult.getLast().getAltitudeFinal());
+        do{    
+            seg.calculateByType(SegmentType.CRUISE);
+            segmentsResult.add(seg);
+        }while(seg.getDistance()<distGo);
+
+        seg = new SegmentResult(SegmentType.DESC, segmentsResult.getLast().getAltitudeFinal(), totalWeight, timeStep,
+                flightPlan.getAircraft().getAircraftModel(), flightPlan.getListPattern(), segment, segmentsResult.getLast().getMass());
         
-       //return timeToDescend*groundSpeed;
-       return 0;
+        seg.calculateByType(SegmentType.DESC);
+        segmentsResult.add(seg); 
+        return true;
+    }
+    
+    public boolean simulateIntermNodes(FlightPlan flightPlan, int timeStep, double totalWeight, Segment segment){
+        SegmentResult seg = new SegmentResult(SegmentType.CRUISE, segmentsResult.getLast().getAltitudeFinal(), totalWeight, timeStep, 
+                            flightPlan.getAircraft().getAircraftModel(), flightPlan.getListPattern(), segment, segmentsResult.getLast().getMass());
+        seg.calculateByType(SegmentType.CRUISE);
+        segmentsResult.add(seg);
+        return true;
     }
 }

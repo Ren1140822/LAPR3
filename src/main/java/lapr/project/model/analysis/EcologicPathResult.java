@@ -5,7 +5,6 @@
  */
 package lapr.project.model.analysis;
 
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import lapr.project.model.AirNetwork;
@@ -57,17 +56,22 @@ public class EcologicPathResult extends Path implements BestPathInterface {
         Graph<Node, Segment> consumeGraph = air.getAirNetwork().clone();
         SegmentResult seg = null;
         air.getAirNetwork().edges().forEach(lS::add);
+
         for (Edge<Node, Segment> e : lS) {
             if (e.getVOrig().equals(air.getAirportNode(flightPlan.getOrigin()))) {
-                seg = new SegmentResult(SegmentType.CLIMBING, flightPlan.getOrigin().getLocation().getAltitude(), totalWeight, timeStep, flightPlan.getAircraft().getAircraftModel(), flightPlan.getListPattern(), e.getElement());
-                seg.calculateByType(SegmentType.CLIMBING);
+               if(simulateInitialNode(flightPlan, timeStep, totalWeight, e.getElement())){
+                    seg=getSegments().getFirst();
+                    seg=getSegments().getLast();
+               }
             } else {
                 if (e.getVDest().equals(air.getAirportNode(flightPlan.getDestination()))) {
-                    seg = new SegmentResult(SegmentType.DESC, flightPlan.getOrigin().getLocation().getAltitude(), totalWeight, timeStep, flightPlan.getAircraft().getAircraftModel(), flightPlan.getListPattern(), e.getElement());
-                    seg.calculateByType(SegmentType.DESC);
+                    if(simulateEndNode(flightPlan, timeStep, totalWeight, e.getElement())){
+                            seg=getSegments().getLast();
+                            seg=getSegments().get(getSegments().size()-2);
+                    }
                 } else {
-                    seg = new SegmentResult(SegmentType.CRUISE, flightPlan.getOrigin().getLocation().getAltitude(), totalWeight, timeStep, flightPlan.getAircraft().getAircraftModel(), flightPlan.getListPattern(), e.getElement());
-                    seg.calculateByType(SegmentType.CRUISE);
+                    if(simulateIntermNodes(flightPlan, timeStep, totalWeight, e.getElement()))
+                        seg=getSegments().getLast();
                 }
             }
             consumeGraph.removeEdge(e.getVOrig(), e.getVDest());
