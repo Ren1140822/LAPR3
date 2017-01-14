@@ -5,6 +5,7 @@
  */
 package lapr.project.controller;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -176,13 +177,48 @@ public class ExportHTMLControllerTest {
 
     }
 
+
+    /**
+     * Test of exportResult method, of class ExportHTMLController.
+     */
     @Test
-    public void testExportResults() throws FileNotFoundException {
-        HTMLExporterTest test = new HTMLExporterTest();
-        String filePath = "src/main/resources/testcsv2.csv";
-        this.instance.exportResults(new String[1], filePath, "shortest");
-        test.testExportStringsToHTML_5args_1();
-        assertTrue(test.isResult());
+    public void testExportResult() {
+        System.out.println("exportResult");
+        
+        String filePath = "src/main/resources/testhtml3.html";
+           File file = new File(filePath);
+        Simulation s = new Simulation();
+        s.createPathSimulation(TypePath.ALL);
+        
+       
+        ExportHTMLController instance = this.instance;
+        boolean expResult = true;
+        boolean result = instance.exportResult(s, filePath);
+        assertEquals(expResult, result);
+      
+    }
+
+    /**
+     * Test of exportResults method, of class ExportHTMLController.
+     */
+    @Test
+    public void testExportResults() {
+        System.out.println("exportResults");
+          Simulation sm = new Simulation();
+        sm.createPathSimulation(TypePath.ALL);
+           p.getSimulationsList().getSimulationsList().add(sm);
+        this.instance = new ExportHTMLController(p);
+        String[] s = new String[1];
+        s[0] = "Simulation";
+         String filePath = "src/main/resources/testhtml3.html";
+           File file = new File(filePath);
+        String whatToExport = "eco";
+        ExportHTMLController instance =  this.instance;
+      
+        boolean expResult =  true;
+        boolean result = instance.exportResults(s, filePath, whatToExport);
+        assertEquals(expResult, result);
+     
     }
 
 }

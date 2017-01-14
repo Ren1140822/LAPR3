@@ -5,6 +5,7 @@
  */
 package lapr.project.controller;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -174,10 +175,20 @@ public class ExportCSVControllerTest {
     
      @Test
     public void testExportResults() throws FileNotFoundException {
-           CSVExporterTest test = new CSVExporterTest();
-              String filePath = "src/main/resources/testcsv2.csv";
-           this.instance.exportResults(new String[1], filePath, "shortest");
-            test.testExportMultipleStringsToCSV();
-            assertTrue(test.isResult());
+         System.out.println("exportResults");
+          Simulation sm = new Simulation();
+        sm.createPathSimulation(TypePath.ALL);
+           p.getSimulationsList().getSimulationsList().add(sm);
+        this.instance = new ExportCSVController(p);
+        String[] s = new String[1];
+        s[0] = "Simulation";
+         String filePath = "src/main/resources/testhtml3.html";
+           File file = new File(filePath);
+        String whatToExport = "eco";
+        ExportCSVController instance =  this.instance;
+      
+        boolean expResult =  true;
+        boolean result = instance.exportResults(s, filePath, whatToExport);
+        assertEquals(expResult, result);
     }
 }

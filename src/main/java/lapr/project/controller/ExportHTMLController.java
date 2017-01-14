@@ -184,8 +184,9 @@ public class ExportHTMLController {
             for (int j = 0; j < results.length; j++) {
 
                 Simulation sim = getSimulationByString(s[i]);
-                for (SegmentResult seg : sim.getShortestResultPath().getSegments()) {
-                    if (sim.getShortestResultPath() != null) {
+                if (sim.getShortestResultPath() != null) {
+                    for (SegmentResult seg : sim.getShortestResultPath().getSegments()) {
+
                         results[j][0] = "Shortest path result: " + String.valueOf(seg.getSegment().getId());
                         results[j][1] = "Origin airport latitude: " + seg.getSegment().getStartNode().getId();
                         results[j][2] = "Destination airport longitude: " + seg.getSegment().getEndNode().getId();
@@ -207,8 +208,9 @@ public class ExportHTMLController {
             int i = 0;
             for (int j = 0; j < results.length; j++) {
                 Simulation sim = getSimulationByString(s[i]);
-                for (SegmentResult seg : sim.getEcologicResultPath().getSegments()) {
-                    if (sim.getEcologicResultPath() != null) {
+                if (sim.getEcologicResultPath() != null) {
+                    for (SegmentResult seg : sim.getEcologicResultPath().getSegments()) {
+
                         results[j][0] = "Shortest path result: " + String.valueOf(seg.getSegment().getId());
                         results[j][1] = "Origin airport latitude: " + seg.getSegment().getStartNode().getId();
                         results[j][2] = "Destination airport longitude: " + seg.getSegment().getEndNode().getId();
@@ -228,10 +230,11 @@ public class ExportHTMLController {
         }
         if (whatToExport.equals("fastest")) {
             int i = 0;
-           for (int j = 0; j < results.length; j++) {
+            for (int j = 0; j < results.length; j++) {
                 Simulation sim = getSimulationByString(s[i]);
-                for (SegmentResult seg : sim.getFastestResultPath().getSegments()) {
-                    if (sim.getFastestResultPath() != null) {
+                if (sim.getFastestResultPath() != null) {
+                    for (SegmentResult seg : sim.getFastestResultPath().getSegments()) {
+
                         results[j][0] = "Shortest path result: " + String.valueOf(seg.getSegment().getId());
                         results[j][1] = "Origin airport latitude: " + seg.getSegment().getStartNode().getId();
                         results[j][2] = "Destination airport longitude: " + seg.getSegment().getEndNode().getId();
