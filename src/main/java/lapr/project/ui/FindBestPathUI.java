@@ -36,7 +36,6 @@ import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import lapr.project.controller.FindBestPathController;
-import lapr.project.model.Airport;
 import lapr.project.model.FlightPlan;
 import lapr.project.model.Project;
 import lapr.project.model.analysis.TypePath;
@@ -82,7 +81,7 @@ public class FindBestPathUI extends JDialog {
 
     private int dialogResult = JOptionPane.CANCEL_OPTION;
 
-    private JButton btEco, btFast, btShort, btAll;
+    private JButton btEco, btFast, btShort;
     private Map<String, Integer> mapConfig;
     private int totalPassengers;
     private DefaultTableModel model;
@@ -175,7 +174,7 @@ public class FindBestPathUI extends JDialog {
                 flightInfo.setText(controller.getFlightPlanStringInfo());
                 int i = 0;
                 if (model.getColumnCount() > 0) {
-                    for (i = mapConfig.size()-1; i >= 0; i--) {
+                    for (i = mapConfig.size() - 1; i >= 0; i--) {
                         model.removeRow(i);
                     }
                 }
@@ -184,8 +183,7 @@ public class FindBestPathUI extends JDialog {
                     model.fireTableDataChanged();
                     for (Map.Entry<String, Integer> entry : mapConfig.entrySet()) {
                         model.addRow(new Object[]{entry.getKey(), entry.getValue()});
-                    }                    
-                    btAll.setEnabled(true);
+                    }
                     btEco.setEnabled(true);
                     btFast.setEnabled(true);
                     btShort.setEnabled(true);
@@ -245,7 +243,6 @@ public class FindBestPathUI extends JDialog {
         imports.add(createButtonShortest());
         imports.add(createButtonFastest());
         imports.add(createButtonEcologic());
-        imports.add(createButtonAll());
 
         p.add(imports);
 
@@ -298,15 +295,6 @@ public class FindBestPathUI extends JDialog {
         }
     }
 
-    private void finish() {
-        JOptionPane.showMessageDialog(
-                null,
-                "Simulation concluded successfully!",
-                "Find Best Path",
-                JOptionPane.INFORMATION_MESSAGE);
-        dispose();
-    }
-
     private JButton createButtonShortest() {
         Icon icone = new ImageIcon("src/main/resources/images/shortest.png");
         btShort = new JButton("Find Shortest Path", icone);
@@ -319,9 +307,9 @@ public class FindBestPathUI extends JDialog {
         btShort.setToolTipText("Please insert origin and destination airports");
         btShort.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void actionPerformed(ActionEvent e) {                
                 createSimulation(TypePath.SHORTEST_PATH);
-                openResultWindow(TypePath.SHORTEST_PATH);
+                openResultWindow();
             }
         });
 
@@ -340,7 +328,7 @@ public class FindBestPathUI extends JDialog {
         btFast.setToolTipText("Please insert origin and destination airports");
         btFast.addActionListener((ActionEvent e) -> {
             createSimulation(TypePath.FASTEST_PATH);
-            openResultWindow(TypePath.FASTEST_PATH);
+            openResultWindow();
         });
         return btFast;
     }
@@ -360,12 +348,11 @@ public class FindBestPathUI extends JDialog {
             public void actionPerformed(ActionEvent e) {
                 try {
                     createSimulation(TypePath.ECOLOGIC_PATH);
-                    openResultWindow(TypePath.ECOLOGIC_PATH);
-
+                    openResultWindow();
                 } catch (java.lang.UnsupportedOperationException en) {
 
                     JOptionPane.showMessageDialog(frame,
-                            "It wasn´t possible to create simulation", "Erro", JOptionPane.ERROR_MESSAGE);
+                            "It wasn´t possible to create simulation", "Error", JOptionPane.ERROR_MESSAGE);
                     throw en;
                 }
             }
@@ -373,89 +360,43 @@ public class FindBestPathUI extends JDialog {
         return btEco;
     }
 
-    private JButton createButtonAll() {
-        Icon icone = new ImageIcon("src/main/resources/images/findPath.jpg");
-        btAll = new JButton("All Best Paths", icone);
-        btAll.setContentAreaFilled(false);
-        btAll.setBorderPainted(false);
-        btAll.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btAll.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        btAll.setMnemonic(KeyEvent.VK_E);
-        btAll.setEnabled(false);
-        btAll.setToolTipText("Please insert all data");
-        btAll.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    controller.createBestPathSimulation(TypePath.ALL);
-                    controller.calculatePath(TypePath.ALL, 120);
-
-                } catch (java.lang.UnsupportedOperationException en) {
-                    JOptionPane.showMessageDialog(frame,
-                            "It wasn´t possible to create simulation", "Erro", JOptionPane.ERROR_MESSAGE);
-                    throw en;
-                }
-
-            }
-        });
-        return btAll;
-    }
-
-    private void openResultWindow(TypePath type) {
-        ResultUI result = new ResultUI(controller, controller.getResult(type), type, null);
+    private void openResultWindow() {
+//        FindBestPathResultUI result = new FindBestPathResultUI(controller, controller.getResult(type), type, null);
     }
 
     private boolean validateData() {
-        return !txtCargoLoad.getText().equals("")
-                && !txtCrew.getText().equals("")
-                && !txtFuelLoad.getText().equals("");
-    }
-
-    private boolean validatePassCrew() {
-        boolean b1 = true;
-        //controller.getAircraft().getNrOfCrewElements() >= Integer.parseInt(txtCrew.getText());
-        return b1;
+        return !txtCargoLoad.getText().isEmpty()
+                && !txtCrew.getText().isEmpty()
+                && !txtFuelLoad.getText().isEmpty();
     }
 
     private void setData() {
-        Airport startAirportSelected = (Airport) listStopAirports.getSelectedValue();
-        Airport endAirportSelected = (Airport) listWaypoints.getSelectedValue();
-        for (Integer i : mapConfig.values()) {
-            totalPassengers += i;
-            System.out.println(totalPassengers);
+        try {
+            totalPassengers = 0;
+            for (int i = 0; i <= tableCabin.getRowCount() - 1; i++) {
+                totalPassengers += Integer.parseInt(tableCabin.getValueAt(i, 1).toString());
+            }
+            if (validateData()) {
+                try {
+                    int crew = Integer.parseInt(txtCrew.getText());
+                    double cargo = Double.parseDouble(txtCargoLoad.getText());
+                    double fuel = Double.parseDouble(txtFuelLoad.getText());                    
+                    controller.setData(totalPassengers, crew, cargo, fuel);
+                } catch (NumberFormatException ne1) {
+                    JOptionPane.showMessageDialog(frame, "Field invalid!", "Error", JOptionPane.ERROR_MESSAGE);
+                    System.err.println(ne1.getMessage());
+                }
+            } else {
+                JOptionPane.showMessageDialog(frame, "Fill all fields, please!", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        } catch (NumberFormatException ne2) {
+            JOptionPane.showMessageDialog(frame, "Max Passengers fields invalid!", "Error", JOptionPane.ERROR_MESSAGE);
+            System.err.println(ne2.getMessage());
         }
-        int crew = Integer.parseInt(txtCrew.getText());
-        double cargo = Double.parseDouble(txtCargoLoad.getText());
-        double fuel = Double.parseDouble(txtFuelLoad.getText());
-
-//        controller.setData(startAirportSelected, endAirportSelected, aircraft,
-//                totalPassengers, crew, cargo, fuel);
     }
 
     private void createSimulation(TypePath type) {
-
-//        controller.createBestPathSimulation(type);
-//        if (listAircrafts.getSelectedValue() == null || !validateData()) {
-//            if (!validateData() || listAircrafts.getSelectedValue() == null) {
-//                JOptionPane.showMessageDialog(frame,
-//                        "You didn´t insert all data. Please verify.", "Erro",
-//                        JOptionPane.ERROR_MESSAGE);
-//            } else if (!validatePassCrew()) {
-//                JOptionPane.showMessageDialog(frame,
-//                        "Please verify the nr of passengers/crew members"
-//                        + " allowed in the selected aircraft", "Erro",
-//                        JOptionPane.ERROR_MESSAGE);
-//            } else {
-//                try {
-//                    setData();
-//                    controller.calculatePath(type, 120);
-//                } catch (java.lang.UnsupportedOperationException en) {
-//                    JOptionPane.showMessageDialog(frame,
-//                            "It wasn´t possible to create simulation", "Erro", JOptionPane.ERROR_MESSAGE);
-//                    throw en;
-//                }
-//
-//            }
-//        }
+        controller.createBestPathSimulation(type);
+        setData();
     }
 }

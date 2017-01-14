@@ -23,7 +23,8 @@ class Main {
      * @param args the command line arguments
      */
     public static void main(String[] args) throws FileNotFoundException, SQLException {
-       MenuUI ui = new MenuUI();
+       FindBestPathResultUI f = new FindBestPathResultUI();
+//        MenuUI ui = new MenuUI();
 //        DALController dalc = new DALController();
 //        dalc.test(1);
     }

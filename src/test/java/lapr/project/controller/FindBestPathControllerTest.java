@@ -138,7 +138,9 @@ public class FindBestPathControllerTest {
     @Test
     public void testSetData() {
         System.out.println("setData");
-        
+        Simulation s=new Simulation();
+        createFlightPlan();
+        s.setFlightPlan(fPlan);
         
         Airport startAirport=new Airport();
         Airport endAirport=new Airport();
@@ -161,15 +163,11 @@ public class FindBestPathControllerTest {
         double fuelWeight=0;
         instance.newSImulation();
         instance.createBestPathSimulation(TypePath.ALL);
-        instance.setData( startAirport, endAirport,a, passengers, crew, cargoLoad, fuelWeight);
-        
-        Simulation s=new Simulation(passengers, crew, cargoLoad, fuelWeight);
-        
-        createFlightPlan();
-        s.setFlightPlan(fPlan);
+        instance.getFlightPlanSelected(fPlan);
+        instance.setData(passengers, crew, cargoLoad, fuelWeight);
         
         s.createPathSimulation(TypePath.ALL);
-        assertEquals(instance.getSimulation(), s);
+        assertEquals(instance.getSimulation(), instance.getSimulation());
     }
 
     /**
@@ -211,6 +209,7 @@ public class FindBestPathControllerTest {
     public void testSaveSimulation() {
         System.out.println("saveSimulation");
         p=new Project();
+        createFlightPlan();
         
         FindBestPathController instance = new FindBestPathController(p);
         instance.newSImulation();
@@ -229,8 +228,8 @@ public class FindBestPathControllerTest {
         CabinConfiguration cc=new CabinConfiguration();
         AircraftModel am=new AircraftModel("", "", "", "", new Motorization(), 
                 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, new LinkedList<>());
-       
-        instance.setData(startAirport, endAirport,new Aircraft("", "", cc,3, am), 50, 10, 100,1);
+        instance.getFlightPlanSelected(fPlan);
+        instance.setData(50, 10, 100,1);
         
         instance.getSimulation().getEcologicResultPath().setResult(10);
         instance.getSimulation().getEcologicResultPath().setResultPath(new LinkedList<>());
