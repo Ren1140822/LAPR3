@@ -580,7 +580,7 @@ public class SimulationTest {
     public void testToString() {
         System.out.println("toString");
         Simulation instance = new Simulation();
-        String expResult = String.valueOf(instance.getCounterCode());
+        String expResult = "Simulation";
         String result = instance.toString();
         assertEquals(expResult, result);
     }
