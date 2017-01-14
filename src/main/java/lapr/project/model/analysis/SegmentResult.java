@@ -112,11 +112,12 @@ public class SegmentResult {
      * Constructor
      * @param type type of segment result
      * @param lastAltitude altitude on the start node of segment (m)
-     * @param mass mass (kg)
+     * @param initialMass weight of aircraft (kg)
      * @param timeStep time step to consider in segments (s)
      * @param model aircraft model
      * @param listPattern list pattern
-     * @param segment
+     * @param segment segment
+     * @param lastMass atual mass of aircraft (kg)
      */
     public SegmentResult(SegmentType type, double lastAltitude,double initialMass, 
             int timeStep, AircraftModel model, List<Pattern> listPattern, 
@@ -369,8 +370,7 @@ public class SegmentResult {
             
         }while(angle>0.2 || altitude>=getModel().getMotorization().getCruise_altitude()
                 && pass);
-        if(!pass) return false;
-        return true;
+        return pass;
     }
 
     private boolean calculateBasic(){        
@@ -392,7 +392,7 @@ public class SegmentResult {
         if(Double.doubleToLongBits(cDrag)==-1)
             return false;
         
-        double tas=AircraftAlgorithms.calculateTAS(airDensity, temperature, vIas);
+        tas=AircraftAlgorithms.calculateTAS(airDensity, temperature, vIas);
         
         groundSpeed=AircraftAlgorithms.calculateGroundSpeed(tas, segment.getWind(), angle);
 
@@ -403,19 +403,9 @@ public class SegmentResult {
         return true;
     }
     
-    /**
-     * Calculates the segment according to type (Descente,Cruise,Climb) 
-     * @param type 
-     * @return boolean if operation is valid, false if not
-     */
-    public boolean calculateByType(SegmentType type){
-        new SegmentResult();
-        this.type=type;
-        return calculate();
-    }
-    
      /**
      * Calculates the distance, mass and flight time in the segment
+     * @return true if calculate was valid, false if not
      */
     public boolean calculate(){
         if(type!=SegmentType.CRUISE)
@@ -427,7 +417,7 @@ public class SegmentResult {
 
         double drag=AircraftAlgorithms.calculateDragForce(coefDrag, airDensity, vIas, wingArea);
 
-        double thrust=-1;
+        double thrust;
         if(type!=SegmentType.CRUISE){
               thrust=calculateThrustClimbDesc(thrustMa, lambda, mTrue, airDensity, thrustLapseRate);
         }else
@@ -447,7 +437,9 @@ public class SegmentResult {
             altitude+=AircraftAlgorithms.calculateAltitudeGained(drag, dhDT, thrust);
         if(type==SegmentType.DESC)
             altitude+=AircraftAlgorithms.calculateAltitudeDesc(dhDT, timeStep);
-        mass+=AircraftAlgorithms.calculateNewMass(mass, dwDT);
+        double finalMass=AircraftAlgorithms.calculateNewMass(mass, dwDT);
+       
+        mass+=finalMass;
         energyConsume += (initMass-mass);
         flightTime+=timeStep;
         return true;
@@ -512,22 +504,45 @@ public class SegmentResult {
          return v1 && t==null && Double.doubleToLongBits(wingArea)!=Double.doubleToLongBits(defaultWing);
     }
     
-       public double estimateDistanceToDescend(Airport end,
-            int timeStep, double initialMass, AircraftModel aircraftModel, List<Pattern> list,
-            Segment segment,double lastMass, double lastAltitude){
-         
-            SegmentResult srAuxDesc=new SegmentResult(SegmentType.DESC,
-                        lastAltitude,initialMass, timeStep, aircraftModel, list, segment,lastMass);
-            double altFinalAirport=end.getLocation().getAltitude();
-            double altFinalSimulation=srAuxDesc.getAltitudeFinal();
-            double distanceDesc=0;
+       public double startLand(SegmentResult aux, Airport endAirport){
+
+            double altFinalAirport=endAirport.getLocation().getAltitude();
+            double altFinalSimulation=aux.getAltitudeFinal();
+            double distGo;
+            double abort=-1;
+            double startLand=1;
+            double continueCruise=0;
             if(altFinalSimulation<=altFinalAirport){
                 double margin=altFinalAirport-altFinalSimulation;
-                double perc=(srAuxDesc.getDistance()-LAND_DIST_REF)/srAuxDesc.getDistance();
-                return srAuxDesc.getDistance()*(srAuxDesc.getDistance()*perc);
-              
-            }else
-                return -1;
+                double perc=(aux.getDistance()-LAND_DIST_REF)/aux.getDistance();
+                distGo= aux.getDistance()*(aux.getDistance()*perc);
+            }else{
+                return abort;
+            }
+            if(getDistance()>=distGo)
+                return startLand;
+            else
+                return continueCruise; 
     }
-       
+
+    /**
+     * @param tas the tas to set
+     */
+    public void setTas(double tas) {
+        this.tas = tas;
+    }
+
+    /**
+     * @return the initMass
+     */
+    public double getInitMass() {
+        return initMass;
+    }
+
+    /**
+     * @param initMass the initMass to set
+     */
+    public void setInitMass(double initMass) {
+        this.initMass = initMass;
+    }
 }

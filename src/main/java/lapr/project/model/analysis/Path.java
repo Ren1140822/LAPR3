@@ -9,6 +9,7 @@ package lapr.project.model.analysis;
 import java.util.LinkedList;
 import java.util.List;
 import lapr.project.model.AirNetwork;
+import lapr.project.model.Airport;
 import lapr.project.model.FlightPlan;
 import lapr.project.model.Node;
 import lapr.project.model.Segment;
@@ -211,33 +212,33 @@ public class Path {
         SegmentResult srClimb = new SegmentResult(SegmentType.CLIMBING, flightPlan.getOrigin().getLocation().getAltitude(), 
                             totalWeight, timeStep, flightPlan.getAircraft().getAircraftModel(), flightPlan.getListPattern(), segment,totalWeight);
         do{
-            srClimb.calculateByType(SegmentType.CLIMBING);
+            srClimb.calculate();
             segmentsResult.add(srClimb);
         }while(!srClimb.stopClimb());
         
         SegmentResult seg = new SegmentResult(SegmentType.CRUISE, segmentsResult.getLast().getAltitudeFinal(), totalWeight, timeStep, 
                  flightPlan.getAircraft().getAircraftModel(), flightPlan.getListPattern(), segment, segmentsResult.getLast().getMass());
-         seg.calculateByType(SegmentType.CRUISE);
+         seg.calculate();
          segmentsResult.add(seg);
          return true;
     }
     
-    public boolean simulateEndNode(FlightPlan flightPlan, int timeStep, double totalWeight, Segment segment){
+    public boolean simulateEndNode(Airport endAirport, FlightPlan flightPlan, int timeStep, double totalWeight, Segment segment){
         SegmentResult seg = new SegmentResult(SegmentType.CRUISE, getSegments().getLast().getAltitudeFinal(), totalWeight, timeStep, 
-                             flightPlan.getAircraft().getAircraftModel(), flightPlan.getListPattern(), segment, getSegments().getLast().getMass());
-                   
-        double distGo=seg.estimateDistanceToDescend(flightPlan.getDestination(), timeStep, totalWeight, 
-                             flightPlan.getAircraft().getAircraftModel(), flightPlan.getListPattern(), segment,
-                            segmentsResult.getLast().getMass(), segmentsResult.getLast().getAltitudeFinal());
+                             flightPlan.getAircraft().getAircraftModel(), flightPlan.getListPattern(), segment, getSegments().getLast().getMass());        
+        
+        SegmentResult aux= new SegmentResult(SegmentType.DESC,
+                        segmentsResult.getLast().getAltitudeFinal(),totalWeight, timeStep,flightPlan.getAircraft().getAircraftModel(),
+              flightPlan.getListPattern(), segment,segmentsResult.getLast().getMass());
         do{    
-            seg.calculateByType(SegmentType.CRUISE);
+            seg.calculate();
             segmentsResult.add(seg);
-        }while(seg.getDistance()<distGo);
+        }while(seg.startLand(seg, endAirport)==0);
 
         seg = new SegmentResult(SegmentType.DESC, segmentsResult.getLast().getAltitudeFinal(), totalWeight, timeStep,
                 flightPlan.getAircraft().getAircraftModel(), flightPlan.getListPattern(), segment, segmentsResult.getLast().getMass());
         
-        seg.calculateByType(SegmentType.DESC);
+        seg.calculate();
         segmentsResult.add(seg); 
         return true;
     }
@@ -245,7 +246,7 @@ public class Path {
     public boolean simulateIntermNodes(FlightPlan flightPlan, int timeStep, double totalWeight, Segment segment){
         SegmentResult seg = new SegmentResult(SegmentType.CRUISE, segmentsResult.getLast().getAltitudeFinal(), totalWeight, timeStep, 
                             flightPlan.getAircraft().getAircraftModel(), flightPlan.getListPattern(), segment, segmentsResult.getLast().getMass());
-        seg.calculateByType(SegmentType.CRUISE);
+        seg.calculate();
         segmentsResult.add(seg);
         return true;
     }

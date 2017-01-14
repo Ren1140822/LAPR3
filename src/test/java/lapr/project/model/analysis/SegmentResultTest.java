@@ -495,17 +495,4 @@ public class SegmentResultTest {
         boolean result = instance.stopClimb();
         assertEquals(expResult, result);
     }
-
-    /**
-     * Test of calculateByType method, of class SegmentResult.
-     */
-    @Test
-    public void testCalculateByType() {
-        System.out.println("calculateByType");
-        SegmentType type = SegmentType.CLIMBING;
-        SegmentResult instance = new SegmentResult();
-        boolean expResult = true;
-        boolean result = instance.calculateByType(type);
-        assertEquals(expResult, result);
-    }
 }
