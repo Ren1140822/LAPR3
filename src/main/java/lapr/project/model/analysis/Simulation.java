@@ -268,7 +268,7 @@ public class Simulation{
                 this.crew<=aircraft.getNrOfCrewElements() && 
                 this.fuelWeight<=ConversionAlgorithms.convertLtoKg(aircraft.getAircraftModel().getFuelCapacity());
             boolean v2 = v1 && Double.doubleToLongBits(totalWeight)<=Double.doubleToLongBits(aircraft.getAircraftModel().getMTOW());
-            return v2 && aircraft.validate();
+            return v2;
          }
      }
     

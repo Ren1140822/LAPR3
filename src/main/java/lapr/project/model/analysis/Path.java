@@ -67,7 +67,7 @@ public abstract class Path {
     public Path(List resultPath,double result, AirNetwork air){
         this.path=(LinkedList<Node>) resultPath;
         this.result=result;
-        segmentsResult=new LinkedList<>();
+        this.segmentsResult=new LinkedList<>();
         this.air=air;
     }  
       
