@@ -131,23 +131,23 @@ public class AircraftAlgorithmsTest {
         System.out.println(String.format("Error: %.5f %%", test));
     }
 
-    /**
-     * Test of calculateLambda method, of class AircraftAlgorithms.
-     */
-    @Test
-    public void testCalculateLambda() {
-        System.out.println("calculateLambda");
-        double velThrustMa = 0.9;
-        double thrustMa = 3.38 * Math.pow(10, 5);
-        double thrustMi = 1.80 * Math.pow(10, 5);
-        double expResult = 1.76 * Math.pow(10, 5);
-        double result = AircraftAlgorithms.calculateLambda(velThrustMa, thrustMa, thrustMi);
-        assertEquals(expResult, result, 500);
-        double test = 1 - result / expResult;
-        System.out.println("ExpResult: " + expResult);
-        System.out.println("Result: " + result);
-        System.out.println(String.format("Error: %.5f %%", test));
-    }
+//    /**
+//     * Test of calculateLambda method, of class AircraftAlgorithms.
+//     */
+//    @Test
+//    public void testCalculateLambda() {
+//        System.out.println("calculateLambda");
+//        double velThrustMa = 0.9;
+//        double thrustMa = 3.38 * Math.pow(10, 5);
+//        double thrustMi = 1.80 * Math.pow(10, 5);
+//        double expResult = 1.76 * Math.pow(10, 5);
+//        double result = AircraftAlgorithms.calculateLambda(velThrustMa, thrustMa, thrustMi);
+//        assertEquals(expResult, result, 500);
+//        double test = 1 - result / expResult;
+//        System.out.println("ExpResult: " + expResult);
+//        System.out.println("Result: " + result);
+//        System.out.println(String.format("Error: %.5f %%", test));
+//    }
 
     /**
      * Test of calculateDhDt method, of class AircraftAlgorithms.

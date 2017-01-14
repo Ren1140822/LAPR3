@@ -230,7 +230,11 @@ public class PathTest {
         createFlightPlan(project);
        
         Simulation s = new Simulation(airportTest, airportTest2, aircraft);
-        double totalWeight=5.40*Math.pow(10,5);
+         s.setFlightPlan(project.getFlightList().getFlightList().get(0));
+         s.setCargoLoad(70000);
+         s.setFuelWeight(144720);
+         
+        double totalWeight= ((FlightPlan)project.getFlightList().getFlightList().get(0)).getAircraft().getAircraftModel().geteWeight()+70000+144720;
         
         
         Path instance = new EcologicPathResult(project.getFlightList().getFlightList().get(0));
@@ -240,6 +244,7 @@ public class PathTest {
         Node endNode=project.getAirNetwork().getAirportNode(airportTest2);
 
         boolean result = instance.simulateInitialNode(s.getFlightPlan(), timeStep, totalWeight, project.getAirNetwork().getSegmentFromNodes(startNode, endNode));
+        boolean result2 = instance.simulateEndNode(airportTest,airportTest2,s.getFlightPlan(), timeStep, totalWeight,project.getAirNetwork().getSegmentFromNodes(startNode, endNode));
         assertEquals(expResult, result);
 
     }
@@ -249,7 +254,7 @@ public class PathTest {
         
     }
     
-    private void createFlightPlan(Project project){
+    private void createFlightPlan(Project project) throws FileNotFoundException{
      
         int numberMotor=4;
         double tsfc=1.60*Math.pow(10, -4);
@@ -263,6 +268,7 @@ public class PathTest {
         double wingArea=858;
         double ar=9;
         double e=0.84;
+      
         
         Iten it1=new Iten(210, 0.02);
         Iten it2=new Iten(210, 0.02);
@@ -278,17 +284,20 @@ public class PathTest {
         
        AircraftModel aircraftModel=new AircraftModel("gtrtgr", "jhygfjh", "kjgf", "passenger", 
                         motorization, eWeight, 0, 0, 0, 0,0, wingArea, 0, ar, e, listIten);
+         ImportAircraftModelListController cntg = new ImportAircraftModelListController(project);
+         File file = new File("src/main/resources/TestSet02_Aircraft.xml");
+        cntg.importXMLAircraftModelList(file);
        
        timeStep=120;
        Map<String, Integer> map = new HashMap<>();
        map.put("afd", 123);
        CabinConfiguration c = new CabinConfiguration(map);
-       aircraft=new Aircraft("lol", "lol", c, 10, aircraftModel);
+       aircraft=new Aircraft("lol", "lol", c, 10, project.getAircraftModelList().getModelList().get(0));
        
        project.getAircraftList().getAircraftList().add(aircraft);
        airportTest=project.getAirportList().getAirportByString("LIS");
        airportTest2=project.getAirportList().getAirportByString("PDL");
-       
+     
 
 //       flightPlan=new FlightPlan("test", timeStep, aircraft, airportTest, airportTest2, new LinkedList<>(), new LinkedList<>(), new LinkedList<>());
        

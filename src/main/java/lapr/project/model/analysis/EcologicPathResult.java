@@ -68,7 +68,7 @@ public class EcologicPathResult extends Path implements BestPathInterface {
                     }
                 }
             } else if (e.getVDest().equals(air.getAirportNode(flightPlan.getDestination()))) {
-                if (simulateEndNode(flightPlan.getDestination(),flightPlan, timeStep, totalWeight, e.getElement())) {
+                if (simulateEndNode(flightPlan.getOrigin(),flightPlan.getDestination(),flightPlan, timeStep, totalWeight, e.getElement())) {
                     seg = getSegments().getLast();
                     seg = getSegments().get(getSegments().size() - 2);
                 }

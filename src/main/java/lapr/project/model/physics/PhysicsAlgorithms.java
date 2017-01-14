@@ -66,9 +66,9 @@ public class PhysicsAlgorithms {
      */
     public static double calculateAbsolutePressure(double altitude){
        //P=P0. (1- (L.h/to))^ ((g*m)/(R*L)
-       double base=1- ((TEMPERATURE_LAPSE_RATE*(altitude/1000))/TEMPERATURE_SEA);
+       double base=( (1-(TEMPERATURE_LAPSE_RATE/1000)*(altitude)/TEMPERATURE_SEA));
        double exp=(GRAVITY_CONSTANT_SEA*WEIGHT_DRY_AIR)/(GAS_CONSTANT_AIR*TEMPERATURE_LAPSE_RATE); 
-       return PRESSURE_SEA*Math.pow(base, exp);
+       return PRESSURE_SEA* Math.pow(base, exp);
     }
     
     /**

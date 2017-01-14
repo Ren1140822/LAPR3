@@ -64,7 +64,7 @@ public class AircraftAlgorithms {
     public static double calculateDragForce(double coefDrag, double airDensity, 
             double velocity, double wingArea){
          //  return coefDrag * ((airDensity * Math.pow(velocity, 2)) / 2) * wingArea;             
-         return  0.5*airDensity*velocity*velocity*wingArea*coefDrag;
+         return  0.5*airDensity* Math.pow(velocity,2)*wingArea*coefDrag;
     }
      
     /**
@@ -94,7 +94,7 @@ public class AircraftAlgorithms {
     //R=287.06J/KgK  
     //return cDrag0 + (Math.pow(liftCoef,2)/ Math.PI*(Math.pow(wingSpan, 2)/wingArea)*e);
        
-      return Math.pow(liftCoef,2)/(Math.PI*aRatio*e +cDrag0);
+      return Math.pow(liftCoef,2)/(Math.PI*aRatio*e )+cDrag0;
     }
     
     /**
@@ -179,7 +179,7 @@ public class AircraftAlgorithms {
     public static double calculateThrustClimb(double thrustMa, double lambda,
             double mTrue, double airDensity, double thrustLapseRate){
         //return  dragCoef*airDensity*Math.pow(tas, 2);
-        return (thrustMa-lambda*mTrue)*Math.pow(airDensity/AIR_DENSITY_SEA,
+        return (thrustMa-lambda*mTrue)*Math.pow((airDensity/AIR_DENSITY_SEA),
                 thrustLapseRate);
     } 
     
@@ -233,7 +233,7 @@ public class AircraftAlgorithms {
      */
     public static double calculateLambda(double velThrustMa, double thrustMa, 
             double thrustMi){
-        return (thrustMa-thrustMi)/velThrustMa;
+        return (thrustMa-thrustMi)/(velThrustMa/SPEED_SOUND_SEA);
     }
     
     /**
