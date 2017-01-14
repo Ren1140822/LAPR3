@@ -39,7 +39,7 @@ import static org.junit.Assert.*;
 public class PathTest {
     private Airport airportTest, airportTest2;
     private Aircraft aircraft;
-    private double timeStep;
+    private int timeStep;
     private FlightPlan flightPlan;
     
     public PathTest() {
@@ -233,104 +233,15 @@ public class PathTest {
         
         Path instance = new PathImpl();
         boolean expResult = false;
-        //boolean result = instance.simulateInitialNode(s.getFlightPlan(), timeStep, totalWeight, new Segment());
-        boolean result= true;
-        assertEquals(expResult, result);
-
-    }
-
-    /**
-     * Test of simulateEndNode method, of class Path.
-     */
-    @Test
-    public void testSimulateEndNode() {
-        System.out.println("simulateEndNode");
-        Airport endAirport = null;
-        FlightPlan flightPlan = null;
-        int timeStep = 0;
-        double totalWeight = 0.0;
-        Segment segment = null;
-        Path instance = new PathImpl();
-        boolean expResult = false;
-        boolean result = instance.simulateEndNode(endAirport, flightPlan, timeStep, totalWeight, segment);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of simulateIntermNodes method, of class Path.
-     */
-    @Test
-    public void testSimulateIntermNodes() {
-        System.out.println("simulateIntermNodes");
-        FlightPlan flightPlan = null;
-        int timeStep = 0;
-        double totalWeight = 0.0;
-        Segment segment = null;
-        Path instance = new PathImpl();
-        boolean expResult = false;
-        boolean result = instance.simulateIntermNodes(flightPlan, timeStep, totalWeight, segment);
-        assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-    
-    /**
-     * Test of getDistance method, of class Path.
-     */
-    @Test
-    public void testGetDistance() {
-        System.out.println("getDistance");
-        Path instance = new PathImpl();
-        double expResult = 200.0;
         
-        double result = instance.getDistance();
-        assertEquals(expResult, result, 0.0);
-    }
+        Node startNode=project.getAirNetwork().getAirportNode(airportTest);
+        Node endNode=project.getAirNetwork().getAirportNode(airportTest2);
 
-    /**
-     * Test of getEnergyConsum method, of class Path.
-     */
-    @Test
-    public void testGetEnergyConsum() {
-        System.out.println("getEnergyConsum");
-        Path instance = new PathImpl();
-        double expResult = 0.0;
-        double result = instance.getEnergyConsum();
-        assertEquals(expResult, result, 0.0);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of getTravellingTime method, of class Path.
-     */
-    @Test
-    public void testGetTravellingTime() {
-        System.out.println("getTravellingTime");
-        Path instance = new PathImpl();
-        double expResult = 0.0;
-        double result = instance.getTravellingTime();
-        assertEquals(expResult, result, 0.0);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
-
-    /**
-     * Test of getSegmentsPath method, of class Path.
-     */
-    @Test
-    public void testGetSegmentsPath() {
-        System.out.println("getSegmentsPath");
-        AirNetwork air = null;
-        Path instance = new PathImpl();
-        LinkedList<Segment> expResult = null;
-        LinkedList<Segment> result = instance.getSegmentsPath(air);
+        boolean result = instance.simulateInitialNode(s.getFlightPlan(), timeStep, totalWeight, project.getAirNetwork().getSegmentFromNodes(startNode, endNode));
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+
     }
+
 
     public class PathImpl extends Path {
     }
@@ -374,7 +285,7 @@ public class PathTest {
        String filePattern = "src/main/resources/TestSet02_Aircraft.xml";
        File file = new File(filePattern);
 
-       //flightPlan=new FlightPlan("test", timeStep, aircraft, airportTest, airportTest2, new LinkedList<>(), new LinkedList<>(), new LinkedList<>());
+       flightPlan=new FlightPlan("test", timeStep, aircraft, airportTest, airportTest2, new LinkedList<>(), new LinkedList<>(), new LinkedList<>());
        
        File filePatterns = new File("src/main/resources/Flight_pattern_A380_v1a.csv");
        AddFlightPlanController controller = new AddFlightPlanController(project);
