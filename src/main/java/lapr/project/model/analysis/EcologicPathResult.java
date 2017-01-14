@@ -59,20 +59,21 @@ public class EcologicPathResult extends Path implements BestPathInterface {
 
         for (Edge<Node, Segment> e : lS) {
             if (e.getVOrig().equals(air.getAirportNode(flightPlan.getOrigin()))) {
-               if(simulateInitialNode(flightPlan, timeStep, totalWeight, e.getElement())){
-                    seg=getSegments().getFirst();
-                    seg=getSegments().getLast();
-               }
-            } else {
-                if (e.getVDest().equals(air.getAirportNode(flightPlan.getDestination()))) {
-                    if(simulateEndNode(flightPlan, timeStep, totalWeight, e.getElement())){
-                            seg=getSegments().getLast();
-                            seg=getSegments().get(getSegments().size()-2);
+                if (simulateInitialNode(flightPlan, timeStep, totalWeight, e.getElement())) {
+
+                    if (seg.stopClimb()) {
+                        seg = getSegments().getFirst();
+                    } else {
+                        seg = getSegments().getLast();
                     }
-                } else {
-                    if(simulateIntermNodes(flightPlan, timeStep, totalWeight, e.getElement()))
-                        seg=getSegments().getLast();
                 }
+            } else if (e.getVDest().equals(air.getAirportNode(flightPlan.getDestination()))) {
+                if (simulateEndNode(flightPlan, timeStep, totalWeight, e.getElement())) {
+                    seg = getSegments().getLast();
+                    seg = getSegments().get(getSegments().size() - 2);
+                }
+            } else if (simulateIntermNodes(flightPlan, timeStep, totalWeight, e.getElement())) {
+                seg = getSegments().getLast();
             }
             consumeGraph.removeEdge(e.getVOrig(), e.getVDest());
             consumeGraph.insertEdge(e.getVOrig(), e.getVDest(), e.getElement(), seg.getEnergyConsume());

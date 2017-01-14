@@ -67,16 +67,20 @@ public class HTMLExporter {
         }
         String titles = "    <tr>\n";
         for (int i = 0; i < body.length; i++) {
-            titles += "      <th><font face=\"verdana\" color=\"black\">" + body[i][0] + "</font></th>\n";
+            if (body[i]!=null) {
+                titles += "      <th><font face=\"verdana\" color=\"black\">" + body[i][0] + "</font></th>\n";
+            }
         }
         titles += "    </tr>\n";
 
         for (int i = 1; i < body[0].length; i++) {
+
             data[i - 1] += "   <tr>\n";
             for (int j = 0; j < body.length; j++) {
+                if (body[j][i]!=null) {
+                    data[i - 1] += "      <th><font size=\"2\" face=\"verdana\" color=\"red\">" + body[j][i] + "</font></th>\n";
 
-                data[i - 1] += "      <th><font size=\"2\" face=\"verdana\" color=\"red\">" + body[j][i] + "</font></th>\n";
-
+                }
             }
 
         }
@@ -87,7 +91,7 @@ public class HTMLExporter {
                 + "table  {\n"
                 + "    border-collapse: collapse;\n"
                 + "border-bottom: 1px solid black;"
-                +"border-top: 1px solid black;"
+                + "border-top: 1px solid black;"
                 + "    width: 100%;\n"
                 + "}\n"
                 + "\n"
