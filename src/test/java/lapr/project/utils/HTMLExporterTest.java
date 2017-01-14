@@ -20,7 +20,7 @@ import org.junit.Test;
  * @author Renato Oliveira 1140822@isep.ipp.pt
  */
 public class HTMLExporterTest {
-
+   boolean result;
     public HTMLExporterTest() {
     }
 
@@ -39,6 +39,12 @@ public class HTMLExporterTest {
     @After
     public void tearDown() {
     }
+
+    public boolean isResult() {
+        return result;
+    }
+    
+    
 
     /**
      * Test of exportStringsToHTML method, of class HTMLExporter.
@@ -93,7 +99,7 @@ public class HTMLExporterTest {
         File file = new File("src/main/resources/testHTML2.html");
         file.deleteOnExit();
         Scanner scan = new Scanner(file);
-        boolean result = false;
+        result = false;
         while (scan.hasNext()) {
             String test = scan.next();
             result = test.contains(title) || test.contains(heading1) || test.contains(heading2) || test.contains(body[0][0]) || test.contains(body[1][1]) ||test.contains(body[1][0]) ||test.contains(body[2][1]) || test.contains(body[3][0]) ||test.contains(body[3][0]) ||test.contains("\n") || test.contains("<");

@@ -20,7 +20,7 @@ import org.junit.Test;
  * @author Renato Oliveira 1140822@isep.ipp.pt
  */
 public class CSVExporterTest {
-    
+    boolean result;
     public CSVExporterTest() {
     }
     
@@ -38,6 +38,10 @@ public class CSVExporterTest {
     
     @After
     public void tearDown() {
+    }
+
+    public boolean isResult() {
+        return result;
     }
 
     /**

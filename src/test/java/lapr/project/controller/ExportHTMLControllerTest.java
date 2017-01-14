@@ -5,6 +5,7 @@
  */
 package lapr.project.controller;
 
+import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -19,7 +20,7 @@ import lapr.project.model.analysis.Path;
 import lapr.project.model.analysis.ShortestPathResult;
 import lapr.project.model.analysis.Simulation;
 import lapr.project.model.analysis.TypePath;
-
+import lapr.project.utils.HTMLExporterTest;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -87,15 +88,15 @@ public class ExportHTMLControllerTest {
     @Test
     public void testGetSimulationsList() {
         System.out.println("getSimulationsList");
-    
+
         List<String> simString = new LinkedList<>();
         List<Simulation> simlist = new LinkedList();
         Simulation sim = new Simulation();
         sim.createPathSimulation(TypePath.ALL);
         simlist.add(sim);
-     
-            p.getSimulationsList().getSimulationsList().add(sim);
-         this.instance = new ExportHTMLController(p);
+
+        p.getSimulationsList().getSimulationsList().add(sim);
+        this.instance = new ExportHTMLController(p);
         simString.add(sim.toString());
         List<String> result = instance.getSimulationsList();
         assertEquals(simString, result);
@@ -115,9 +116,10 @@ public class ExportHTMLControllerTest {
         List<String> expResult = new LinkedList<>();
         List<String> result = instance.getFlightPathAnalisysResultsGroupedByOriginDestination(startNode, endNode);
         assertEquals(expResult, result);
-      
+
     }
 //
+
     /**
      * Test of getFlightPathAnalisysResultsGroupedByAircraftType method, of
      * class ExportHTMLController.
@@ -126,13 +128,14 @@ public class ExportHTMLControllerTest {
     public void testGetFlightPathAnalisysResultsGroupedByAircraftType() {
         System.out.println("getFlightPathAnalisysResultsGroupedByAircraftType");
         String aircrafType = "A380";
-          ExportHTMLController instance = this.instance;
+        ExportHTMLController instance = this.instance;
         List<String> expResult = new LinkedList<>();
         List<String> result = instance.getFlightPathAnalisysResultsGroupedByAircraftType(aircrafType);
         assertEquals(expResult, result);
-      
+
     }
 //
+
     /**
      * Test of getListOfAircraftTypes method, of class ExportHTMLController.
      */
@@ -142,36 +145,42 @@ public class ExportHTMLControllerTest {
         AircraftModel acModel = new AircraftModel();
         acModel.setId("PASSENGER");
         Simulation sim = new Simulation();
-         sim.getFlightPlan().getAircraft().setAircraftModel(acModel);
-         p.getSimulationsList().getSimulationsList().add(sim);
+        sim.getFlightPlan().getAircraft().setAircraftModel(acModel);
+        p.getSimulationsList().getSimulationsList().add(sim);
         this.instance = new ExportHTMLController(p);
         ExportHTMLController instance = this.instance;
-        
-        List<String> expResult =  new LinkedList<>();
+
+        List<String> expResult = new LinkedList<>();
         expResult.add(acModel.getId());
         List<String> result = instance.getListOfAircraftTypes();
         assertEquals(expResult, result);
-      
+
     }
 //
+
     /**
      * Test of getListOfNodes method, of class ExportHTMLController.
      */
     @Test
     public void testGetListOfNodes() {
         System.out.println("getListOfNodes");
-         Simulation sim = new Simulation();
-         sim.setData(0, 0, 0, 0, new Airport(), new Airport(),new Aircraft());
-         p.getSimulationsList().getSimulationsList().add(sim);
+        Simulation sim = new Simulation();
+        sim.setData(0, 0, 0, 0, new Airport(), new Airport(), new Aircraft());
+        p.getSimulationsList().getSimulationsList().add(sim);
         ExportHTMLController instance = new ExportHTMLController(p);
-        
+
         List<String> expResult = new LinkedList<>();
         expResult.add("No IATA code.");
         List<String> result = instance.getListOfNodes();
         assertEquals(expResult, result);
-      
+
     }
 
-
+    @Test
+    public void testExportResults() throws FileNotFoundException {
+            HTMLExporterTest test = new HTMLExporterTest();
+            test.testExportStringsToHTML_5args_1();
+            assertTrue(test.isResult());
+    }
 
 }

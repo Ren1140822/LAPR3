@@ -5,6 +5,7 @@
  */
 package lapr.project.controller;
 
+import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -19,6 +20,8 @@ import lapr.project.model.analysis.Path;
 import lapr.project.model.analysis.ShortestPathResult;
 import lapr.project.model.analysis.Simulation;
 import lapr.project.model.analysis.TypePath;
+import lapr.project.utils.CSVExporterTest;
+import static oracle.jdbc.driver.DatabaseError.test;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -167,5 +170,12 @@ public class ExportCSVControllerTest {
         List<String> result = instance.getListOfNodes();
         assertEquals(expResult, result);
       
+    }
+    
+     @Test
+    public void testExportResults() throws FileNotFoundException {
+           CSVExporterTest test = new CSVExporterTest();
+            test.testExportMultipleStringsToCSV();
+            assertTrue(test.isResult());
     }
 }
