@@ -72,8 +72,8 @@ public class FindBestPathResultUI extends JDialog {
         setTitle("Simulation Result: ");
         this.simulation = simulation;
         this.type = type;
-        this.controller= new FindBestPathResultController(simulation,type);
         this.dialog = dialog;
+        this.controller= new FindBestPathResultController(simulation,type);
 
         createComponents();
 
@@ -84,7 +84,7 @@ public class FindBestPathResultUI extends JDialog {
             }
         });
         pack();
-//        setMinimumSize(new Dimension(400, 250));
+        setMinimumSize(new Dimension(400, 250));
         setLocationRelativeTo(null);
         setVisible(true);
         setResizable(false);
@@ -114,16 +114,16 @@ public class FindBestPathResultUI extends JDialog {
         txtDestination.setText(controller.getPlan().getDestination().getIATA());
         JTextField txtCrew = new JTextField(aux);
         txtCrew.setEnabled(false);
-        txtCrew.setText(""+controller.getSimulation().getCrew());
+        txtCrew.setText(String.valueOf(controller.getSimulation().getCrew()));
         JTextField txtPassengers = new JTextField(aux);
         txtPassengers.setEnabled(false);
-        txtPassengers.setText(""+controller.getSimulation().getPassengers());
+        txtPassengers.setText(String.valueOf(controller.getSimulation().getPassengers()));
         JTextField txtTravel = new JTextField(aux);
         txtTravel.setEnabled(false);
-        txtTravel.setText(""+controller.getTotalFlightTime());
+//        txtTravel.setText(String.valueOf(controller.getTotalFlightTime()));
         JTextField txtEnergy = new JTextField(aux);
         txtEnergy.setEnabled(false);
-        txtEnergy.setText(""+controller.getTotalFlightTime());
+//        txtEnergy.setText(String.valueOf(controller.getTotalFlightTime()));
 
         north.add(labelFlight);
         north.add(UI.createPanelLabelTextLabel("Airport Origin: ", txtOrigin, ""));
@@ -253,7 +253,6 @@ public class FindBestPathResultUI extends JDialog {
         saveBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
                 dispose();
             }
         });
@@ -291,14 +290,14 @@ public class FindBestPathResultUI extends JDialog {
         lblStartNode = createLabel(controller.getNodeID());
         lblEndNode = createLabel(controller.getEndNodeID());
         lblComp = createLabel("FALTA");
-        lblVelStartSeg = createLabel(""+controller.getTas_0());
-        lblaltStartSeg = createLabel(""+controller.getInitAltitude());
-        lblVelEndSeg = createLabel(""+controller.getTas());
-        lblaltEndSeg = createLabel(""+controller.getFinalAlt());
-        lblCombConsumed = createLabel(""+controller.getConsumedActual());
+        lblVelStartSeg = createLabel(String.valueOf(controller.getTas_0()));
+        lblaltStartSeg = createLabel(String.valueOf(controller.getInitAltitude()));
+        lblVelEndSeg = createLabel(String.valueOf(controller.getTas()));
+        lblaltEndSeg = createLabel(String.valueOf(controller.getFinalAlt()));
+        lblCombConsumed = createLabel(String.valueOf(controller.getConsumedActual()));
         lblCombRemain = createLabel("colocar valores");
-        lblDistanceAcumulate = createLabel(""+controller.getDistance());
-        lblTimeAcumulate = createLabel(""+controller.getFlightTime());
+        lblDistanceAcumulate = createLabel(String.valueOf(controller.getDistance()));
+        lblTimeAcumulate = createLabel(String.valueOf(controller.getFlightTime()));
     }
 
 }

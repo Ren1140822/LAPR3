@@ -309,7 +309,7 @@ public class FindBestPathUI extends JDialog {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (createSimulation(TypePath.SHORTEST_PATH)) {
-                    openResultWindow(TypePath.SHORTEST_PATH);
+                    FindBestPathResultUI result = new FindBestPathResultUI(controller.getSimulation(), TypePath.ECOLOGIC_PATH, FindBestPathUI.this);
                 } else {
                     JOptionPane.showMessageDialog(FindBestPathUI.this, "Data is invalid!", "Error", JOptionPane.ERROR_MESSAGE);
                 }
@@ -332,7 +332,7 @@ public class FindBestPathUI extends JDialog {
         btFast.setToolTipText("Please insert origin and destination airports");
         btFast.addActionListener((ActionEvent e) -> {
             if (createSimulation(TypePath.FASTEST_PATH)) {
-                openResultWindow(TypePath.FASTEST_PATH);
+                FindBestPathResultUI result = new FindBestPathResultUI(controller.getSimulation(), TypePath.ECOLOGIC_PATH, FindBestPathUI.this);
             } else {
                 JOptionPane.showMessageDialog(FindBestPathUI.this, "Data is invalid!", "Error", JOptionPane.ERROR_MESSAGE);
             }
@@ -355,7 +355,7 @@ public class FindBestPathUI extends JDialog {
             public void actionPerformed(ActionEvent e) {
                 try {
                     if (createSimulation(TypePath.ECOLOGIC_PATH)) {
-                        openResultWindow(TypePath.ECOLOGIC_PATH);
+                        FindBestPathResultUI result = new FindBestPathResultUI(controller.getSimulation(), TypePath.ECOLOGIC_PATH, FindBestPathUI.this);
                     } else {
                         JOptionPane.showMessageDialog(FindBestPathUI.this, "Data is invalid!", "Error", JOptionPane.ERROR_MESSAGE);
                     }
@@ -367,10 +367,6 @@ public class FindBestPathUI extends JDialog {
             }
         });
         return btEco;
-    }
-
-    private void openResultWindow(TypePath type) {
-        FindBestPathResultUI result = new FindBestPathResultUI(controller.getSimulation(), type, FindBestPathUI.this);
     }
 
     private boolean validateData() {
