@@ -5,11 +5,8 @@
  */
 package lapr.project.controller;
 
-import java.util.LinkedList;
 import java.util.List;
-import lapr.project.model.Aircraft;
 import lapr.project.model.Airport;
-import lapr.project.model.FlightPlan;
 import lapr.project.model.Node;
 import lapr.project.model.Project;
 import lapr.project.model.analysis.Path;

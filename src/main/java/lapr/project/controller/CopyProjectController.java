@@ -5,7 +5,6 @@
  */
 package lapr.project.controller;
 
-import java.util.LinkedList;
 import java.util.List;
 import lapr.project.DAL.AirNetworkDAO;
 import lapr.project.DAL.AircraftDAO;

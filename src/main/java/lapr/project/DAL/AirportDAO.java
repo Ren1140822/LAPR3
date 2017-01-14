@@ -14,8 +14,6 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import lapr.project.model.Airport;
-import lapr.project.model.Airport;
-import lapr.project.model.Location;
 import lapr.project.model.Location;
 import lapr.project.utils.DAL;
 import static lapr.project.utils.DAL.close;

@@ -5,20 +5,11 @@
  */
 package lapr.project.controller;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.sql.SQLException;
-import java.util.LinkedList;
 import java.util.List;
 import lapr.project.DAL.ProjectDAO;
-import lapr.project.model.AirNetwork;
-import lapr.project.model.Aircraft;
-import lapr.project.model.AircraftModel;
-import lapr.project.model.Airport;
-import lapr.project.model.FlightPlan;
-import lapr.project.model.Pattern;
 import lapr.project.model.Project;
-import lapr.project.utils.DAL;
 
 /**
  *

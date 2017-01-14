@@ -6,7 +6,6 @@
 package lapr.project.controller;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -22,7 +21,6 @@ import lapr.project.model.analysis.SegmentResult;
 import lapr.project.model.analysis.ShortestPathResult;
 import lapr.project.model.analysis.Simulation;
 import lapr.project.model.analysis.TypePath;
-import lapr.project.utils.HTMLExporterTest;
 
 import org.junit.After;
 import org.junit.AfterClass;

@@ -1,33 +1,10 @@
 package lapr.project.utils;
 
-import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import lapr.project.model.AirNetwork;
-import lapr.project.model.Aircraft;
-import lapr.project.model.AircraftModel;
-import lapr.project.model.Airport;
-import lapr.project.model.CabinConfiguration;
-import lapr.project.model.FlightPlan;
-import lapr.project.model.Iten;
-import lapr.project.model.Location;
-import lapr.project.model.Motorization;
-import lapr.project.model.Node;
-import lapr.project.model.Pattern;
-import lapr.project.model.Project;
-import lapr.project.model.Segment;
-import lapr.project.model.Thrust_Function;
-import lapr.project.model.Wind;
-import lapr.project.model.analysis.Simulation;
-import oracle.jdbc.OracleTypes;
 
 /**
  *

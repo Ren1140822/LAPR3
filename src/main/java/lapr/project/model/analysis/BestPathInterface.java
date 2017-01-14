@@ -6,7 +6,6 @@
 package lapr.project.model.analysis;
 
 import lapr.project.model.AirNetwork;
-import lapr.project.model.FlightPlan;
 
 /**
  *

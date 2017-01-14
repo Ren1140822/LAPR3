@@ -10,7 +10,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import lapr.project.model.AircraftModel;
-import lapr.project.model.Motorization;
 import lapr.project.model.Project;
 import lapr.project.model.Thrust_Function;
 import org.junit.After;

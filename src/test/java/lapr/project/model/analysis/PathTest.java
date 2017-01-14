@@ -7,11 +7,8 @@ package lapr.project.model.analysis;
 
 import java.util.LinkedList;
 import java.util.List;
-import lapr.project.model.AirNetwork;
-import lapr.project.model.Airport;
 import lapr.project.model.FlightPlan;
 import lapr.project.model.Node;
-import lapr.project.model.Segment;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
