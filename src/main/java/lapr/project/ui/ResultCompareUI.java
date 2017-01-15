@@ -113,9 +113,7 @@ public class ResultCompareUI extends JDialog{
         } 
         controller.calculateAverage();
         model.addRow(controller.getAverages());
-        String[] dif={"DifShortest", "DifFastest", "DifEcologic","Shortest", "Fastest", "Ecologic","Shortest", "Fastest", "Ecologic"};
-        model.addRow(dif);
-        model.addRow(controller.getDifAvg());
+    
     }
    
     public void closeWindow() {

@@ -47,6 +47,16 @@ public class FlightPlanAnalysisController {
        return project.getAirportList().getAirportNode(node);
     }
     
+        /* Creates a best path simullation receiving the selected airports
+     * @param startNode origin of flight simulation
+     * @param endNode destination of flight simulation
+     * @return true if creates new simulation, false if start airport or
+    end airport doesnÃ‚Â´t exists
+    */
+    public void createBestPathSimulation(TypePath type){   
+       project.getSimulationsList().getSimulation().createPathSimulation(type);
+    }   
+    
     /**
      * Gets node correspondent to the selected airport if exists
      * @param airport selected airport
@@ -65,36 +75,16 @@ public class FlightPlanAnalysisController {
         return project.getPossibleEndAirports(startNode);
     }
     
-//    /* Creates a best path simullation receiving the selected airports
-//     * @param startNode origin of flight simulation
-//     * @param endNode destination of flight simulation
-//     * @return true if creates new simulation, false if start airport or
-//    end airport doesnÂ´t exists
-//    */
-//    public void createBestPathSimulation(TypePath type){   
-//       project.getSimulationsList().getSimulation().createPathSimulation(type);
-//    }   
-//    
-//    /**
-//     * Set the data introduced by the user 
-//     * @param aircraft
-//     * @param passengers
-//     * @param crew
-//     * @param cargoLoad 
-//     * @param fuelLoad 
-//     */
-//    public void setData(Aircraft aircraft, int passengers, int crew, 
-//            double cargoLoad, double fuelLoad, FlightPlan flightPlan){
-//        project.getSimulationsList().getSimulation().setData(aircraft, passengers, 
-//                crew, cargoLoad, fuelLoad, flightPlan);
-//    }
-//    
-//    /**
-//     * Calculates the ecologic best path
-//     */
-//    public void calculatePath(){
-//        project.getSimulationsList().getSimulation().calculateBestPath( project.getAirNetwork());
-//    }
+      /**
+     * Set the data introduced by the user 
+     * @param start
+     * @param end 
+     * @param timeStep 
+     */
+    public void setData(Airport start, Airport end,int timeStep){
+        project.getSimulationsList().getSimulation().setData(start, end, timeStep);
+    }
+    
       /**
        * Get the simulation resulte receiving the type of simulation by parameter
        * @param type type of simulation (shortest, fastest, ecologic
@@ -104,32 +94,7 @@ public class FlightPlanAnalysisController {
           return project.getSimulationsList().getSimulation().getResult(type);
       }
       
-      /**
-       * Gets the travelling time resulted by the simulation
-       * @param type type of simulation 
-       * @return the travelling time result (min)
-       */
-      public double getTravellingTime(TypePath type) {
-        return getResult(type).getTravellingTime()/60;
-      }
-      
-       /**
-       * Gets the distance resulted by the simulation
-       * @param type type of simulation
-       * @return the distance (km)
-       */
-      public double getDistance(TypePath type) {
-        return getResult(type).getDistance()/1000;
-      }
-      
-      /**
-       * Gets the energy consume resulted by the simulation
-       * @param type type of simulation
-       * @return the energy consume
-       */
-      public double getEnergyConsume(TypePath type){
-          return getResult(type).getEnergyConsum();
-      }
+     
   
     /**
      * Saves the simulation for export results purposes

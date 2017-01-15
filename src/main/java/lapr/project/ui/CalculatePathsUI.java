@@ -236,6 +236,7 @@ public class CalculatePathsUI extends JDialog {
             public void actionPerformed(ActionEvent e) {
                 
                 if(createSimulation(TypePath.SHORTEST_PATH)){
+                     createSimulation(TypePath.SHORTEST_PATH);
                     FindBestPathResultUI result=new FindBestPathResultUI(controller.getSimulation(),
                             TypePath.SHORTEST_PATH, CalculatePathsUI.this);
                     } else {
@@ -259,6 +260,7 @@ public class CalculatePathsUI extends JDialog {
         btnFast.setEnabled(false);
         btnFast.addActionListener((ActionEvent e) -> {
                 if(createSimulation(TypePath.FASTEST_PATH)){
+                     createSimulation(TypePath.FASTEST_PATH);
                     FindBestPathResultUI result=new FindBestPathResultUI(controller.getSimulation(),
                             TypePath.FASTEST_PATH, CalculatePathsUI.this);
                 } else {
@@ -283,6 +285,7 @@ public class CalculatePathsUI extends JDialog {
             public void actionPerformed(ActionEvent e) {
                 try {
                     if(createSimulation(TypePath.ECOLOGIC_PATH)){
+                        createSimulation(TypePath.ECOLOGIC_PATH);
                     FindBestPathResultUI result=new FindBestPathResultUI(controller.getSimulation(),
                             TypePath.ECOLOGIC_PATH, CalculatePathsUI.this);
                 } else {
@@ -316,7 +319,7 @@ public class CalculatePathsUI extends JDialog {
     
     private boolean createSimulation(TypePath type){
         controller.createBestPathSimulation(type);
-        
+        setData();
         controller.calculatePath(type);
         return controller.saveSimulation();
     }

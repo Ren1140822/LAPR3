@@ -304,18 +304,6 @@ public class FindBestPathControllerTest {
         
     }
     
-    private void createAirports(){
-        listTest = new AirportList();
-        
-        startAirport=new Airport("1", "", "", "", new Location(20,30,10));
-        intAirport=new Airport("2", "", "", "", new Location(40,50,10));
-        endAirport=new Airport("3", "", "", "", new Location(10,20,10));
-        
-        listTest.getAirportList().add(startAirport);
-        listTest.getAirportList().add(intAirport);
-        listTest.getAirportList().add(endAirport);
-    }
-    
     private void createFlightPlan(){
         fPlan=new FlightPlan();
         
