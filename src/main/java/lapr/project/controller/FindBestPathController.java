@@ -129,8 +129,7 @@ public class FindBestPathController {
     }
     
     public boolean validateData(){
-        return  project.getSimulationsList().getSimulation().validate() &&
-                project.getSimulationsList().getSimulation().validateAircraftRelatedData();
+        return   project.getSimulationsList().getSimulation().validateAircraftRelatedData();
     }
     
      /**
