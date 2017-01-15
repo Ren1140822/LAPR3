@@ -54,7 +54,7 @@ public class FindBestPathUI extends JDialog {
     /**
      * Saves the analysis input data
      */
-    private JTextField txtCrew, txtCargoLoad, txtFuelLoad;
+    private JTextField txtCrew, txtCargoLoad, txtFuelLoad, txtTimeStep;
     private JComboBox comboFlights;
     /**
      * panel with analysis input data
@@ -161,7 +161,7 @@ public class FindBestPathUI extends JDialog {
     }
 
     private JPanel createPanelInputData() {
-        JPanel pcenter = new JPanel(new GridLayout(4, 1));
+        JPanel pcenter = new JPanel(new GridLayout(5, 1));
 
         comboFlights = new JComboBox(controller.getFlightPlanList().toArray());
         comboFlights.setSelectedIndex(-1);
@@ -193,11 +193,13 @@ public class FindBestPathUI extends JDialog {
         txtCrew = new JTextField(10);
         txtCargoLoad = new JTextField(10);
         txtFuelLoad = new JTextField(10);
+        txtTimeStep=new JTextField(10);
 
         pcenter.add(UI.createPanelLabelComboLabel("Flight Plan List", comboFlights, ""));
         pcenter.add(UI.createPanelLabelTextLabel("No.Crew members: ", txtCrew, ""));
         pcenter.add(UI.createPanelLabelTextLabel("Cargo load: ", txtCargoLoad, "Kg"));
         pcenter.add(UI.createPanelLabelTextLabel("Fuel load: ", txtFuelLoad, "Kg"));
+        pcenter.add(UI.createPanelLabelTextLabel("Time step: ", txtTimeStep, "seg"));
 
         return pcenter;
     }
@@ -309,7 +311,7 @@ public class FindBestPathUI extends JDialog {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (createSimulation(TypePath.SHORTEST_PATH)) {
-                    FindBestPathResultUI result = new FindBestPathResultUI(controller.getSimulation(), TypePath.ECOLOGIC_PATH, FindBestPathUI.this);
+                    FindBestPathResultUI result = new FindBestPathResultUI(controller.getSimulation(), TypePath.SHORTEST_PATH, FindBestPathUI.this);
                 } else {
                     JOptionPane.showMessageDialog(FindBestPathUI.this, "Data is invalid!", "Error", JOptionPane.ERROR_MESSAGE);
                 }
@@ -332,7 +334,7 @@ public class FindBestPathUI extends JDialog {
         btFast.setToolTipText("Please insert origin and destination airports");
         btFast.addActionListener((ActionEvent e) -> {
             if (createSimulation(TypePath.FASTEST_PATH)) {
-                FindBestPathResultUI result = new FindBestPathResultUI(controller.getSimulation(), TypePath.ECOLOGIC_PATH, FindBestPathUI.this);
+                FindBestPathResultUI result = new FindBestPathResultUI(controller.getSimulation(), TypePath.FASTEST_PATH, FindBestPathUI.this);
             } else {
                 JOptionPane.showMessageDialog(FindBestPathUI.this, "Data is invalid!", "Error", JOptionPane.ERROR_MESSAGE);
             }
@@ -370,9 +372,10 @@ public class FindBestPathUI extends JDialog {
     }
 
     private boolean validateData() {
-        return !txtCargoLoad.getText().isEmpty()
+        return  !txtCargoLoad.getText().isEmpty()
                 && !txtCrew.getText().isEmpty()
-                && !txtFuelLoad.getText().isEmpty();
+                && !txtFuelLoad.getText().isEmpty() &&
+                !txtTimeStep.getText().isEmpty();
     }
 
     private void setData() {
@@ -386,12 +389,21 @@ public class FindBestPathUI extends JDialog {
                     int crew = Integer.parseInt(txtCrew.getText());
                     double cargo = Double.parseDouble(txtCargoLoad.getText());
                     double fuel = Double.parseDouble(txtFuelLoad.getText());
-                    controller.setData(totalPassengers, crew, cargo, fuel);
+                    int timeStep= Integer.parseInt(txtTimeStep.getText());
+                    if (controller.validateData()){
+               
+                     controller.setData(totalPassengers, crew, cargo, fuel, timeStep);
+                    }else{
+                      JOptionPane.showMessageDialog(dialog, "Please verify the maximum number of passengers/crew", "Error", JOptionPane.ERROR_MESSAGE);
+                     }    
                 } catch (NumberFormatException ne1) {
                     JOptionPane.showMessageDialog(dialog, "Field invalid!", "Error", JOptionPane.ERROR_MESSAGE);
                     System.err.println(ne1.getMessage());
                 }
-            } else {
+            }
+             
+            else {
+                
                 JOptionPane.showMessageDialog(dialog, "Fill all fields, please!", "Error", JOptionPane.ERROR_MESSAGE);
             }
         } catch (NumberFormatException ne2) {
@@ -403,6 +415,8 @@ public class FindBestPathUI extends JDialog {
     private boolean createSimulation(TypePath type) {
         controller.createBestPathSimulation(type);
         setData();
+
+        controller.calculatePath(type);
         return controller.saveSimulation();
     }
 }

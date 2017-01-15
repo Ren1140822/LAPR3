@@ -84,7 +84,7 @@ public class SimulationsList implements Serializable {
      * @return true if valid, false if not
      */
     public boolean saveSimulation(){
-        return validate() && addSimulation();
+        return validate() && simulationsList.add(simulation);
     }
     
     /**
@@ -94,16 +94,5 @@ public class SimulationsList implements Serializable {
     private boolean validate(){
         return simulation.validate() && !simulationsList.contains(simulation);
     }
-    
-    /**
-     * Add the simulation into the list
-     * @return true if simulation is addef, false if not
-     */
-    private boolean addSimulation(){
-        return simulationsList.add(simulation);
-    }
-    
-    
-    
-    
+
 }

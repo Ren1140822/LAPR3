@@ -131,7 +131,7 @@ public class AircraftAlgorithms {
      * Calculates the initial weight of aircraft
      * @param passengers number of passengers
      * @param crew number of crew members
-     * @param cargoLoad cargo load (g)
+     * @param cargoLoad cargo load (kg)
      * @param emptyWeight
      * @param fuel
      * @return initial weight

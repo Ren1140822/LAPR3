@@ -532,4 +532,54 @@ public class SegmentResultTest {
         double result = instance.getAltitudeFinal();
         assertEquals(expResult, result, 0.0);  
     }
+
+    /**
+     * Test of toString method, of class SegmentResult.
+     */
+    @Test
+    public void testToString() {
+        System.out.println("toString");
+        SegmentResult instance = new SegmentResult();
+        String expResult = "NOID";
+        String result = instance.toString();
+
+        assertEquals(expResult, result);
+
+    }
+
+    /**
+     * Test of equals method, of class SegmentResult.
+     */
+    @Test
+    public void testEquals() {
+        System.out.println("equals1");
+        boolean expResult9 = false;
+        SegmentResult otherSeg = new SegmentResult();
+        Segment test=new Segment("test", new Node(), new Node(), "", new Wind(), 0, 0);
+        otherSeg.setSegment(test);
+       
+        Segment test2=new Segment("test232", new Node(), new Node(), "", new Wind(), 89, 213);
+        SegmentResult seg = new SegmentResult();
+        seg.setSegment(test2);
+        
+        boolean result9 = seg.equals(otherSeg);
+        assertEquals(expResult9, result9);     
+    }
+    
+     /**
+     * Test of equals method, of class SegmentResult.
+     */
+    @Test
+    public void testEquals2() {
+        System.out.println("equals2");
+        SegmentResult otherObject = new SegmentResult();
+        Segment test=new Segment("test", new Node(), new Node(), "", new Wind(), 0, 0);
+        otherObject.setSegment(test);
+      
+        SegmentResult instance = new SegmentResult();
+        instance.setSegment(test);
+        boolean expResult = true;
+        boolean result = instance.equals(otherObject);
+        assertEquals(expResult, result);     
+    }
 }

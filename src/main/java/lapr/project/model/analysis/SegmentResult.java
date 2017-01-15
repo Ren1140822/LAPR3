@@ -452,6 +452,53 @@ public class SegmentResult {
         flightTime += timeStep;
         return true;
     }
+    
+     /**
+     * Calculates the distance, mass and flight time in the segment
+     *
+     * @return true if calculate was valid, false if not
+     */
+    public boolean calculateWithWind() {
+
+        calculateBasic();
+
+        double liftCoef = AircraftAlgorithms.calculateLiftCoefficient(mass, airDensity, wingArea, groundSpeed);
+
+        double coefDrag = AircraftAlgorithms.calculateDragCoefficient(cDrag, liftCoef, getModel().getAspectRatio(), getModel().getE());
+
+        double drag = AircraftAlgorithms.calculateDragForce(coefDrag, airDensity, groundSpeed, wingArea);
+
+        double thrust;
+        if (type != SegmentType.CRUISE) {
+            thrust = calculateThrustClimbDesc(thrustMi, lambda, mTrue, airDensity, thrustLapseRate);
+        } else {
+            thrust = AircraftAlgorithms.calculateThrustCruise(drag, getModel().getMotorization().getNumberMotors());
+        }
+
+        double totalThrust = calculateTotalThrust(thrust, drag);
+
+        dhDT = AircraftAlgorithms.calculateDhDt(totalThrust, drag, groundSpeed, mass);
+
+        angle = AircraftAlgorithms.calculateClimbingAng(groundSpeed, dhDT);
+
+        double dwDT = AircraftAlgorithms.calculateDwDt(totalThrust, timeStep, this.model.getMotorization().getTSFC());
+
+        distance = AircraftAlgorithms.calculateDistanceGained(groundSpeed, angle, timeStep);
+
+        if (type == SegmentType.CLIMBING) {
+            altitude = AircraftAlgorithms.calculateAltitudeGained(altitude, dhDT, timeStep);
+        }
+        if (type == SegmentType.DESC) {
+            altitude += AircraftAlgorithms.calculateAltitudeDesc(dhDT, timeStep);
+        }
+        double finalMass = AircraftAlgorithms.calculateNewMass(mass, dwDT);
+
+        mass = finalMass;
+        energyConsume += (initMass - mass);
+        flightTime += timeStep;
+        return true;
+    }
+
 
     private double calculateThrustClimbDesc(double thrustMa, double lambda, double mTrue,
             double airDensity, double thrustLapseRate) {
@@ -507,12 +554,12 @@ public class SegmentResult {
         double defaultValue = Thrust_Function.getDefaultValue();
         double defaultWing = AircraftModel.getDefaultWingArea();
 
-        boolean v1 = Double.doubleToLongBits(thrustMa) != Double.doubleToLongBits(defaultValue)
-                && Double.doubleToLongBits(velThrustMa) != Double.doubleToLongBits(defaultValue)
+        boolean v1 = Double.doubleToLongBits(thrustMa) != Double.doubleToLongBits(defaultValue)&&
+                Double.doubleToLongBits(velThrustMa) != Double.doubleToLongBits(defaultValue)
                 && Double.doubleToLongBits(thrustMi) != Double.doubleToLongBits(defaultValue)
                 && Double.doubleToLongBits(thrustLapseRate) != Double.doubleToLongBits(defaultValue);
 
-        return v1 && t == null && Double.doubleToLongBits(wingArea) != Double.doubleToLongBits(defaultWing);
+        return v1  && Double.doubleToLongBits(wingArea) != Double.doubleToLongBits(defaultWing);
     }
 
     public double startLand(SegmentResult aux, Airport endAirport) {
@@ -569,7 +616,33 @@ public class SegmentResult {
      *
      * @return segment id
      */
+    @Override
     public String toString() {
         return segment.getId();
+    }
+    
+    @Override
+    public boolean equals(Object otherObject){
+        if (otherObject == null || this.getClass() != otherObject.getClass()) {
+            return false;
+        }
+        if (this == otherObject) {
+            return true;
+        }
+        SegmentResult other=(SegmentResult) otherObject;
+        return this.getSegment().getId().equalsIgnoreCase(other.getSegment().getId());
+  
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 59 * hash + (int) (Double.doubleToLongBits(this.altitude) ^ (Double.doubleToLongBits(this.altitude) >>> 32));
+        hash = 59 * hash + (int) (Double.doubleToLongBits(this.mass) ^ (Double.doubleToLongBits(this.mass) >>> 32));
+        hash = 59 * hash + (int) (Double.doubleToLongBits(this.distance) ^ (Double.doubleToLongBits(this.distance) >>> 32));
+        hash = 59 * hash + this.flightTime;
+        hash = 59 * hash + (int) (Double.doubleToLongBits(this.energyConsume) ^ (Double.doubleToLongBits(this.energyConsume) >>> 32));
+        hash = 59 * hash + this.timeStep;
+        return hash;
     }
 }

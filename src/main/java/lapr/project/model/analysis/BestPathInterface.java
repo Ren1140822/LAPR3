@@ -6,11 +6,15 @@
 package lapr.project.model.analysis;
 
 import lapr.project.model.AirNetwork;
+import lapr.project.model.FlightPlan;
 
 /**
  *
  * @author Diana Silva
  */
 public interface BestPathInterface {
-    public void calculateBestPath(AirNetwork airNetwork);
+    public void calculateBestPath(AirNetwork air, FlightPlan flightPlan, double totalWeight, int timeStep);
+    
+    public void calculateBestPathCruise(AirNetwork air, FlightPlan flightPlan, double totalWeight, int timeStep);
+
 }

@@ -296,5 +296,56 @@ public class SegmentTest {
         Segment instance = new Segment();
         instance.setMaxAltSlot(maxAltSlot);
     }
+
+    /**
+     * Test of getStartNode_ method, of class Segment.
+     */
+    @Test
+    public void testGetStartNode_() {
+        System.out.println("getStartNode_");
+        Segment instance = new Segment();
+        Node startNode=new Node();
+        instance.setStartNode(startNode);
+
+        String expResult = startNode.getId();
+        String result = instance.getStartNode_();
+        assertEquals(expResult, result);
+    }
+
+    /**
+     * Test of setStartNode_ method, of class Segment.
+     */
+    @Test
+    public void testSetStartNode_() {
+        System.out.println("setStartNode_");
+        String startNodeid = "iji";
+        Segment instance = new Segment();
+        instance.setStartNode_(startNodeid);
+    }
+
+    /**
+     * Test of getEndNode_ method, of class Segment.
+     */
+    @Test
+    public void testGetEndNode_() {
+        System.out.println("getEndNode_");
+        Segment instance = new Segment();
+        Node endNode=new Node();
+        instance.setEndNode(endNode);
+        String expResult = endNode.getId();
+        String result = instance.getEndNode_();
+        assertEquals(expResult, result);
+    }
+
+    /**
+     * Test of setEndNode_ method, of class Segment.
+     */
+    @Test
+    public void testSetEndNode_() {
+        System.out.println("setEndNode_");
+        String endNodeid = "";
+        Segment instance = new Segment();
+        instance.setEndNode_(endNodeid);
+    }
     
 }

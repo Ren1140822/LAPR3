@@ -66,8 +66,10 @@ public class ExportCSVControllerTest {
         System.out.println("getAvailableResults");
         String sim = "Simulation";
        
-        ShortestPathResult sp = new ShortestPathResult(new FlightPlan());
-        sp.calculateBestPath(new AirNetwork());
+        FlightPlan fp=new FlightPlan();
+        ShortestPathResult sp = new ShortestPathResult(fp);
+        sp.calculateBestPath(new AirNetwork(),fp,10,10);
+        
         Simulation simu = new Simulation();
         simu.setShortestResultPath(sp);
         p.getSimulationsList().getSimulationsList().add(simu);
@@ -161,7 +163,7 @@ public class ExportCSVControllerTest {
     public void testGetListOfNodes() {
         System.out.println("getListOfNodes");
          Simulation sim = new Simulation();
-         sim.setData(0, 0, 0, 0, new FlightPlan());
+         sim.setData(0, 0, 0, 0, new FlightPlan(),0);
          p.getSimulationsList().getSimulationsList().add(sim);
         ExportCSVController instance = new ExportCSVController(p);
         
@@ -180,7 +182,7 @@ public class ExportCSVControllerTest {
         SegmentResult r  = new SegmentResult();
         LinkedList<SegmentResult> segs = new LinkedList<>();
         segs.add(r);
-        sm.getEcologicResultPath().setSegments(segs);
+        sm.getEcologicResultPath().setSegmentsResultTime(segs);
            p.getSimulationsList().getSimulationsList().add(sm);
         this.instance = new ExportCSVController(p);
         String[] s = new String[1];
@@ -203,7 +205,7 @@ public class ExportCSVControllerTest {
         SegmentResult r  = new SegmentResult();
         LinkedList<SegmentResult> segs = new LinkedList<>();
         segs.add(r);
-        sm.getShortestResultPath().setSegments(segs);
+        sm.getShortestResultPath().setSegmentsResultTime(segs);
            p.getSimulationsList().getSimulationsList().add(sm);
         this.instance = new ExportCSVController(p);
         String[] s = new String[1];
@@ -226,7 +228,7 @@ public class ExportCSVControllerTest {
         SegmentResult r  = new SegmentResult();
         LinkedList<SegmentResult> segs = new LinkedList<>();
         segs.add(r);
-        sm.getFastestResultPath().setSegments(segs);
+        sm.getFastestResultPath().setSegmentsResultTime(segs);
            p.getSimulationsList().getSimulationsList().add(sm);
         this.instance = new ExportCSVController(p);
         String[] s = new String[1];

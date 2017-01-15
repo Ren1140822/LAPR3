@@ -122,8 +122,8 @@ public class SimulationsListTest {
         instance.newSimulation();
         instance.getSimulation().setFlightPlan(f);
         instance.getSimulation().createPathSimulation(TypePath.ALL);
-        instance.getSimulation().setData(10, 10, 10, 10, f);
-        boolean expResult = false;
+        instance.getSimulation().setData(10, 10, 10, 10, f,10);
+        boolean expResult =true;
         boolean result = instance.saveSimulation();
         assertEquals(expResult, result);
         
@@ -132,7 +132,7 @@ public class SimulationsListTest {
         instance2.newSimulation();
         instance2.getSimulation().setFlightPlan(f);
         instance2.getSimulation().createPathSimulation(TypePath.ALL);
-        instance2.getSimulation().setData(10, 7, 10, 10, f);
+        instance2.getSimulation().setData(10, 7, 10, 10, f,10);
         boolean expResult2 = true;
         boolean result2 = instance2.saveSimulation();
         assertEquals(expResult2, result2);

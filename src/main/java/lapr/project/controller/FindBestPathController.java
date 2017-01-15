@@ -5,10 +5,8 @@
  */
 package lapr.project.controller;
 
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import lapr.project.model.Aircraft;
 import lapr.project.model.Airport;
 import lapr.project.model.FlightPlan;
 import lapr.project.model.Node;
@@ -27,10 +25,6 @@ public class FindBestPathController {
      */
     private Project project;
     
-    /**
-     * The possible endNodes for the start airport choosed
-     */
-    private LinkedList<Node> endNodes;
     private FlightPlan flightPlan;
     
     /**
@@ -77,7 +71,7 @@ public class FindBestPathController {
      * @param startNode origin of flight simulation
      * @param endNode destination of flight simulation
      * @return true if creates new simulation, false if start airport or
-    end airport doesnÂ´t exists
+    end airport doesnÃ‚Â´t exists
     */
     public void createBestPathSimulation(TypePath type){   
        project.getSimulationsList().getSimulation().createPathSimulation(type);
@@ -89,64 +83,30 @@ public class FindBestPathController {
      * @param crew
      * @param cargoLoad 
      * @param fuelLoad 
+     * @param timeStep 
      */
-    public void setData(int passengers, int crew, double cargoLoad, double fuelLoad){
+    public void setData(int passengers, int crew, double cargoLoad, double fuelLoad,int timeStep){
         project.getSimulationsList().getSimulation().setData(passengers, 
-                crew, cargoLoad, fuelLoad, flightPlan);
+                crew, cargoLoad, fuelLoad, flightPlan, timeStep);
     }
     
     /**
      * Calculates the ecologic best path
      * @param type
-     * @param timeStep time step to consider in analysis
-     * @return 
+     * @return true if valid, false if not
      */
     public boolean calculatePath(TypePath type){
         return project.getSimulationsList().getSimulation().calculateBestPath( type, project.getAirNetwork());
     }
+    
       /**
-       * Get the simulation resulte receiving the type of simulation by parameter
+       * Gets the simulation resulte receiving the type of simulation by parameter
        * @param type type of simulation (shortest, fastest, ecologic
-       * @return the result of simulationÂ´s type
+       * @return the result of simulation type
        */
       public Path getResult(TypePath type){
           return project.getSimulationsList().getSimulation().getResult(type);
       }
-      
-      /**
-       * Gets the travelling time resulted by the simulation
-       * @param type type of simulation 
-       * @return the travelling time result (min)
-       */
-      public double getTravellingTime(TypePath type) {
-        return getResult(type).getTravellingTime();
-      }
-      
-       /**
-       * Gets the distance resulted by the simulation
-       * @param type type of simulation
-       * @return the distance (km)
-       */
-      public double getDistance(TypePath type) {
-        return getResult(type).getDistance();
-      }
-      
-      /**
-       * Gets the energy consume resulted by the simulation
-       * @param type type of simulation
-       * @return the energy consume
-       */
-      public double getEnergyConsume(TypePath type){
-          return getResult(type).getEnergyConsum();
-      }
-  
-    /**
-     * Saves the simulation for export results purposes
-     * @return true if saves the simulation, false if not
-     */
-    public boolean saveSimulation(){
-        return project.getSimulationsList().saveSimulation();
-    }
     
     public Simulation getSimulation(){
         return project.getSimulationsList().getSimulation();
@@ -166,5 +126,18 @@ public class FindBestPathController {
     
     public FlightPlan getFlightPlan(){
         return flightPlan;
+    }
+    
+    public boolean validateData(){
+        return  project.getSimulationsList().getSimulation().validate() &&
+                project.getSimulationsList().getSimulation().validateAircraftRelatedData();
+    }
+    
+     /**
+     * Saves the simulation for export results purposes
+     * @return true if saves the simulation, false if not
+     */
+    public boolean saveSimulation(){
+        return project.getSimulationsList().saveSimulation();
     }
 }

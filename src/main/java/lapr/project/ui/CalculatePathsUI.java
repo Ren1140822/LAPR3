@@ -23,13 +23,17 @@ import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import lapr.project.controller.CalculatePathsController;
+import lapr.project.model.AircraftModel;
+import lapr.project.model.Airport;
 import lapr.project.model.Project;
+import lapr.project.model.analysis.TypePath;
 
 /**
  *
@@ -43,6 +47,7 @@ public class CalculatePathsUI extends JDialog {
     private JList listAirDest;
     private JList listAircraftModels;
     private JButton btnClean, btnBack, btnEco, btnFast, btnShort;
+    private JTextField txt;
     /**
      * Guarda a janela anterior
      */
@@ -93,6 +98,7 @@ public class CalculatePathsUI extends JDialog {
         JPanel p = new JPanel(new BorderLayout());
         p.add(UI.createButtonsCleanBackPanel(btnClean, btnBack), BorderLayout.SOUTH);
         p.add(createPanelFind(), BorderLayout.CENTER);
+        p.add(createTimeStepLabel(),BorderLayout.NORTH);
 
         add(p, BorderLayout.SOUTH);
 
@@ -154,6 +160,13 @@ public class CalculatePathsUI extends JDialog {
         p.add(createListsPanel(l2, listAirOri));
         p.add(createListsPanel(l3, listAirDest));
 
+        return p;
+    }
+    
+    private JPanel createTimeStepLabel(){
+        JPanel p=new JPanel();
+        txt=new JTextField(10);
+        p.add(UI.createPanelLabelTextLabel("Time step: ", txt, "seg"));
         return p;
     }
     
@@ -221,8 +234,14 @@ public class CalculatePathsUI extends JDialog {
         btnShort.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-//                createSimulation(TypePath.SHORTEST_PATH);
-//                openResultWindow(TypePath.SHORTEST_PATH);
+                
+                if(createSimulation(TypePath.SHORTEST_PATH)){
+                    FindBestPathResultUI result=new FindBestPathResultUI(controller.getSimulation(),
+                            TypePath.SHORTEST_PATH, CalculatePathsUI.this);
+                    } else {
+                    JOptionPane.showMessageDialog(CalculatePathsUI.this, "Data is invalid!", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+                    
             }
         });
 
@@ -239,8 +258,12 @@ public class CalculatePathsUI extends JDialog {
         btnFast.setMnemonic(KeyEvent.VK_F);
         btnFast.setEnabled(false);
         btnFast.addActionListener((ActionEvent e) -> {
-//            createSimulation(TypePath.FASTEST_PATH);
-//            openResultWindow(TypePath.FASTEST_PATH);
+                if(createSimulation(TypePath.FASTEST_PATH)){
+                    FindBestPathResultUI result=new FindBestPathResultUI(controller.getSimulation(),
+                            TypePath.FASTEST_PATH, CalculatePathsUI.this);
+                } else {
+                    JOptionPane.showMessageDialog(CalculatePathsUI.this, "Data is invalid!", "Error", JOptionPane.ERROR_MESSAGE);
+                }
         });
         return btnFast;
     }
@@ -259,9 +282,12 @@ public class CalculatePathsUI extends JDialog {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-//                    createSimulation(TypePath.ECOLOGIC_PATH);
-//                    openResultWindow(TypePath.ECOLOGIC_PATH);
-
+                    if(createSimulation(TypePath.ECOLOGIC_PATH)){
+                    FindBestPathResultUI result=new FindBestPathResultUI(controller.getSimulation(),
+                            TypePath.ECOLOGIC_PATH, CalculatePathsUI.this);
+                } else {
+                    JOptionPane.showMessageDialog(CalculatePathsUI.this, "Data is invalid!", "Error", JOptionPane.ERROR_MESSAGE);
+                }
                 } catch (java.lang.UnsupportedOperationException en) {
 
                     JOptionPane.showMessageDialog(dialog,
@@ -287,5 +313,46 @@ public class CalculatePathsUI extends JDialog {
             setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         }
     }
+    
+    private boolean createSimulation(TypePath type){
+        controller.createBestPathSimulation(type);
+        
+        controller.calculatePath(type);
+        return controller.saveSimulation();
+    }
+    
+    private void setData(){
+
+        try {
+               int timeStep=Integer.parseInt(txt.getText());
+               AircraftModel model=(AircraftModel)listAircraftModels.getSelectedValue();
+               Airport start=(Airport) listAirOri.getSelectedValue();
+               Airport end=(Airport) listAirDest.getSelectedValue();
+            if (!txt.getText().isEmpty()) {
+                try {
+                    
+                    if (controller.validateData()){
+               
+                     controller.setData(timeStep, model, start, end);
+                    }else{
+                      JOptionPane.showMessageDialog(dialog, "Please verify the maximum number of passengers/crew", "Error", JOptionPane.ERROR_MESSAGE);
+                     }    
+                } catch (NumberFormatException ne1) {
+                    JOptionPane.showMessageDialog(dialog, "Field invalid!", "Error", JOptionPane.ERROR_MESSAGE);
+                    System.err.println(ne1.getMessage());
+                }
+            }
+             
+            else {
+                
+                JOptionPane.showMessageDialog(dialog, "Fill all fields, please!", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        } catch (NumberFormatException ne2) {
+            JOptionPane.showMessageDialog(dialog, "Max Passengers fields invalid!", "Error", JOptionPane.ERROR_MESSAGE);
+            System.err.println(ne2.getMessage());
+        }
+
+    }
+       
 
 }

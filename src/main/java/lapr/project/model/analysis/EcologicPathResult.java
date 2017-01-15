@@ -33,17 +33,6 @@ public class EcologicPathResult extends Path implements BestPathInterface {
         this.flightPlan = flightPlan;
     }
 
-    @Override
-    public void calculateBestPath(AirNetwork airNetwork) {
-//        //LinkedList<Node> ecologicPath = airNetwork.getAllPathsFromFlightPlanPassingThroughWaypoints(flightPlan);
-//        /**
-//         * corrigir*
-//         */
-//
-//        super.setResult(0);
-//        super.setResultPath(ecologicPath);
-    }
-
     /**
      *
      * @param air
@@ -51,7 +40,8 @@ public class EcologicPathResult extends Path implements BestPathInterface {
      * @param totalWeight
      * @param timeStep
      */
-    void calculateEcoPath(AirNetwork air, FlightPlan flightPlan, double totalWeight, int timeStep) {
+    @Override
+    public void calculateBestPath(AirNetwork air, FlightPlan flightPlan, double totalWeight, int timeStep) {
         LinkedList<Edge<Node, Segment>> lS = new LinkedList<>();
         Graph<Node, Segment> consumeGraph = air.getAirNetwork().clone();
         SegmentResult seg = null;
@@ -60,7 +50,7 @@ public class EcologicPathResult extends Path implements BestPathInterface {
         for (Edge<Node, Segment> e : lS) {
             if (e.getVOrig().equals(air.getAirportNode(flightPlan.getOrigin()))) {
                 if (simulateInitialNode(flightPlan, timeStep, totalWeight, e.getElement())) {
-
+                    seg=getSegments().getLast();
                     if (seg.stopClimb()) {
                         seg = getSegments().getFirst();
                     } else {
@@ -70,12 +60,13 @@ public class EcologicPathResult extends Path implements BestPathInterface {
             } else if (e.getVDest().equals(air.getAirportNode(flightPlan.getDestination()))) {
                 if (simulateEndNode(flightPlan.getOrigin(),flightPlan.getDestination(),flightPlan, timeStep, totalWeight, e.getElement())) {
                     seg = getSegments().getLast();
-                    seg = getSegments().get(getSegments().size() - 2);
+  
                 }
-            } else if (simulateIntermNodes(flightPlan, timeStep, totalWeight, e.getElement())) {
-                seg = getSegments().getLast();
+//            } else if (simulateIntermNodes(flightPlan, timeStep, totalWeight, e.getElement())) {
+//                seg = getSegments().getLast();
             }
             consumeGraph.removeEdge(e.getVOrig(), e.getVDest());
+            if(seg!=null)
             consumeGraph.insertEdge(e.getVOrig(), e.getVDest(), e.getElement(), seg.getEnergyConsume());
         }
 
@@ -94,14 +85,46 @@ public class EcologicPathResult extends Path implements BestPathInterface {
                 res += GraphAlgorithms.shortestPath(consumeGraph, waypoints.get(i), waypoints.get(i + 1), fullPaths);
             }
             ecoPath.addAll(fullPaths);
-            res += GraphAlgorithms.shortestPath(consumeGraph, waypoints.get(waypoints.size()), dest, fullPaths);
+            res += GraphAlgorithms.shortestPath(consumeGraph, waypoints.get(waypoints.size()-1), dest, fullPaths);
             ecoPath.addAll(fullPaths);
         } else {
             res += GraphAlgorithms.shortestPath(consumeGraph, origin, dest, fullPaths);
             ecoPath.addAll(fullPaths);
         }
 
-        super.setResult(res);
-        super.setResultPath(ecoPath);
+        setResult(res);
+        setResultPath(ecoPath);
+        createResultsList();
+    }
+    
+    @Override
+    public void calculateBestPathCruise(AirNetwork air, FlightPlan flightPlan, double totalWeight, int timeStep) {
+        LinkedList<Edge<Node, Segment>> lS = new LinkedList<>();
+        Graph<Node, Segment> distanceGraph = air.getAirNetwork().clone();
+        SegmentResult seg = null;
+        air.getAirNetwork().edges().forEach(lS::add);
+
+        for (Edge<Node, Segment> e : lS) {
+           if(simulateIntermNodes(flightPlan, timeStep, totalWeight, e.getElement())) {
+                 seg=getSegments().getLast();
+            }
+            if(seg!=null)
+            {
+                distanceGraph.removeEdge(e.getVOrig(), e.getVDest());
+                distanceGraph.insertEdge(e.getVOrig(), e.getVDest(), e.getElement(), seg.getEnergyConsume());
+            }
+        }
+
+        Node origin = air.getAirportNode(flightPlan.getOrigin());
+        Node dest = air.getAirportNode(flightPlan.getDestination());
+  
+        LinkedList<Node> fullPaths = new LinkedList<>();
+        LinkedList<Node> shortPath = new LinkedList<>();
+        double res = 0.0;
+        res += GraphAlgorithms.shortestPath(distanceGraph, origin, dest, fullPaths);
+        shortPath.addAll(fullPaths);
+
+        setResult(res);
+        setResultPath(shortPath);
     }
 }

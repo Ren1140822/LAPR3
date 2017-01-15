@@ -38,9 +38,9 @@ public abstract class Path {
     LinkedList<Segment> segmentsPath;
 
     /**
-     * Results of segmentsResult path calculated (climb, cruise, desc)
+     * Results of segmentsResultTime path calculated (climb, cruise, desc) by time step
      */
-    private LinkedList<SegmentResult> segmentsResult;
+    private LinkedList<SegmentResult> segmentsResultTime;
 
     /**
      * Default value for the variables
@@ -48,6 +48,11 @@ public abstract class Path {
     private static final double DEFAULT_VALUE = 0.0;
 
     private AirNetwork air;
+    
+    /**
+     * Results of segment results by segment of airnetwork
+     */
+    private LinkedList<SegmentResult> listSegResults;
 
     /**
      * Constructor
@@ -56,8 +61,9 @@ public abstract class Path {
         super();
         this.path = new LinkedList<>();
         this.result = DEFAULT_VALUE;
-        this.segmentsResult = new LinkedList<>();
+        this.segmentsResultTime = new LinkedList<>();
         this.air = new AirNetwork();
+        this.listSegResults=new LinkedList<>();
     }
 
     /**
@@ -70,8 +76,9 @@ public abstract class Path {
     public Path(List resultPath, double result, AirNetwork air) {
         this.path = (LinkedList<Node>) resultPath;
         this.result = result;
-        segmentsResult = new LinkedList<>();
+        segmentsResultTime = new LinkedList<>();
         this.air = air;
+        this.listSegResults=new LinkedList<>();
     }
 
     /**
@@ -111,17 +118,17 @@ public abstract class Path {
     }
 
     /**
-     * @return the segmentsResult
+     * @return the segmentsResultTime
      */
     public LinkedList<SegmentResult> getSegments() {
-        return segmentsResult;
+        return segmentsResultTime;
     }
 
     /**
-     * @param segments the segmentsResult to set
+     * @param segments the segmentsResultTime to set
      */
-    public void setSegments(LinkedList<SegmentResult> segments) {
-        this.segmentsResult = segments;
+    public void setSegmentsResultTime(LinkedList<SegmentResult> segments) {
+        this.segmentsResultTime = segments;
     }
 
     /**
@@ -178,7 +185,7 @@ public abstract class Path {
      */
     public double getDistance() {
         double distanceTotal = 0;
-        for (SegmentResult sr : segmentsResult) {
+        for (SegmentResult sr : segmentsResultTime) {
             distanceTotal += sr.getDistance();
         }
         return distanceTotal;
@@ -189,7 +196,7 @@ public abstract class Path {
      */
     public double getEnergyConsum() {
         double res = 0;
-        for (SegmentResult sr : segmentsResult) {
+        for (SegmentResult sr : segmentsResultTime) {
             res += sr.getEnergyConsume();
         }
         return res;
@@ -200,7 +207,7 @@ public abstract class Path {
      */
     public double getTravellingTime() {
         double res = 0;
-        for (SegmentResult sr : segmentsResult) {
+        for (SegmentResult sr : segmentsResultTime) {
             res += sr.getFlightTime();
         }
         return res;
@@ -217,22 +224,24 @@ public abstract class Path {
     public boolean simulateInitialNode(FlightPlan flightPlan, int timeStep, double totalWeight, Segment segment) {
         SegmentResult srClimb = new SegmentResult(SegmentType.CLIMBING, flightPlan.getOrigin().getLocation().getAltitude(),
                 totalWeight, timeStep, flightPlan.getAircraft().getAircraftModel(), flightPlan.getListPattern(), segment, totalWeight);
+        if(!srClimb.validateCalculation())
+            return false;
         do {
             srClimb.calculate();
-            segmentsResult.add(srClimb);
+            segmentsResultTime.add(srClimb);
         } while (!srClimb.stopClimb());
 
-        SegmentResult seg = new SegmentResult(SegmentType.CRUISE, segmentsResult.getLast().getAltitudeFinal(), totalWeight, timeStep,
-                flightPlan.getAircraft().getAircraftModel(), flightPlan.getListPattern(), segment, segmentsResult.getLast().getMass());
+        SegmentResult seg = new SegmentResult(SegmentType.CRUISE, segmentsResultTime.getLast().getAltitudeFinal(), totalWeight, timeStep,
+                flightPlan.getAircraft().getAircraftModel(), flightPlan.getListPattern(), segment, segmentsResultTime.getLast().getMass());
         seg.calculate();
-        segmentsResult.add(seg);
+        segmentsResultTime.add(seg);
         return true;
     }
 
     public boolean simulateEndNode(Airport startAirport, Airport endAirport, FlightPlan flightPlan, int timeStep, double totalWeight, Segment segment) {
         double remainingDistance = DistanceCalculator.calculateDistance(startAirport.getLocation().getLatitude(), startAirport.getLocation().getLongitude(), endAirport.getLocation().getLatitude(), endAirport.getLocation().getLongitude());
         double cumulativeDist =0;
-        for(SegmentResult seg: segmentsResult)
+        for(SegmentResult seg: segmentsResultTime)
         {
             cumulativeDist += seg.getDistance();
         }
@@ -242,27 +251,50 @@ public abstract class Path {
         
         do {
             seg.calculate();
-            segmentsResult.add(seg);
+            segmentsResultTime.add(seg);
            
-            cumulativeDist +=segmentsResult.getLast().getDistance();
+            cumulativeDist +=segmentsResultTime.getLast().getDistance();
         } while (cumulativeDist<(remainingDistance-222000));
 
-        seg = new SegmentResult(SegmentType.DESC, segmentsResult.getLast().getAltitudeFinal(), totalWeight, timeStep,
-                flightPlan.getAircraft().getAircraftModel(), flightPlan.getListPattern(), segment, segmentsResult.getLast().getMass());
+        seg = new SegmentResult(SegmentType.DESC, segmentsResultTime.getLast().getAltitudeFinal(), totalWeight, timeStep,
+                flightPlan.getAircraft().getAircraftModel(), flightPlan.getListPattern(), segment, segmentsResultTime.getLast().getMass());
            do {
             seg.calculate();
-            segmentsResult.add(seg);
-            cumulativeDist +=segmentsResult.getLast().getDistance();
+            segmentsResultTime.add(seg);
+            cumulativeDist +=segmentsResultTime.getLast().getDistance();
         } while (cumulativeDist<(remainingDistance));
      
         return true;
     }
 
     public boolean simulateIntermNodes(FlightPlan flightPlan, int timeStep, double totalWeight, Segment segment) {
-        SegmentResult seg = new SegmentResult(SegmentType.CRUISE, segmentsResult.getLast().getAltitudeFinal(), totalWeight, timeStep,
-                flightPlan.getAircraft().getAircraftModel(), flightPlan.getListPattern(), segment, segmentsResult.getLast().getMass());
+        SegmentResult seg = new SegmentResult(SegmentType.CRUISE, flightPlan.getOrigin().getLocation().getAltitude(), totalWeight, timeStep,
+                flightPlan.getAircraft().getAircraftModel(), flightPlan.getListPattern(), segment, totalWeight);
+        if(!seg.validateCalculation())
+            return false;
         seg.calculate();
-        segmentsResult.add(seg);
+        segmentsResultTime.add(seg);
         return true;
+    }
+    
+    public void createResultsList(){
+        for(SegmentResult seg:segmentsResultTime){
+            if(!listSegResults.contains(seg))
+                listSegResults.add(seg);
+        }
+    }
+
+    /**
+     * @return the listSegResults
+     */
+    public LinkedList<SegmentResult> getListSegResults() {
+        return listSegResults;
+    }
+
+    /**
+     * @param listSegResults the listSegResults to set
+     */
+    public void setListSegResults(LinkedList<SegmentResult> listSegResults) {
+        this.listSegResults = listSegResults;
     }
 }

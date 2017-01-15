@@ -55,6 +55,7 @@ public class FindBestPathResultUI extends JDialog {
     private transient TypePath type;
 
     private JList jListSegments;
+    private JList jListSegmentsResult;
     private JLabel lblStartNode;
     private JLabel lblEndNode;
     private JLabel lblComp;
@@ -68,7 +69,7 @@ public class FindBestPathResultUI extends JDialog {
     private JLabel lblTimeAcumulate;
 
     public FindBestPathResultUI(Simulation simulation, TypePath type ,JDialog dialog) {
-        super();
+        super(dialog, "Simulation Result: ",true );
         setTitle("Simulation Result: ");
         this.simulation = simulation;
         this.type = type;
@@ -98,7 +99,7 @@ public class FindBestPathResultUI extends JDialog {
     }
 
     private JPanel createPanelNorth() {
-        JPanel north = new JPanel(new GridLayout(4, 2));
+        JPanel north = new JPanel(new GridLayout(5, 2));
         JLabel labelFlight = new JLabel(" ****************   FLIGHT PLAN INFO"
                 + "   **************** ", JLabel.CENTER);
 
@@ -120,10 +121,14 @@ public class FindBestPathResultUI extends JDialog {
         txtPassengers.setText(String.valueOf(controller.getSimulation().getPassengers()));
         JTextField txtTravel = new JTextField(aux);
         txtTravel.setEnabled(false);
-//        txtTravel.setText(String.valueOf(controller.getTotalFlightTime()));
+        txtTravel.setText(String.valueOf(controller.getTotalTravellingTime(type)));
         JTextField txtEnergy = new JTextField(aux);
         txtEnergy.setEnabled(false);
-//        txtEnergy.setText(String.valueOf(controller.getTotalFlightTime()));
+        txtEnergy.setText(String.valueOf(controller.getTotalConsume(type)));
+        JTextField txtFlight = new JTextField(aux);
+        txtFlight.setEnabled(false);
+        txtFlight.setText(String.valueOf(controller.getTotalTravellingTime(type)));
+       
 
         north.add(labelFlight);
         north.add(UI.createPanelLabelTextLabel("Airport Origin: ", txtOrigin, ""));
@@ -132,7 +137,9 @@ public class FindBestPathResultUI extends JDialog {
         north.add(UI.createPanelLabelTextLabel("Num Crew Elements: ", txtCrew, ""));
         north.add(UI.createPanelLabelTextLabel("Num Passengers: ", txtPassengers, ""));
         north.add(UI.createPanelLabelTextLabel("Total Traveling Time: ", txtTravel, ""));
-        north.add(UI.createPanelLabelTextLabel("Total Flight Time: ", txtEnergy, ""));
+        north.add(UI.createPanelLabelTextLabel("Total Flight Time: ", txtFlight, ""));
+        north.add(UI.createPanelLabelTextLabel("Total Energy Consume: ", txtEnergy, ""));
+        
 
         return north;
     }
@@ -155,10 +162,10 @@ public class FindBestPathResultUI extends JDialog {
     }
     
     private JPanel createResultsPanel() {
-        JPanel p = new JPanel(new GridLayout(1,2));
+        JPanel p = new JPanel(new GridLayout(1,3));
         
         JPanel p1 = new JPanel(new BorderLayout());
-        jListSegments = new JList(new LinkedList<>().toArray());
+        jListSegments = new JList(controller.getSegmentsListTime(type).toArray());
         jListSegments.addListSelectionListener(new ListSelectionListener() {
                 @Override
             public void valueChanged(ListSelectionEvent e) {
@@ -171,7 +178,7 @@ public class FindBestPathResultUI extends JDialog {
                 }
             }
         });
-        p1.add(createListPanel("Segments: ", jListSegments), BorderLayout.CENTER);
+        p1.add(createListPanel("Segments by time step: " +controller.getTimeStep(type), jListSegments), BorderLayout.CENTER);
 
         JPanel p2 = new JPanel(new GridLayout(11, 1));
         
@@ -201,6 +208,33 @@ public class FindBestPathResultUI extends JDialog {
 
         p.add(p1);
         p.add(p2);
+        
+        JPanel p3= createResultsPanel2();
+        p.add(p3);
+
+        return p;
+    }
+    
+      private JPanel createResultsPanel2() {
+        JPanel p = new JPanel(new GridLayout(1,2));
+        
+        JPanel p1 = new JPanel(new BorderLayout());
+        jListSegmentsResult = new JList(controller.getSegmentsList(type).toArray());
+        jListSegmentsResult.addListSelectionListener(new ListSelectionListener() {
+                @Override
+            public void valueChanged(ListSelectionEvent e) {
+                try {
+                    if (!e.getValueIsAdjusting()) {
+                        changeValues();
+                    }
+                } catch (NullPointerException ex) {
+                    System.err.println(ex.getMessage());
+                }
+            }
+        });
+        p1.add(createListPanel("Segments Results: ", jListSegmentsResult), BorderLayout.CENTER);
+
+        p.add(p1);
 
         return p;
     }
@@ -287,16 +321,16 @@ public class FindBestPathResultUI extends JDialog {
     }
     
     private void changeValues(){
-        lblStartNode = createLabel(controller.getNodeID());
-        lblEndNode = createLabel(controller.getEndNodeID());
-        lblComp = createLabel("FALTA");
-        lblVelStartSeg = createLabel(String.valueOf(controller.getTas_0()));
-        lblaltStartSeg = createLabel(String.valueOf(controller.getInitAltitude()));
-        lblVelEndSeg = createLabel(String.valueOf(controller.getTas()));
-        lblaltEndSeg = createLabel(String.valueOf(controller.getFinalAlt()));
-        lblCombConsumed = createLabel(String.valueOf(controller.getConsumedActual()));
-        lblCombRemain = createLabel("colocar valores");
-        lblDistanceAcumulate = createLabel(String.valueOf(controller.getDistance()));
+        lblStartNode.setText(controller.getNodeID());
+        lblEndNode.setText(controller.getEndNodeID());
+        lblComp.setText("erro");
+        lblVelStartSeg.setText(String.valueOf(controller.getTas_0()));
+        lblaltStartSeg.setText(String.valueOf(controller.getInitAltitude()));
+        lblVelEndSeg.setText(String.valueOf(controller.getTas()));
+        lblaltEndSeg.setText(String.valueOf(controller.getFinalAlt()));
+        lblCombConsumed.setText(String.valueOf(controller.getConsumedActual()));
+        lblCombRemain = createLabel("erro");
+        lblDistanceAcumulate.setText(String.valueOf(controller.getDistance()));
         lblTimeAcumulate = createLabel(String.valueOf(controller.getFlightTime()));
     }
 

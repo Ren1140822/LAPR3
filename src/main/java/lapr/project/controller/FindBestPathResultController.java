@@ -45,7 +45,7 @@ public class FindBestPathResultController {
      */
     public void getSegmentInformation(String segID) {
         consumedActual=0;
-        List<SegmentResult> resultsList = getSegmentsList(TypePath.ALL);
+        List<SegmentResult> resultsList = getSegmentsListTime(type);
         SegmentResult seg = null;
         SegmentResult prevSeg = null;
         for (int i = 0; i < resultsList.size(); i++) {
@@ -122,9 +122,20 @@ public class FindBestPathResultController {
      * @param type the type path
      * @return the list of segment results
      */
-    public List<SegmentResult> getSegmentsList(TypePath type) {
+    public List<SegmentResult> getSegmentsListTime(TypePath type) {
 
         return this.simulation.getResult(type).getSegments();
+    }
+    
+     /**
+     * Gets the list of segments of a type path.
+     *
+     * @param type the type path
+     * @return the list of segment results
+     */
+    public List<SegmentResult> getSegmentsList(TypePath type) {
+
+        return this.simulation.getResult(type).getListSegResults();
     }
 
     public double getTas_0() {
@@ -136,13 +147,27 @@ public class FindBestPathResultController {
     }
 
     
-    public double getTotalDistanceTime()
+    public double getTotalDistanceTime(TypePath type)
     {
-        return getSegmentsList(type).get(getSegmentsList(type).size()).getDistance();
+        return simulation.getResult(type).getDistance();
     }
     
-    public double getTotalFlightTime()
+    public double getTotalTravellingTime(TypePath type)
     {
-        return getSegmentsList(type).get(getSegmentsList(type).size()).getFlightTime();
+        return simulation.getResult(type).getTravellingTime();
+    }
+    
+    public double getTotalFlightTime(TypePath type)
+    {
+        return simulation.getTimeFlight(type);
+    }
+    
+    public double getTotalConsume(TypePath type)
+    {
+        return simulation.getResult(type).getEnergyConsum();
+    }
+    
+    public int getTimeStep(TypePath type){
+        return simulation.getTimeStep();
     }
 }

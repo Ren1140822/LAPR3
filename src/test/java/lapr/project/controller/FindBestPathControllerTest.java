@@ -127,7 +127,7 @@ public class FindBestPathControllerTest {
        
         Simulation result =instance.getSimulation();
   
-        Simulation expResult= new Simulation(startAirport, endAirport, new Aircraft());
+        Simulation expResult= new Simulation();
         expResult.createPathSimulation(TypePath.ALL);
         assertEquals(expResult, result);
     }
@@ -164,7 +164,7 @@ public class FindBestPathControllerTest {
         instance.newSImulation();
         instance.createBestPathSimulation(TypePath.ALL);
         instance.getFlightPlanSelected(fPlan);
-        instance.setData(passengers, crew, cargoLoad, fuelWeight);
+        instance.setData(passengers, crew, cargoLoad, fuelWeight,120);
         
         s.createPathSimulation(TypePath.ALL);
         assertEquals(instance.getSimulation(), instance.getSimulation());
@@ -229,11 +229,11 @@ public class FindBestPathControllerTest {
         AircraftModel am=new AircraftModel("", "", "", "", new Motorization(), 
                 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, 1000, new LinkedList<>());
         instance.getFlightPlanSelected(fPlan);
-        instance.setData(50, 10, 100,1);
+        instance.setData(50, 10, 100,1,120);
         
         instance.getSimulation().getEcologicResultPath().setResult(10);
         instance.getSimulation().getEcologicResultPath().setResultPath(new LinkedList<>());
-        boolean expResult = false;
+        boolean expResult = true;
         boolean result = instance.saveSimulation();
         assertEquals(expResult, result);
     }
@@ -248,7 +248,7 @@ public class FindBestPathControllerTest {
         Airport startAirport=new Airport();
         Airport endAirport=new Airport();
         
-        Simulation expResult = new Simulation(startAirport,endAirport, new Aircraft());
+        Simulation expResult = new Simulation();
  
         expResult.createPathSimulation(TypePath.ALL);
         

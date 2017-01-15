@@ -76,9 +76,9 @@ public class AnalysisUI extends JDialog{
         button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-               if(project.getFlightList().getFlightList().isEmpty())                   
+               if( project.getFlightList().getFlightList().isEmpty() || project.getAirNetwork().getSegmentList().isEmpty())                   
                    JOptionPane.showMessageDialog(frame,
-                "There aren´t aircrafts/airports/segments created", "Erro", JOptionPane.ERROR_MESSAGE);
+                "There aren´t flight plans/segments created", "Erro", JOptionPane.ERROR_MESSAGE);
                 else
                    best=new FindBestPathUI(project, frame);
                

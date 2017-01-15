@@ -11,6 +11,7 @@ import lapr.project.model.Aircraft;
 import lapr.project.model.Airport;
 import lapr.project.model.FlightPlan;
 import lapr.project.model.Node;
+import lapr.project.model.Pattern;
 import lapr.project.model.physics.AircraftAlgorithms;
 import lapr.project.model.physics.ConversionAlgorithms;
 
@@ -37,11 +38,7 @@ public class Simulation{
      * total weight (g)
      */
     private double totalWeight;
-    
-    /**
-     * path of simulation
-     */
-    private Path resultPath;
+
     
     /**
      * default value
@@ -71,6 +68,8 @@ public class Simulation{
      */
     private FlightPlan flightPlan;
     
+    private int timeStep;
+    
     /**
      * Constructor
      */
@@ -81,6 +80,7 @@ public class Simulation{
         this.totalWeight=DEFAULT_VALUE;
         this.fuelWeight=DEFAULT_VALUE;  
         this.flightPlan=new FlightPlan();
+        this.timeStep=(int)DEFAULT_VALUE;
         Simulation.counterCode++;
     }
     
@@ -90,26 +90,21 @@ public class Simulation{
      * @param crew number of crew members
      * @param cargoLoad cargo load (kg)
      * @param fuelLoad fuel weight (kg)
+     * @param timeStep time step to consider
+     * @param flightPlan flightPlan
      */
-    public Simulation(int passengers, int crew, double cargoLoad, double fuelLoad){
+    public Simulation(int passengers, int crew, double cargoLoad, double fuelLoad, int timeStep,
+            FlightPlan flightPlan){
         this.passengers=passengers;
         this.crew=crew;
         this.cargoLoad=cargoLoad;
         this.fuelWeight=ConversionAlgorithms.convertLtoKg(fuelLoad);
-        this.totalWeight=this.passengers+this.crew+this.cargoLoad+this.fuelWeight;
-        this.flightPlan=new FlightPlan();
+        this.totalWeight=AircraftAlgorithms.calculateInitialWeight(passengers, crew, cargoLoad, flightPlan.getAircraft().getAircraftModel().geteWeight(), fuelLoad);
+        this.flightPlan=flightPlan;
+        this.timeStep=(int)DEFAULT_VALUE;
         Simulation.counterCode++;
-    }
-    
-    public Simulation(Airport startAirport, Airport endAirport,
-            Aircraft aircraft){
-        
-        
-         this.flightPlan=new FlightPlan("si"+counterCode, 0, aircraft,
-                startAirport, endAirport, new LinkedList<>(), new LinkedList<>(),
-                new LinkedList<>()); 
-    }
-            
+        this.timeStep=timeStep;
+    }   
 
     /** Gets the number of passengers
      * @return the passengers
@@ -193,17 +188,31 @@ public class Simulation{
      * @param crew number of crew members
      * @param cargoLoad cargo load (kg)
      * @param fuelLoad fuel weight (kg)
-     * @param flightPlan
+     * @param flightPlan flightPlan
+     * @param timeStep timeStep to consider
      */
     public void setData(int passengers, int crew, double cargoLoad, double fuelLoad,
-            FlightPlan flightPlan){
+            FlightPlan flightPlan, int timeStep){
         this.passengers=passengers;
         this.crew=crew;
         this.cargoLoad=cargoLoad;
         this.fuelWeight=ConversionAlgorithms.convertLtoKg(fuelLoad);
         this.flightPlan=flightPlan; 
+        this.timeStep=timeStep;
         this.totalWeight=AircraftAlgorithms.calculateInitialWeight(passengers, crew, 
                 cargoLoad, flightPlan.getAircraft().getAircraftModel().geteWeight(),fuelLoad);
+    }
+    
+    /**
+     * Sets data needed to the simulation 
+     * @param startAirport start airport
+     * @param endAirport end airport
+     * @param timeStep timeStep to consider
+     */
+    public void setData(Airport startAirport,Airport endAirport, int timeStep){
+        
+        this.timeStep=timeStep;
+        this.totalWeight=4*Math.pow(10,5);
     }
 
     /**
@@ -252,14 +261,14 @@ public class Simulation{
      * @return true if all data is valid, false if not
      */
      public boolean validate() {
-        return validateAircraftRelatedData();
+        return timeStep>0;
     }
      
      /**
       * Validates aircraft related data (nr passengers/crew, weight, fuel capacity)
       * @return true if data related to the aircraft is valid, false if not
       */
-     private boolean validateAircraftRelatedData(){
+     public boolean validateAircraftRelatedData(){
          Aircraft aircraft=flightPlan.getAircraft();
          if(aircraft==null)
              return false;
@@ -277,6 +286,14 @@ public class Simulation{
      */
     public int getCounterCode() {
         return counterCode;
+    }
+    
+    public int getTimeStep(){
+        return timeStep;
+    }
+    
+    public void setTimeStep(int timeStep){
+        this.timeStep=timeStep;
     }
     
       /**
@@ -349,11 +366,11 @@ public class Simulation{
           TypePath p=type;
           switch (p){
               case SHORTEST_PATH:
-                    return shortestResultPath;
+                     return shortestResultPath;
               case FASTEST_PATH:
-                  return fastestResultPath;
+                    return fastestResultPath;
               case ECOLOGIC_PATH:
-                  return ecologicResultPath;
+                    return ecologicResultPath;
               default:
                   return shortestResultPath;
           }
@@ -365,20 +382,20 @@ public class Simulation{
              TypePath p=type;
             switch (p){
                 case SHORTEST_PATH:
-                     shortestResultPath.calculateBestPath(air);
+                     shortestResultPath.calculateBestPath(air, flightPlan, totalWeight,timeStep);
                      
                      return true;
                 case FASTEST_PATH:
-                    fastestResultPath.calculateBestPath(air);
+                    fastestResultPath.calculateBestPath(air, flightPlan, totalWeight,timeStep);
                     return true;
                 case ECOLOGIC_PATH:
-                    ecologicResultPath.calculateBestPath(air);
+                    ecologicResultPath.calculateBestPath(air, flightPlan, totalWeight,timeStep);
                     return true;
 
                 case ALL:
-                  shortestResultPath.calculateBestPath(air);
-                  fastestResultPath.calculateBestPath(air);
-                  ecologicResultPath.calculateBestPath(air);                 
+                  shortestResultPath.calculateBestPath(air,  flightPlan, totalWeight,timeStep);
+                  fastestResultPath.calculateBestPath(air,  flightPlan, totalWeight,timeStep);
+                  ecologicResultPath.calculateBestPath(air,  flightPlan, totalWeight,timeStep);                 
                   
                   return true;
                 default:
@@ -386,6 +403,42 @@ public class Simulation{
             }
          }
       return false;
+     }
+     
+     public boolean calculateBestPathCruise(TypePath type, AirNetwork air){
+         if(flightPlan!=null){
+             TypePath p=type;
+            switch (p){
+                case SHORTEST_PATH:
+                     shortestResultPath.calculateBestPathCruise(air, flightPlan, totalWeight,timeStep);
+                     
+                     return true;
+                case FASTEST_PATH:
+                    fastestResultPath.calculateBestPathCruise(air, flightPlan, totalWeight,timeStep);
+                    return true;
+                case ECOLOGIC_PATH:
+                    ecologicResultPath.calculateBestPathCruise(air, flightPlan, totalWeight,timeStep);
+                    return true;
+
+                case ALL:
+                  shortestResultPath.calculateBestPath(air,  flightPlan, totalWeight,timeStep);
+                  fastestResultPath.calculateBestPath(air,  flightPlan, totalWeight,timeStep);
+                  ecologicResultPath.calculateBestPath(air,  flightPlan, totalWeight,timeStep);                 
+                  
+                  return true;
+                default:
+                    return false;
+            }
+         }
+      return false;
+     }
+     
+     public double getTimeFlight(TypePath type){
+         int res=0;
+         for(Node node:flightPlan.getMandatoryWaypoints()){
+             res+=flightPlan.getMinStopTime();
+         }
+         return getResult(type).getTravellingTime()-res;
      }
       
     @Override
@@ -410,11 +463,15 @@ public class Simulation{
         }
         Simulation otherSimulation = (Simulation) otherObject;
       
-        return this.passengers==otherSimulation.getPassengers() &&
+        boolean v1= this.passengers==otherSimulation.getPassengers() &&
                 this.crew==otherSimulation.getCrew() && Double.doubleToLongBits(this.cargoLoad)==
                 Double.doubleToLongBits(otherSimulation.getCargoLoad()) &&
                 Double.doubleToLongBits(this.fuelWeight)==
                 Double.doubleToLongBits(otherSimulation.getFuelWeight());
+        boolean v2=this.getShortestResultPath().equals(otherSimulation.getShortestResultPath())
+                && this.getEcologicResultPath().equals(otherSimulation.getEcologicResultPath())
+                && this.getFastestResultPath().equals(otherSimulation.getFastestResultPath());
+        return v1 && v2;
 
     }
 
@@ -427,4 +484,5 @@ public class Simulation{
         hash = 67 * hash + (int) (Double.doubleToLongBits(this.fuelWeight) ^ (Double.doubleToLongBits(this.fuelWeight) >>> 32));
         return hash;
     }
+
 }

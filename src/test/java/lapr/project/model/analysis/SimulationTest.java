@@ -5,18 +5,27 @@
  */
 package lapr.project.model.analysis;
 
+import static com.sun.javafx.scene.CameraHelper.project;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
+import lapr.project.controller.AddFlightPlanController;
+import lapr.project.controller.ImportAircraftModelListController;
+import lapr.project.controller.ImportAirportController;
+import lapr.project.controller.ImportNetworkController;
 import lapr.project.model.AirNetwork;
 import lapr.project.model.Aircraft;
 import lapr.project.model.AircraftModel;
 import lapr.project.model.Airport;
 import lapr.project.model.CabinConfiguration;
 import lapr.project.model.FlightPlan;
+import lapr.project.model.Iten;
 import lapr.project.model.Location;
 import lapr.project.model.Motorization;
 import lapr.project.model.Node;
+import lapr.project.model.Project;
 import lapr.project.model.Segment;
 import lapr.project.model.Thrust_Function;
 import lapr.project.model.Wind;
@@ -83,7 +92,7 @@ public class SimulationTest {
     @Test
     public void testGetPassengers() {
         System.out.println("getPassengers");
-        Simulation instance = new Simulation( 10,100, 100, 100);
+        Simulation instance = new Simulation( 10,100, 100, 100,0,new FlightPlan());
         int expResult = 10;
         int result = instance.getPassengers();
         assertEquals(expResult, result);
@@ -212,7 +221,7 @@ public class SimulationTest {
                 new Location(20, 10, 10));;
         Aircraft aircraft = new Aircraft();
         Simulation instance = new Simulation();
-        instance.setData(passengers, crew, cargoLoad, fuelLoad, new FlightPlan());
+        instance.setData(passengers, crew, cargoLoad, fuelLoad, new FlightPlan(),10);
     }
 
     /**
@@ -256,7 +265,7 @@ public class SimulationTest {
                 new Location(20, 10, 10));;
         Aircraft aircraft = new Aircraft();
         Simulation instance = new Simulation();
-        instance.setData(passengers, crew, cargoLoad, fuelLoad, new FlightPlan());
+        instance.setData(passengers, crew, cargoLoad, fuelLoad, new FlightPlan(),10);
         FlightPlan f = new FlightPlan();
         instance.setFlightPlan(f);
         Node expResult = network.getAirportNode(f.getOrigin());        
@@ -281,7 +290,7 @@ public class SimulationTest {
                 new Location(20, 10, 10));;
         Aircraft aircraft = new Aircraft();
         Simulation instance = new Simulation();
-        instance.setData(passengers, crew, cargoLoad, fuelLoad, new FlightPlan());
+        instance.setData(passengers, crew, cargoLoad, fuelLoad, new FlightPlan(),10);
         FlightPlan f = new FlightPlan();
         instance.setFlightPlan(f);
         Node expResult = network.getAirportNode(f.getDestination());    
@@ -342,8 +351,8 @@ public class SimulationTest {
         Simulation instance = new Simulation();
         instance.setFlightPlan(f);
         instance.createPathSimulation(TypePath.ALL);
-        instance.setData(10, 10, 10, 10, f);
-        boolean expResult = false;
+        instance.setData(10, 10, 10, 10, f,10);
+        boolean expResult =true;
         boolean result = instance.validate();
         assertEquals(expResult, result);
         
@@ -351,7 +360,7 @@ public class SimulationTest {
         Simulation instance2 = new Simulation();
         instance2.setFlightPlan(f);
         instance2.createPathSimulation(TypePath.ALL);
-        instance2.setData(10, 7, 10, 10, f);
+        instance2.setData(10, 7, 10, 10, f,10);
         boolean expResult2 = true;
         boolean result2 = instance2.validate();
         assertEquals(expResult2, result2);
@@ -515,24 +524,69 @@ public class SimulationTest {
      * Test of calculateBestPath method, of class Simulation.
      */
     @Test
-    public void testCalculateBestPath() {    
-        Aircraft a1 = new Aircraft("dsfsdg", "fdh", new CabinConfiguration(), 2, new AircraftModel(
-                "id", "description", "maker", "passenger", new Motorization(), 10, 
-                10, 10, 10, 10, 10, 10, 10, 10, 10, new LinkedList<>()));
+    public void testCalculateBestPath() throws FileNotFoundException {    
         
-        Airport airp1 = new Airport("opo", "porto", "porto", "portugal", new Location(10, 10, 10));
-        Airport airp2 = new Airport("lis", "lisboa", "lisboa", "portugal", new Location(20, 20, 20));
-        FlightPlan f = new FlightPlan("FF0001A", 10, a1, airp1, airp2,
-                new LinkedList<>(), new LinkedList<>(),new LinkedList<>());
+        Project project=new Project();
+        String fileAircraft = "src/main/resources/TestSet02_Aircraft.xml";
+        File file = new File(fileAircraft);
         
+        ImportAircraftModelListController impAircraftModel=new ImportAircraftModelListController(project);
+        impAircraftModel.importXMLAircraftModelList(file);
+       
+        
+        String fileAirport = "src/main/resources/TestSet02_Airports.xml";
+        File file2 = new File(fileAirport);
+        
+        ImportAirportController impAirport=new ImportAirportController(project);
+        impAirport.importXMLAirportList(file2);
+        
+        String fileNet = "src/main/resources/TestSet02_Network.xml";
+        File file3 = new File(fileNet);
+        
+        ImportNetworkController impNet=new ImportNetworkController(project);
+        impNet.importXMLNetwork(file3);
+
+        Iten it1=new Iten(210, 0.02);
+        Iten it2=new Iten(210, 0.02);
+        Iten it3=new Iten(230, 0.02);
+        
+        LinkedList<Iten> listIten=new LinkedList<>();
+        listIten.add(it1);
+        listIten.add(it2);
+        listIten.add(it3);
+        
+        int timeStep=120;
+        
+         ImportAircraftModelListController cntg = new ImportAircraftModelListController(project);
+         File file4 = new File("src/main/resources/TestSet02_Aircraft.xml");
+        cntg.importXMLAircraftModelList(file4);
+  
+        Map<String, Integer> map = new HashMap<>();
+        map.put("afd", 123);
+        CabinConfiguration c = new CabinConfiguration(map);
+       Aircraft aircraft=new Aircraft("lol", "lol", c, 10, project.getAircraftModelList().getModelList().get(0));
+
+       project.getAircraftList().getAircraftList().add(aircraft);
+       Airport startAirport=project.getAirportList().getAirportByString("LIS");
+       Airport endAirport=project.getAirportList().getAirportByString("PDL");
+     
+       File filePatterns = new File("src/main/resources/Flight_pattern_A380_v1a.csv");
+       AddFlightPlanController controller = new AddFlightPlanController(project);
+       controller.pattern(filePatterns);
+
+       Object[] technicalStops = new Object[0];
+       Object[] mandatoryWaypoints = new Object[0];
+        
+       controller.setData("te6454", timeStep, aircraft.getRegistration(), startAirport.getIATA(), endAirport.getIATA(),technicalStops,mandatoryWaypoints);
+       controller.saveFlightPlan();
+
+       
         System.out.println("calculateBestPath1");
         TypePath type = TypePath.SHORTEST_PATH;
         AirNetwork air = network;
-        int timeStep = 10;
         Simulation instance = new Simulation(); 
         instance.createPathSimulation(type);
-        instance.setData(10, 10, 10, 10, f);
-        instance.setFlightPlan(f);
+     
         boolean expResult = true;
         boolean result = instance.calculateBestPath(type, air);
         assertEquals(expResult, result);
@@ -540,10 +594,8 @@ public class SimulationTest {
         System.out.println("calculateBestPath2");
         TypePath type2 = TypePath.ALL;
         AirNetwork air2 = network;
-        int timeStep2 = 0;
         Simulation instance2 = new Simulation();
-        instance2.createPathSimulation(type);
-        instance2.setFlightPlan(f);
+        instance2.createPathSimulation(type2);
         boolean expResult2 = true;
         boolean result2 = instance2.calculateBestPath(type2, air2);
         assertEquals(expResult2, result2);
@@ -551,10 +603,8 @@ public class SimulationTest {
         System.out.println("calculateBestPath3");
         TypePath type3 = TypePath.ECOLOGIC_PATH;
         AirNetwork air3 = network;
-        int timeStep3 = 0;
         Simulation instance3 = new Simulation();
-        instance3.createPathSimulation(type);
-        instance3.setFlightPlan(f);
+        instance3.createPathSimulation(type3);
         boolean expResult3 = true;
         boolean result3 = instance3.calculateBestPath(type3, air3);
         assertEquals(expResult3, result3);
@@ -562,10 +612,8 @@ public class SimulationTest {
         System.out.println("calculateBestPath4");
         TypePath type4 = TypePath.FASTEST_PATH;
         AirNetwork air4 = network;
-        int timeStep4 = 0;
         Simulation instance4 = new Simulation();
-        instance4.createPathSimulation(type);
-        instance4.setFlightPlan(f);
+        instance4.createPathSimulation(type4);
         boolean expResult4 = true;
         boolean result4 = instance4.calculateBestPath(type4, air4);
         assertEquals(expResult4, result4);
@@ -589,8 +637,10 @@ public class SimulationTest {
     @Test
     public void testEquals() {
         System.out.println("equals1");
-        Object otherObject = new Simulation();
+        Simulation otherObject = new Simulation();
         Simulation instance = new Simulation();
+        otherObject.createPathSimulation(TypePath.ALL);
+        instance.createPathSimulation(TypePath.ALL);
         boolean expResult = true;
         boolean result = instance.equals(otherObject);
         assertEquals(expResult, result);
@@ -619,6 +669,31 @@ public class SimulationTest {
                 (Double.doubleToLongBits(instance.getFuelWeight()) >>> 32));
         int result = instance.hashCode();
         assertEquals(expResult, result);
+    }
+
+    /**
+     * Test of getTimeStep method, of class Simulation.
+     */
+    @Test
+    public void testGetTimeStep() {
+        System.out.println("getTimeStep");
+        Simulation instance = new Simulation();
+        instance.setTimeStep(200);
+        int expResult = 200;
+        int result = instance.getTimeStep();
+        assertEquals(expResult, result);
+
+    }
+
+    /**
+     * Test of setTimeStep method, of class Simulation.
+     */
+    @Test
+    public void testSetTimeStep() {
+        System.out.println("setTimeStep");
+        int timeStep = 0;
+        Simulation instance = new Simulation();
+        instance.setTimeStep(timeStep);
     }
     
 }
