@@ -554,12 +554,12 @@ public class SegmentResult {
         double defaultValue = Thrust_Function.getDefaultValue();
         double defaultWing = AircraftModel.getDefaultWingArea();
 
-        boolean v1 = Double.doubleToLongBits(thrustMa) != Double.doubleToLongBits(defaultValue)&&
-                Double.doubleToLongBits(velThrustMa) != Double.doubleToLongBits(defaultValue)
-                && Double.doubleToLongBits(thrustMi) != Double.doubleToLongBits(defaultValue)
-                && Double.doubleToLongBits(thrustLapseRate) != Double.doubleToLongBits(defaultValue);
+        boolean v1 = thrustMa !=defaultValue &&
+                velThrustMa != defaultValue
+                && thrustMi != defaultValue
+                && thrustLapseRate != defaultValue;
 
-        return v1  && Double.doubleToLongBits(wingArea) != Double.doubleToLongBits(defaultWing);
+        return v1  && wingArea != defaultWing;
     }
 
     public double startLand(SegmentResult aux, Airport endAirport) {
@@ -637,12 +637,12 @@ public class SegmentResult {
     @Override
     public int hashCode() {
         int hash = 7;
-        hash = 59 * hash + (int) (Double.doubleToLongBits(this.altitude) ^ (Double.doubleToLongBits(this.altitude) >>> 32));
-        hash = 59 * hash + (int) (Double.doubleToLongBits(this.mass) ^ (Double.doubleToLongBits(this.mass) >>> 32));
-        hash = 59 * hash + (int) (Double.doubleToLongBits(this.distance) ^ (Double.doubleToLongBits(this.distance) >>> 32));
-        hash = 59 * hash + this.flightTime;
-        hash = 59 * hash + (int) (Double.doubleToLongBits(this.energyConsume) ^ (Double.doubleToLongBits(this.energyConsume) >>> 32));
-        hash = 59 * hash + this.timeStep;
+        hash = 71 * hash + (int) (Double.doubleToLongBits(this.altitude) ^ (Double.doubleToLongBits(this.altitude) >>> 32));
+        hash = 71 * hash + (int) (Double.doubleToLongBits(this.mass) ^ (Double.doubleToLongBits(this.mass) >>> 32));
+        hash = 71 * hash + (int) (Double.doubleToLongBits(this.distance) ^ (Double.doubleToLongBits(this.distance) >>> 32));
+        hash = 71 * hash + (int) (Double.doubleToLongBits(this.energyConsume) ^ (Double.doubleToLongBits(this.energyConsume) >>> 32));
+        hash = 71 * hash + this.timeStep;
         return hash;
     }
+
 }

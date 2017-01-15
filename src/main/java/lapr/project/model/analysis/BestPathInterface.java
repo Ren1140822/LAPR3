@@ -14,7 +14,5 @@ import lapr.project.model.FlightPlan;
  */
 public interface BestPathInterface {
     public void calculateBestPath(AirNetwork air, FlightPlan flightPlan, double totalWeight, int timeStep);
-    
-    public void calculateBestPathCruise(AirNetwork air, FlightPlan flightPlan, double totalWeight, int timeStep);
 
 }

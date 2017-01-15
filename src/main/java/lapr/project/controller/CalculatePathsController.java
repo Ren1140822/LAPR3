@@ -94,7 +94,7 @@ public class CalculatePathsController {
      * @return true if valid, false if not
      */
     public boolean calculatePath(TypePath type){
-        return project.getSimulationsList().getSimulation().calculateBestPathCruise(type, project.getAirNetwork());
+        return true;
     }
     
     public boolean validateData(){

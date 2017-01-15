@@ -405,33 +405,6 @@ public class Simulation{
       return false;
      }
      
-     public boolean calculateBestPathCruise(TypePath type, AirNetwork air){
-         if(flightPlan!=null){
-             TypePath p=type;
-            switch (p){
-                case SHORTEST_PATH:
-                     shortestResultPath.calculateBestPathCruise(air, flightPlan, totalWeight,timeStep);
-                     
-                     return true;
-                case FASTEST_PATH:
-                    fastestResultPath.calculateBestPathCruise(air, flightPlan, totalWeight,timeStep);
-                    return true;
-                case ECOLOGIC_PATH:
-                    ecologicResultPath.calculateBestPathCruise(air, flightPlan, totalWeight,timeStep);
-                    return true;
-
-                case ALL:
-                  shortestResultPath.calculateBestPath(air,  flightPlan, totalWeight,timeStep);
-                  fastestResultPath.calculateBestPath(air,  flightPlan, totalWeight,timeStep);
-                  ecologicResultPath.calculateBestPath(air,  flightPlan, totalWeight,timeStep);                 
-                  
-                  return true;
-                default:
-                    return false;
-            }
-         }
-      return false;
-     }
      
      public double getTimeFlight(TypePath type){
          int res=0;
